@@ -225,8 +225,8 @@
     <nav>
       <button class="on" data-tab="home" onclick="go('home')">홈</button>
       <button data-tab="course" onclick="go('home','#parts')">강의</button>
-      <button onclick="toast('문제은행은 2단계(7/12~)에 열려')">문제은행</button>
-      <button onclick="toast('모의고사는 7/24 오픈이야')">모의고사</button>
+      <button onclick="toast('문제은행은 파트별 미니테스트 + 시나리오 실전(Part 6)으로 통합했어')">문제은행</button>
+      <button onclick="openPart('p7')">모의고사</button>
       <button onclick="toast('용어사전·치트시트는 제작 중')">부록</button>
     </nav>
     <div class="hright">
@@ -254,6 +254,8 @@
 <script src="content/part3.js"></script>
 <script src="content/part4.js"></script>
 <script src="content/part5.js"></script>
+<script src="content/part6.js"></script>
+<script src="content/exam-bank.js"></script>
 <script>
 /* ================= parts meta ================= */
 const PARTS = [
@@ -264,7 +266,7 @@ const PARTS = [
   {key:"p4", no:"04", en:"Prompt & Structured Output", ko:"프롬프트 엔지니어링 & 구조화 출력", time:"1.5시간", weight:"20%", prev:{v:"75%",cls:"strong"}, planned:7},
   {key:"p5", no:"05", en:"Context & Reliability", ko:"컨텍스트 관리 & 신뢰성", time:"2시간", weight:"15%", prev:{v:"50%",cls:"weak"}, planned:7},
   {key:"p6", no:"06", en:"Scenario Deep-dive", ko:"시나리오 실전 — 시험이 나오는 무대 6곳", time:"2시간", weight:"—", prev:null, planned:6},
-  {key:"p7", no:"07", en:"Final Simulation", ko:"파이널 — 모의고사 2회 + 리포트", time:"4시간", weight:"—", prev:null, planned:2},
+  {key:"p7", no:"07", en:"Final Simulation", ko:"파이널 — 모의고사 시뮬레이션", time:"회당 120분", weight:"—", prev:null, planned:1},
 ];
 const C = window.CCAF_CONTENT;
 const totalUnits = () => PARTS.reduce((a,p)=>a+p.planned,0);
@@ -290,7 +292,7 @@ function partProgress(key){
   const part = C[key]; if(!part) return {done:0,total:PARTS.find(p=>p.key===key).planned};
   let done = 0;
   part.lessons.forEach(L=>{
-    if(L.type==="test"){ if(store.test(L.id)) done++; }
+    if(L.type==="test" || L.type==="exam"){ if(store.test(L.id)) done++; }
     else if(store.lesson(L.id).done) done++;
   });
   return {done, total: part.lessons.length};
@@ -303,7 +305,7 @@ function nextUp(){
     const part = C[p.key]; if(!part) continue;
     for(let i=0;i<part.lessons.length;i++){
       const L = part.lessons[i];
-      if(L.type==="test"){ if(!store.test(L.id)) return {pk:p.key, idx:i, L, meta:p}; }
+      if(L.type==="test" || L.type==="exam"){ if(!store.test(L.id)) return {pk:p.key, idx:i, L, meta:p}; }
       else if(!store.lesson(L.id).done) return {pk:p.key, idx:i, L, meta:p};
     }
   }
@@ -385,6 +387,14 @@ function openPart(pk){
       <div class="pdesc">${part.lessons.length}개 레슨 · ${meta.time}${meta.weight!=="—"? ` · 출제 비중 ${meta.weight}`:""}${meta.prev? ` · 1차 점수 ${meta.prev.v}`:""}</div>
     </div>
     ${part.lessons.map((L,i)=>{
+      if(L.type==="exam"){
+        const t = store.test(L.id);
+        return `<div class="lrow test" onclick="openUnit('${pk}',${i})">
+          <div class="st ${t? "done":""}">${t? "✓":"🕐"}</div>
+          <div class="li"><div class="lt">${L.title}</div><div class="ls">시나리오 4개 랜덤 · 60문항 · 120분 타이머 · 답해야 진행 · 종료 후 도메인별 리포트</div></div>
+          <div class="lr">${t? `최고 ${t.best}점 · ${t.attempts||1}회 응시` : "미응시"}</div>
+        </div>`;
+      }
       if(L.type==="test"){
         const t = store.test(L.id);
         return `<div class="lrow test" onclick="openUnit('${pk}',${i})">
@@ -407,7 +417,9 @@ function openPart(pk){
 
 function openUnit(pk, idx){
   const L = C[pk].lessons[idx];
-  if(L.type==="test") openTest(pk, idx); else openLesson(pk, idx);
+  if(L.type==="exam") openExam();
+  else if(L.type==="test") openTest(pk, idx);
+  else openLesson(pk, idx);
 }
 
 /* ================= lesson runner ================= */
@@ -750,6 +762,160 @@ function testResult(){
     <div style="margin-top:24px;display:flex;gap:10px">
       <button class="btn btn-primary" onclick="openTest(T.pk, T.idx)">다시 응시</button>
       <button class="btn btn-ghost" onclick="openPart(T.pk)">파트 목록</button>
+    </div>
+  </div>`;
+  window.scrollTo(0,0);
+}
+
+/* ================= 모의고사 시뮬레이터 ================= */
+let EX = null;
+function shuffleArr(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function buildExamPool(){
+  const pools = {s1:[],s2:[],s3:[],s4:[],s5:[],s6:[]};
+  for(const [tid, map] of Object.entries(window.CCAF_MT_SCEN||{})){
+    for(const p of Object.values(C)){
+      const t = (p.lessons||[]).find(l=>l.id===tid);
+      if(t) map.forEach((sc,i)=>{ if(t.questions[i]) pools[sc].push(t.questions[i]); });
+    }
+  }
+  (C.p6?.lessons||[]).forEach(L=>{
+    if(L.scenario) L.steps.filter(s=>s.type==="quiz").forEach(q=>pools[L.scenario].push(q));
+  });
+  (window.CCAF_EXAM_EXTRA||[]).forEach(q=>pools[q.scenario].push(q));
+  return pools;
+}
+function openExam(){
+  clearInterval(EX?.timerId);
+  const prev = store.test("exam");
+  view.innerHTML = `
+    <div class="stage" style="padding-top:64px">
+      <div class="step" style="text-align:center">
+        <div class="eyebrow">FULL SIMULATION · 실전 재현</div>
+        <h2 style="margin-top:10px">모의고사 — CCA-F V2</h2>
+        <div class="prose" style="max-width:520px;margin:0 auto">
+          <ul style="text-align:left">
+            <li>시나리오 은행 6개 중 <strong>4개 랜덤</strong> — 실제 시험과 동일</li>
+            <li><strong>60문항 · 120분</strong> 카운트다운 · 시간 종료 시 자동 제출</li>
+            <li>답을 골라야 다음 문항으로 (건너뛰기 불가) · 중간 채점 없음</li>
+            <li>종료 후: 추정 스케일 점수(합격선 720) + 도메인·시나리오별 리포트 + 전 문항 해설</li>
+            ${prev? `<li>기록: 최고 <strong>${prev.best}점</strong> · ${prev.attempts||1}회 응시 (마지막 ${prev.when})</li>`:""}
+          </ul>
+          <div class="callout">⏱ 120분을 통으로 확보하고 시작해. 도중에 나가면 이번 응시는 기록되지 않아.</div>
+        </div>
+        <div style="margin-top:28px">
+          <button class="btn btn-primary" onclick="startExam()">응시 시작</button>
+          <button class="btn btn-ghost" onclick="openPart('p7')" style="margin-left:8px">돌아가기</button>
+        </div>
+      </div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+function startExam(){
+  const pools = buildExamPool();
+  const scens = shuffleArr(Object.keys(pools)).slice(0,4);
+  const blocks = scens.map(sc=>({sc, qs: shuffleArr([...pools[sc]]).slice(0,15)}));
+  const flat = [];
+  blocks.forEach(b=>b.qs.forEach((q,j)=>flat.push({q, sc:b.sc, firstOfBlock: j===0})));
+  EX = {flat, i:-1, answers:new Array(flat.length).fill(null), sel:null,
+        deadline: Date.now()+120*60*1000, timerId:null, timedOut:false};
+  EX.timerId = setInterval(()=>{
+    const left = EX.deadline - Date.now();
+    if(left <= 0){ EX.timedOut = true; finishExam(); return; }
+    const el = document.getElementById("exTimer");
+    if(el){
+      const m = Math.floor(left/60000), s = Math.floor(left%60000/1000);
+      el.textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+      el.style.color = left < 10*60*1000 ? "var(--no)" : "var(--accent)";
+    }
+  }, 1000);
+  examNext();
+}
+function examNext(){
+  if(EX.i >= 0 && EX.sel !== null) EX.answers[EX.i] = EX.sel;
+  EX.sel = null;
+  EX.i++;
+  if(EX.i >= EX.flat.length) return finishExam();
+  const item = EX.flat[EX.i], q = item.q;
+  const sc = window.CCAF_SCENARIOS[item.sc];
+  view.innerHTML = `
+    <div class="lesson-top"><div class="lt-wrap">
+      <button class="back" onclick="if(confirm('시험을 중단할까? 이번 응시는 기록되지 않아.')){clearInterval(EX.timerId);openPart('p7');}">←</button>
+      <div class="info"><div class="t">시나리오 ${sc.no} ${sc.name}</div><div class="s">Q${EX.i+1} / ${EX.flat.length} · 미응답 시 진행 불가</div></div>
+      <div class="dday" style="font-variant-numeric:tabular-nums" id="exTimer">--:--</div>
+    </div></div>
+    <div class="stage">
+      <div class="pbar" style="margin:0 0 26px"><i style="width:${Math.round(EX.i/EX.flat.length*100)}%"></i></div>
+      ${item.firstOfBlock? `<div class="callout" style="margin-bottom:22px">📋 <b>시나리오 ${sc.no} — ${sc.en}</b><br>${sc.brief}</div>`:""}
+      <div class="step">
+        <div class="kind"><span class="eyebrow">Q${EX.i+1}</span></div>
+        <div class="prose"><p style="font-size:16px;font-weight:600">${q.q}</p></div>
+        <div class="opts">${q.opts.map((o,i)=>`
+          <button class="opt" id="exopt${i}" onclick="examPick(${i})"><span class="abc">${"ABCD"[i]}</span><span>${o.t}</span></button>`).join("")}
+        </div>
+      </div>
+    </div>
+    <div class="bbar"><div class="bb-wrap">
+      <span class="pos">답을 골라야 다음으로 넘어가</span>
+      <button class="btn btn-primary" id="exNext" disabled onclick="examNext()">다음 →</button>
+    </div></div>`;
+  window.scrollTo(0,0);
+}
+function examPick(i){
+  EX.sel = i;
+  document.querySelectorAll(".opt").forEach((b,j)=>b.classList.toggle("sel", j===i));
+  document.getElementById("exNext").disabled = false;
+}
+function finishExam(){
+  clearInterval(EX.timerId);
+  if(EX.i >= 0 && EX.sel !== null && EX.i < EX.flat.length) EX.answers[EX.i] = EX.sel;
+  let right = 0; const dom = {}, scn = {};
+  EX.flat.forEach((item,i)=>{
+    const d = "D"+(item.q.ts||"0").split(".")[0];
+    dom[d] = dom[d]||{r:0,t:0}; scn[item.sc] = scn[item.sc]||{r:0,t:0};
+    dom[d].t++; scn[item.sc].t++;
+    if(item.q.opts[EX.answers[i]]?.ok){ right++; dom[d].r++; scn[item.sc].r++; }
+  });
+  const total = EX.flat.length;
+  const scaled = Math.round(right/total*960);
+  const pass = scaled >= 720;
+  const prev = store.test("exam");
+  store.saveTest("exam", {best: Math.max(scaled, prev?.best||0), last: scaled,
+    when: new Date().toISOString().slice(0,10), attempts:(prev?.attempts||0)+1});
+  store.addLog({d:new Date().toISOString().slice(0,10), lesson:"exam", step:"mock-exam", outcome:`${right}/${total} (${scaled})`});
+  const DOMNAMES = {D1:"D1 에이전트 아키텍처",D2:"D2 도구·MCP",D3:"D3 Claude Code",D4:"D4 프롬프트·구조화",D5:"D5 컨텍스트·신뢰성"};
+  view.innerHTML = `
+  <div class="ppage">
+    <button class="crumb" onclick="openPart('p7')">← 파이널로</button>
+    <div class="score-hero">
+      <div class="eyebrow">SCORE REPORT${EX.timedOut? " · ⏱ 시간 종료 자동 제출":""}</div>
+      <div class="sc" style="color:${pass? "var(--ok)":"var(--no)"}">${scaled}</div>
+      <div class="sub" style="font-weight:800;font-size:16px;color:${pass? "var(--ok)":"var(--no)"}">${pass? "Passed ✓":"Did Not Pass"}</div>
+      <div class="sub">추정 스케일 점수 (100–1000 근사 환산) · 합격선 720 · 정답 ${right}/${total} (${Math.round(right/total*100)}%)</div>
+    </div>
+    <h2 style="font-size:17px;margin:26px 0 14px">Performance by domain</h2>
+    ${Object.entries(dom).sort().map(([d,v])=>{
+      const pct = Math.round(v.r/v.t*100);
+      return `<div class="tsrow"><span class="n" style="width:170px">${DOMNAMES[d]||d}${pct<75? ` <span style="color:var(--no);font-size:11px;font-weight:800">focus here</span>`:""}</span><div class="bar"><i style="width:${pct}%;background:${pct<75? "var(--no)":"var(--ok)"}"></i></div><span class="pct">${v.r}/${v.t}</span></div>`;}).join("")}
+    <h2 style="font-size:17px;margin:26px 0 14px">시나리오별 정답률</h2>
+    ${Object.entries(scn).map(([s,v])=>`
+      <div class="tsrow"><span class="n" style="width:170px">${window.CCAF_SCENARIOS[s].no} ${window.CCAF_SCENARIOS[s].name}</span><div class="bar"><i style="width:${Math.round(v.r/v.t*100)}%"></i></div><span class="pct">${v.r}/${v.t}</span></div>`).join("")}
+    <h2 style="font-size:17px;margin:30px 0 14px">전 문항 해설 (오답은 펼쳐져 있어)</h2>
+    ${EX.flat.map((item,i)=>{
+      const q = item.q, my = EX.answers[i];
+      const ok = q.opts[my]?.ok; const okIdx = q.opts.findIndex(o=>o.ok);
+      return `<div class="rev">
+        <div class="rq">Q${i+1} <span class="muted" style="font-weight:600">· ${window.CCAF_SCENARIOS[item.sc].no} · ${q.ts||""}</span> — ${q.q}</div>
+        <div class="ra ${ok? "ok":"no"}">내 답: ${my===null? "미응답 (시간 종료)": "ABCD"[my]} ${ok? "✓":"✕"}</div>
+        ${ok? "":`<div class="ra ok">정답: ${"ABCD"[okIdx]} — ${q.opts[okIdx].t}</div>`}
+        <details ${ok? "":"open"}><summary>해설</summary>
+          <p style="margin-top:8px">${q.explain.good}</p>
+          <ul style="list-style:none;margin-top:8px">${q.explain.wrongs.map(w=>`<li style="padding-left:20px;position:relative;margin-bottom:6px"><span style="position:absolute;left:0;color:var(--no)">✕</span>${w}</li>`).join("")}</ul>
+          ${q.principle? `<span class="chip">🏷 ${q.principle}</span>`:""}
+        </details>
+      </div>`;}).join("")}
+    <div style="margin-top:24px;display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="openExam()">다시 응시 (새 시나리오 조합)</button>
+      <button class="btn btn-ghost" onclick="go('home')">홈으로</button>
     </div>
   </div>`;
   window.scrollTo(0,0);
