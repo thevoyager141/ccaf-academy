@@ -79,9 +79,9 @@ window.CCAF_CONTENT.p1 = {
        q:`To "save tokens," a teammate changed the loop: after executing requested tools, instead of appending the raw results, it appends a one-line prose note like "(fetched order data — looks normal)". Since the change, the agent re-requests lookups it already ran, and yesterday it quoted a shipping date that appears nowhere in the actual order data. What is the right fix?`,
        opts:[
          {t:`Append tool results to the conversation as structured tool results; if token cost is a real concern, trim them to the relevant fields before appending — don't replace data with prose impressions.`, ok:true},
-         {t:`Keep the prose notes but make them longer and more detailed so less information gets lost in translation.`},
-         {t:`Increase the context window budget so full raw results always fit and no one is tempted to compress.`},
-         {t:`Add a prompt instruction telling the model not to re-request data it has already fetched.`},
+         {t:`Keep the prose notes but make them longer and more structured — a bulleted digest of each result — so less information is lost while still saving tokens.`},
+         {t:`Increase the context window budget so full raw results always fit, and revisit compression only if costs become a real problem.`},
+         {t:`Add a prompt instruction telling the model not to re-request data it has already fetched, and to reason only from details it has actually seen in the conversation.`},
        ],
        hint:`"(looks normal)"만 남으면 모델에게 주문 데이터가 존재해? 두 증상(재조회 + 없는 날짜 인용)이 각각 왜 생겼는지 연결해봐. 토큰 절약의 올바른 방법은 5.1에 있어.`,
        explain:{
@@ -211,9 +211,9 @@ window.CCAF_CONTENT.p1 = {
        q:`Your research system produces excellent deep reports, but simple factual queries ("who is the CEO of X?") take 90+ seconds and cost the same as full reports. Logs show the coordinator always invokes all five subagents — search, two analysts, synthesis, report-writer — one after another, for every query. Subagent behavior is correct. What should change?`,
        opts:[
          {t:`Redesign the coordinator to analyze each query's requirements and dynamically select which subagents to invoke — and emit independent Task calls in a single response so the selected agents run in parallel.`, ok:true},
-         {t:`Cache completed reports and serve them for sufficiently similar future queries.`},
-         {t:`Let simple queries bypass the coordinator and go directly to the synthesis agent, which can answer from its own knowledge.`},
-         {t:`Build a second, lighter five-agent pipeline dedicated to simple queries.`},
+         {t:`Cache completed reports and serve them for sufficiently similar future queries, refreshing the cache on a weekly schedule so answers stay reasonably current.`},
+         {t:`Let simple queries bypass the coordinator entirely and go directly to the synthesis agent, which is already good at producing concise, well-written answers.`},
+         {t:`Build a second, lighter pipeline of faster subagents dedicated to simple queries, keeping the full pipeline untouched for deep research reports.`},
        ],
        hint:`코디네이터의 4가지 역할 중 마지막이 뭐였지? 그리고 "one after another"라는 표현도 단서야 — 병렬의 공식을 겹쳐봐.`,
        explain:{
@@ -357,8 +357,8 @@ window.CCAF_CONTENT.p1 = {
        q:`Your support agent has four policies to uphold: (1) identity must be verified before any account operation; (2) refunds over $500 must never auto-execute; (3) replies should address the customer by name; (4) responses should stay under 150 words. Which enforcement allocation is correct?`,
        opts:[
          {t:`(1) and (2) as programmatic controls — a prerequisite gate and a tool-call interception hook — because violations carry financial and security consequences; (3) and (4) as prompt guidance, since occasional misses are acceptable.`, ok:true},
-         {t:`All four in the system prompt, with "CRITICAL:" prefixes on (1) and (2) to signal their importance.`},
-         {t:`All four as hooks — consistency matters everywhere, and hooks are the most reliable mechanism available.`},
+         {t:`All four in the system prompt, with "CRITICAL:" prefixes on (1) and (2) — models follow strongly emphasized instructions far more reliably than plain ones.`},
+         {t:`All four as programmatic hooks — consistency matters everywhere, hooks are the most reliable mechanism available, and uniform enforcement removes guesswork.`},
          {t:`(3) and (4) as hooks since they're easy to check programmatically; (1) and (2) in the prompt with few-shot examples, since judgment calls need language understanding.`},
        ],
        hint:`"어기면 사고 나는 것"과 "가끔 어겨도 되는 것"을 갈라봐. D는 그럴듯한 논리로 정확히 거꾸로 배치한 함정이야.`,
