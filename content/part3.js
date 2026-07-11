@@ -155,7 +155,7 @@ window.CCAF_CONTENT.p3 = {
         <h4>스킬 (Skills)</h4>
         <ul>
           <li><code>.claude/skills/</code> 폴더의 <code>SKILL.md</code> — 더 복잡한 작업 패키지</li>
-          <li>파일 맨 위 <strong>YAML frontmatter</strong>로 동작 설정</li>
+          <li>파일 맨 위 <strong>YAML frontmatter</strong>로 동작 설정 — frontmatter = 파일 첫머리에 ---로 감싸 넣는 설정 머리말, YAML = 그 안을 "이름: 값" 꼴로 적는 표기법</li>
         </ul>
         <h4>frontmatter 3종 (암기 필수)</h4>
         <ul>
@@ -319,13 +319,15 @@ window.CCAF_CONTENT.p3 = {
         <ul>
           <li>코드 수정 전에 <strong>탐색·설계만</strong> 하는 모드 — 안전하게 조사하고 접근을 정한 뒤 실행</li>
           <li>적합: <strong>대규모 변경 · 복수의 유효한 접근 · 아키텍처 결정 · 다중 파일 수정</strong></li>
-          <li>예: 모놀리스→마이크로서비스, 45+ 파일 라이브러리 마이그레이션, 인프라 요구가 다른 통합 방식 선택</li>
+          <li>예: 모놀리스→마이크로서비스 전환(한 덩어리 앱을 작은 서비스 여러 개로 쪼개는 대공사), 45개+ 파일을 고쳐야 하는 라이브러리 마이그레이션(쓰던 부품을 다른 부품으로 통째 교체), 인프라 요구가 다른 통합 방식 선택</li>
         </ul>
         <h4>직접 실행</h4>
         <ul>
           <li>적합: <strong>범위가 명확한 단순 변경</strong></li>
           <li>예: 스택 트레이스가 있는 단일 파일 버그, 날짜 검증 조건 하나 추가</li>
         </ul>
+        <div class="callout">📖 지문 독해 용어 카드 (시험 지문 단골 4종) — <b>crash</b>: 프로그램이 에러로 강제 종료. <b>null</b>: "값 없음" 빈칸 — "crashes on null input" = 빈 값이 들어오면 죽는다. <b>stack trace</b>: 프로그램이 죽을 때 자동으로 찍히는 사고 경위서(어느 파일 몇째 줄에서 무슨 에러). 지문에 "stack trace makes the cause clear"가 보이면 <b>진단은 이미 끝났다</b>는 신호. <b>guard clause</b>: 함수 첫머리의 한 줄 방어 코드 — "one-line guard clause fixes it" = 수정이 한 줄로 끝난다.</div>
+        <div class="callout">🎯 독해 공식: stack trace 명확 + one-line 수정 + 기존(existing) 테스트 존재 → 절차를 더하는 보기(plan mode·Explore·fork)는 전부 함정. already/existing에 밑줄 긋는 습관.</div>
         <h4>Explore 서브에이전트</h4>
         <ul>
           <li>장황한 <strong>탐색 출력을 격리</strong>하고 요약만 반환 → 본 대화 컨텍스트 보존</li>
@@ -390,7 +392,7 @@ window.CCAF_CONTENT.p3 = {
        html:`<h4>① 구체적 입출력 예시</h4>
         <ul>
           <li>말로 설명한 변환 요구가 <strong>들쭉날쭉하게 해석</strong>될 때 → <strong>예시 2~3개</strong>가 최고 효과</li>
-          <li>엣지 케이스(마이그레이션의 null 값 등)는 입력+기대 출력 테스트 케이스로</li>
+          <li>엣지 케이스(예: 마이그레이션 중 null(값 없음)이 들어오는 경우)는 입력+기대 출력 테스트 케이스로</li>
         </ul>
         <h4>② 테스트 주도 반복</h4>
         <ul>
@@ -398,7 +400,7 @@ window.CCAF_CONTENT.p3 = {
         </ul>
         <h4>③ 인터뷰 패턴</h4>
         <ul>
-          <li>구현 전에 <strong>Claude가 질문하게</strong> 하기 → 개발자가 놓친 고려사항(캐시 무효화, 실패 모드) 발굴</li>
+          <li>구현 전에 <strong>Claude가 질문하게</strong> 하기 → 개발자가 놓친 고려사항 발굴 — 예: 캐시 무효화(저장해둔 옛 결과를 언제 버릴지), 실패 모드(어떤 식으로 망가질 수 있는지)</li>
           <li>낯선 도메인일수록 효과적</li>
         </ul>
         <h4>④ 한 번에 vs 순차</h4>
@@ -455,6 +457,16 @@ window.CCAF_CONTENT.p3 = {
     steps:[
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"사람 없는 곳에서 Claude를 돌리는 법",
        html:`<div class="callout">📖 용어 카드 — <b>CI/CD</b>: 코드를 올릴 때마다 자동으로 검사·테스트·배포하는 컨베이어 벨트. <b>PR(pull request)</b>: 코드 변경 승인 요청서. <b>파이프라인</b>: 그 자동 단계들의 연결.</div>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto">
+<b>CI에서 Claude가 도는 흐름 — 내 컴퓨터에선 아무 일도 안 일어난다</b><br>
+[내 컴퓨터]&nbsp;&nbsp;코드 수정 → push (서버로 올리기)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+[GitHub 서버]&nbsp;&nbsp;PR 감지 → 리포 안의 워크플로 설정 파일 발견 → <b>러너</b>(작업용 임시 가상 컴퓨터) 부팅<br>
+&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+[러너 안]&nbsp;&nbsp;① 리포 내려받기 → ② Claude Code 설치 → ③ <b>claude -p "리뷰해줘" --output-format json</b> <span style="color:var(--accent)">← 사람이 없으니 비대화형(-p)</span> → ④ 결과를 PR 코멘트로 게시<br>
+&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+[GitHub 서버]&nbsp;&nbsp;러너 폐기 — <b>"적용" = 설정 파일을 리포에 커밋하는 것 · "실행" = 서버가 알아서</b>
+        </div>
         <h4>CLI 플래그 3종 (암기 필수)</h4>
         <ul>
           <li><code>-p</code> (<code>--print</code>) — <strong>비대화형 모드</strong>. 프롬프트 처리 → 출력 → 종료. 없으면 CI에서 입력 대기로 <strong>무한 정지</strong></li>

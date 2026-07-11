@@ -235,7 +235,7 @@ window.CCAF_CONTENT.p6 = {
   { id:"p6s4", ch:"④", title:"개발자 생산성 도구", scenario:"s4",
     steps:[
       {type:"concept", kind:"SCENARIO BRIEFING", h:"무대 ④ — Developer Productivity with Claude",
-       html:`<p class="lead">실제 시험 지문: 엔지니어가 낯선 코드베이스를 탐색하고, 레거시를 이해하고, 보일러플레이트를 생성하고, 반복 작업을 자동화하는 Agent SDK 도구.</p>
+       html:`<p class="lead">실제 시험 지문: 엔지니어가 낯선 코드베이스를 탐색하고, 레거시(오래된 기존 코드)를 이해하고, 보일러플레이트(매번 반복되는 기본 틀 코드)를 생성하고, 반복 작업을 자동화하는 Agent SDK 도구.</p>
         <h4>시스템 구성</h4>
         <ul>
           <li>내장 도구 사용: <strong>Read · Write · Bash · Grep · Glob</strong> + MCP 서버 통합</li>
