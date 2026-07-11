@@ -215,6 +215,19 @@
   footer{border-top:1px solid var(--line);margin-top:40px}
   footer .wrap{padding:28px 24px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
   @media(max-width:640px){ nav{display:none} .hero{padding:40px 0 30px} }
+  /* 가이드 원문 토글 */
+  .gsrc{margin:28px 0 0;border:1px dashed var(--accent-line);border-radius:12px;background:var(--surface)}
+  .gsrc summary{cursor:pointer;padding:13px 18px;font-size:13.5px;font-weight:700;color:var(--accent);list-style:none;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .gsrc summary::-webkit-details-marker{display:none}
+  .gsrc summary::before{content:"▸";transition:transform .15s}
+  .gsrc[open] summary::before{transform:rotate(90deg)}
+  .gsrc .gs-n{font-weight:600;font-size:12px;color:var(--muted);margin-left:auto}
+  .gs-body{padding:2px 20px 18px;border-top:1px solid var(--line)}
+  .gs-note{font-size:12.5px;color:var(--muted);background:var(--surface2);border-radius:8px;padding:10px 12px;margin:14px 0 4px}
+  .gs-ti{font-size:13px;font-weight:700;margin-top:12px;color:var(--text)}
+  .gs-body h5{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:16px 0 6px}
+  .gs-body ul{margin:0;padding-left:18px}
+  .gs-body li{font-size:13px;color:var(--text);margin:6px 0;line-height:1.55}
 </style>
 </head>
 <body>
@@ -257,6 +270,7 @@
 <script src="content/part6.js"></script>
 <script src="content/exam-bank.js"></script>
 <script src="content/appendix.js"></script>
+<script src="content/guide-src.js"></script>
 <script>
 /* ================= parts meta ================= */
 const PARTS = [
@@ -464,6 +478,20 @@ function persist(){
 function segs(){
   return `<div class="segs">${ctx.L.steps.map((_,i)=>`<i class="${i<cur?"done":i===cur?"now":""}"></i>`).join("")}</div>`;
 }
+/* 가이드 원문 토글: 챕터 제목의 (d.d)로 TS 원문 매칭 */
+function guideSrcHTML(L){
+  const m = (L.title||"").match(/\((\d\.\d)\)/);
+  const g = m && window.CCAF_GUIDE && window.CCAF_GUIDE[m[1]];
+  if(!g) return "";
+  const li = a => a.map(b=>`<li>${b}</li>`).join("");
+  return `<details class="gsrc"><summary>📜 공식 가이드 원문 — TS ${m[1]} <span class="gs-n">Knowledge ${g.know.length} · Skills ${g.skill.length}</span></summary>
+    <div class="gs-body">
+      <div class="gs-note">Anthropic 공식 시험 가이드에서 그대로 가져온 영어 원문. 이 챕터의 설명·문제는 아래 문장들이 근거야 — 설명이 원문과 어긋나 보이면 그 지점이 확인 포인트.</div>
+      <div class="gs-ti">${g.title}</div>
+      <h5>Knowledge</h5><ul>${li(g.know)}</ul>
+      <h5>Skills</h5><ul>${li(g.skill)}</ul>
+    </div></details>`;
+}
 function renderStep(){
   const L = ctx.L;
   const done = cur >= L.steps.length;
@@ -475,7 +503,7 @@ function renderStep(){
       <div class="info"><div class="t">${L.ch} — ${L.title}</div><div class="s">진도 자동 저장</div></div>
       ${segs()}
     </div></div>
-    <div class="stage">${ done? doneHTML() : stepHTML(st) }</div>
+    <div class="stage">${ done? doneHTML() : stepHTML(st) + guideSrcHTML(L) }</div>
     ${ done? "" : `<div class="bbar"><div class="bb-wrap">
         <button class="btn btn-ghost" onclick="prevStep()" ${cur===0?"disabled":""}>← 이전</button>
         <span class="pos">${cur+1} / ${L.steps.length}</span>
