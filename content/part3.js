@@ -23,34 +23,68 @@ window.CCAF_CONTENT.p3 = {
           <li><strong>CI/CD 통합</strong> — 자동화 파이프라인 속 Claude (Ch6)</li>
         </ul>
         <div class="callout">🎯 이 파트의 공통 질문: <b>"이 지시/설정은 어디에 두는 게 맞나."</b> 판단 축은 두 개 — 누구에게 적용되나(나만? 팀?) × 언제 로드되나(항상? 조건부? 호출 시?).</div>`},
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"CLAUDE.md — 항상 로드되는 지시문의 3계층",
-       html:`<h4>3계층 구조</h4>
-        <ul>
-          <li><strong>사용자 레벨</strong> <code>~/.claude/CLAUDE.md</code> — 그 사람의 모든 프로젝트에, <strong>그 사람에게만</strong></li>
-          <li><strong>프로젝트 레벨</strong> <code>.claude/CLAUDE.md</code> 또는 루트 <code>CLAUDE.md</code> — 저장소에 커밋, <strong>팀 전체</strong></li>
-          <li><strong>디렉토리 레벨</strong> — 하위 폴더의 CLAUDE.md, 그 폴더 작업에 추가 적용</li>
-        </ul>
+      {type:"concept", kind:"CONCEPT · 개념 설명 ①", h:"먼저 그림부터: CLAUDE.md는 컴퓨터 어디에 있는 파일인가",
+       html:`<p class="lead">CLAUDE.md는 그냥 <strong>메모장 파일</strong>이야. "Claude야, 일할 때 이거 지켜"라고 적어두는 쪽지. 다만 <strong>어느 폴더에 두느냐</strong>에 따라 적용 범위가 달라져. 아래 그림의 세 위치가 전부야.</p>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto">
+🖥 <b>내 컴퓨터</b><br>
+├─ 🏠 홈 폴더 <b>~</b> (내 계정의 개인 공간)<br>
+│&nbsp;&nbsp;&nbsp;└─ .claude/<br>
+│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ CLAUDE.md&nbsp;&nbsp;<span style="color:var(--accent)">← ① 사용자 레벨 — 내 모든 프로젝트에, 나에게만</span><br>
+│<br>
+└─ 📁 our-shop/ (프로젝트 폴더 = 팀 저장소를 내 컴퓨터로 복제한 것)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;├─ CLAUDE.md&nbsp;&nbsp;<span style="color:var(--accent)">← ② 프로젝트 레벨 — 이 프로젝트에, 팀 전체에게</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;├─ backend/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;└─ frontend/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ CLAUDE.md&nbsp;&nbsp;<span style="color:var(--accent)">← ③ 디렉토리 레벨 — frontend 폴더 작업에만 추가</span>
+        </div>
+        <h4>위치별 특성 한눈에</h4>
+        <table>
+          <tr><th>레벨</th><th>파일 위치</th><th>누구에게</th><th>팀 공유</th><th>여기 담는 것</th></tr>
+          <tr><td>① 사용자</td><td><code>~/.claude/CLAUDE.md</code></td><td>나만, 모든 프로젝트</td><td>❌ (내 컴퓨터에만)</td><td>개인 취향 ("응답은 한국어로")</td></tr>
+          <tr><td>② 프로젝트</td><td>프로젝트 루트 <code>CLAUDE.md</code> 또는 <code>.claude/CLAUDE.md</code></td><td>이 프로젝트의 팀 전원</td><td>✅ (저장소에 커밋)</td><td>팀 표준 ("들여쓰기 4칸")</td></tr>
+          <tr><td>③ 디렉토리</td><td>하위 폴더 안 <code>CLAUDE.md</code></td><td>그 폴더 작업 시 추가</td><td>✅</td><td>그 영역 전용 규칙</td></tr>
+        </table>
         <h4>가장 많이 나오는 함정</h4>
         <ul>
-          <li>사용자 레벨은 <strong>버전 관리로 공유되지 않음</strong> → "새 팀원에게 지시가 적용 안 됨" 문제의 원인</li>
+          <li>①만 <strong>팀 저장소 밖(내 홈 폴더)</strong>에 있어. 그래서 <strong>버전 관리로 공유되지 않음</strong> → "새 팀원에게 지시가 적용 안 됨" 문제의 원인은 항상 ①에 있는 팀 규칙</li>
         </ul>
-        <h4>계층이 겹칠 때 (공식 문서 기준)</h4>
+        <div class="callout">📖 용어 카드 — <b>~ (물결)</b>: 내 홈 폴더의 줄임 표기. 컴퓨터에서 내 계정의 개인 서랍이라고 생각하면 됨. <b>저장소 복제(클론)</b>: 팀 공용 폴더를 내 컴퓨터로 통째로 내려받는 것 — ②③은 그 안에 있어서 팀 전체가 같은 파일을 가짐.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명 ②", h:"'연결 로드'의 정체: 쪽지 세 장을 스테이플러로 찍는다",
+       html:`<p class="lead">Claude가 frontend 폴더에서 일을 시작하면, 세 쪽지를 <strong>따로따로 참조하는 게 아니라</strong> 멀리 있는 것부터 순서대로 <strong>이어 붙여 한 장의 지시문으로 만든 뒤 통째로</strong> 읽어. 이게 "연결(concatenate) 로드"야.</p>
+        <div style="margin:16px 0">
+          <div style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)"><span class="eyebrow">① 사용자 ~/.claude/CLAUDE.md</span><br><code>응답은 한국어로 해줘</code></div>
+          <div style="text-align:center;color:var(--dim);font-weight:800;line-height:1.6">＋</div>
+          <div style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)"><span class="eyebrow">② 프로젝트 our-shop/CLAUDE.md</span><br><code>들여쓰기는 4칸으로</code></div>
+          <div style="text-align:center;color:var(--dim);font-weight:800;line-height:1.6">＋</div>
+          <div style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)"><span class="eyebrow">③ 디렉토리 frontend/CLAUDE.md</span><br><code>이 폴더는 들여쓰기 2칸으로</code></div>
+          <div style="text-align:center;color:var(--accent);font-weight:800;line-height:2.2">↓ 멀리 있는 것부터 순서대로 이어 붙임 ↓</div>
+          <div style="border:2px solid var(--accent-line);border-radius:12px;padding:12px 16px;background:var(--accent-soft)"><span class="eyebrow">Claude가 실제로 받아 읽는 것 — 한 장짜리 지시문</span><br>
+            <code>1. 응답은 한국어로 해줘</code><br>
+            <code>2. 들여쓰기는 4칸으로</code><br>
+            <code>3. 이 폴더는 들여쓰기 2칸으로</code>
+          </div>
+        </div>
+        <h4>이 그림에서 나오는 규칙 세 개</h4>
         <ul>
-          <li>파일들은 덮어쓰기가 아니라 <strong>전부 연결(concatenate)되어 함께 로드</strong>되고, 작업 위치에 <strong>가까운 파일일수록 나중에 읽혀</strong> 사실상 우선하는 경향</li>
-          <li>예: 루트가 "들여쓰기 4칸", frontend/CLAUDE.md가 "2칸"이면 → frontend 작업 시 2칸 쪽으로 기움</li>
-          <li>단, 공식 문서 명시: <strong>"두 규칙이 충돌하면 Claude가 임의로 하나를 고를 수 있다"</strong> — 그래서 충돌 자체를 없애는 게 정석 (각 내용은 맞는 계층에만)</li>
-          <li>하위 디렉토리의 CLAUDE.md는 상시 로드가 아니라 <strong>그 폴더의 파일을 읽을 때 로드</strong>됨</li>
+          <li><strong>덮어쓰기가 아니다</strong> — ③이 ②를 지우지 않아. 세 문장이 전부 살아서 한 장에 들어 있음 (그래서 "연결")</li>
+          <li><strong>충돌이 없으면 전부 적용</strong> — "한국어로"는 경쟁자가 없으니 그냥 지켜짐</li>
+          <li><strong>충돌하면(4칸 vs 2칸)?</strong> 작업 위치에 가까운 ③이 <strong>마지막에 읽혀서</strong> 그쪽으로 기우는 경향 — 사람도 마지막에 들은 지시가 귀에 남는 것과 같아. 단, 공식 문서는 <strong>"충돌 시 임의로 하나를 고를 수 있다"</strong>고 명시 → 보장이 아니니 <strong>충돌 자체를 없애는 게 정석</strong> (예: ②를 "frontend 제외, 들여쓰기 4칸"으로)</li>
+        </ul>
+        <h4>③만의 특별 규칙: 방에 들어갈 때만 보는 안내문</h4>
+        <ul>
+          <li>①②는 <strong>출근하면 무조건 받는 전체 공지</strong> — 세션 시작 때 항상 로드</li>
+          <li>③(하위 디렉토리)은 <strong>그 방 문에 붙은 안내문</strong> — frontend 폴더의 파일을 실제로 만질 때에야 로드됨 (상시 로드 아님, 토큰 절약)</li>
         </ul>
         <h4>공식 문서가 주는 보너스 디테일</h4>
         <ul>
           <li><strong>CLAUDE.md는 컨텍스트일 뿐 강제 설정이 아님</strong> — "행동을 차단해야 하면 PreToolUse 훅을 쓰라"고 공식 문서가 직접 명시 (원칙 ①의 공식 근거)</li>
-          <li>계층은 사실 넷: 조직 관리(managed policy) → 사용자 → 프로젝트 → <code>CLAUDE.local.md</code>(개인용 프로젝트 메모, .gitignore 대상)</li>
+          <li>계층은 사실 넷: 조직 관리(managed policy) → ① → ② → <code>CLAUDE.local.md</code>(개인용 프로젝트 메모, .gitignore 대상)</li>
           <li>@import는 <strong>최대 4단계</strong>까지 재귀 가능, 백틱(\`)으로 감싼 @경로는 임포트되지 않음</li>
           <li>.claude/rules/에서 <strong>paths가 없는 규칙은 상시 로드</strong> — 조건부가 되려면 paths가 있어야 함</li>
         </ul>
         <h4>모듈화 도구 2가지</h4>
         <ul>
-          <li><code>@import</code> — 외부 파일을 참조로 불러와 CLAUDE.md를 얇게 유지</li>
+          <li><code>@import</code> — 다른 파일을 참조로 불러와 CLAUDE.md를 얇게 유지 (원본은 한 곳, 포함은 선택)</li>
           <li><code>.claude/rules/</code> — 주제별 파일(testing.md, api-conventions.md)로 분할</li>
         </ul>
         <div class="callout">📖 용어 카드 — <b>/memory 명령</b>: 지금 세션에 어떤 메모리 파일들이 로드됐는지 확인하는 명령. "세션마다 행동이 다른" 문제의 진단 도구.</div>`},
