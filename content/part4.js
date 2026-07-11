@@ -320,7 +320,7 @@ window.CCAF_CONTENT.p4 = {
       {type:"concept", kind:"TOPIC · 주제 설명", h:"배치 운영의 세 가지 계산",
        html:`__MAP4:batch__<h4>① 워크플로 분류부터</h4>
         <ul>
-          <li>같은 시스템 안에서도 <strong>블로킹은 실시간, 논블로킹은 배치</strong>로 분리 (샘플 11번)</li>
+          <li>같은 시스템 안에서도 <strong>블로킹은 실시간, 논블로킹은 배치</strong>로 분리 (공식 가이드 샘플 11번 — 머지 차단 리뷰와 야간 감사를 가르는 문제)</li>
         </ul>
         <h4>② SLA 역산</h4>
         <ul>
@@ -537,7 +537,7 @@ window.CCAF_CONTENT.p4 = {
        {t:`(A) — with enough context, all 16 files get adequate attention in one pass.`},
        {t:`(B) — majority voting cancels out the inconsistencies between runs.`},
        {t:`(D) — the model needs to be reminded that identical patterns deserve identical judgments.`}],
-     explain:{good:`두 증상(모순 판정 + 얕은 커버리지)의 공통 원인은 주의력 희석. 패스 분리가 근본 처방 (V2 샘플 12번 확장).`,
+     explain:{good:`두 증상(모순 판정 + 얕은 커버리지)의 공통 원인은 주의력 희석. 패스 분리가 근본 처방 — 공식 가이드 샘플 12번(다중 패스 리뷰 문제)의 확장이야.`,
        wrongs:[`<b>B(A):</b> 컨텍스트가 커져도 주의력 품질은 그대로.`,`<b>C(B):</b> 다수결은 간헐적으로만 잡히는 진짜 버그를 소거 — 비용 3배로 검출력 하락.`,`<b>D:</b> 일관성은 지시가 아니라 구조에서 나와.`]},
      principle:"원칙 ② 근본 원인 — 주의력 희석"},
     ]},

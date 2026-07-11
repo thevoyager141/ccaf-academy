@@ -203,7 +203,7 @@ window.CCAF_CONTENT.p2 = {
           <li>any/특정 강제 시 모델은 <strong>자연어 설명 없이 곧장 도구를 호출</strong>함 (API가 그렇게 강제)</li>
         </ul>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"누구에게 무엇을, 그리고 언제 강제하나",
-       html:`__MAP2:choice__<h4>① 85/15 패턴 (샘플 9번 유형)</h4>
+       html:`__MAP2:choice__<h4>① 85/15 패턴 (공식 가이드 샘플 9번 유형 — 다른 역할의 도구가 가끔 필요할 때를 묻는 문제)</h4>
         <ul>
           <li>상황: 합성 에이전트의 검증 요청 85%는 단순 사실 확인, 15%는 심층 조사</li>
           <li>정답: 85%엔 <strong>좁은 verify_fact 도구</strong>를 직접 지급, 15%는 기존 코디네이터 경유 유지</li>

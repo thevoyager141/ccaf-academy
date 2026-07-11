@@ -333,7 +333,7 @@ window.CCAF_CONTENT.p1 = {
   { id:"p1c5", ch:"CH 5", title:"강제 패턴과 핸드오프 (1.4)",
     steps:[
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"'반드시'가 필요할 때: 결정론 vs 확률",
-       html:`<p class="lead">이 챕터가 파트 1에서 제일 중요해. 1차 시험에서도, V2 샘플 1번에서도 나온 주제.</p>
+       html:`<p class="lead">이 챕터가 파트 1에서 제일 중요해. 1차 시험에서도, 공식 가이드 샘플 문제 1번(신원 검증 전 환불을 훅으로 차단하는 문제)에서도 나온 주제.</p>
         <h4>두 가지 통제 수단</h4>
         <ul>
           <li><strong>프로그램적 강제</strong> — 훅, 전제조건 게이트. 코드가 막으니 <strong>100% 지켜짐 (결정론적)</strong></li>

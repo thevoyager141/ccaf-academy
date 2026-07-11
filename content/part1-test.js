@@ -90,7 +90,7 @@ window.CCAF_CONTENT.p1.lessons.push(
        {t:`A system prompt stating that verification via get_customer is mandatory before order operations.`},
        {t:`Few-shot examples showing get_customer always being called first.`},
        {t:`A routing classifier that enables only the tools relevant to each request type.`}],
-     explain:{good:`금전 사고가 걸린 순서 규칙은 프로그램적 전제조건으로 강제해야 실패율이 0이 돼. V2 샘플 1번과 동일한 논리.`,
+     explain:{good:`금전 사고가 걸린 순서 규칙은 프로그램적 전제조건으로 강제해야 실패율이 0이 돼. 공식 가이드 샘플 1번(검증 전 환불 차단 훅 문제)과 동일한 논리.`,
        wrongs:[`<b>B:</b> 확률적 준수 — 12%를 줄일 뿐 0으로 못 만들어.`,`<b>C:</b> 마찬가지로 확률적.`,`<b>D:</b> 문제는 도구 순서지 가용성이 아니야.`]},
      principle:"원칙 ① 강제는 프로그램으로"},
     {ts:"1.4", lvl:"실전", q:`A customer writes: "I was double-charged on order #A-1042, my other order #A-1038 hasn't shipped in 12 days, and my loyalty points from last month never appeared." Your agent refunds the double charge and ends the conversation. What is the correct handling pattern?`,

@@ -220,18 +220,47 @@ window.CCAF_CONTENT.p3 = {
   /* ===== CH 3 · 3.3 경로별 규칙 ===== */
   { id:"p3c3", ch:"CH 3", title:"경로별 규칙 — 조건부 컨벤션 로딩 (3.3)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"규칙이 필요할 때만 나타나게",
-       html:`<h4>.claude/rules/ + paths</h4>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"글롭(glob) — 파일 묶음을 '조건'으로 가리키는 주소 패턴",
+       html:`<p class="lead">이 챕터의 도구는 <strong>.claude/rules/ + paths</strong>. 그런데 paths에 적는 <strong>글롭(glob)</strong>부터 알아야 해 — 이걸 모르면 이 챕터가 통째로 암호문이거든.</p>
+        <h4>① 왜 필요한가 — "어떤 파일을 만질 때 이 규칙을 켤까?"</h4>
         <ul>
-          <li>규칙 파일의 YAML frontmatter에 <code>paths: ["terraform/**/*"]</code>처럼 글롭 패턴 지정</li>
-          <li>효과: <strong>매칭되는 파일을 편집할 때만</strong> 그 규칙이 로드</li>
+          <li>규칙 파일엔 <strong>켜질 조건</strong>을 적어야 해. 대상 파일이 수백 개면 이름을 다 나열할 수 없지</li>
+          <li>글롭 = 파일들을 <strong>조건 한 줄로 묶어 가리키는 표기법</strong>. "terraform 폴더 아래 전부" 같은 말을 컴퓨터가 읽을 수 있는 형태로 적은 것</li>
+        </ul>
+        <h4>② 기호는 딱 두 개</h4>
+        <ul>
+          <li><code>*</code> — <strong>이름 한 칸</strong>을 대신함. 폴더 경계(/)는 <strong>못 넘음</strong>. <code>*.ts</code> = "이름은 뭐든, 끝이 .ts인 파일"</li>
+          <li><code>**</code> — <strong>폴더 몇 단계든</strong> 대신함. 하위 폴더 전부를 뚫고 내려감</li>
+        </ul>
+        <h4>③ 읽는 법 — 주소처럼 왼쪽부터 끊어 읽기</h4>
+        <ul>
+          <li><code>src/api/**/*.ts</code> = <code>src/api/</code>(여기서 시작) + <code>**/</code>(하위 폴더 몇 단계든) + <code>*.ts</code>(이름 뭐든 .ts로 끝)</li>
+          <li>한국어로: <strong>"src/api 아래라면 깊이 불문, 모든 .ts 파일"</strong></li>
+        </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto">
+<b>paths: ["src/api/**/*.ts"]</b> 는 어떤 파일에 켜지나<br>
+📁 src/<br>
+&nbsp;&nbsp;├─ api/<br>
+&nbsp;&nbsp;│&nbsp;&nbsp;├─ index.ts&nbsp;&nbsp;<span style="color:var(--accent)">✅ 매칭 — 바로 아래 깊이도 포함</span><br>
+&nbsp;&nbsp;│&nbsp;&nbsp;├─ README.md&nbsp;&nbsp;❌ 끝이 .ts가 아님<br>
+&nbsp;&nbsp;│&nbsp;&nbsp;└─ v2/handlers/<br>
+&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ payment.ts&nbsp;&nbsp;<span style="color:var(--accent)">✅ 매칭 — **가 v2/handlers를 뚫고 내려감</span><br>
+&nbsp;&nbsp;└─ web/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ app.ts&nbsp;&nbsp;❌ src/api 밖<br>
+<br>
+같은 자리에 <b>*</b> 하나만 썼다면? <b>src/api/*.ts</b> → payment.ts가 ❌ (한 칸 초과 — 시험 단골 함정)
+        </div>
+        <h4>④ 이제 본론 — .claude/rules/ + paths</h4>
+        <ul>
+          <li>규칙 .md 파일의 YAML frontmatter에 <code>paths: ["terraform/**/*"]</code>처럼 글롭 지정</li>
+          <li>효과: <strong>매칭되는 파일을 편집할 때만</strong> 그 규칙이 컨텍스트에 로드 — 조건부 스위치</li>
           <li>이점: 무관한 컨텍스트 감소 = <strong>토큰 절약</strong> + 지시 간섭 감소</li>
         </ul>
-        <h4>글롭 패턴 읽는 법</h4>
+        <h4>⑤ 시험에서 글롭이 나오는 자리 (헷갈림 방지)</h4>
         <ul>
-          <li><code>*</code> — 아무 이름 하나 / <code>**</code> — 모든 하위 폴더</li>
-          <li><code>**/*.test.tsx</code> — 위치 불문 모든 .test.tsx 파일</li>
-          <li><code>src/api/**/*</code> — src/api 아래 전부</li>
+          <li><code>.claude/rules/</code>의 <code>paths</code> (이 챕터) — 규칙을 <strong>언제 켤지</strong> 정하는 조건</li>
+          <li>내장 도구 <code>Glob</code> (2.5) — 같은 문법으로 <strong>파일을 찾는</strong> 도구. 문법은 같고 용도가 달라</li>
+          <li><strong>CLAUDE.md에는 글롭이 안 나와</strong> — 항상 로드라 조건이 필요 없거든. 글롭은 "조건부"를 만들 때만 등장</li>
         </ul>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"글롭 규칙 vs 디렉토리 CLAUDE.md — 언제 무엇을",
        html:`__MAP3:rules__<h4>결정 기준: 대상 파일이 어디에 흩어져 있나</h4>
@@ -240,7 +269,7 @@ window.CCAF_CONTENT.p3 = {
           <li>대상이 <strong>코드베이스 전역에 산재</strong> (Button.test.tsx가 Button.tsx 옆에) → <strong>글롭 규칙이 정답</strong></li>
           <li>디렉토리 CLAUDE.md는 폴더에 묶여 있어 산재 파일을 못 따라감</li>
         </ul>
-        <h4>샘플 6번의 논리 복기</h4>
+        <h4>공식 가이드 샘플 문제 6번 복기 (가이드 맨 뒤 예시 12문항 중 하나 — 산재 컨벤션 자동 적용을 묻는 문제)</h4>
         <ul>
           <li>React 컴포넌트·API 핸들러·DB 모델·테스트가 각각 다른 컨벤션</li>
           <li>테스트 파일은 코드 옆 산재 + "자동 적용" 요구</li>
@@ -314,7 +343,7 @@ window.CCAF_CONTENT.p3 = {
           <li><strong>plan mode로 조사·설계 → 직접 실행으로 구현</strong> — 마이그레이션의 정석 흐름</li>
           <li>탐색 단계가 길면 <strong>Explore 서브에이전트</strong>로 발견 출력 격리</li>
         </ul>
-        <h4>오답 장치 (샘플 5번)</h4>
+        <h4>오답 장치 (공식 가이드 샘플 5번 — plan mode vs 직접 실행 판별 문제 기준)</h4>
         <ul>
           <li>"일단 직접 실행으로 시작하고 복잡해지면 plan mode로" — 복잡성이 <strong>이미 요구사항에 명시</strong>돼 있는데 무시하는 보기</li>
           <li>"구현하면서 자연스럽게 경계를 발견" — 뒤늦은 재작업을 부르는 보기</li>
