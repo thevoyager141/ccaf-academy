@@ -36,6 +36,12 @@ window.CCAF_CONTENT.p2 = {
           <li><strong>엣지 케이스</strong> — 애매할 때의 동작</li>
           <li><strong>경계 설명</strong> — 비슷한 도구 대신 언제 이걸 쓰는지</li>
         </ul>
+        <h4>공식 문서의 구체 기준</h4>
+        <ul>
+          <li>도구 설명은 <strong>최소 3~4문장</strong>, 복잡한 도구는 그 이상 — "성능에 가장 중요한 단일 요인"이라고 명시</li>
+          <li>도구 이름 규칙: 영숫자·하이픈·언더스코어 1~64자 (<code>^[a-zA-Z0-9_-]{1,64}$</code>)</li>
+          <li>도구 정의 3요소: <code>name</code> + <code>description</code> + <code>input_schema</code>(JSON 스키마)</li>
+        </ul>
         <div class="callout">📖 용어 카드 — <b>description</b>: 도구 정의에 붙이는 설명문. 사람용 문서가 아니라 <b>모델이 읽는 선택 기준</b>이라는 게 핵심.</div>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"오선택이 났을 때 고치는 순서",
        html:`__MAP2:desc__<h4>① 첫 조치는 언제나 설명 확충</h4>
@@ -187,11 +193,14 @@ window.CCAF_CONTENT.p2 = {
           <li>예외: <strong>고빈도 교차 요구</strong>엔 좁은 범위의 전용 도구 하나 (예: 합성 에이전트에게 verify_fact)</li>
           <li>범용 도구는 제약된 대안으로 교체 (fetch_url → 문서 URL만 검증해 받는 load_document)</li>
         </ul>
-        <h4>tool_choice 3종 (API 설정)</h4>
+        <h4>tool_choice (API 설정)</h4>
         <ul>
-          <li><code>"auto"</code> — 모델이 도구를 쓸지 말지 결정 (텍스트로 답해도 됨)</li>
+          <li><code>"auto"</code> — 모델이 도구를 쓸지 말지 결정 (텍스트로 답해도 됨). 도구가 제공됐을 때의 기본값</li>
           <li><code>"any"</code> — <strong>어떤 도구든 반드시 호출</strong> (텍스트만 반환 불가)</li>
           <li><code>{"type":"tool","name":"..."}</code> — <strong>특정 도구를 강제</strong></li>
+          <li>공식 문서엔 4번째 값도 있음: <code>"none"</code> — 도구 사용 금지 (도구를 안 줬을 때의 기본값). 시험 가이드는 위 3종만 다루지만, 보기에 none이 나와도 '없는 기능'은 아니라는 것</li>
+          <li>표기 디테일: 실제 API에선 전부 객체 형태 (<code>{"type":"auto"}</code> 등) — 가이드·시험은 축약 표기를 씀</li>
+          <li>any/특정 강제 시 모델은 <strong>자연어 설명 없이 곧장 도구를 호출</strong>함 (API가 그렇게 강제)</li>
         </ul>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"누구에게 무엇을, 그리고 언제 강제하나",
        html:`__MAP2:choice__<h4>① 85/15 패턴 (샘플 9번 유형)</h4>

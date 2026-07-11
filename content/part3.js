@@ -34,11 +34,19 @@ window.CCAF_CONTENT.p3 = {
         <ul>
           <li>사용자 레벨은 <strong>버전 관리로 공유되지 않음</strong> → "새 팀원에게 지시가 적용 안 됨" 문제의 원인</li>
         </ul>
-        <h4>계층이 겹칠 때</h4>
+        <h4>계층이 겹칠 때 (공식 문서 기준)</h4>
         <ul>
-          <li>세 계층은 <strong>함께 로드</strong>되고, 지시가 충돌하면 <strong>더 구체적인 위치가 우선</strong>하도록 설계됨 (디렉토리 &gt; 프로젝트 &gt; 사용자)</li>
-          <li>예: 루트가 "들여쓰기 4칸", frontend/CLAUDE.md가 "2칸"이면 → frontend 작업 시 2칸</li>
-          <li>단, 우선순위는 절대 보장이 아니라 지시 해석의 경향 — <strong>충돌 자체를 없애는 게 정석</strong> (각 내용은 맞는 계층에만)</li>
+          <li>파일들은 덮어쓰기가 아니라 <strong>전부 연결(concatenate)되어 함께 로드</strong>되고, 작업 위치에 <strong>가까운 파일일수록 나중에 읽혀</strong> 사실상 우선하는 경향</li>
+          <li>예: 루트가 "들여쓰기 4칸", frontend/CLAUDE.md가 "2칸"이면 → frontend 작업 시 2칸 쪽으로 기움</li>
+          <li>단, 공식 문서 명시: <strong>"두 규칙이 충돌하면 Claude가 임의로 하나를 고를 수 있다"</strong> — 그래서 충돌 자체를 없애는 게 정석 (각 내용은 맞는 계층에만)</li>
+          <li>하위 디렉토리의 CLAUDE.md는 상시 로드가 아니라 <strong>그 폴더의 파일을 읽을 때 로드</strong>됨</li>
+        </ul>
+        <h4>공식 문서가 주는 보너스 디테일</h4>
+        <ul>
+          <li><strong>CLAUDE.md는 컨텍스트일 뿐 강제 설정이 아님</strong> — "행동을 차단해야 하면 PreToolUse 훅을 쓰라"고 공식 문서가 직접 명시 (원칙 ①의 공식 근거)</li>
+          <li>계층은 사실 넷: 조직 관리(managed policy) → 사용자 → 프로젝트 → <code>CLAUDE.local.md</code>(개인용 프로젝트 메모, .gitignore 대상)</li>
+          <li>@import는 <strong>최대 4단계</strong>까지 재귀 가능, 백틱(\`)으로 감싼 @경로는 임포트되지 않음</li>
+          <li>.claude/rules/에서 <strong>paths가 없는 규칙은 상시 로드</strong> — 조건부가 되려면 paths가 있어야 함</li>
         </ul>
         <h4>모듈화 도구 2가지</h4>
         <ul>

@@ -31,9 +31,11 @@ cheat: `
 <li>스킬 frontmatter 3종: <code>context: fork</code>(격리) · <code>allowed-tools</code>(도구 제한) · <code>argument-hint</code>(인자 요구)</li>
 </ul>
 
-<h4>stop_reason 4값</h4>
+<h4>stop_reason</h4>
 <ul>
-<li><code>"tool_use"</code> 도구 실행 후 계속 · <code>"end_turn"</code> 종료(유일한 정석) · <code>"max_tokens"</code> 길이 한도(별도 처리) · <code>"stop_sequence"</code> 지정 문자열 감지</li>
+<li>시험 핵심 2값: <code>"tool_use"</code> 도구 실행 후 계속 · <code>"end_turn"</code> 종료(유일한 정석)</li>
+<li>보조: <code>"max_tokens"</code> 길이 한도 · <code>"stop_sequence"</code> 지정 문자열 감지</li>
+<li>공식 API엔 <code>"pause_turn"</code>(서버 도구 루프 한도)·<code>"refusal"</code> 등도 실존 — "없는 기능" 소거를 stop_reason 값에는 함부로 쓰지 말 것</li>
 </ul>
 
 <h4>에러 4분류 (2.2)</h4>
@@ -46,9 +48,19 @@ cheat: `
 </table>
 <ul><li>+ 접근 실패(못 봄)와 정상 빈 결과(봤는데 없음)는 반드시 다른 형태로</li></ul>
 
-<h4>tool_choice 3종 (2.3/4.3)</h4>
+<h4>tool_choice (2.3/4.3)</h4>
 <ul>
-<li><code>"auto"</code> 텍스트 응답 허용 · <code>"any"</code> 어떤 도구든 강제(구조화 보장+유형 판단은 모델) · <code>{"type":"tool","name":"..."}</code> 특정 도구 강제(순서 보장)</li>
+<li><code>"auto"</code> 텍스트 응답 허용(도구 제공 시 기본값) · <code>"any"</code> 어떤 도구든 강제 · <code>{"type":"tool","name":"..."}</code> 특정 도구 강제 · <code>"none"</code> 도구 금지(공식 4번째 값, 도구 미제공 시 기본값)</li>
+<li>실제 API 표기는 전부 객체(<code>{"type":"auto"}</code>) — 가이드는 축약 표기. any/강제 시 자연어 설명 없이 곧장 도구 호출</li>
+</ul>
+
+<h4>공식 문서 검증 디테일 (7/11 감사)</h4>
+<ul>
+<li>도구 설명은 <b>최소 3~4문장</b> — "성능의 가장 중요한 단일 요인" (공식 문서)</li>
+<li>도구 이름·custom_id 형식: 영숫자·하이픈·언더스코어 <b>1~64자</b></li>
+<li>배치: 10만 건/256MB 한도 · 결과 29일 보관 · 결과 순서 비보장 · expired 미과금</li>
+<li>CLAUDE.md는 덮어쓰기가 아니라 <b>전부 연결 로드</b>, 가까운 파일이 나중에 읽힘 · 충돌 시 임의 선택 가능 → 충돌 제거가 정석 · "차단이 필요하면 PreToolUse 훅" (공식 문구)</li>
+<li>@import 최대 4단계 · paths 없는 rules는 상시 로드 · CLAUDE.local.md(개인·gitignore) 존재</li>
 </ul>
 
 <h4>도메인별 정답 패턴</h4>

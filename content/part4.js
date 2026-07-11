@@ -299,10 +299,17 @@ window.CCAF_CONTENT.p4 = {
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"반값의 대가는 기다림",
        html:`<h4>Message Batches API 스펙 (숫자 암기)</h4>
         <ul>
-          <li>비용 <strong>50% 절감</strong></li>
-          <li>처리 시간 <strong>최대 24시간</strong> — <strong>지연 보장(SLA) 없음</strong></li>
-          <li><code>custom_id</code>로 요청-응답 짝 맞추기</li>
-          <li><strong>배치 요청 안에서 멀티턴 도구 호출 불가</strong> — 중간에 도구 실행하고 결과 받는 흐름은 못 씀</li>
+          <li>비용 <strong>50% 절감</strong> (모든 사용량이 표준 단가의 절반)</li>
+          <li>처리 시간 <strong>최대 24시간</strong> — <strong>지연 보장(SLA) 없음</strong> (대부분 1시간 안에 끝나지만 '대부분'은 약속이 아님). 24시간 안에 못 끝낸 요청은 <strong>expired</strong> 처리되고 과금 안 됨</li>
+          <li><code>custom_id</code>로 요청-응답 짝 맞추기 — <strong>결과는 제출 순서와 무관하게 돌아오므로</strong> 이게 유일한 매칭 수단. 형식: 영숫자·하이픈·언더스코어 1~64자</li>
+          <li><strong>배치 요청 안에서 멀티턴 도구 호출 불가</strong> — 중간에 내 도구를 실행하고 결과 받는 흐름은 못 씀 (시험 가이드 명시)</li>
+        </ul>
+        <h4>공식 문서의 운영 디테일</h4>
+        <ul>
+          <li>배치 한도: <strong>10만 건 또는 256MB</strong> 중 먼저 닿는 것</li>
+          <li>결과 보관: 생성 후 <strong>29일</strong> — 이후엔 다운로드 불가</li>
+          <li>결과 4상태: succeeded / errored / canceled / expired — 실패·취소·만료분은 과금 없음</li>
+          <li>상태 추적: <code>processing_status</code>가 in_progress → ended</li>
         </ul>
         <h4>적합 vs 부적합</h4>
         <ul>

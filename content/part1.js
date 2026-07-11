@@ -50,8 +50,8 @@ window.CCAF_CONTENT.p1 = {
         </div>
         <h4>정석 포인트 2가지</h4>
         <ul>
-          <li>종료 판단은 <strong>stop_reason이 유일한 정석</strong> — <code>"end_turn"</code>이면 멈추고, <code>"tool_use"</code>면 도구 실행 후 계속</li>
-          <li><strong>④ 결과 추가까지가 한 바퀴</strong> — 도구 결과를 대화 기록에 붙이지 않으면 Claude는 결과를 못 봄</li>
+          <li>종료 판단은 <strong>stop_reason이 유일한 정석</strong> — <code>"end_turn"</code>이면 멈추고, <code>"tool_use"</code>면 도구 실행 후 계속 (공식 문서의 루프도 정확히 "while stop_reason == tool_use")</li>
+          <li><strong>④ 결과 추가까지가 한 바퀴</strong> — 정확한 용어로: Claude의 요청은 <code>tool_use</code> 블록(이름+입력)으로 오고, 결과는 <code>tool_result</code> 블록으로 담아 user 메시지로 돌려보냄. 이 블록이 없으면 Claude는 결과를 못 봄</li>
         </ul>
         <h4>안티패턴 3종 (오답 보기 단골)</h4>
         <ul>
