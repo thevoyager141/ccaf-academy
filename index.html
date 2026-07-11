@@ -271,6 +271,7 @@
 <script src="content/exam-bank.js"></script>
 <script src="content/appendix.js"></script>
 <script src="content/guide-src.js"></script>
+<script src="content/mt-extra.js"></script>
 <script>
 /* ================= parts meta ================= */
 const PARTS = [
@@ -712,10 +713,27 @@ function doneHTML(){
 
 /* ================= mini-test runner ================= */
 let T = null; /* {pk, idx, L, i, answers:[]} */
+/* 미니테스트 문항 추첨: TS·난이도 슬롯마다 [원본 + 확장 풀]에서 1개씩 */
+function buildTestSet(L){
+  const extras = window.CCAF_MT_EXTRA || {};
+  const byKey = {};
+  L.questions.forEach(qq=>{ (byKey[qq.ts+"|"+qq.lvl] = byKey[qq.ts+"|"+qq.lvl]||[]).push(qq); });
+  for(const [ets, list] of Object.entries(extras)){
+    list.forEach(qq=>{ const k = ets+"|"+qq.lvl; if(byKey[k]) byKey[k].push(qq); });
+  }
+  const seen = new Set(), set = [];
+  L.questions.forEach(qq=>{
+    const k = qq.ts+"|"+qq.lvl;
+    if(seen.has(k)) return; seen.add(k);
+    const pool = byKey[k];
+    set.push(pool[Math.floor(Math.random()*pool.length)]);
+  });
+  return shuffleArr(set);
+}
 function openTest(pk, idx){
   const L = C[pk].lessons[idx];
   attemptSalt = ((Math.random()*0x7ffffffe)|0) + 1; /* 이번 응시의 보기 셔플 시드 */
-  T = {pk, idx, L, qs: shuffleArr([...L.questions]), i:-1, answers:[]};
+  T = {pk, idx, L, qs: buildTestSet(L), i:-1, answers:[]};
   const prev = store.test(L.id);
   view.innerHTML = `
     <div class="stage" style="padding-top:64px">
@@ -725,7 +743,7 @@ function openTest(pk, idx){
         <div class="prose" style="max-width:480px;margin:0 auto">
           <ul style="text-align:left">
             <li>${L.questions.length}문항 · 전부 영어 (실전과 동일)</li>
-            <li>문제 순서·보기 순서는 <strong>응시할 때마다 무작위</strong>로 섞여</li>
+            <li>문항은 TS별 문제 풀에서 <strong>응시마다 추첨</strong> — 문제 구성·순서·보기 순서가 매번 달라져</li>
             <li>힌트 없음 · 답을 골라야 다음 문항으로 (실제 시험 규칙)</li>
             <li>중간 채점 없음 — 끝나면 점수와 전 문항 해설이 나와</li>
             ${prev? `<li>지난 기록: 최고 ${prev.best}/${L.questions.length} (${prev.when})</li>`:""}
@@ -836,6 +854,7 @@ function buildExamPool(){
     if(L.scenario) L.steps.filter(s=>s.type==="quiz").forEach(q=>pools[L.scenario].push(q));
   });
   (window.CCAF_EXAM_EXTRA||[]).forEach(q=>pools[q.scenario].push(q));
+  for(const list of Object.values(window.CCAF_MT_EXTRA||{})) list.forEach(q=>{ if(q.scenario && pools[q.scenario]) pools[q.scenario].push(q); });
   return pools;
 }
 function openExam(){
