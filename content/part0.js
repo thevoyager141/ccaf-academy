@@ -87,5 +87,33 @@ window.CCAF_CONTENT.p0 = {
         </ul>
         <div class="callout">🎯 실전 사용법: 보기 4개를 읽고 "이건 원칙 몇 번 위반"으로 소거하면 대부분 2개가 남고, 남은 2개는 "첫 조치로 더 싼 것"이 정답인 경우가 많다.</div>`},
     ]},
+
+  { id:"p0l4", ch:"0-4", title:"비출제 범위 지도 — 오답 소거기",
+    steps:[
+      {type:"concept", kind:"TOPIC · 소거 도구", h:"몰라도 되는 것들이 오답을 골라준다",
+       html:`<p class="lead">공식 가이드는 "시험에 안 나오는 것" 목록을 명시해뒀다. 이건 공부 시간 절약 이상의 무기 — <strong>범위 밖 키워드가 박힌 보기는 거의 항상 오답</strong>이다.</p>
+        <h4>공식 비출제 목록 (가이드 명시)</h4>
+        <ul>
+          <li><strong>모델 내부·학습</strong>: 파인튜닝, 커스텀 모델 학습, Claude 내부 아키텍처·가중치, Constitutional AI, RLHF</li>
+          <li><strong>계정·요금</strong>: API 인증·빌링·계정 관리, 레이트 리밋·쿼터·요금 계산, 토큰 카운팅 알고리즘</li>
+          <li><strong>인프라</strong>: MCP 서버 배포·호스팅(네트워크·컨테이너), 특정 클라우드(AWS/GCP/Azure) 설정</li>
+          <li><strong>다른 기능 영역</strong>: computer use(브라우저·데스크톱 자동화), 비전/이미지 분석, 스트리밍 API·SSE</li>
+          <li><strong>보안 프로토콜</strong>: OAuth, API 키 로테이션, 인증 프로토콜 상세</li>
+          <li><strong>기타</strong>: 임베딩·벡터 DB 구현, 성능 벤치마킹·모델 비교 지표, 프롬프트 캐싱 구현 상세(존재만 알면 됨), 특정 언어·프레임워크 심화</li>
+        </ul>
+        <h4>소거기로 쓰는 법</h4>
+        <ul>
+          <li>보기에 <strong>"파인튜닝으로 해결"</strong> → 소거 (범위 밖 + 과잉 설계 이중 위반)</li>
+          <li>보기에 <strong>"벡터 DB를 구축해서"</strong>, <strong>"Kubernetes에"</strong>, <strong>"별도 분류 모델을 학습"</strong> → 소거</li>
+          <li>보기에 <strong>존재하지 않는 기능</strong> — CLAUDE_HEADLESS 환경변수, --batch 플래그, 세션 공유 메모리, 컨텍스트 첨부 플래그 → 소거</li>
+        </ul>
+        <h4>경계선 주제 (개념만, 구현은 범위 밖)</h4>
+        <ul>
+          <li>RAG: "외부 지식을 컨텍스트에 넣는다"는 개념까지만 — 임베딩·벡터 DB 구현은 밖</li>
+          <li>인증: "비밀키는 환경변수로, \${ENV_VAR} 확장" 까지만 — OAuth 플로우는 밖</li>
+          <li>프롬프트 캐싱: 존재한다는 것까지만</li>
+        </ul>
+        <div class="callout">⚠️ 구버전 자료 주의: V1 기반 자료들의 "모르면 표시하고 넘어갔다가 나중에" 전략은 <b>V2에서 무효</b> — V2는 답을 골라야 다음 문항으로 진행되고 건너뛰기가 없다. 매 문항 그 자리에서 소거 → 결정.</div>`},
+    ]},
   ]
 };

@@ -36,6 +36,8 @@ window.CCAF_CONTENT.p1 = {
           <li>Claude 응답마다 붙는 <strong>"내가 왜 말을 멈췄는지" 라벨</strong></li>
           <li><code>"tool_use"</code> — "도구가 필요해서 멈췄어" → 아직 일하는 중</li>
           <li><code>"end_turn"</code> — "할 말 다 했어" → 작업 끝</li>
+          <li>보조 2종도 알아두기: <code>"max_tokens"</code> — 출력 길이 한도 도달 (오류 처리·한도 늘려 재시도·부분 결과 수용 중 선택), <code>"stop_sequence"</code> — 미리 지정한 중단 문자열 감지</li>
+          <li>단, <strong>루프 종료의 정석 신호는 여전히 end_turn 하나</strong> — 나머지는 각자의 처리 분기가 따로 있는 상태값이야</li>
         </ul>
         <div class="callout">📖 용어 카드 — <b>API</b>: 프로그램끼리 요청·응답을 주고받는 창구. "요청을 보낸다" = 대화 기록 전체 + 사용 가능한 도구 목록을 Claude에게 전송한다는 뜻.</div>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"조립: 에이전트 루프는 이렇게 돈다",
@@ -402,7 +404,8 @@ window.CCAF_CONTENT.p1 = {
         <h4>시험에 나오는 두 종류</h4>
         <ul>
           <li><strong>PostToolUse 훅</strong> — 도구 <strong>결과</strong>가 모델에 도착하기 전에 가로채서 변환</li>
-          <li><strong>도구 호출 가로채기 훅</strong> — 나가는 도구 <strong>호출</strong>을 검사해서 정책 위반이면 차단·리다이렉트</li>
+          <li><strong>도구 호출 가로채기 훅</strong> (통용 명칭 <strong>PreToolUse</strong>) — 나가는 도구 <strong>호출</strong>을 검사해서 정책 위반이면 차단·리다이렉트</li>
+          <li>이름 암기법: Post = 실행 <strong>후</strong>의 결과를 다듬고, Pre = 실행 <strong>전</strong>에 막는다</li>
         </ul>
         <div class="callout">📖 용어 카드 — <b>Unix 타임스탬프</b>: 1970년 1월 1일부터 초를 센 숫자(예: 1785340800). <b>ISO 8601</b>: "2026-07-03T09:00:00" 형식의 국제 표준 날짜 표기. 시스템마다 날짜 표기가 달라서 정규화가 필요해진다.</div>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"두 훅의 사용처: 정규화와 차단",
