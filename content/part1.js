@@ -53,6 +53,13 @@ window.CCAF_CONTENT.p1 = {
           <li>종료 판단은 <strong>stop_reason이 유일한 정석</strong> — <code>"end_turn"</code>이면 멈추고, <code>"tool_use"</code>면 도구 실행 후 계속 (공식 문서의 루프도 정확히 "while stop_reason == tool_use")</li>
           <li><strong>④ 결과 추가까지가 한 바퀴</strong> — 정확한 용어로: Claude의 요청은 <code>tool_use</code> 블록(이름+입력)으로 오고, 결과는 <code>tool_result</code> 블록으로 담아 user 메시지로 돌려보냄. 이 블록이 없으면 Claude는 결과를 못 봄</li>
         </ul>
+        <h4>누가 다음 행동을 정하나 — 모델 주도 vs 사전 결정 트리</h4>
+        <ul>
+          <li><strong>모델 주도(model-driven)</strong>: 다음에 어떤 도구를 부를지 <strong>Claude가 문맥을 보고 그때그때 추론</strong> — 에이전트 루프의 본질</li>
+          <li><strong>사전 결정 트리(pre-configured decision tree)</strong>: 도구와 순서를 <strong>코드가 미리 고정</strong> — 예측 가능하지만 계획 밖 상황엔 대응 불가</li>
+          <li>구분 질문: "이번 바퀴에 뭘 할지 <strong>누가</strong> 정했나?" — 모델이면 에이전트, 코드면 고정 워크플로(1.6 프롬프트 체이닝 계열)</li>
+          <li>결정성이 꼭 필요한 지점(정책·검증)은 모델 주도를 버리는 게 아니라 <strong>훅·게이트로 보완</strong>(1.4·1.5)</li>
+        </ul>
         <h4>안티패턴 3종 (오답 보기 단골)</h4>
         <ul>
           <li>반복 횟수 상한을 <strong>주 종료 조건</strong>으로 사용 — 안전장치는 보조일 때만 정당</li>
