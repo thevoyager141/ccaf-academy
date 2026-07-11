@@ -227,7 +227,7 @@
       <button data-tab="course" onclick="go('home','#parts')">강의</button>
       <button onclick="toast('문제은행은 파트별 미니테스트 + 시나리오 실전(Part 6)으로 통합했어')">문제은행</button>
       <button onclick="openPart('p7')">모의고사</button>
-      <button onclick="toast('용어사전·치트시트는 제작 중')">부록</button>
+      <button onclick="renderAppendix()">부록</button>
     </nav>
     <div class="hright">
       <button class="theme-btn" onclick="openDataModal()" title="학습 기록 백업·복원">💾</button>
@@ -256,10 +256,11 @@
 <script src="content/part5.js"></script>
 <script src="content/part6.js"></script>
 <script src="content/exam-bank.js"></script>
+<script src="content/appendix.js"></script>
 <script>
 /* ================= parts meta ================= */
 const PARTS = [
-  {key:"p0", no:"00", en:"Orientation", ko:"시험을 해부한다", time:"20분", weight:"—", prev:null, planned:3},
+  {key:"p0", no:"00", en:"Orientation", ko:"시험을 해부한다", time:"30분", weight:"—", prev:null, planned:4},
   {key:"p1", no:"01", en:"Agentic Architecture", ko:"에이전트 아키텍처 & 오케스트레이션", time:"2시간", weight:"27%", prev:{v:"60%",cls:"weak"}, planned:8},
   {key:"p2", no:"02", en:"Tool Design & MCP", ko:"도구 설계 & MCP 통합", time:"1.5시간", weight:"18%", prev:{v:"64%",cls:""}, planned:6},
   {key:"p3", no:"03", en:"Claude Code Workflows", ko:"Claude Code 설정 & 워크플로", time:"1.7시간", weight:"20%", prev:{v:"61%",cls:"weak"}, planned:7},
@@ -998,6 +999,58 @@ function resetData(){
   document.querySelector(".modal-bg")?.remove();
   renderHome();
   toast("기록을 초기화했어.");
+}
+
+/* ================= 부록 ================= */
+function renderAppendix(filter){
+  const A = window.CCAF_APPENDIX;
+  const f = (filter||"").toLowerCase();
+  const items = A.glossary.filter(g => !f || (g.t+g.d+g.c).toLowerCase().includes(f));
+  const cats = [...new Set(items.map(g=>g.c))];
+  view.innerHTML = `
+  <div class="ppage">
+    <button class="crumb" onclick="go('home')">← 홈</button>
+    <div class="phead">
+      <div class="eyebrow">APPENDIX</div>
+      <h1>부록 — 치트시트 · 판단 도구 · 용어사전</h1>
+      <div class="pdesc">시험 전날은 이 페이지 + 오답 기록만. 새 내용 금지.</div>
+    </div>
+    <div class="prose">
+      <h2 style="font-size:19px;margin:10px 0 6px">🗂 핵심 치트시트</h2>
+      ${A.cheat}
+      <h2 style="font-size:19px;margin:34px 0 6px">⚖️ 판단 원칙 5</h2>
+      ${A.principles}
+      <h2 style="font-size:19px;margin:34px 0 10px">📖 용어사전 (${A.glossary.length})</h2>
+      <input id="glosFilter" placeholder="용어 검색... (예: 훅, batch, 글롭)" value="${filter||""}"
+        style="width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:14px;margin-bottom:16px"
+        oninput="renderAppendixFilter(this.value)">
+      <div id="glosList">
+      ${cats.map(c=>`
+        <h4 style="margin-top:18px">${c}</h4>
+        ${items.filter(g=>g.c===c).map(g=>`
+          <div style="border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-bottom:8px;background:var(--surface)">
+            <b>${g.t}</b><br><span class="muted" style="font-size:13.5px">${g.d}</span>
+          </div>`).join("")}`).join("")}
+      ${items.length? "" : `<p class="muted">검색 결과 없음</p>`}
+      </div>
+    </div>
+  </div>`;
+  if(filter !== undefined){
+    const inp = document.getElementById("glosFilter");
+    inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length);
+  } else window.scrollTo(0,0);
+}
+function renderAppendixFilter(v){
+  const A = window.CCAF_APPENDIX;
+  const f = v.toLowerCase();
+  const items = A.glossary.filter(g => !f || (g.t+g.d+g.c).toLowerCase().includes(f));
+  const cats = [...new Set(items.map(g=>g.c))];
+  document.getElementById("glosList").innerHTML = cats.map(c=>`
+    <h4 style="margin-top:18px">${c}</h4>
+    ${items.filter(g=>g.c===c).map(g=>`
+      <div style="border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-bottom:8px;background:var(--surface)">
+        <b>${g.t}</b><br><span class="muted" style="font-size:13.5px">${g.d}</span>
+      </div>`).join("")}`).join("") || `<p class="muted">검색 결과 없음</p>`;
 }
 
 /* ================= toast / init ================= */
