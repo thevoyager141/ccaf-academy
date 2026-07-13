@@ -47,10 +47,21 @@ window.CCAF_CONTENT.p5 = {
           <li>이 블록은 <strong>요약 대상에서 제외</strong>하고 매 프롬프트에 그대로 포함</li>
           <li>멀티 이슈 세션이면 이슈별 구조화 데이터(주문 ID·금액·상태)를 별도 레이어로</li>
         </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>case facts 블록의 실물 — 매 턴 프롬프트에 이렇게 들어간다</b><br>
+[요약된 대화] 고객이 파손 상품 환불 요청, 사진 확인됨, 처리 협의 중…&nbsp;&nbsp;<span style="color:var(--accent)">← 요약은 계속 뭉개져도 됨</span><br>
+[CASE FACTS — 요약 금지, 그대로 유지]<br>
+주문: #A-1042 | 환불액: $847.50 | 기한: 2026-03-15 | 상태: 승인 대기 | 요구: 원 결제수단으로<br>
+<span style="color:var(--accent)">→ 20턴 뒤에도 "$847.50, 3/15"가 글자 그대로 살아 있음</span>
+        </div>
         <h4>② 트리밍 — 쌓이기 전에 자르기</h4>
         <ul>
           <li>장황한 도구 출력에서 <strong>관련 필드만 남기고</strong> 나머지는 컨텍스트에 넣지 않기</li>
         </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>트리밍 실물 — 40필드를 5필드로</b><br>
+도구 원본: { id, status, amount, created_at, warehouse_id, tax_code, …40개 필드 }<br>
+컨텍스트 투입분: { id: "A-1042", status: "shipped", amount: 847.50, eligible_return: true, deadline: "03-15" }<br>
+<span style="color:var(--accent)">→ 환불 판단에 쓰이는 5개만 — 나머지 35개는 애초에 컨텍스트에 안 넣음</span>
+        </div>
         <h4>③ 위치 배치 — 중간을 믿지 말 것</h4>
         <ul>
           <li>핵심 발견 요약은 <strong>맨 앞에</strong>, 상세는 명시적 섹션 헤더로 조직</li>
@@ -121,6 +132,12 @@ window.CCAF_CONTENT.p5 = {
           <li>처방: <strong>명시적 에스컬레이션 기준 + few-shot</strong> (넘길 때 vs 붙잡을 때 예시)</li>
           <li>오답: 신뢰도 임계값, 감성 분석, 별도 분류기 학습</li>
         </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>시스템 프롬프트에 적히는 에스컬레이션 기준의 실물</b><br>
+즉시 escalate_to_human 호출: ① 고객이 사람을 요구할 때 (해결 시도 없이) ② 정책 문서에 없는 요청일 때 ③ 2회 시도에도 진전 없을 때<br>
+직접 해결: 사진 있는 파손 교환, 주소 변경, 배송 조회<br>
+예시) 고객: "경쟁사가 더 싼데 맞춰줘" → 정책에 가격 매칭 조항 없음 → escalate. <span style="color:var(--accent)">이유: 정책 창작 금지.</span><br>
+예시) 고객: "화나 죽겠네, 주소나 바꿔줘" → 불만 인정 + 주소 변경 처리. <span style="color:var(--accent)">이유: 감정≠트리거, 요청은 능력 안.</span>
+        </div>
         <h4>케이스 ②: 정책의 침묵</h4>
         <ul>
           <li>자사 정책은 자사 사이트 가격 조정만 언급 — 고객은 <strong>경쟁사 가격 매칭</strong> 요구</li>
@@ -181,6 +198,15 @@ window.CCAF_CONTENT.p5 = {
           <li>③ <strong>부분 결과</strong> (건진 게 있으면 같이)</li>
           <li>④ <strong>대안</strong> (다른 접근 제안)</li>
         </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>구조화 에러 응답의 실물 — 서브에이전트가 코디네이터에게</b><br>
+{ "status": "error",<br>
+&nbsp;&nbsp;"failure_type": "timeout",&nbsp;&nbsp;<span style="color:var(--accent)">← ① 실패 유형</span><br>
+&nbsp;&nbsp;"attempted": "search('EV 배터리 M&amp;A 2025')",&nbsp;&nbsp;<span style="color:var(--accent)">← ② 시도한 것</span><br>
+&nbsp;&nbsp;"partial_results": [ …2건… ],&nbsp;&nbsp;<span style="color:var(--accent)">← ③ 부분 결과</span><br>
+&nbsp;&nbsp;"alternatives": "산업 리포트 DB로 재시도 가능" }&nbsp;&nbsp;<span style="color:var(--accent)">← ④ 대안</span><br>
+<br>
+비교 — 안티패턴의 실물: { "results": [] }&nbsp;&nbsp;← 타임아웃을 빈 결과로 위장 — 코디네이터가 "자료 없음"으로 오독
+        </div>
         <h4>안티패턴 3종 (오답 보기 단골)</h4>
         <ul>
           <li><strong>뭉뚱그린 상태</strong> — "search unavailable"만 반환 (재시도 소진 후라도)</li>
@@ -274,6 +300,16 @@ window.CCAF_CONTENT.p5 = {
           <li>재개 시 코디네이터가 <strong>매니페스트를 로드</strong>해 에이전트 프롬프트에 주입</li>
           <li>1.7의 세션 복구와 같은 철학: 기록이 기억을 대신한다</li>
         </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>스크래치패드와 매니페스트의 실물</b><br>
+# scratchpad.md&nbsp;&nbsp;<span style="color:var(--accent)">← 대화 밖의 파일 — 컨텍스트가 차도 안 사라짐</span><br>
+- 환불 흐름: RefundService.process() → PaymentGateway.reverse() (payment.ts 88행)<br>
+- 테스트 위치: tests/refund/ 아래 12개<br>
+<span style="color:var(--accent)">→ 30턴 뒤 "환불 흐름이 어디였지?"가 아니라 이 파일을 다시 읽으면 됨</span><br>
+<br>
+# agent-state/search-agent.json&nbsp;&nbsp;<span style="color:var(--accent)">← 매니페스트: 진행 상태의 색인</span><br>
+{ "done": ["웹 소스 40건 수집"], "pending": ["학술 DB 검색"], "findings_file": "findings/search.md" }<br>
+<span style="color:var(--accent)">→ 크래시 후 재시작한 코디네이터가 이 파일을 읽고 "학술 DB부터 이어서"를 새 에이전트 프롬프트에 주입</span>
+        </div>
         <div class="callout">📖 용어 카드 — <b>스크래치패드</b>: 연습장. 대화 밖의 파일이라 컨텍스트가 차도 안 사라짐. <b>매니페스트</b>: 짐 목록 — 어떤 상태 파일이 어디 있는지의 색인.</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1 — Three symptoms, three tools",
        q:`One week with your codebase-analysis agent produced three incidents: (a) by hour three it answers "repositories typically handle caching like..." instead of citing the CacheManager class it analyzed at hour one; (b) every new question triggers Grep/Read floods that bury the conversation in raw output; (c) last night's six-hour run crashed at 2 AM and today restarted from zero. Which countermeasure mapping is correct?`,
@@ -320,6 +356,11 @@ window.CCAF_CONTENT.p5 = {
           <li>전체 정확도 97% ← 그 안에 <strong>특정 문서 유형은 70%</strong>가 숨어 있을 수 있음</li>
           <li>자동화 확대 전에 <strong>문서 유형별 × 필드별</strong>로 정확도 분해 검증</li>
         </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>숫자로 보는 실물 — 97%가 숨기는 것, 층화가 드러내는 것, 보정이 거르는 것</b><br>
+[집계의 함정] 전체 97% = 인쇄 인보이스(전체의 90%) 정확도 99% + 손글씨(10%) 정확도 71%의 평균<br>
+[층화 표집] 문서 유형별로 50건씩 뽑아 채점 → 손글씨 71%가 비로소 드러남<br>
+[보정] 모델이 "확신 90%"라 한 추출 200건을 정답지와 대조 → 실제 정답률이 74%라면, 그 자기보고 점수로 라우팅하면 안 됨
+        </div>
         <h4>층화 무작위 표집의 용도</h4>
         <ul>
           <li>고신뢰 추출에서도 계층별로 표본 추출 → <strong>지속적 오류율 측정</strong> + <strong>새 오류 패턴 탐지</strong></li>
@@ -391,6 +432,13 @@ window.CCAF_CONTENT.p5 = {
           <li>서브에이전트 출력 형식: <strong>주장 + 증거 발췌 + 출처 URL/문서명 + 발행일</strong></li>
           <li>합성 에이전트는 이 매핑을 <strong>보존·병합</strong>해야 함 (버리면 안 됨)</li>
         </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>claim-source 매핑의 실물 — 서브에이전트 출력 한 건</b><br>
+{ "claim": "EV 배터리 시장 연 40% 성장",<br>
+&nbsp;&nbsp;"source": "BloombergNEF 2025 리포트",<br>
+&nbsp;&nbsp;"excerpt": "…the market grew 40% year-over-year…",<br>
+&nbsp;&nbsp;"published": "2025-11" }<br>
+<span style="color:var(--accent)">→ 합성 에이전트의 규칙: 이 매핑을 버리지 말고 리포트의 해당 문장에 [출처] 각주로 병합 — 산문에 녹이면 요약 한 번에 증발</span>
+        </div>
         <h4>시점 데이터의 함정</h4>
         <ul>
           <li>2019년 통계와 2024년 통계가 <strong>다르면 모순이 아니라 변화</strong>일 수 있음</li>

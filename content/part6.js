@@ -173,7 +173,7 @@ window.CCAF_CONTENT.p6 = {
           <li>실패 전파 4요소, 부분 결과 + 커버리지 주석</li>
           <li>출처: claim-source 매핑, 발행일 필수, 충돌은 둘 다 주석</li>
         </ul>
-        <div class="callout">🎯 무대 ③의 정답 냄새: "서브에이전트끼리 직접 얘기하게 하자"는 보기는 관측성 파괴로 거의 항상 오답. "임의로 하나를 고른다"도 마찬가지.</div>`},
+        <div class="callout">🎯 무대 ③의 정답 냄새: "서브에이전트끼리 직접 얘기하게 하자"는 보기는 관측성(무슨 일이 일어나는지 밖에서 지켜볼 수 있는 성질) 파괴로 거의 항상 오답. "임의로 하나를 고른다"도 마찬가지.</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S3-1 — Writing the coordinator's orders",
        q:`Your coordinator's prompts to the search subagent currently read like scripts: "First query X, then query Y, then if results < 5, query Z..." On novel topics the agent follows the script even when it clearly doesn't fit. How should coordinator prompts be designed instead?`,
        opts:[
@@ -387,7 +387,7 @@ window.CCAF_CONTENT.p6 = {
   { id:"p6s6", ch:"⑥", title:"구조화 데이터 추출", scenario:"s6",
     steps:[
       {type:"concept", kind:"SCENARIO BRIEFING", h:"무대 ⑥ — Structured Data Extraction",
-       html:`<p class="lead">실제 시험 지문: 비정형 문서에서 정보를 추출해 JSON 스키마로 검증하고, 높은 정확도를 유지하며 다운스트림 시스템과 연동.</p>
+       html:`<p class="lead">실제 시험 지문: 비정형 문서에서 정보를 추출해 JSON 스키마로 검증하고, 높은 정확도를 유지하며 다운스트림 시스템(추출 결과를 받아 쓰는 다음 단계 프로그램 — 회계 시스템, DB 등)과 연동.</p>
         <h4>시스템 구성</h4>
         <ul>
           <li>tool_use + JSON 스키마 · Pydantic 검증 · 배치 처리 · 인간 리뷰 라우팅</li>
