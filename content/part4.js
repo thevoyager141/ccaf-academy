@@ -24,7 +24,13 @@ window.CCAF_CONTENT.p4 = {
           <li><strong>다중 인스턴스·다중 패스 리뷰</strong> (Ch6)</li>
         </ul>`},
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"'신중하게 해'는 기준이 아니다",
-       html:`<h4>막연한 지시가 실패하는 이유</h4>
+       html:`<div class="callout">🎬 이 챕터의 무대 — 3.6에서 만든 <b>자동 코드 리뷰 봇</b>. CI에서 Claude가 PR(코드 변경 승인 요청)을 검사해 지적 코멘트를 다는 상황이야. 이 챕터의 "에러"란 <b>봇의 지적 자체가 틀리는 것</b>.</div>
+        <div class="callout">📖 용어 카드 — <b>오탐(false positive, FP)</b>: 문제가 <b>아닌 것</b>을 문제라고 지적. <b>미탐(false negative)</b>: 진짜 문제를 놓침. <b>정밀도(precision)</b>: 봇이 낸 지적 중 진짜의 비율 — 오탐이 늘수록 떨어짐.</div>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>봇이 PR에 다는 코멘트의 실물 — 정탐 vs 오탐</b><br>
+[버그 · 심각도 high] payment.ts 42행 — 환불 금액을 검증 없이 저장, 음수 입력 시 이중 환불 가능&nbsp;&nbsp;<span style="color:var(--accent)">← 정탐 (진짜 문제)</span><br>
+[스타일 · 심각도 low] utils.ts 7행 — 변수명 tmp가 모호함, dataBuffer 권장&nbsp;&nbsp;← 오탐 (이 팀 컨벤션에선 tmp 허용)
+        </div>
+        <h4>막연한 지시가 실패하는 이유</h4>
         <ul>
           <li>"be conservative", "확신 높은 것만 보고해" — 모델에게 <strong>판단선이 어딘지</strong> 알려주지 않음</li>
           <li>정밀도 개선 실패의 전형: 지시는 강해졌는데 <strong>분류 기준이 없음</strong></li>
@@ -37,10 +43,11 @@ window.CCAF_CONTENT.p4 = {
         </ul>
         <h4>오탐(false positive)의 사회학</h4>
         <ul>
-          <li>오탐 많은 범주 하나가 <strong>정확한 범주까지 불신</strong>하게 만듦 — 개발자가 봇 전체를 무시하기 시작</li>
+          <li>맥락: 오탐 코멘트가 PR마다 수십 개 달리면 → 개발자가 봇 코멘트를 <strong>아예 안 읽게 됨</strong> → 그 속에 섞인 <strong>진짜 버그 지적까지 같이 묻힘</strong></li>
+          <li>그래서 오탐 많은 범주 하나가 <strong>정확한 범주까지 불신</strong>하게 만듦 — 이게 "개발자가 봇 전체를 무시하기 시작"의 뜻</li>
         </ul>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"오탐과 싸우는 세 가지 무기",
-       html:`__MAP4:criteria__<h4>① 범주형 기준</h4>
+       html:`__MAP4:criteria__<h4>① 범주형 기준 (범주 = 지적의 종류 묶음: 버그/보안/스타일/문서)</h4>
         <ul>
           <li>보고: 버그, 보안 취약점 / 스킵: 사소한 스타일, 프로젝트 로컬 패턴</li>
           <li>"확신도 기반 필터링"이 아니라 <strong>범주 기반 규칙</strong>으로</li>
@@ -52,7 +59,9 @@ window.CCAF_CONTENT.p4 = {
         </ul>
         <h4>③ 심각도에 실물 예시</h4>
         <ul>
-          <li>심각도 레벨마다 <strong>구체적 코드 예시</strong>를 붙여야 분류가 일관됨</li>
+          <li>심각도(severity) = 지적 하나하나에 붙이는 등급 — 뭐부터 고칠지 정렬하는 용도</li>
+          <li>심각도 레벨마다 <strong>구체적 코드 예시</strong>를 붙여야 모델의 분류가 일관됨</li>
+          <li>실물: "high = 데이터 손실·보안 (예: 사용자 입력을 그대로 DB 쿼리에 붙임) / low = 이름·포맷 (예: 변수명 스타일)"</li>
         </ul>
         <div class="callout">🎯 시험 포인트: "be more careful" 계열 보기는 거의 항상 오답. 정답은 언제나 "무엇을 보고하고 무엇을 스킵하는지"의 명시적 정의.</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1 — Two edits, two failures",
@@ -104,23 +113,34 @@ window.CCAF_CONTENT.p4 = {
           <li><strong>애매한 케이스</strong> — 명백한 케이스 예시는 낭비</li>
           <li>왜 그 행동을 골랐는지 <strong>이유(추론)까지 포함</strong> — 판단 기준이 전이됨</li>
         </ul>
-        <h4>few-shot의 힘: 일반화</h4>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>시스템 프롬프트에 들어가는 few-shot의 실물</b><br>
+예시 1) 고객: "환불도 해주고 배송 주소도 바꿔줘"<br>
+&nbsp;&nbsp;올바른 처리: 요청이 2개 → ① lookup_order로 환불 자격 확인 ② update_address 호출. <span style="color:var(--accent)">이유: 멀티 요청은 분해부터.</span><br>
+예시 2) 고객: "이거 왜 이래요"<br>
+&nbsp;&nbsp;올바른 처리: 도구를 부르지 말고 주문번호부터 묻기. <span style="color:var(--accent)">이유: 추측으로 도구를 부르지 않는다.</span><br>
+이제 실제 고객 메시지를 처리해: "(새 입력)"
+        </div>
+        <h4>few-shot의 힘: 일반화 — 작동 과정</h4>
         <ul>
-          <li>예시와 똑같은 케이스만 처리하는 게 아니라 <strong>새로운 패턴으로 일반화</strong></li>
-          <li>추출 과제에선 환각 감소 효과 — 다양한 문서 구조 대응력</li>
+          <li>① 모델은 예시에서 <strong>"이런 입력엔 이렇게"라는 규칙을 스스로 추출</strong>해 새 입력에 적용</li>
+          <li>② 예시에 <strong>이유(추론)</strong>가 붙어 있으면 겉모양 모방이 아니라 <strong>판단 기준을 흡수</strong> → 예시에 없던 새 패턴에도 그 기준을 적용 = <strong>일반화</strong></li>
+          <li>③ <strong>환각 감소의 메커니즘</strong>: "PO 번호가 문서에 없음 → po_number: null (지어내지 않음)" 예시를 직접 보여주면, 모델은 '없을 때 지어내기'가 아니라 <strong>'없다고 답하기'가 정답 행동</strong>임을 배움 — 다양한 문서 구조 대응력도 같은 원리</li>
         </ul>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"few-shot 설계 시나리오 3종",
        html:`__MAP4:fewshot__<h4>① 도구 선택이 애매할 때</h4>
         <ul>
           <li>애매한 요청 → 어떤 도구 + <strong>왜 그쪽인지</strong>를 보여주는 예시 2~4개</li>
+          <li>실물: "계정이 이상해요" → get_account부터 (search_docs 아님). <strong>이유: 개인 계정 상태는 문서에 없다</strong> — 이 한 쌍이 예시 하나</li>
         </ul>
         <h4>② 출력 형식 통일</h4>
         <ul>
           <li>위치·이슈·심각도·수정 제안 — 원하는 형식 그대로의 예시 제시</li>
+          <li>실물 한 줄: "[high] auth.ts:12 — 토큰 만료 미확인 — 수정: expiry 검사 추가" ← 이 모양 자체를 예시로 넣는 것</li>
         </ul>
         <h4>③ 오탐 감소와 문서 구조 대응</h4>
         <ul>
           <li>수용 가능한 코드 패턴 vs 진짜 이슈를 <strong>대비쌍</strong>으로 — 오탐이 줄면서 일반화는 유지</li>
+          <li>실물 쌍: "테스트 파일 속 console.log = 수용(디버그 관례) ↔ 프로덕션 코드 속 console.log = 이슈" — 같은 코드라도 맥락이 가른다는 걸 쌍으로 가르침</li>
           <li>인라인 인용 vs 참고문헌, 서술형 vs 표 — <strong>구조가 다른 문서들의 추출 예시</strong>로 null 추출·환각 감소</li>
         </ul>
         <div class="callout">🎯 시험 포인트: few-shot과 4.1 명시 기준의 관계 — 기준이 판단선을 긋고, 예시가 그 선의 실물을 보여줘. "규칙+애매 케이스 예시" 조합이 자주 정답.</div>`},
@@ -164,6 +184,24 @@ window.CCAF_CONTENT.p4 = {
     steps:[
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"양식지를 쥐여주면 형식은 보장된다",
        html:`<div class="callout">📖 용어 카드 — <b>JSON 스키마</b>: 출력의 빈칸 양식. <b>required</b> = 필수 기입란, <b>nullable</b> = 비워도 되는 란, <b>enum</b> = 보기 중 선택.</div>
+        <h4>스키마가 뭔가 — 0부터</h4>
+        <ul>
+          <li>스키마 = 출력이 따라야 할 <strong>빈칸 양식 정의서</strong>. 실체는 <strong>JSON으로 적은 텍스트</strong>로, API 요청의 도구 정의 안에 넣는 설정 데이터야</li>
+          <li>"이 출력엔 어떤 칸이 있고, 각 칸엔 어떤 종류의 값이 들어가는가"를 선언 → 모델이 그 양식대로만 쓰게 됨</li>
+        </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>JSON 스키마의 가장 기본적인 모양 (인보이스 추출 도구)</b><br>
+{ "name": "extract_invoice",<br>
+&nbsp;&nbsp;"input_schema": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"type": "object",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"properties": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"invoice_id": { "type": "string" },&nbsp;&nbsp;<span style="color:var(--accent)">← 글자 칸</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"total": { "type": "number" },&nbsp;&nbsp;<span style="color:var(--accent)">← 숫자 칸</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"po_number": { "type": ["string", "null"] },&nbsp;&nbsp;<span style="color:var(--accent)">← 비워도 되는 칸 (nullable)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"category": { "enum": ["food", "clothing", "other"] }&nbsp;&nbsp;<span style="color:var(--accent)">← 보기 중 선택 (enum)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"required": ["invoice_id", "total"]&nbsp;&nbsp;<span style="color:var(--accent)">← 필수 기입란</span><br>
+&nbsp;&nbsp;} }
+        </div>
         <h4>왜 tool_use인가</h4>
         <ul>
           <li>추출 도구를 정의하고 스키마를 입력 파라미터로 → 모델의 tool_use 응답에서 구조화 데이터를 꺼냄</li>
@@ -174,22 +212,26 @@ window.CCAF_CONTENT.p4 = {
         <ul>
           <li>"auto" — 텍스트로 샐 수 있음 / "any" — 어떤 도구든 강제 / 지정 — 특정 도구 강제</li>
           <li>문서 유형을 모르고 추출 스키마가 여러 개 → <strong>"any"</strong></li>
-          <li>특정 추출이 반드시 먼저 → <strong>강제 지정</strong></li>
+          <li>특정 추출이 반드시 먼저 → <strong>강제 지정</strong>. 실물 문법: <code>tool_choice: {"type": "tool", "name": "extract_metadata"}</code> = "이번 응답은 반드시 이 도구를 불러라"</li>
+          <li>왜 필요한가 (가이드 원문 4.3-S3): 뒤에 오는 <strong>enrichment 단계</strong>(추출된 기본 데이터에 추가 정보를 붙여 살찌우는 후속 처리)가 그 추출 결과를 재료로 쓰기 때문 — 파이프라인 <strong>순서 보장</strong>이 목적</li>
         </ul>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"지어내지 못하게 만드는 스키마 설계",
        html:`__MAP4:schema__<h4>① nullable — 환각 방지의 핵심</h4>
         <ul>
           <li>원본에 없을 수 있는 정보를 <strong>required로 두면 모델이 값을 지어냄</strong></li>
           <li>처방: optional(nullable)로 → 없으면 null을 반환하게</li>
+          <li>입력 형태: 스키마에서 <code>"po_number": {"type": ["string", "null"]}</code> + required 목록에서 제외 — 이 두 가지가 "비워도 됨"의 실물</li>
         </ul>
         <h4>② enum 확장 패턴</h4>
         <ul>
           <li>애매한 케이스용 <code>"unclear"</code> 값 추가</li>
           <li>분류가 열려 있으면 <code>"other"</code> + <strong>상세 문자열 필드</strong> 조합</li>
+          <li>입력 형태: <code>"category": {"enum": ["food", "clothing", "unclear", "other"]}</code> + <code>"other_detail": {"type": "string"}</code> 칸을 짝으로 추가</li>
         </ul>
         <h4>③ 정규화 규칙은 프롬프트에 동봉</h4>
         <ul>
           <li>원본 형식이 제각각(전화번호, 날짜, 통화)이면 <strong>형식 정규화 규칙을 스키마와 함께</strong> 프롬프트에</li>
+          <li>실물 문장: "날짜는 전부 YYYY-MM-DD로 통일. 전화번호는 하이픈 제거. 통화는 숫자만." — 스키마는 칸의 <strong>모양</strong>만 강제하니, 값을 <strong>어떻게 쓸지</strong>는 프롬프트 문장으로</li>
         </ul>
         <div class="callout">🎯 시험 포인트: "스키마를 strict로 하면 다 해결" 보기 조심 — strict는 <b>문법</b>만 보장, 합계·필드 배치 같은 <b>의미</b>는 4.4의 검증 루프가 담당.</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1 — Schema post-mortem",
@@ -232,9 +274,20 @@ window.CCAF_CONTENT.p4 = {
     steps:[
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"틀렸으면 뭐가 틀렸는지 알려주고 다시",
        html:`<div class="callout">📖 용어 카드 — <b>Pydantic</b>: 파이썬의 양식 검사기. 출력이 스키마에 맞는지 자동 대조하고 틀린 지점을 알려줌. <b>의미 오류 vs 문법 오류</b>: 문법(괄호 빠짐, 타입 틀림)은 tool_use가 제거 — 의미(합계 불일치, 필드 뒤바뀜)는 검증 루프의 몫.</div>
-        <h4>retry-with-error-feedback</h4>
+        <h4>retry-with-error-feedback — 정의부터</h4>
         <ul>
-          <li>재시도 요청에 3종 세트 동봉: <strong>원본 문서 + 실패한 추출 + 구체적 검증 오류</strong></li>
+          <li>재시도(retry)인데, 그냥 "다시 해"가 아니라 <strong>"뭐가 어떻게 틀렸는지"를 첨부해서</strong> 다시 시키는 방식</li>
+          <li>실체: 검증 코드가 오류를 발견하면 → 아래 3종 세트를 담은 <strong>새 API 요청</strong>을 자동으로 만들어 보냄</li>
+        </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>재시도 요청의 실물 — 3종 세트가 이렇게 들어간다</b><br>
+"다음 문서에서 다시 추출해줘.<br>
+① 원본 문서: (인보이스 전문 그대로 첨부)&nbsp;&nbsp;<span style="color:var(--accent)">← 고칠 재료</span><br>
+② 지난번 추출: { "total": 1200, "items_sum": 1350, … }&nbsp;&nbsp;<span style="color:var(--accent)">← 뭘 고칠지</span><br>
+③ 검증 오류: items 합계(1350)와 total(1200) 불일치 — items 3번의 수량×단가 재확인"&nbsp;&nbsp;<span style="color:var(--accent)">← 어디가 틀렸는지</span>
+        </div>
+        <h4>3종 세트인 이유</h4>
+        <ul>
+          <li><strong>원본 문서 + 실패한 추출 + 구체적 검증 오류</strong> — 재료·목표·좌표가 다 있어야 모델이 교정할 수 있어</li>
           <li>"다시 해봐"가 아니라 "여기가 이렇게 틀렸어, 다시"</li>
         </ul>
         <h4>재시도의 한계 (시험 단골)</h4>
@@ -245,13 +298,16 @@ window.CCAF_CONTENT.p4 = {
       {type:"concept", kind:"TOPIC · 주제 설명", h:"루프를 시스템으로 — 자기 검증과 패턴 추적",
        html:`__MAP4:validate__<h4>① 자기 검증 필드 설계</h4>
         <ul>
-          <li><code>calculated_total</code>(항목 합산)과 <code>stated_total</code>(문서 기재)을 <strong>나란히 추출</strong> → 불일치를 플래그</li>
+          <li>'필드' = 스키마의 칸. 자기 검증 필드 = <strong>모델에게 검산 값을 직접 적게 만드는 추가 칸</strong></li>
+          <li>실물: <code>"stated_total"</code> 칸엔 문서에 적힌 총액을 그대로, <code>"calculated_total"</code> 칸엔 items를 직접 합산한 값을 → <strong>내 코드가 두 칸을 비교</strong>해 다르면 플래그. 모델의 "맞아요"를 믿는 게 아니라 칸끼리 대조하는 구조</li>
           <li>원본 데이터 자체가 모순이면 <code>conflict_detected</code> 불리언으로 표시</li>
         </ul>
         <h4>② detected_pattern — 오탐의 계보 추적</h4>
         <ul>
-          <li>발견마다 <strong>어떤 코드 구조가 트리거했는지</strong> 기록하는 필드</li>
-          <li>개발자가 기각(dismiss)한 발견들을 패턴별로 분석 → 체계적 오탐 제거</li>
+          <li>기각(dismiss) = 개발자가 봇의 지적을 "문제 아님"으로 닫아버리는 것</li>
+          <li><code>detected_pattern</code> = 발견마다 <strong>"어떤 코드 모양이 이 지적을 촉발했나"</strong>를 적게 만든 칸</li>
+          <li>과정 실물: 한 달치 <strong>기각된 발견들</strong>을 모아 패턴별로 집계 → "kwargs 전달 패턴을 버그로 오인"이 기각의 40% → 그 패턴을 4.2의 <strong>대비쌍 예시("수용 가능")로 프롬프트에 추가</strong> → 해당 오탐 소멸</li>
+          <li>어디서 하나: 별도 Claude 세션(챗이든 Claude Code든)에 기각 로그를 주고 "공통 패턴을 뽑아줘" — 분석도 Claude에게 시키는 게 정석</li>
         </ul>
         <h4>③ 재시도 판단 순서</h4>
         <ul>
@@ -297,11 +353,31 @@ window.CCAF_CONTENT.p4 = {
   { id:"p4c5", ch:"CH 5", title:"배치 처리 전략 — Batches API (4.5)",
     steps:[
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"반값의 대가는 기다림",
-       html:`<h4>Message Batches API 스펙 (숫자 암기)</h4>
+       html:`<h4>Batches API가 뭔가 — 정의부터</h4>
+        <ul>
+          <li>요청 수천 건을 <strong>한 번에 제출해두고, 나중에 결과를 한꺼번에 찾아가는</strong> 별도 API</li>
+          <li>실체: 채팅창 기능이 아니라 <strong>개발자가 코드로 쓰는 제출 방식</strong> — 그 제출 스크립트를 Claude Code에게 짜달라고 할 수는 있음</li>
+        </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>동기 vs 배치 — 흐름 비교</b><br>
+[동기 API]&nbsp;&nbsp;요청 → (기다림) → 응답&nbsp;&nbsp;<span style="color:var(--accent)">← 대화하듯 한 건씩, 바로바로</span><br>
+[Batches]&nbsp;&nbsp;요청 1만 건 제출 → "접수됨(batch_id)" → <b>연결 끊김</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;… 몇 분 ~ 최대 24시간 …<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;폴링(가끔 상태만 확인) → ended → 결과 1만 건 한꺼번에 회수<br>
+핵심: <b>제출~회수 사이에 내가 끼어들 틈이 없다</b> — 그래서 중간에 도구를 실행해 돌려주는 왕복이 불가능
+        </div>
+        <h4>Message Batches API 스펙 (숫자 암기)</h4>
         <ul>
           <li>비용 <strong>50% 절감</strong> (모든 사용량이 표준 단가의 절반)</li>
           <li>처리 시간 <strong>최대 24시간</strong> — <strong>지연 보장(SLA) 없음</strong> (대부분 1시간 안에 끝나지만 '대부분'은 약속이 아님). 24시간 안에 못 끝낸 요청은 <strong>expired</strong> 처리되고 과금 안 됨</li>
           <li><code>custom_id</code>로 요청-응답 짝 맞추기 — <strong>결과는 제출 순서와 무관하게 돌아오므로</strong> 이게 유일한 매칭 수단. 형식: 영숫자·하이픈·언더스코어 1~64자</li>
+        </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>custom_id 실물 — 제출할 때 붙이고, 회수할 때 짝 맞춘다</b><br>
+제출: {"custom_id": "invoice-0001", "params": { …문서1 추출 요청… }}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"custom_id": "invoice-0002", "params": { …문서2 추출 요청… }}<br>
+회수: 결과가 <b>뒤죽박죽 순서</b>로 옴 → {"custom_id": "invoice-0002", "result": …}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 내 코드가 custom_id를 보고 원본 문서와 결과를 짝지음
+        </div>
+        <ul>
           <li><strong>배치 요청 안에서 멀티턴 도구 호출 불가</strong> — 중간에 내 도구를 실행하고 결과 받는 흐름은 못 씀 (시험 가이드 명시)</li>
         </ul>
         <h4>공식 문서의 운영 디테일</h4>
@@ -313,10 +389,12 @@ window.CCAF_CONTENT.p4 = {
         </ul>
         <h4>적합 vs 부적합</h4>
         <ul>
+          <li>블로킹 = 그 결과가 나와야 <strong>다음 일이 진행되는</strong> 흐름. 예: PR 머지 버튼이 리뷰 결과를 기다림 — 사람이 화면 앞에서 대기 중</li>
+          <li>논블로킹 = 결과가 언제 오든 <strong>아무것도 안 막히는</strong> 흐름. 예: 야간 리포트 — 아침에 와 있기만 하면 됨</li>
           <li>✅ 논블로킹·지연 허용: 야간 리포트, 주간 감사, 야간 테스트 생성</li>
           <li>❌ 블로킹: <strong>머지 전 검사</strong>처럼 사람이 결과를 기다리는 흐름</li>
         </ul>
-        <div class="callout">📖 용어 카드 — <b>SLA</b>: "언제까지 끝내준다"는 서비스 약속. Batches API엔 이 약속이 없어서 "보통 빨리 끝나던데"에 기대면 안 됨.</div>`},
+        <div class="callout">📖 용어 카드 — <b>SLA</b> (Service Level Agreement, 서비스 수준 협약): "언제까지 끝내준다"는 계약상의 약속. Batches API엔 이 약속이 없어서 "보통 빨리 끝나던데"에 기대면 안 됨.</div>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"배치 운영의 세 가지 계산",
        html:`__MAP4:batch__<h4>① 워크플로 분류부터</h4>
         <ul>
@@ -386,6 +464,17 @@ window.CCAF_CONTENT.p4 = {
        html:`__MAP4:review__<h4>① 다중 패스 (1.6·3.6과 연결)</h4>
         <ul>
           <li>대형 리뷰 = <strong>파일별 로컬 분석 패스</strong> + <strong>파일 간 통합 패스</strong></li>
+        </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>정답 구조 vs 3대 오답 장치 — 구조로 구분하기</b><br>
+<span style="color:var(--accent)">[정답] 독립 리뷰 + 다중 패스</span><br>
+&nbsp;&nbsp;생성 세션 ──코드만 전달──→ 리뷰 인스턴스 (새 눈, 생성 추론 없음)<br>
+&nbsp;&nbsp;리뷰: 패스1 = 파일별 집중 ×14회 → 패스2 = 파일 간 통합 ×1회 → 병합 리포트<br>
+<br>
+[오답 ①] self-review: 생성 세션 ──→ <b>같은 세션</b>이 자기 코드 리뷰 (추론 맥락 잔존 → 같은 맹점 반복)<br>
+[오답 ②] 단일 패스: 파일 14개 ──→ <b>한 번에 전부</b> (주의력 희석 → 깊이 들쭉날쭉·모순 판정)<br>
+[오답 ③] 3회 다수결: 그 단일 패스를 <b>×3 돌려 투표</b> (비용 3배, 희석은 그대로 → 투표로 안 씻김)
+        </div>
+        <ul>
           <li>효과: 주의력 희석 방지 + 모순된 피드백 제거</li>
         </ul>
         <h4>② 신뢰도 자기 보고 라우팅</h4>
