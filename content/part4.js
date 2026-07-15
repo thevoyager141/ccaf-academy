@@ -555,7 +555,7 @@ window.CCAF_CONTENT.p4 = {
        {t:`A rule: "never flag empty catch blocks in this project."`},
        {t:`More examples of unrelated real bugs to strengthen general bug detection.`}],
      explain:{good:`가이드 4.2: 수용 가능한 패턴 vs 진짜 이슈를 대비쌍으로 — 오탐은 줄고 실제 버그 탐지(일반화)는 유지.`,
-       wrongs:[`<b>B:</b> 스킵만 가르치면 진짜 빈 catch 버그도 놓쳐.`,`<b>C:</b> 전면 금지 규칙은 실제 버그까지 침묵 — 범주를 통째로 끄는 과잉.`,`<b>D:</b> 무관한 예시는 이 경계 문제를 못 풀어.`]},
+       wrongs:[`<b>B:</b> 스킵만 가르치면 진짜 빈 catch 버그도 놓쳐.`,`<b>C:</b> 전면 금지 규칙은 실제 버그 경보까지 꺼버려 — 범주를 통째로 끄는 과잉.`,`<b>D:</b> 무관한 예시는 이 경계 문제를 못 풀어.`]},
      principle:"대비쌍 — 경계의 양쪽을 보여줘라"},
     {ts:"4.3", lvl:"기초", q:`What does using tool_use with a strict JSON schema guarantee — and what does it not guarantee?`,
      opts:[

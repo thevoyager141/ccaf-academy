@@ -94,7 +94,7 @@ window.CCAF_EXAM_EXTRA = [
      {t:`Have the synthesis agent expand the thin section using its general knowledge.`},
      {t:`Restart the entire research pipeline from decomposition.`}],
    explain:{good:`1.2의 반복 개선 루프: 빈틈 평가 → 겨냥한 재위임 → 재합성. 코디네이터가 품질 게이트 역할을 해야 해.`,
-     wrongs:[`<b>B:</b> 할당한 주제의 침묵 출고 — 커버리지 책임 방기.`,`<b>C:</b> 일반 지식 충전 = 출처 없는 환각을 리서치로 위장.`,`<b>D:</b> 유효한 두 주제까지 재실행 — 빈 곳만 겨냥하면 될 일.`]},
+     wrongs:[`<b>B:</b> 할당한 주제를 빈 채로 출고 — 커버리지 책임 방기.`,`<b>C:</b> 일반 지식 충전 = 출처 없는 환각을 리서치로 위장.`,`<b>D:</b> 유효한 두 주제까지 재실행 — 빈 곳만 겨냥하면 될 일.`]},
    principle:"빈틈은 겨냥해서 재위임"},
   {scenario:"s3", ts:"1.3", q:`Your coordinator spawns the document-analysis subagent with the prompt: "Analyze the documents relevant to our research." The subagent replies asking which documents. The coordinator's own history contains the full list of 12 URLs from the search phase. What is the root cause?`,
    opts:[
