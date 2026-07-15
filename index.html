@@ -330,11 +330,22 @@ function displayOpts(q){
   const perm = qPerm(q);
   const wrongMap = {}; let w = 0;
   q.opts.forEach((o,i)=>{ if(!o.ok) wrongMap[i] = (q.explain?.wrongs||[])[w++]; });
-  return perm.map((orig,p)=>({ t:q.opts[orig].t, ok:!!q.opts[orig].ok, wrongText:wrongMap[orig], letter:"ABCD"[p] }));
+  return perm.map((orig,p)=>({ t:q.opts[orig].t, ok:!!q.opts[orig].ok, wrongText:wrongMap[orig], letter:"ABCDE"[p] }));
 }
-function relabel(text, letter){ return text ? text.replace(/^(<b>)[A-D]/, "$1"+letter) : text; }
+function relabel(text, letter){ return text ? text.replace(/^(<b>)[A-E]/, "$1"+letter) : text; }
 function dispWrongs(q){ return displayOpts(q).filter(o=>!o.ok).map(o=>relabel(o.wrongText||"", o.letter)); }
 function dispOkIdx(q){ return displayOpts(q).findIndex(o=>o.ok); }
+function dispOkIdxs(q){ return displayOpts(q).map((o,i)=>o.ok? i : -1).filter(i=>i>=0); }
+/* 복수응답 지원: multi 문항이면 선택 배열이 정답 집합과 정확히 일치해야 정답 */
+function ansRight(q, ans){
+  if(q.multi){
+    if(!Array.isArray(ans)) return false;
+    const okI = dispOkIdxs(q);
+    return ans.length === okI.length && okI.every(i=>ans.includes(i));
+  }
+  return displayOpts(q)[ans]?.ok;
+}
+function ansLabel(ans){ return Array.isArray(ans) ? ans.map(i=>"ABCDE"[i]).join(", ") : "ABCDE"[ans]; }
 
 /* 다음 학습 지점 찾기 */
 function nextUp(){
@@ -634,7 +645,7 @@ function stepHTML(st){
     <h2>${st.h}</h2>
     <div class="prose"><p>${st.q}</p></div>
     <div class="opts">${displayOpts(st).map((o,i)=>`
-      <button class="opt" id="opt${i}" onclick="pick(${i})"><span class="abc">${"ABCD"[i]}</span><span>${o.t}</span></button>`).join("")}
+      <button class="opt" id="opt${i}" onclick="pick(${i})"><span class="abc">${"ABCDE"[i]}</span><span>${o.t}</span></button>`).join("")}
     </div>
     <div id="fb"></div>`;
 }
@@ -652,7 +663,7 @@ function goodFB(st, qs, restored){
     <span class="chip">🏷 ${st.principle}</span></div>`;
 }
 function badFB(st, okIdx, restored){
-  return `<div class="fb bad"><div class="fb-t">정답은 ${"ABCD"[okIdx]}${restored? " (오답 기록됨)":" — 오답노트에 기록해두자"}</div>
+  return `<div class="fb bad"><div class="fb-t">정답은 ${"ABCDE"[okIdx]}${restored? " (오답 기록됨)":" — 오답노트에 기록해두자"}</div>
     ${st.explain.good}
     <ul>${dispWrongs(st).map(w=>`<li>${w}</li>`).join("")}</ul>
     <span class="chip">🏷 ${st.principle}</span></div>`;
@@ -745,6 +756,7 @@ function openTest(pk, idx){
           <ul style="text-align:left">
             <li>${L.questions.length}문항 · 전부 영어 (실전과 동일)</li>
             <li>문항은 TS별 문제 풀에서 <strong>응시마다 추첨</strong> — 문제 구성·순서·보기 순서가 매번 달라져</li>
+            <li>☑ <strong>복수응답(Select TWO) 문항</strong>이 섞일 수 있어 — 실제 시험 형식(가이드 V1.0) 그대로</li>
             <li>힌트 없음 · 답을 골라야 다음 문항으로 (실제 시험 규칙)</li>
             <li>중간 채점 없음 — 끝나면 점수와 전 문항 해설이 나와</li>
             ${prev? `<li>지난 기록: 최고 ${prev.best}/${L.questions.length} (${prev.when})</li>`:""}
@@ -771,10 +783,10 @@ function testNext(sel){
     </div></div>
     <div class="stage">
       <div class="step">
-        <div class="kind"><span class="eyebrow">Q${T.i+1} · ${q.ts}${q.lvl? " · "+q.lvl : ""}</span></div>
+        <div class="kind"><span class="eyebrow">Q${T.i+1} · ${q.ts}${q.lvl? " · "+q.lvl : ""}${q.multi? " · ☑ 복수응답 — "+q.multi+"개 선택" : ""}</span></div>
         <div class="prose"><p style="font-size:16px;font-weight:600">${q.q}</p></div>
         <div class="opts">${displayOpts(q).map((o,i)=>`
-          <button class="opt" id="topt${i}" onclick="testPick(${i})"><span class="abc">${"ABCD"[i]}</span><span>${o.t}</span></button>`).join("")}
+          <button class="opt" id="topt${i}" onclick="testPick(${i})"><span class="abc">${"ABCDE"[i]}</span><span>${o.t}</span></button>`).join("")}
         </div>
       </div>
     </div>
@@ -784,19 +796,28 @@ function testNext(sel){
     </div></div>`;
   window.scrollTo(0,0);
 }
-let tSel = null;
+let tSel = null, tSelM = [];
 function testPick(i){
-  tSel = i;
-  document.querySelectorAll(".opt").forEach((b,j)=>b.classList.toggle("sel", j===i));
+  const q = T.qs[T.i];
   const btn = document.getElementById("tnext");
-  btn.disabled = false;
-  btn.onclick = ()=>{ testNext(tSel); tSel=null; };
+  if(q.multi){
+    const k = tSelM.indexOf(i);
+    if(k >= 0) tSelM.splice(k, 1); else if(tSelM.length < q.multi) tSelM.push(i);
+    document.querySelectorAll(".opt").forEach((b,j)=>b.classList.toggle("sel", tSelM.includes(j)));
+    btn.disabled = tSelM.length !== q.multi;
+    btn.onclick = ()=>{ const a=[...tSelM].sort((x,y)=>x-y); tSelM=[]; testNext(a); };
+  } else {
+    tSel = i;
+    document.querySelectorAll(".opt").forEach((b,j)=>b.classList.toggle("sel", j===i));
+    btn.disabled = false;
+    btn.onclick = ()=>{ testNext(tSel); tSel=null; };
+  }
 }
 function testResult(){
   const L = T.L;
   let right = 0; const perTs = {};
   T.qs.forEach((q,i)=>{
-    const ok = displayOpts(q)[T.answers[i]]?.ok;
+    const ok = ansRight(q, T.answers[i]);
     perTs[q.ts] = perTs[q.ts] || {r:0,t:0};
     perTs[q.ts].t++;
     if(ok){ right++; perTs[q.ts].r++; }
@@ -820,12 +841,12 @@ function testResult(){
     <h2 style="font-size:17px;margin:30px 0 14px">전 문항 해설</h2>
     ${T.qs.map((q,i)=>{
       const dop = displayOpts(q);
-      const my = T.answers[i]; const ok = dop[my]?.ok;
-      const okIdx = dispOkIdx(q);
+      const my = T.answers[i]; const ok = ansRight(q, my);
+      const okIs = dispOkIdxs(q);
       return `<div class="rev">
         <div class="rq">Q${i+1}. ${q.q}</div>
-        <div class="ra ${ok? "ok":"no"}">내 답: ${"ABCD"[my]} ${ok? "✓":"✕"}</div>
-        ${ok? "":`<div class="ra ok">정답: ${"ABCD"[okIdx]} — ${dop[okIdx].t}</div>`}
+        <div class="ra ${ok? "ok":"no"}">내 답: ${ansLabel(my)} ${ok? "✓":"✕"}</div>
+        ${ok? "":`<div class="ra ok">정답: ${okIs.map(j=>"ABCDE"[j]).join(", ")} — ${okIs.map(j=>dop[j].t).join(" · ")}</div>`}
         <details ${ok? "":"open"}><summary>해설</summary>
           <p style="margin-top:8px">${q.explain.good}</p>
           <ul style="list-style:none;margin-top:8px">${dispWrongs(q).map(w=>`<li style="padding-left:20px;position:relative;margin-bottom:6px"><span style="position:absolute;left:0;color:var(--no)">✕</span>${w}</li>`).join("")}</ul>
@@ -871,7 +892,7 @@ function openExam(){
             <li>시나리오 은행 6개 중 <strong>4개 랜덤</strong> — 실제 시험과 동일</li>
             <li><strong>60문항 · 120분</strong> 카운트다운 · 시간 종료 시 자동 제출</li>
             <li>답을 골라야 다음 문항으로 (건너뛰기 불가) · 중간 채점 없음</li>
-            <li>⚠ 실제 시험은 <strong>복수응답 문항이 섞여 있음</strong> ("choose two" 식으로 개수 명시) — 이 시뮬레이터는 단일 정답형이니, 실전에선 문항의 <strong>선택 개수 지시</strong>를 반드시 확인</li>
+            <li>☑ 실제 시험처럼 <strong>복수응답 문항이 무작위로 섞여 나와</strong> — 해당 문항엔 "복수응답 — N개 선택" 표시가 붙고, N개를 골라야 진행돼</li>
             <li>종료 후: 추정 스케일 점수(합격선 720) + 도메인·시나리오별 리포트 + 전 문항 해설</li>
             ${prev? `<li>기록: 최고 <strong>${prev.best}점</strong> · ${prev.attempts||1}회 응시 (마지막 ${prev.when})</li>`:""}
           </ul>
@@ -923,10 +944,10 @@ function examNext(){
       <div class="pbar" style="margin:0 0 26px"><i style="width:${Math.round(EX.i/EX.flat.length*100)}%"></i></div>
       ${item.firstOfBlock? `<div class="callout" style="margin-bottom:22px">📋 <b>시나리오 ${sc.no} — ${sc.en}</b><br>${sc.brief}</div>`:""}
       <div class="step">
-        <div class="kind"><span class="eyebrow">Q${EX.i+1}</span></div>
+        <div class="kind"><span class="eyebrow">Q${EX.i+1}${q.multi? " · ☑ 복수응답 — "+q.multi+"개 선택" : ""}</span></div>
         <div class="prose"><p style="font-size:16px;font-weight:600">${q.q}</p></div>
         <div class="opts">${displayOpts(q).map((o,i)=>`
-          <button class="opt" id="exopt${i}" onclick="examPick(${i})"><span class="abc">${"ABCD"[i]}</span><span>${o.t}</span></button>`).join("")}
+          <button class="opt" id="exopt${i}" onclick="examPick(${i})"><span class="abc">${"ABCDE"[i]}</span><span>${o.t}</span></button>`).join("")}
         </div>
       </div>
     </div>
@@ -937,9 +958,18 @@ function examNext(){
   window.scrollTo(0,0);
 }
 function examPick(i){
-  EX.sel = i;
-  document.querySelectorAll(".opt").forEach((b,j)=>b.classList.toggle("sel", j===i));
-  document.getElementById("exNext").disabled = false;
+  const q = EX.flat[EX.i].q;
+  if(q.multi){
+    if(!Array.isArray(EX.sel)) EX.sel = [];
+    const k = EX.sel.indexOf(i);
+    if(k >= 0) EX.sel.splice(k, 1); else if(EX.sel.length < q.multi) EX.sel.push(i);
+    document.querySelectorAll(".opt").forEach((b,j)=>b.classList.toggle("sel", EX.sel.includes(j)));
+    document.getElementById("exNext").disabled = EX.sel.length !== q.multi;
+  } else {
+    EX.sel = i;
+    document.querySelectorAll(".opt").forEach((b,j)=>b.classList.toggle("sel", j===i));
+    document.getElementById("exNext").disabled = false;
+  }
 }
 function finishExam(){
   clearInterval(EX.timerId);
@@ -949,7 +979,7 @@ function finishExam(){
     const d = "D"+(item.q.ts||"0").split(".")[0];
     dom[d] = dom[d]||{r:0,t:0}; scn[item.sc] = scn[item.sc]||{r:0,t:0};
     dom[d].t++; scn[item.sc].t++;
-    if(displayOpts(item.q)[EX.answers[i]]?.ok){ right++; dom[d].r++; scn[item.sc].r++; }
+    if(ansRight(item.q, EX.answers[i])){ right++; dom[d].r++; scn[item.sc].r++; }
   });
   const total = EX.flat.length;
   const scaled = Math.round(right/total*960);
@@ -979,11 +1009,11 @@ function finishExam(){
     ${EX.flat.map((item,i)=>{
       const q = item.q, my = EX.answers[i];
       const dop = displayOpts(q);
-      const ok = dop[my]?.ok; const okIdx = dispOkIdx(q);
+      const ok = ansRight(q, my); const okIs = dispOkIdxs(q);
       return `<div class="rev">
         <div class="rq">Q${i+1} <span class="muted" style="font-weight:600">· ${window.CCAF_SCENARIOS[item.sc].no} · ${q.ts||""}</span> — ${q.q}</div>
-        <div class="ra ${ok? "ok":"no"}">내 답: ${my===null? "미응답 (시간 종료)": "ABCD"[my]} ${ok? "✓":"✕"}</div>
-        ${ok? "":`<div class="ra ok">정답: ${"ABCD"[okIdx]} — ${dop[okIdx].t}</div>`}
+        <div class="ra ${ok? "ok":"no"}">내 답: ${my===null? "미응답 (시간 종료)": ansLabel(my)} ${ok? "✓":"✕"}</div>
+        ${ok? "":`<div class="ra ok">정답: ${okIs.map(j=>"ABCDE"[j]).join(", ")} — ${okIs.map(j=>dop[j].t).join(" · ")}</div>`}
         <details ${ok? "":"open"}><summary>해설</summary>
           <p style="margin-top:8px">${q.explain.good}</p>
           <ul style="list-style:none;margin-top:8px">${dispWrongs(q).map(w=>`<li style="padding-left:20px;position:relative;margin-bottom:6px"><span style="position:absolute;left:0;color:var(--no)">✕</span>${w}</li>`).join("")}</ul>
