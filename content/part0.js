@@ -10,7 +10,9 @@ window.CCAF_CONTENT.p0 = {
         <h4>기본 정보</h4>
         <ul>
           <li><strong>60문항 · 120분</strong> — 문항당 평균 2분</li>
-          <li>4지선다, <strong>정답 1개</strong> — 오답 3개는 "불완전하게 아는 사람이 고를 만하게" 설계됨</li>
+          <li>형식(가이드 V1.0 명시): <strong>객관식 + 복수응답(multiple-response) 혼합</strong> — 복수응답 문항은 <strong>"몇 개를 고르라"고 문항에 명시</strong>됨. 지시 개수를 꼭 확인하고 답할 것</li>
+          <li>오답 보기들은 "불완전하게 아는 사람이 고를 만하게" 설계됨 — 이 사이트의 연습 문제는 단일 정답형으로 훈련하지만, 판단 원리는 동일</li>
+          <li>운영 정보: 시험 코드 <strong>CCAR-F</strong> · $125 · Pearson VUE 감독(온라인/시험장) · 유효기간 12개월</li>
           <li><strong>답을 골라야 다음 문항으로</strong> — 건너뛰기 불가 (V2에서 바뀐 규칙)</li>
           <li>점수는 100~1,000 스케일 · <strong>합격선 720</strong> · 유효기간 12개월</li>
         </ul>
