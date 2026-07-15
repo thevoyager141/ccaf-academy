@@ -1,4 +1,4 @@
-/* 미니테스트·모의고사 확장 문제 풀 — 2026-07-11. 취약점 기반 신규 38문항 (오답노트·연습시험 오답 반영) */
+/* 미니테스트·모의고사 확장 문제 풀 — 취약점 기반 38문항 + 복수응답(Select TWO) 15문항 (가이드 V1.0 형식 반영) */
 window.CCAF_MT_EXTRA = {
  "1.1": [
   {
@@ -60,6 +60,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "stop_reason은 열거형 — 값마다 분기"
+  },
+  {
+   "ts": "1.1",
+   "lvl": "실전",
+   "scenario": "s1",
+   "multi": 2,
+   "q": "A support agent's loop terminates whenever the response contains any text block, and it silently drops failed tool results \"to keep the context clean.\" Which TWO changes fix the actual defects? (Select TWO.)",
+   "opts": [
+    {
+     "t": "Terminate based on stop_reason values (continue on \"tool_use\", stop on \"end_turn\") instead of the presence of text.",
+     "ok": true
+    },
+    {
+     "t": "Append every tool result to the conversation as structured tool_result blocks — including failures.",
+     "ok": true
+    },
+    {
+     "t": "Add a hard cap of 10 iterations as the primary stopping condition for safety."
+    },
+    {
+     "t": "Scan responses for phrases like \"all done\" as a secondary completion check."
+    },
+    {
+     "t": "Have the loop retry the identical request whenever any non-end_turn stop_reason appears."
+    }
+   ],
+   "explain": {
+    "good": "두 결함 = 종료 신호 오독 + 실패 은폐. 처방도 정확히 둘: stop_reason 기반 종료 + 실패 포함 전체 결과 추가. 복수응답은 이렇게 '결함 수 = 정답 수'로 짝이 맞아야 해.",
+    "wrongs": [
+     "<b>C:</b> 반복 상한을 주 조건으로 승격 — 안티패턴. 안전망은 보조일 때만 정당해.",
+     "<b>D:</b> 자연어 완료 신호 파싱 — 표현이 바뀌면 깨지는 안티패턴.",
+     "<b>E:</b> max_tokens·pause_turn·refusal은 처방이 제각각 — 동일 요청 재제출로 뭉치면 안 돼."
+    ]
+   },
+   "principle": "stop_reason으로 돌고, 실패도 기록한다"
   }
  ],
  "1.2": [
@@ -122,6 +157,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "설계는 위, 일상 복구는 아래"
+  },
+  {
+   "ts": "1.2",
+   "lvl": "기초",
+   "scenario": "s3",
+   "multi": 2,
+   "q": "In a coordinator–subagent research system, which TWO are the coordinator's responsibilities? (Select TWO.)",
+   "opts": [
+    {
+     "t": "Partitioning the research scope into non-overlapping subtopics before delegation.",
+     "ok": true
+    },
+    {
+     "t": "Aggregating subagent outputs and evaluating the synthesis for coverage gaps, re-delegating where thin.",
+     "ok": true
+    },
+    {
+     "t": "Executing the web searches itself when a subagent's results look weak."
+    },
+    {
+     "t": "Handling every transient timeout centrally so subagents stay simple."
+    },
+    {
+     "t": "Letting subagents exchange findings directly with each other to reduce round-trips."
+    }
+   ],
+   "explain": {
+    "good": "코디네이터의 일 = 사전 설계(분할·배정)와 사후 종합(갭 평가·재위임). 실행은 서브에이전트, 일상 복구도 서브에이전트 — 위·아래 역할 구분이 이 문제의 전부야.",
+    "wrongs": [
+     "<b>C:</b> 실행까지 코디네이터가 하면 위임 구조의 의미가 사라져 — 약하면 재위임이 정답.",
+     "<b>D:</b> 일시 실패는 서브에이전트 로컬 복구 — 중앙으로 다 올리면 코디네이터 과부하.",
+     "<b>E:</b> 직접 통신은 컨텍스트 격리·관측성 파괴 — 모든 통신은 코디네이터 경유."
+    ]
+   },
+   "principle": "설계는 위, 실행·복구는 아래"
   }
  ],
  "1.3": [
@@ -186,6 +256,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "원칙 ① 강제는 프로그램, 성향은 프롬프트"
+  },
+  {
+   "ts": "1.4",
+   "lvl": "기초",
+   "scenario": "s1",
+   "multi": 2,
+   "q": "Policy: identity verification must happen before any refund, with zero tolerance for violations. Which TWO implementations provide the deterministic guarantee? (Select TWO.)",
+   "opts": [
+    {
+     "t": "A PreToolUse hook that blocks process_refund whenever the session's verification state is not set.",
+     "ok": true
+    },
+    {
+     "t": "Making a verification token a required parameter of the process_refund tool itself, so unverified calls fail schema validation.",
+     "ok": true
+    },
+    {
+     "t": "A system-prompt rule: \"Always verify identity before processing any refund.\""
+    },
+    {
+     "t": "Few-shot examples demonstrating verification-first behavior in past cases."
+    },
+    {
+     "t": "A post-output filter that scans responses and removes refund confirmations lacking verification mentions."
+    }
+   ],
+   "explain": {
+    "good": "'무관용(zero tolerance)' = 100% 강제 = 프로그램 레벨. 훅 차단과 필수 파라미터 둘 다 코드가 보장하는 길이야 — 게이트가 꼭 훅일 필요는 없다는 것까지 묻는 문제.",
+    "wrongs": [
+     "<b>C:</b> 프롬프트 지시는 확률적 — 88%를 100%로 못 만들어.",
+     "<b>D:</b> few-shot도 성향 개선일 뿐 보장이 아냐 — 컴플라이언스엔 부족.",
+     "<b>E:</b> 사후 필터는 환불이 이미 실행된 뒤 — 문구를 지워도 돈은 나갔어."
+    ]
+   },
+   "principle": "원칙 ① 강제는 프로그램으로 — 경로는 둘"
   }
  ],
  "1.5": [
@@ -312,6 +417,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "오선택 1차 해법은 설명 보강"
+  },
+  {
+   "ts": "2.1",
+   "lvl": "기초",
+   "scenario": "s4",
+   "multi": 2,
+   "q": "Which TWO elements belong in a tool description to make selection reliable? (Select TWO.)",
+   "opts": [
+    {
+     "t": "The expected input format with a concrete example query.",
+     "ok": true
+    },
+    {
+     "t": "An explicit boundary against the neighboring tool (\"use search_docs for guides; use this one for product data\").",
+     "ok": true
+    },
+    {
+     "t": "The tool's full internal implementation, so the model understands how it works."
+    },
+    {
+     "t": "A single terse sentence, since long descriptions waste tokens on every request."
+    },
+    {
+     "t": "A note telling the model to \"choose carefully\" when multiple tools seem relevant."
+    }
+   ],
+   "explain": {
+    "good": "선택 신뢰도를 만드는 건 판단 재료: 입력 형식+예시, 그리고 이웃 도구와의 경계선. 공식 기준 3~4문장의 핵심 성분이 바로 이 둘이야.",
+    "wrongs": [
+     "<b>C:</b> 내부 구현은 선택 판단에 무관한 노이즈 — 필요한 건 '언제 쓰나'지 '어떻게 도는가'가 아냐.",
+     "<b>D:</b> 한 줄 설명이 바로 오선택의 최다 원인 — 토큰 절약의 절반의 진실.",
+     "<b>E:</b> '신중히 골라'는 판단선을 안 그어줘 — 4.1의 막연한 지시와 같은 실패."
+    ]
+   },
+   "principle": "설명 = 입력 예시 + 경계선"
   }
  ],
  "2.2": [
@@ -344,6 +484,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "빈 결과 ≠ 실패 — 모양부터 분리"
+  },
+  {
+   "ts": "2.2",
+   "lvl": "실전",
+   "scenario": "s1",
+   "multi": 2,
+   "q": "Your order-lookup tool currently returns the string \"failed\" for every problem. Which TWO fields, added to a structured error response, let the agent make correct recovery decisions? (Select TWO.)",
+   "opts": [
+    {
+     "t": "errorCategory distinguishing transient / validation / permission failures.",
+     "ok": true
+    },
+    {
+     "t": "An isRetryable boolean telling the agent whether a retry can possibly succeed.",
+     "ok": true
+    },
+    {
+     "t": "The full internal stack trace of the backend service for transparency."
+    },
+    {
+     "t": "An HTTP 200 status with an empty result set, so the agent never sees scary errors."
+    },
+    {
+     "t": "A randomized error code so the agent learns not to over-fit to specific failures."
+    }
+   ],
+   "explain": {
+    "good": "복구 판단의 두 축 = 무슨 종류의 실패인가(범주) + 다시 하면 되는가(재시도 가능성). 이 둘이 있어야 재시도/우회/보고를 가를 수 있어.",
+    "wrongs": [
+     "<b>C:</b> 백엔드 스택 트레이스는 에이전트에겐 노이즈 — 판단 재료는 구조화된 분류지 원시 덤프가 아냐.",
+     "<b>D:</b> 실패의 성공 위장 — 에이전트가 '재고 없음'류의 틀린 결론을 내리게 만드는 안티패턴.",
+     "<b>E:</b> 무작위 코드는 정보를 파괴 — 존재하지 않는 설계 원칙."
+    ]
+   },
+   "principle": "실패 유형 + 재시도 가능성 — 판단의 두 축"
   }
  ],
  "2.3": [
@@ -440,6 +615,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "Edit 실패의 정식 탈출구 = Read+Write"
+  },
+  {
+   "ts": "2.5",
+   "lvl": "기초",
+   "scenario": "s4",
+   "multi": 2,
+   "q": "Match the built-in tool to the job. Which TWO pairings are correct? (Select TWO.)",
+   "opts": [
+    {
+     "t": "Finding all files whose names match *.test.tsx anywhere in the repo → Glob.",
+     "ok": true
+    },
+    {
+     "t": "Finding every file whose contents mention validateCoupon → Grep.",
+     "ok": true
+    },
+    {
+     "t": "Finding files by name pattern → Grep, since it scans the filesystem."
+    },
+    {
+     "t": "Reading the entire repository into context first, then searching manually → Read."
+    },
+    {
+     "t": "Locating text inside files → Glob, because globs match any string."
+    }
+   ],
+   "explain": {
+    "good": "이름·경로 패턴 = Glob, 내용 검색 = Grep — 두 도구의 축은 '파일 겉(이름)이냐 속(내용)이냐'야.",
+    "wrongs": [
+     "<b>C:</b> 반대로 배정 — Grep은 파일 속 텍스트를 찾는 도구.",
+     "<b>D:</b> 전체 리포를 컨텍스트에 붓는 건 컨텍스트 낭비의 대표 안티패턴 — 검색 도구가 있는 이유.",
+     "<b>E:</b> 글롭은 경로 문자열에만 작동 — 파일 내용은 못 봐."
+    ]
+   },
+   "principle": "겉은 Glob, 속은 Grep"
   }
  ],
  "3.1": [
@@ -502,6 +712,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "원인은 스코프 — 파일이 어디 있나부터"
+  },
+  {
+   "ts": "3.1",
+   "lvl": "기초",
+   "scenario": "s2",
+   "multi": 2,
+   "q": "A convention must reach every current and future teammate automatically. Which TWO locations achieve that? (Select TWO.)",
+   "opts": [
+    {
+     "t": "CLAUDE.md at the project root, committed to the repo.",
+     "ok": true
+    },
+    {
+     "t": ".claude/rules/ files with path scoping, committed to the repo.",
+     "ok": true
+    },
+    {
+     "t": "Each developer's ~/.claude/CLAUDE.md, updated via team announcement."
+    },
+    {
+     "t": ".claude/settings.local.json, since it lives inside the project folder."
+    },
+    {
+     "t": "A pinned message in the team chat that everyone applies manually."
+    }
+   ],
+   "explain": {
+    "good": "판별기는 하나 — git에 커밋되는가. 루트 CLAUDE.md와 .claude/rules/는 클론·풀을 타고 전원에게 자동 도달. 미래 합류자까지 커버돼.",
+    "wrongs": [
+     "<b>C:</b> user 레벨은 각자 손으로 넣어야 하고 신규 멤버가 누락되는 바로 그 패턴 — 4회 이상 반복된 함정.",
+     "<b>D:</b> local은 프로젝트 안에 있어도 gitignore 대상 — '폴더 위치'가 아니라 '커밋 여부'가 스코프를 갈라.",
+     "<b>E:</b> 수동 적용은 자동화 요구 자체를 못 채워."
+    ]
+   },
+   "principle": "스코프 판별 = git에 커밋되는가"
   }
  ],
  "3.2": [
@@ -564,6 +809,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "위험이 다르면 스킬을 가른다 — 원칙 ④"
+  },
+  {
+   "ts": "3.2",
+   "lvl": "실전",
+   "scenario": "s2",
+   "multi": 2,
+   "q": "A /migration skill both drafts SQL files and applies them to the database, and twice applied when only a draft was wanted. Which TWO changes make it safe? (Select TWO.)",
+   "opts": [
+    {
+     "t": "Split it into /migration-create and /migration-apply as separate skills.",
+     "ok": true
+    },
+    {
+     "t": "Scope each skill's allowed-tools to its job — file tools only for create; DB execution only for apply.",
+     "ok": true
+    },
+    {
+     "t": "Mark the mode argument as required in argument-hint so the skill can't run without it."
+    },
+    {
+     "t": "Keep one skill but add \"always confirm before applying\" to its instructions."
+    },
+    {
+     "t": "Delete the apply capability entirely so nothing destructive can run."
+    }
+   ],
+   "explain": {
+    "good": "위험이 다른 두 작업은 분리 + 각자 최소 권한 — 이 두 처방이 세트야. 분리만 하고 권한을 안 좁히면 create 스킬이 여전히 DB를 만질 수 있어.",
+    "wrongs": [
+     "<b>C:</b> argument-hint는 표시용 힌트일 뿐 강제 기능이 없어 — 반복 확인된 함정.",
+     "<b>D:</b> 파괴적 작업을 확률적 지시에 맡기기 — 두 번 사고 난 현장의 재발 대기.",
+     "<b>E:</b> apply는 업무 요건 — 기능 제거는 해결이 아니라 회피."
+    ]
+   },
+   "principle": "분리 + 최소 권한은 세트 — 원칙 ④"
   }
  ],
  "3.3": [
@@ -628,6 +908,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "already/existing이 보이면 절차 추가는 함정"
+  },
+  {
+   "ts": "3.4",
+   "lvl": "기초",
+   "scenario": "s2",
+   "multi": 2,
+   "q": "Which TWO tasks warrant plan mode rather than direct execution? (Select TWO.)",
+   "opts": [
+    {
+     "t": "A 45-file library migration where two integration approaches are both defensible.",
+     "ok": true
+    },
+    {
+     "t": "Restructuring a monolith into microservices — an architectural decision with wide impact.",
+     "ok": true
+    },
+    {
+     "t": "A one-line guard-clause fix where the stack trace already pinpoints the faulty line."
+    },
+    {
+     "t": "Fixing a typo in an error message string."
+    },
+    {
+     "t": "Adding a single validation check to one function with an existing failing test."
+    }
+   ],
+   "explain": {
+    "good": "plan mode의 3신호 = 대규모(다중 파일) · 복수의 유효한 접근 · 아키텍처 결정. 두 정답이 각각 이 신호들을 담고 있어.",
+    "wrongs": [
+     "<b>C:</b> 진단 끝 + 한 줄 수정 = 직접 실행 — 3회 반복된 그 함정. already가 보이면 절차 추가는 낭비.",
+     "<b>D:</b> 오타 수정에 계획 단계는 비례성 위반.",
+     "<b>E:</b> 범위 명확 + 검증 수단 존재 = 직접 실행의 교과서 케이스."
+    ]
+   },
+   "principle": "plan mode 3신호: 규모·복수 접근·아키텍처"
   }
  ],
  "3.5": [
@@ -818,6 +1133,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "없는 값은 null, 안 맞는 값은 unclear"
+  },
+  {
+   "ts": "4.3",
+   "lvl": "기초",
+   "scenario": "s6",
+   "multi": 2,
+   "q": "Which TWO schema-design moves prevent the model from fabricating or force-fitting values? (Select TWO.)",
+   "opts": [
+    {
+     "t": "Make fields that may be absent from the source nullable instead of required.",
+     "ok": true
+    },
+    {
+     "t": "Extend category enums with \"unclear\" and \"other\" plus a detail string field.",
+     "ok": true
+    },
+    {
+     "t": "Enable strict mode so every output exactly matches the schema."
+    },
+    {
+     "t": "Mark every field required so the model never leaves anything blank."
+    },
+    {
+     "t": "Add a retry loop so wrong values get corrected on the second pass."
+    }
+   ],
+   "explain": {
+    "good": "환각의 두 뿌리: 없는 값을 required가 강요(→nullable), 안 맞는 분류를 enum이 강요(→unclear/other). 각각의 탈출구를 열어주는 게 정답 쌍.",
+    "wrongs": [
+     "<b>C:</b> strict는 문법만 보장 — 지어낸 값도 문법적으로 유효하면 통과해. 절반의 진실.",
+     "<b>D:</b> required 전부가 바로 지어내기의 원인 — 정답과 정반대 방향.",
+     "<b>E:</b> 정보가 원본에 없으면 재시도는 무효 — 4.4의 판별 그대로."
+    ]
+   },
+   "principle": "없는 값은 null, 안 맞는 값은 unclear"
   }
  ],
  "4.4": [
@@ -912,6 +1262,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "배치의 근본 제약 = 왕복 없음"
+  },
+  {
+   "ts": "4.5",
+   "lvl": "기초",
+   "scenario": "s5",
+   "multi": 2,
+   "q": "Which TWO workloads are appropriate for the Message Batches API? (Select TWO.)",
+   "opts": [
+    {
+     "t": "A nightly audit that reviews the day's merged changes and files a morning report.",
+     "ok": true
+    },
+    {
+     "t": "A weekly compliance scan across the entire document archive.",
+     "ok": true
+    },
+    {
+     "t": "Pre-merge PR checks that developers wait on before merging."
+    },
+    {
+     "t": "An interactive support conversation with a customer."
+    },
+    {
+     "t": "A code-review workflow that iteratively requests files mid-analysis (tool loop)."
+    }
+   ],
+   "explain": {
+    "good": "배치 적합 = 논블로킹 + 지연 허용. 야간 감사와 주간 스캔은 결과가 '언제' 오든 아무도 안 기다려 — 50% 절감을 공짜로 얻는 자리.",
+    "wrongs": [
+     "<b>C:</b> 머지 대기는 블로킹 — SLA 없는 최대 24시간에 팀을 세울 수 없어. '보통 1시간'은 약속이 아냐.",
+     "<b>D:</b> 실시간 대화는 동기 API의 존재 이유.",
+     "<b>E:</b> 배치는 제출~회수 사이에 개입 불가 — 미드-리퀘스트 도구 왕복이 성립 안 해."
+    ]
+   },
+   "principle": "블로킹은 동기, 나머지만 배치"
   }
  ],
  "4.6": [
@@ -944,6 +1329,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "누락은 자기평가, 확신은 새 눈"
+  },
+  {
+   "ts": "4.6",
+   "lvl": "기초",
+   "scenario": "s5",
+   "multi": 2,
+   "q": "Which TWO practices make automated code review reliably catch subtle issues? (Select TWO.)",
+   "opts": [
+    {
+     "t": "Review with a fresh independent instance that never saw the generation reasoning.",
+     "ok": true
+    },
+    {
+     "t": "Split large reviews into per-file focused passes plus a separate cross-file integration pass.",
+     "ok": true
+    },
+    {
+     "t": "Instruct the generating session to self-review with \"assume your code is wrong.\""
+    },
+    {
+     "t": "Run the same review three times and take a majority vote."
+    },
+    {
+     "t": "Switch to a larger model with a bigger context window for single-pass review."
+    }
+   ],
+   "explain": {
+    "good": "신뢰의 두 축: 누가 보나(생성 추론 없는 새 눈) + 어떻게 보나(집중 패스 + 통합 패스). 3대 오답 장치(self-review·다수결·큰 모델)와 정확히 대비되는 쌍이야.",
+    "wrongs": [
+     "<b>C:</b> 프롬프트를 세게 써도 생성 맥락의 확증 편향은 남아 — 같은 세션의 한계.",
+     "<b>D:</b> 같은 희석된 패스 3번 = 비용 3배, 편향은 투표로 안 씻겨.",
+     "<b>E:</b> 모델 크기는 주의력 희석의 해답이 아냐 — 구조(패스 분리)가 해답."
+    ]
+   },
+   "principle": "새 눈 + 패스 분리"
   }
  ],
  "5.1": [
@@ -1006,6 +1426,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "요약은 압축, 사실은 별도 보존"
+  },
+  {
+   "ts": "5.1",
+   "lvl": "실전",
+   "scenario": "s1",
+   "multi": 2,
+   "q": "A 20-turn refund case keeps losing the exact amount and deadline established early on. Context cannot grow unboundedly. Which TWO mechanisms preserve the facts? (Select TWO.)",
+   "opts": [
+    {
+     "t": "Extract transactional facts into a persistent case-facts block that is excluded from summarization and included every turn.",
+     "ok": true
+    },
+    {
+     "t": "Trim verbose tool outputs to the few decision-relevant fields before they enter context.",
+     "ok": true
+    },
+    {
+     "t": "Add \"never lose numerical values\" to the summarization prompt."
+    },
+    {
+     "t": "Disable summarization and keep the full conversation history."
+    },
+    {
+     "t": "Add a database-lookup tool so forgotten figures can be re-fetched."
+    }
+   ],
+   "explain": {
+    "good": "보존은 지시가 아니라 구조로: 뭉개지면 안 되는 것은 요약 밖 금고(case facts)에, 애초에 쌓이지 말아야 할 것은 트리밍으로. 입구와 출구를 동시에 막는 쌍이야.",
+    "wrongs": [
+     "<b>C:</b> 프롬프트 지시는 확률적 — 여러 번 압축을 거치면 결국 새.",
+     "<b>D:</b> 무한 성장 금지 제약을 정면 위반 — 40턴이 되면 같은 벽.",
+     "<b>E:</b> 대화 중 합의된 금액·기한은 DB에 없어 — 대화 안에서 만들어진 사실은 대화 쪽에서 지켜야 해."
+    ]
+   },
+   "principle": "구조로 지킨다 — 금고와 트리밍"
   }
  ],
  "5.2": [
@@ -1068,6 +1523,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "정책 공백은 위로"
+  },
+  {
+   "ts": "5.2",
+   "lvl": "기초",
+   "scenario": "s1",
+   "multi": 2,
+   "q": "Which TWO are legitimate escalation triggers for a support agent? (Select TWO.)",
+   "opts": [
+    {
+     "t": "The customer explicitly asks for a human agent.",
+     "ok": true
+    },
+    {
+     "t": "The policy documentation is silent on the customer's specific request.",
+     "ok": true
+    },
+    {
+     "t": "The sentiment-analysis score crosses the frustration threshold."
+    },
+    {
+     "t": "The conversation has exceeded ten turns."
+    },
+    {
+     "t": "The model's self-reported confidence drops below 60%."
+    }
+   ],
+   "explain": {
+    "good": "정당한 트리거는 해석이 필요 없는 사건 — 명시적 요청과 정책 공백. 나머지 셋은 전부 대리지표(추정값)라 신뢰 불가 — 이 대비가 5.2의 심장이야.",
+    "wrongs": [
+     "<b>C:</b> 감정 점수는 추정 — 화난 고객 ≠ 복잡한 케이스.",
+     "<b>D:</b> 턴 수는 임의 기준 — 길다고 못 푸는 게 아니고 짧다고 풀리는 게 아냐.",
+     "<b>E:</b> 자기보고 신뢰도는 보정 전엔 못 믿어 — 어려운 케이스일수록 과신해."
+    ]
+   },
+   "principle": "트리거는 사건, 대리지표는 함정"
   }
  ],
  "5.3": [
@@ -1196,6 +1686,41 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "출처는 구조로 묶어야 산다"
+  },
+  {
+   "ts": "5.6",
+   "lvl": "기초",
+   "scenario": "s3",
+   "multi": 2,
+   "q": "Which TWO practices keep final research reports verifiable back to their sources? (Select TWO.)",
+   "opts": [
+    {
+     "t": "Require subagents to output structured claim-source mappings (claim + excerpt + URL + date) that synthesis must preserve and merge.",
+     "ok": true
+    },
+    {
+     "t": "Require publication or data-collection dates in structured outputs so temporal differences aren't misread as contradictions.",
+     "ok": true
+    },
+    {
+     "t": "Append a bibliography of all consulted sources at the end of each report."
+    },
+    {
+     "t": "Add \"always keep source URLs\" to the synthesis agent's prompt."
+    },
+    {
+     "t": "Let the synthesis agent pick the more credible source whenever two conflict."
+    }
+   ],
+   "explain": {
+    "good": "출처는 구조로 묶여야 압축을 견디고(매핑 보존), 시점은 데이터로 있어야 2019 vs 2024를 모순으로 오독하지 않아. 산문·각오·재량은 전부 압축 한 번에 증발해.",
+    "wrongs": [
+     "<b>C:</b> 끝에 붙는 목록은 어느 주장이 어느 출처인지 연결이 없어 — attribution의 핵심 부재.",
+     "<b>D:</b> 프롬프트 지시는 다단 요약에서 확률적으로 새 — 구조 강제가 정답.",
+     "<b>E:</b> 임의 해소는 금지 — 충돌은 둘 다 주석 달아 보존이 원칙."
+    ]
+   },
+   "principle": "출처는 구조로, 시점은 필수로"
   }
  ]
 };
