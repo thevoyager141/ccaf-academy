@@ -871,6 +871,7 @@ function openExam(){
             <li>시나리오 은행 6개 중 <strong>4개 랜덤</strong> — 실제 시험과 동일</li>
             <li><strong>60문항 · 120분</strong> 카운트다운 · 시간 종료 시 자동 제출</li>
             <li>답을 골라야 다음 문항으로 (건너뛰기 불가) · 중간 채점 없음</li>
+            <li>⚠ 실제 시험은 <strong>복수응답 문항이 섞여 있음</strong> ("choose two" 식으로 개수 명시) — 이 시뮬레이터는 단일 정답형이니, 실전에선 문항의 <strong>선택 개수 지시</strong>를 반드시 확인</li>
             <li>종료 후: 추정 스케일 점수(합격선 720) + 도메인·시나리오별 리포트 + 전 문항 해설</li>
             ${prev? `<li>기록: 최고 <strong>${prev.best}점</strong> · ${prev.attempts||1}회 응시 (마지막 ${prev.when})</li>`:""}
           </ul>
