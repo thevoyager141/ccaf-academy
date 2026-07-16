@@ -1,4 +1,4 @@
-/* 미니테스트·모의고사 확장 문제 풀 — 취약점 기반 38문항 + 복수응답(Select TWO) 15문항 (가이드 V1.0 형식 반영) */
+/* 확장 문제 풀 — 취약점 38 + 복수응답 15 + 1차 당황 재현 2 */
 window.CCAF_MT_EXTRA = {
  "1.1": [
   {
@@ -355,6 +355,36 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "부분 stale은 통보로, 분기는 fork로"
+  },
+  {
+   "ts": "1.7",
+   "lvl": "실전",
+   "scenario": "s2",
+   "q": "Yesterday's session crashed with an API error halfway through analyzing the checkout module (60 files done). Overnight, a teammate merged changes to 3 of those files. You must continue this morning with minimal token spend. What do you do?",
+   "opts": [
+    {
+     "t": "Resume the session and explicitly tell it which 3 files changed so it re-reads only those, then continue — most of yesterday's analysis is still valid.",
+     "ok": true
+    },
+    {
+     "t": "Start a fresh session and re-analyze the module from scratch; after a crash and external changes, yesterday's context can't be trusted."
+    },
+    {
+     "t": "Resume and continue immediately — the session will notice the teammate's changes when it next touches those files."
+    },
+    {
+     "t": "Fork the crashed session into two branches and compare continuation strategies before committing to one."
+    }
+   ],
+   "explain": {
+    "good": "1차 시험에서 당황했던 바로 그 조합이야: 크래시 + 야간 외부 변경 + 토큰 효율. 공식은 '부분 stale은 통보로' — API 에러가 나도 세션 기록은 남아 있어 resume이 되고, 바뀐 3개만 표적 재읽기하면 어제의 57파일 분석을 공짜로 재사용해. 토큰 효율의 정답은 언제나 '유효한 걸 버리지 않기'.",
+    "wrongs": [
+     "<b>B:</b> 안전해 보이는 절반의 진실 — 유효한 57파일 분석까지 버리는 토큰 최대 지출 경로. 전면 재분석은 '전부 stale'일 때만.",
+     "<b>C:</b> 세션은 파일 변경을 스스로 감지 못 해 — 낡은 분석 위에서 틀린 결론을 내리는 stale 함정.",
+     "<b>D:</b> fork는 비교할 안이 2개 이상일 때의 도구 — 여기엔 갈래가 없어. 정교해 보이는 해법 함정."
+    ]
+   },
+   "principle": "부분 stale은 통보로 — 유효한 건 버리지 않는다"
   }
  ],
  "2.1": [
@@ -1007,6 +1037,36 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "필터로 거르지 말고 맥락으로 안 내게"
+  },
+  {
+   "ts": "3.6",
+   "lvl": "실전",
+   "scenario": "s5",
+   "q": "Your CI review step must run unattended and emit machine-parseable output. Which command actually works?",
+   "opts": [
+    {
+     "t": "claude -p \"Review this diff for security issues\" --output-format json --json-schema review-schema.json",
+     "ok": true
+    },
+    {
+     "t": "CLAUDE_HEADLESS=true claude \"Review this diff for security issues\" --format json"
+    },
+    {
+     "t": "claude --batch review-requests.txt --output json --no-interactive"
+    },
+    {
+     "t": "claude \"Review this diff for security issues\" --output-format json"
+    }
+   ],
+   "explain": {
+    "good": "민낯 보기 훈련: 실존하는 건 -p(비대화형)·--output-format json·--json-schema 세 가지 조합뿐. 나머지는 그럴듯한 허구야. 시험 보기엔 이런 명령이 아무 설명 없이 나와 — 실존/허구 소거가 곧 정답률.",
+    "wrongs": [
+     "<b>B:</b> CLAUDE_HEADLESS 환경변수는 존재하지 않아 — 헤드리스는 -p로 켜. 대표 허구 보기.",
+     "<b>C:</b> --batch CLI 플래그는 없어 — batch는 API(Message Batches) 얘기지 Claude Code 명령이 아냐.",
+     "<b>D:</b> 플래그는 실존하지만 -p가 빠졌어 — CI에서 대화형으로 떠서 입력 대기 무한 정지. 절반의 진실."
+    ]
+   },
+   "principle": "실존 플래그 3종 — 나머지는 소거"
   }
  ],
  "4.1": [

@@ -2,6 +2,26 @@
 window.CCAF_APPENDIX = {
 
 cheat: `
+<h4>🔦 보기에 민낯으로 등장하는 것들 — 설명 없이 나와도 당황하지 않기</h4>
+<p style="font-size:13px;color:var(--muted)">실제 시험 보기엔 아래 이름들이 <b>아무 힌트 없이</b> 등장해. 각각 "한 줄 정체"만 정확히 붙잡고 있으면 보기가 해석돼.</p>
+<table>
+<tr><th>민낯</th><th>한 줄 정체</th></tr>
+<tr><td><code>Read / Write / Edit</code></td><td>파일 읽기 / 통째 쓰기 / <b>유일한 앵커 텍스트</b>로 부분 수정 (앵커가 여러 곳이면 실패 → Read+Write로)</td></tr>
+<tr><td><code>Grep / Glob / Bash</code></td><td>파일 <b>속 내용</b> 검색 / 파일 <b>이름·경로 패턴</b>으로 찾기 / 터미널 명령 실행</td></tr>
+<tr><td><code>claude -p</code> (=--print)</td><td><b>비대화형</b> 1회 실행 — CI에서 이게 없으면 입력 대기로 무한 정지</td></tr>
+<tr><td><code>--output-format json</code> · <code>--json-schema</code></td><td>기계가 파싱할 JSON 출력 / 그 JSON의 형태 강제</td></tr>
+<tr><td><code>--resume</code> · <code>fork_session</code></td><td>지난 세션 이어가기 / 한 지점에서 두 갈래로 분기 (비교할 안이 2개 이상일 때만)</td></tr>
+<tr><td>🚫 <code>CLAUDE_HEADLESS</code> · <code>--batch</code></td><td><b>존재하지 않음</b> — 보기에 나오면 즉시 소거 (batch는 API 얘기지 CLI 플래그가 아님)</td></tr>
+<tr><td><code>/compact</code> · <code>/clear</code></td><td>대화를 요약 압축 / 통째로 비움 (fork=격리, compact=요약, clear=삭제)</td></tr>
+<tr><td><code>PreToolUse / PostToolUse</code></td><td>도구 실행 <b>전</b> 차단·검사 / 실행 <b>후</b> 결과 정규화</td></tr>
+<tr><td><code>tool_choice: auto·any·none·{"type":"tool",...}</code></td><td>모델 재량 / 도구 강제 / 도구 금지(프로즈 강제) / 특정 도구 지정</td></tr>
+<tr><td><code>stop_reason</code> 7값</td><td>end_turn(끝)·tool_use(도구 요청)·max_tokens(잘림)·stop_sequence·pause_turn(이어서)·refusal(거부)·model_context_window_exceeded</td></tr>
+<tr><td><code>tool_use / tool_result / isError</code></td><td>모델의 도구 요청 블록 / 내가 돌려주는 결과 블록 / 그 결과가 에러라는 표시</td></tr>
+<tr><td><code>CLAUDE.md · .claude/rules/ · .mcp.json · settings.local.json</code></td><td>항상 로드 지침 / paths 글롭 조건부 규칙 / 팀 공유 MCP 설정 / <b>커밋 안 되는</b> 프로젝트 개인 설정</td></tr>
+<tr><td><code>context: fork · allowed-tools · argument-hint</code></td><td>스킬 격리 실행 / 도구 허용 목록(강제) / 인자 힌트(<b>강제 아님</b>)</td></tr>
+<tr><td><code>custom_id · nullable · enum · strict</code></td><td>배치 요청-응답 짝 맞추기 / 비워도 되는 칸 / 보기 중 선택 / 문법만 보장(의미는 못 막음)</td></tr>
+</table>
+
 <h4>숫자 암기표</h4>
 <table>
 <tr><th>항목</th><th>값</th></tr>
