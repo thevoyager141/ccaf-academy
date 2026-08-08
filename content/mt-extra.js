@@ -1,4 +1,4 @@
-/* 확장 문제 풀 — 취약점 38 + 복수응답 15 + 1차 당황 재현 2 */
+/* 확장 문제 풀 — 취약점 38 + 복수응답 15 + 1차 당황 재현 2 + 8/8 모의고사 약점 6 */
 window.CCAF_MT_EXTRA = {
  "1.1": [
   {
@@ -95,6 +95,36 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "stop_reason으로 돌고, 실패도 기록한다"
+  },
+  {
+   "ts": "1.1",
+   "lvl": "실전",
+   "scenario": "s4",
+   "q": "Which of the following is NOT a valid way to terminate an agentic loop?",
+   "opts": [
+    {
+     "t": "Stopping as soon as the response contains any text block, since Claude ends its work with text.",
+     "ok": true
+    },
+    {
+     "t": "Stopping when stop_reason is \"end_turn\"."
+    },
+    {
+     "t": "Stopping when a hard iteration cap is hit, used only as a secondary safety net alongside stop_reason."
+    },
+    {
+     "t": "Stopping when stop_reason is \"refusal\", since the model declined to proceed."
+    }
+   ],
+   "explain": {
+    "good": "부정형 — 셋은 정당하고 하나가 안티패턴이야. 텍스트 존재로 종료하는 건 대표 안티패턴: 도구 요청과 설명 텍스트는 한 응답에 공존해서 중간 설명에 조기 종료돼.",
+    "wrongs": [
+     "<b>B:</b> end_turn 종료가 유일한 정석 — 이건 권장 사항이야.",
+     "<b>C:</b> 반복 상한을 '보조 안전망'으로만 쓰는 건 정당해. 안티패턴은 그걸 <b>주</b> 종료 조건으로 승격시킬 때야 — 지문의 조건을 정확히 읽어야 갈리는 보기.",
+     "<b>D:</b> refusal은 모델이 거부한 상태라 계속 돌릴 이유가 없어 — 정당한 종료."
+    ]
+   },
+   "principle": "부정형 질문 — 방향부터 확인"
   }
  ],
  "1.2": [
@@ -680,6 +710,66 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "겉은 Glob, 속은 Grep"
+  },
+  {
+   "ts": "2.5",
+   "lvl": "실전",
+   "scenario": "s4",
+   "q": "An engineer needs two things in an unfamiliar repo: (a) locate every file whose name ends in .config.ts, and (b) find every place the constant MAX_RETRIES is actually referenced. Which pairing is correct?",
+   "opts": [
+    {
+     "t": "(a) Glob — it matches file names and paths; (b) Grep — it searches file contents.",
+     "ok": true
+    },
+    {
+     "t": "(a) Grep, because it scans the filesystem for matching files; (b) Glob, because globs can match any string including code."
+    },
+    {
+     "t": "(a) Glob; (b) Read every .ts file in the repo and scan the contents manually."
+    },
+    {
+     "t": "(a) Bash with a find command; (b) Bash with a grep command — built-in tools are unnecessary here."
+    }
+   ],
+   "explain": {
+    "good": "8/8 모의고사 최다 오답 지점이야. 한 줄 판별: <b>겉(이름·경로)은 Glob, 속(내용)은 Grep.</b> (a)는 파일명 패턴이니 Glob, (b)는 코드 안에서 참조를 찾는 거니 Grep.",
+    "wrongs": [
+     "<b>B:</b> 정확히 반대로 배정 — Glob은 경로 문자열에만 작동해 파일 속을 못 봐.",
+     "<b>C:</b> (a)는 맞지만 (b)의 전수 읽기는 컨텍스트 낭비 안티패턴 — 검색 도구가 있는 이유야.",
+     "<b>D:</b> Bash로도 되긴 하지만 전용 내장 도구가 있는 작업에 셸을 쓰는 건 불필요한 우회 — 시험은 상황↔내장 도구 매칭을 물어."
+    ]
+   },
+   "principle": "겉은 Glob, 속은 Grep"
+  },
+  {
+   "ts": "2.5",
+   "lvl": "기초",
+   "scenario": "s2",
+   "q": "Edit fails repeatedly because the anchor text appears in several places in the file. Which tool sequence resolves it?",
+   "opts": [
+    {
+     "t": "Read the full file, apply the change in memory, then Write it back — optionally verifying with Grep.",
+     "ok": true
+    },
+    {
+     "t": "Use Glob to locate the file again, then retry Edit with the same anchor."
+    },
+    {
+     "t": "Use Bash with sed to replace the pattern throughout the file."
+    },
+    {
+     "t": "Use Grep to count the occurrences, then run Edit once per occurrence."
+    }
+   ],
+   "explain": {
+    "good": "Edit의 전제는 '유일한 앵커'. 그 전제가 깨지면 공식 탈출구는 Read + Write야. 8/8 모의고사에서 여기에 Glob을 골랐었어 — Glob은 파일을 <b>찾는</b> 도구지 <b>고치는</b> 도구가 아냐.",
+    "wrongs": [
+     "<b>B:</b> 파일 위치는 이미 알아 — 단계가 어긋나고, 같은 앵커로 재시도하면 같은 실패가 반복돼.",
+     "<b>C:</b> sed 전역 치환은 여러 곳을 전부 바꿔 — 의도는 한 곳이야. 도구는 돌지만 결과가 틀린 절반의 진실.",
+     "<b>D:</b> Edit은 여전히 앵커를 유일하게 특정 못 해 — 횟수를 안다고 해결되지 않아."
+    ]
+   },
+   "principle": "Edit 실패의 정식 탈출구 = Read+Write"
   }
  ],
  "3.1": [
@@ -973,6 +1063,36 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "plan mode 3신호: 규모·복수 접근·아키텍처"
+  },
+  {
+   "ts": "3.4",
+   "lvl": "기초",
+   "scenario": "s2",
+   "q": "A bug's stack trace pinpoints the faulty line, a failing regression test already exists, and the fix is one line. Which action is LEAST appropriate?",
+   "opts": [
+    {
+     "t": "Switch to plan mode to explore the module before making any change.",
+     "ok": true
+    },
+    {
+     "t": "Apply the one-line fix directly."
+    },
+    {
+     "t": "Run the existing failing test to verify the fix."
+    },
+    {
+     "t": "Commit the change with a message referencing the failing test."
+    }
+   ],
+   "explain": {
+    "good": "부정형 — '가장 부적절한 것'을 묻고 있어. 진단 완료 + 검증 수단 존재 + 한 줄 수정이면 plan mode는 끝난 일을 다시 하는 절차 추가야. 나머지 셋은 정상 흐름.",
+    "wrongs": [
+     "<b>B:</b> 직접 실행이 이 조건의 정답 행동 — 부적절하지 않아.",
+     "<b>C:</b> 기존 실패 테스트로 검증하는 건 정석이야.",
+     "<b>D:</b> 커밋은 워크플로의 정상 마무리 — 질문 방향(부적절한 것)을 놓치면 걸리는 보기."
+    ]
+   },
+   "principle": "부정형 질문 — 방향부터 확인"
   }
  ],
  "3.5": [
@@ -1228,6 +1348,36 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "없는 값은 null, 안 맞는 값은 unclear"
+  },
+  {
+   "ts": "4.3",
+   "lvl": "기초",
+   "scenario": "s6",
+   "q": "A contract-extraction schema has two problem fields: signing_date (many contracts genuinely have no date printed) and jurisdiction (documents often name a region outside your enum list). Which fix pairing is correct?",
+   "opts": [
+    {
+     "t": "signing_date → nullable; jurisdiction → extend the enum with \"other\" plus a detail string.",
+     "ok": true
+    },
+    {
+     "t": "Both → nullable, since both fields are unreliable."
+    },
+    {
+     "t": "Both → extend the enums, so the model always has an honest option to pick."
+    },
+    {
+     "t": "signing_date → extend the enum with \"unknown\"; jurisdiction → nullable."
+    }
+   ],
+   "explain": {
+    "good": "세 번 반복된 구분이야. 값이 문서에 <b>없으면</b> nullable(지어냄 방지), 값은 <b>있는데 분류가 안 맞으면</b> enum 확장. 한 문장으로: <b>없는 값은 null, 안 맞는 값은 unclear/other.</b>",
+    "wrongs": [
+     "<b>B:</b> jurisdiction은 문서에 값이 있어 — null로 비우면 있는 정보를 버려. 정확히 그 재발 오답 방향.",
+     "<b>C:</b> signing_date는 enum 필드가 아냐 — 자유값 필드의 부재엔 nullable이 처방.",
+     "<b>D:</b> 완전히 뒤바뀐 배정 — 두 처방을 서로 바꿔 끼운 형태야."
+    ]
+   },
+   "principle": "없는 값은 null, 안 맞는 값은 unclear"
   }
  ],
  "4.4": [
@@ -1357,6 +1507,36 @@ window.CCAF_MT_EXTRA = {
     ]
    },
    "principle": "블로킹은 동기, 나머지만 배치"
+  },
+  {
+   "ts": "4.5",
+   "lvl": "기초",
+   "scenario": "s5",
+   "q": "Which statement about the Message Batches API is FALSE?",
+   "opts": [
+    {
+     "t": "Batch requests cannot include tool definitions.",
+     "ok": true
+    },
+    {
+     "t": "Batch processing offers roughly 50% cost savings."
+    },
+    {
+     "t": "Processing can take up to 24 hours with no latency SLA."
+    },
+    {
+     "t": "A single batch request cannot execute tools mid-request and continue."
+    }
+   ],
+   "explain": {
+    "good": "부정형 — '틀린 것'을 고르는 문제야. 도구 <b>정의</b>는 그냥 데이터라 배치 요청에 넣을 수 있어. 못 하는 건 도구를 <b>실행</b>해 결과를 돌려받고 이어가는 왕복이야. 정의 ≠ 실행 루프.",
+    "wrongs": [
+     "<b>B:</b> 50% 절감은 사실이야.",
+     "<b>C:</b> 최대 24시간·SLA 없음도 사실 — 블로킹 워크플로에 못 쓰는 이유지.",
+     "<b>D:</b> 미드-리퀘스트 도구 실행 불가는 사실이야. 이게 A와 헷갈리는 지점 — A는 '정의'라 거짓, D는 '실행'이라 참."
+    ]
+   },
+   "principle": "정의는 되고, 실행 루프가 안 된다"
   }
  ],
  "4.6": [

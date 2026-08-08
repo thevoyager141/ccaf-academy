@@ -119,5 +119,73 @@ window.CCAF_CONTENT.p0 = {
         </ul>
         <div class="callout">⚠️ 구버전 자료 주의: V1 기반 자료들의 "모르면 표시하고 넘어갔다가 나중에" 전략은 <b>V2에서 무효</b> — V2는 답을 골라야 다음 문항으로 진행되고 건너뛰기가 없다. 매 문항 그 자리에서 소거 → 결정.</div>`},
     ]},
+
+  { id:"p0l5", ch:"0-5", title:"8/8 모의고사 복기 — 남은 약점 4개",
+    steps:[
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"880점, 그런데 읽는 법이 중요해",
+       html:`<p class="lead">2026-08-08 모의고사 결과: <strong>880점 · 55/60 (92%)</strong>. 6/21 실전 629점에서 크게 올라왔어. 특히 최약점이던 D5가 50% → 93%.</p>
+        <h4>도메인별</h4>
+        <table>
+        <tr><th>도메인</th><th>이번</th><th>6/21 실전</th></tr>
+        <tr><td>D1 에이전트 아키텍처 (27%)</td><td>9/10</td><td>60%</td></tr>
+        <tr><td>D2 도구·MCP (18%)</td><td>12/14</td><td>64%</td></tr>
+        <tr><td>D3 Claude Code (20%)</td><td>3/3 ⚠</td><td>61%</td></tr>
+        <tr><td>D4 프롬프트·구조화 (20%)</td><td>18/19</td><td>75%</td></tr>
+        <tr><td>D5 컨텍스트·신뢰성 (15%)</td><td>13/14</td><td>50%</td></tr>
+        </table>
+        <h4>이 점수를 냉정하게 읽는 두 가지</h4>
+        <ul>
+          <li><strong>학습 효과가 섞여 있음</strong> — 직접 만들며 본 문항 풀이라 실전보다 후하게 나와. 실전은 처음 보는 지문이야</li>
+          <li><strong>D3의 3/3은 증거가 아님</strong> — 이번에 뽑힌 시나리오가 ③④⑤⑥이라 ②코드생성이 안 나왔고, 그래서 D3 문항이 3개뿐이었어. 실전 비중 20%에 1차 61%였던 도메인이라 <strong>여전히 최대 미지수</strong></li>
+        </ul>
+        <div class="callout">🎯 교훈: 모의고사는 시나리오가 랜덤이라 <b>한 번의 결과로 도메인 실력을 판정하면 안 돼.</b> 도메인별 표본 수를 같이 봐야 해.</div>`},
+
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"틀린 5개가 가리키는 약점 4덩어리",
+       html:`<h4>① 내장 도구 6종 역할 미정착 — 오답 5개 중 2개</h4>
+        <ul>
+          <li>함수 <strong>호출자</strong> 찾기에 Glob을 골랐음 → 정답은 <strong>Grep</strong> (호출자 찾기 = 파일 <strong>내용</strong> 검색)</li>
+          <li>Edit 앵커 중복 실패에도 Glob을 골랐음 → 정답은 <strong>Read + Write</strong></li>
+          <li>가장 큰 덩어리지만 <strong>암기 30분이면 끝나는 유형</strong>. 부록 결정표로</li>
+        </ul>
+        <h4>② nullable ↔ enum 확장 — <strong>3번째 재발</strong> (6/16 · 7월 · 8/8)</h4>
+        <ul>
+          <li>제품 유형이 "카테고리에 안 맞는" 문제에 nullable을 적용했음 → 있는 정보를 버리는 처방</li>
+          <li>문장으로 외울 것: <strong>"없는 값은 null, 안 맞는 값은 unclear"</strong></li>
+        </ul>
+        <h4>③ 사후 정리 선호 — 고질 패턴 재확인</h4>
+        <ul>
+          <li>중복 검색 문제에서 사전 분할 대신 <strong>사후 dedupe</strong>를 골랐음</li>
+          <li>보기에 "다 시킨 뒤 정리·제거·필터"가 보이면 <strong>일단 후보에서 내리기</strong></li>
+        </ul>
+        <h4>④ (신규) 부정형 질문에서 좋은 것/나쁜 것 뒤집기</h4>
+        <ul>
+          <li>"안티패턴은?" 질문에 <strong>권장 사항</strong>(시도한 쿼리 보고)을 골랐음 — 내용은 아는데 질문 방향을 놓친 것</li>
+          <li>실전에서 점수를 가장 억울하게 잃는 유형이야</li>
+        </ul>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>시험장 습관 4개 — 이번 오답에서 뽑은 것</b><br>
+1. <b>부정형 표시</b>: anti-pattern · NOT · least · EXCEPT 가 보이면 그 단어에 표시하고, 고른 답이 "좋은 것"인지 "나쁜 것"인지 한 번 더 확인<br>
+2. <b>사후 처리 소거</b>: filter · post-process · suppress · dedupe · 새 분류기/레이어 신설 → 후보에서 내리기<br>
+3. <b>already / existing 밑줄</b>: 이미 끝난 작업을 다시 하는 보기는 함정<br>
+4. <b>복수응답 개수 확인</b>: "몇 개를 고르라"는 지시를 읽고 답하기
+        </div>`},
+
+      {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice — The negative-form trap",
+       q:`Which of the following is an anti-pattern when a subagent reports a failed web search to the coordinator?`,
+       opts:[
+         {t:`Returning an empty result set marked as successful after the search times out.`, ok:true},
+         {t:`Including the exact query that was attempted along with the failure type.`},
+         {t:`Attaching the two partial results retrieved before the timeout.`},
+         {t:`Retrying the transient timeout twice locally before reporting upward.`},
+       ],
+       hint:`질문이 "안티패턴은?"이야 — 좋은 것 셋과 나쁜 것 하나가 섞여 있어. 네 개 중 셋은 이 코스가 권장한 것들이지.`,
+       explain:{
+         good:`실패의 성공 위장 = 3대 안티패턴 중 하나(위장·뭉개기·전체 중단). 코디네이터가 "자료 없음"으로 오독해 복구 기회가 사라져. 나머지 셋은 전부 권장 사항 — 시도한 쿼리·부분 결과는 구조화 4요소이고, 로컬 재시도는 5.3의 정석이야.`,
+         wrongs:[
+           `<b>B — 시도한 쿼리 + 실패 유형:</b> 구조화 에러 4요소 중 둘. 권장 사항이야.`,
+           `<b>C — 부분 결과 동봉:</b> 코디네이터의 진행 판단 재료. 권장 사항이야.`,
+           `<b>D — 일시 실패 로컬 재시도:</b> "일상 복구는 아래에서"의 정석. 권장 사항이야.`,
+         ]},
+       principle:"부정형 질문 — 방향부터 확인"},
+    ]},
   ]
 };

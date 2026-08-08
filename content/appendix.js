@@ -2,6 +2,18 @@
 window.CCAF_APPENDIX = {
 
 cheat: `
+<h4>🛠 내장 도구 6종 결정표 — 상황 → 도구 (8/8 모의고사 최다 오답)</h4>
+<table>
+<tr><th>상황 (지문에 이렇게 나옴)</th><th>답</th></tr>
+<tr><td>"find all <b>callers</b> of function X" · "어디서 이 함수를 쓰나"</td><td><b>Grep</b> — 호출자 찾기는 파일 <b>내용</b> 검색</td></tr>
+<tr><td>"find all files <b>named</b> *.test.tsx" · 경로·확장자 패턴</td><td><b>Glob</b> — 파일 <b>이름·경로</b> 패턴 전용</td></tr>
+<tr><td>Edit이 <b>앵커 중복</b>으로 실패 · "non-unique match"</td><td><b>Read + Write</b> (정식 탈출구) · 확인은 Grep</td></tr>
+<tr><td>파일 일부만 정확히 수정 · 앵커가 유일함</td><td><b>Edit</b></td></tr>
+<tr><td>파일 전체 내용이 필요 · 통째로 새로 씀</td><td><b>Read</b> / <b>Write</b></td></tr>
+<tr><td>테스트 실행·빌드·git 등 명령 실행</td><td><b>Bash</b></td></tr>
+</table>
+<p style="font-size:13px;color:var(--muted)">한 줄 판별: <b>겉(이름·경로)은 Glob, 속(내용)은 Grep.</b> Glob은 파일을 <b>찾는</b> 도구지 <b>고치는</b> 도구가 아냐 — Edit 실패의 답이 될 수 없음.</p>
+
 <h4>🔦 보기에 민낯으로 등장하는 것들 — 설명 없이 나와도 당황하지 않기</h4>
 <p style="font-size:13px;color:var(--muted)">실제 시험 보기엔 아래 이름들이 <b>아무 힌트 없이</b> 등장해. 각각 "한 줄 정체"만 정확히 붙잡고 있으면 보기가 해석돼.</p>
 <table>
