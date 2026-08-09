@@ -295,7 +295,9 @@ const store = {
   saveLesson(id, ls){ const s=this.get(); s.lessons=s.lessons||{}; s.lessons[id]=ls; this.set(s); },
   test(id){ const s=this.get(); return (s.tests||{})[id] || null },
   saveTest(id, r){ const s=this.get(); s.tests=s.tests||{}; s.tests[id]=r; this.set(s); },
-  addLog(entry){ const s=this.get(); s.log=s.log||[]; s.log.push(entry); this.set(s); }
+  addLog(entry){ const s=this.get(); s.log=s.log||[]; s.log.push(entry); this.set(s); },
+  lastExam(){ return this.get().lastExam || null },
+  saveLastExam(v){ const s=this.get(); s.lastExam=v; this.set(s); }
 };
 function accuracy(){
   const s = store.get(); let right=0, total=0;
@@ -336,6 +338,8 @@ function relabel(text, letter){ return text ? text.replace(/^(<b>)[A-E]/, "$1"+l
 function dispWrongs(q){ return displayOpts(q).filter(o=>!o.ok).map(o=>relabel(o.wrongText||"", o.letter)); }
 function dispOkIdx(q){ return displayOpts(q).findIndex(o=>o.ok); }
 function dispOkIdxs(q){ return displayOpts(q).map((o,i)=>o.ok? i : -1).filter(i=>i>=0); }
+/* 문항 고유 식별자 — 직전 회차와 겹치는지 판정용 */
+function qid(q){ return qHash((q.q||"") + (q.opts||[]).map(o=>o.t).join("|")); }
 /* 복수응답 지원: multi 문항이면 선택 배열이 정답 집합과 정확히 일치해야 정답 */
 function ansRight(q, ans){
   if(q.multi){
@@ -898,19 +902,38 @@ function openExam(){
           </ul>
           <div class="callout">⏱ 120분을 통으로 확보하고 시작해. 도중에 나가면 이번 응시는 기록되지 않아.</div>
         </div>
-        <div style="margin-top:28px">
+        <div style="margin-top:28px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
           <button class="btn btn-primary" onclick="startExam()">응시 시작</button>
-          <button class="btn btn-ghost" onclick="openPart('p7')" style="margin-left:8px">돌아가기</button>
+          ${store.lastExam()? `<button class="btn btn-ghost" onclick="startFreshExam()">🔄 직전 회차와 겹치지 않게 시작</button>`:""}
+          <button class="btn btn-ghost" onclick="openPart('p7')">돌아가기</button>
         </div>
       </div>
     </div>`;
   window.scrollTo(0,0);
 }
-function startExam(){
+function startExam(avoidLast){
   attemptSalt = ((Math.random()*0x7ffffffe)|0) + 1; /* 이번 응시의 보기 셔플 시드 */
   const pools = buildExamPool();
-  const scens = shuffleArr(Object.keys(pools)).slice(0,4);
-  const blocks = scens.map(sc=>({sc, qs: shuffleArr([...pools[sc]]).slice(0,15)}));
+  const prev = avoidLast ? store.lastExam() : null;
+  const prevScen = new Set(prev?.scenarios || []);
+  const prevQ = new Set(prev?.qids || []);
+  /* 시나리오: 직전에 안 나온 것부터 우선 배정 */
+  let scens;
+  if(prev){
+    const fresh = shuffleArr(Object.keys(pools).filter(s=>!prevScen.has(s)));
+    const reused = shuffleArr(Object.keys(pools).filter(s=>prevScen.has(s)));
+    scens = [...fresh, ...reused].slice(0,4);
+  } else {
+    scens = shuffleArr(Object.keys(pools)).slice(0,4);
+  }
+  /* 문항: 직전 회차에 안 나온 것부터 채우고, 모자라면 나머지로 보충 */
+  const blocks = scens.map(sc=>{
+    const pool = [...pools[sc]];
+    if(!prev) return {sc, qs: shuffleArr(pool).slice(0,15)};
+    const unseen = shuffleArr(pool.filter(q=>!prevQ.has(qid(q))));
+    const seen = shuffleArr(pool.filter(q=>prevQ.has(qid(q))));
+    return {sc, qs: [...unseen, ...seen].slice(0,15)};
+  });
   const flat = [];
   blocks.forEach(b=>b.qs.forEach((q,j)=>flat.push({q, sc:b.sc, firstOfBlock: j===0})));
   EX = {flat, i:-1, answers:new Array(flat.length).fill(null), sel:null,
@@ -925,7 +948,18 @@ function startExam(){
       el.style.color = left < 10*60*1000 ? "var(--no)" : "var(--accent)";
     }
   }, 1000);
+  /* 직전 회차 대비 새 문항 수 계산 (리포트용) */
+  EX.freshRun = !!avoidLast;
+  EX.avoidScen = prev?.scenarios || [];
+  EX.freshCount = prev ? flat.filter(it=>!prevQ.has(qid(it.q))).length : flat.length;
   examNext();
+}
+/* 직전 회차와 겹치지 않게 새 시험 시작 — 확인 후 바로 진행 */
+function startFreshExam(){
+  const prev = store.lastExam();
+  if(!prev){ openExam(); return; }
+  if(!confirm("직전 시험과 겹치지 않게 새 모의고사를 시작할까?\n120분 타이머가 바로 시작돼.")) return;
+  startExam(true);
 }
 function examNext(){
   if(EX.i >= 0 && EX.sel !== null) EX.answers[EX.i] = EX.sel;
@@ -988,6 +1022,12 @@ function finishExam(){
   store.saveTest("exam", {best: Math.max(scaled, prev?.best||0), last: scaled,
     when: new Date().toISOString().slice(0,10), attempts:(prev?.attempts||0)+1});
   store.addLog({d:new Date().toISOString().slice(0,10), lesson:"exam", step:"mock-exam", outcome:`${right}/${total} (${scaled})`});
+  /* 이번 회차 구성을 저장 — 다음 "겹치지 않는 새 시험"에서 회피 대상이 됨 */
+  const usedScen = [...new Set(EX.flat.map(it=>it.sc))];
+  store.saveLastExam({scenarios: usedScen, qids: EX.flat.map(it=>qid(it.q)), when: new Date().toISOString()});
+  const overlapNote = EX.freshRun
+    ? `<div class="callout" style="margin-top:18px">🔄 이번 회차는 직전 시험과 <b>겹치지 않게</b> 구성됐어 — 시나리오 ${usedScen.filter(s=>!(EX.avoidScen||[]).includes(s)).length}개와 문항 ${EX.freshCount}개가 새로 나왔어.</div>`
+    : "";
   const DOMNAMES = {D1:"D1 에이전트 아키텍처",D2:"D2 도구·MCP",D3:"D3 Claude Code",D4:"D4 프롬프트·구조화",D5:"D5 컨텍스트·신뢰성"};
   view.innerHTML = `
   <div class="ppage">
@@ -1020,8 +1060,10 @@ function finishExam(){
           ${q.principle? `<span class="chip">🏷 ${q.principle}</span>`:""}
         </details>
       </div>`;}).join("")}
-    <div style="margin-top:24px;display:flex;gap:10px">
-      <button class="btn btn-primary" onclick="openExam()">다시 응시 (새 시나리오 조합)</button>
+    ${overlapNote}
+    <div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="startFreshExam()">🔄 겹치지 않는 새 모의고사</button>
+      <button class="btn btn-ghost" onclick="openExam()">다시 응시 (무작위 조합)</button>
       <button class="btn btn-ghost" onclick="go('home')">홈으로</button>
     </div>
   </div>`;
