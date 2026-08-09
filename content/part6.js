@@ -22,7 +22,7 @@ window.CCAF_CONTENT.p6 = {
           <li>긴 대화의 금액·날짜 보존 → <strong>case facts 블록</strong></li>
           <li>실패 응답 → <strong>errorCategory·isRetryable</strong> 구조화</li>
         </ul>
-        <div class="callout">🎯 무대 ①의 정답 냄새: "돈이 걸린 규칙"이 보이면 결정론적 강제, "고객이 사람 찾으면" 존중, "요약하다 숫자 날아가면" 요약 밖 금고.</div>`},
+        <div class="callout">🎯 무대 ①의 정답 판별 신호: "돈이 걸린 규칙"이 보이면 결정론적 강제, "고객이 사람 찾으면" 존중, "요약하다 숫자 날아가면" 요약에서 제외한 별도 블록.</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S1-1 — Two issues, one gap",
        q:`A customer message contains two requests: (a) a refund for order #B-2210, fully covered by your return policy, and (b) compensation for "emotional distress," which your policy does not address at all. What is the correct handling?`,
        opts:[
@@ -55,7 +55,7 @@ window.CCAF_CONTENT.p6 = {
        hint:`요약이라는 압축기에 합의 내용이 들어가면 뭉개져. 합의는 어디 보관해야 했지?`,
        explain:{good:`5.1의 case facts 패턴: 거래 사실은 요약 파이프라인 밖 구조화 블록에. 압축을 안 거치니 뭉개질 수 없고, 매 프롬프트에 원형 그대로 들어가.`,
          wrongs:[`<b>B:</b> 늦출 뿐 — 대화가 더 길어지면 같은 사고.`,`<b>C:</b> "자세히 요약해"도 압축은 압축 — 확률적.`,`<b>D:</b> 고객에게 자기 약속을 되묻는 건 신뢰 파괴의 완성.`]},
-       principle:"숫자는 요약 밖 금고에", ts:"5.1"},
+       principle:"숫자는 요약 대상에서 제외", ts:"5.1"},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S1-4 — The stubborn 5%",
        q:`Policy requires a verified receipt before any refund over $100. You strengthened the system prompt twice and added few-shot examples; the violation rate dropped from 9% to 5% but won't reach zero. Compliance demands zero. What does this situation tell you, and what is the fix?`,
        opts:[
@@ -97,7 +97,7 @@ window.CCAF_CONTENT.p6 = {
           <li>세션 재개 판단: <strong>변경의 범위</strong>가 stale을 결정</li>
           <li>긴 세션의 컨텍스트 열화 → 스크래치패드·Explore·단계 요약</li>
         </ul>
-        <div class="callout">🎯 무대 ②의 정답 냄새: "팀 전체", "자동으로", "새 팀원" 같은 단어가 나오면 스코프 문제. "그 사이 코드가 바뀜"이 나오면 세션 신선도 문제.</div>`},
+        <div class="callout">🎯 무대 ②의 정답 판별 신호: "팀 전체", "자동으로", "새 팀원" 같은 단어가 나오면 스코프 문제. "그 사이 코드가 바뀜"이 나오면 세션 신선도 문제.</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S2-1 — The conflicting conventions",
        q:`A senior dev's Claude Code generates code with tabs and semicolons; everyone else's uses the team standard (spaces, no semicolons). Investigation shows the team standard lives in the project CLAUDE.md, and the senior dev has personal formatting rules in ~/.claude/CLAUDE.md. What is happening, and what should change?`,
        opts:[
@@ -173,7 +173,7 @@ window.CCAF_CONTENT.p6 = {
           <li>실패 전파 4요소, 부분 결과 + 커버리지 주석</li>
           <li>출처: claim-source 매핑, 발행일 필수, 충돌은 둘 다 주석</li>
         </ul>
-        <div class="callout">🎯 무대 ③의 정답 냄새: "서브에이전트끼리 직접 얘기하게 하자"는 보기는 관측성(무슨 일이 일어나는지 밖에서 지켜볼 수 있는 성질) 파괴로 거의 항상 오답. "임의로 하나를 고른다"도 마찬가지.</div>`},
+        <div class="callout">🎯 무대 ③의 정답 판별 신호: "서브에이전트끼리 직접 얘기하게 하자"는 보기는 관측성(무슨 일이 일어나는지 밖에서 지켜볼 수 있는 성질) 파괴로 거의 항상 오답. "임의로 하나를 고른다"도 마찬가지.</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S3-1 — Writing the coordinator's orders",
        q:`Your coordinator's prompts to the search subagent currently read like scripts: "First query X, then query Y, then if results < 5, query Z..." On novel topics the agent follows the script even when it clearly doesn't fit. How should coordinator prompts be designed instead?`,
        opts:[
@@ -249,7 +249,7 @@ window.CCAF_CONTENT.p6 = {
           <li>범용 도구 → 제약된 대안 (fetch_url → load_document)</li>
           <li>열린 과제 → 동적 분해 + Explore 격리</li>
         </ul>
-        <div class="callout">🎯 무대 ④의 정답 냄새: "전부 읽고 시작", "알파벳 순서로", "표준 연동인데 커스텀 제작" 보기는 오답 장치.</div>`},
+        <div class="callout">🎯 무대 ④의 정답 판별 신호: "전부 읽고 시작", "알파벳 순서로", "표준 연동인데 커스텀 제작" 보기는 오답 장치.</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S4-1 — Tracing through the wrappers",
        q:`You must find every place the deprecated formatCurrency function is effectively used. The catch: three wrapper modules re-export it under different names (formatMoney, toCurrencyString, fmtC). What is the correct tracing strategy?`,
        opts:[
@@ -259,7 +259,7 @@ window.CCAF_CONTENT.p6 = {
          {t:`Read the entire codebase once so no usage can hide.`}],
        hint:`래퍼가 이름을 바꿔 내보내면, 검색해야 할 이름이 하나가 아니지.`,
        explain:{good:`2.5의 래퍼 추적 패턴: export된 모든 이름을 먼저 수집 → 각 이름을 전체 검색. 원래 이름만 찾으면 별명으로 쓰인 사용처를 전부 놓쳐.`,
-         wrongs:[`<b>B:</b> formatMoney로 쓰는 코드는 formatCurrency 검색에 안 걸려 — 마이그레이션 구멍.`,`<b>C:</b> 파일명과 함수 사용처는 무관.`,`<b>D:</b> 전부 읽기는 컨텍스트 폭발 안티패턴.`]},
+         wrongs:[`<b>B:</b> formatMoney로 쓰는 코드는 formatCurrency 검색에 안 걸려 — 마이그레이션 누락.`,`<b>C:</b> 파일명과 함수 사용처는 무관.`,`<b>D:</b> 전부 읽기는 컨텍스트 폭발 안티패턴.`]},
        principle:"이름을 모으고, 이름마다 Grep", ts:"2.5"},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S4-2 — Build or borrow",
        q:`Your team needs two MCP integrations: (a) standard Jira issue tracking, and (b) your company's proprietary internal deployment approval system. What is the recommended sourcing decision?`,
@@ -325,7 +325,7 @@ window.CCAF_CONTENT.p6 = {
           <li>대형 PR → 파일별 + 통합 패스</li>
           <li>블로킹(머지 전) = 실시간 / 논블로킹(야간) = 배치</li>
         </ul>
-        <div class="callout">🎯 무대 ⑤의 정답 냄새: "신뢰를 잃었다"가 나오면 기준·범주 문제. "일관성이 없다"가 나오면 패스 분리나 실물 예시.</div>`},
+        <div class="callout">🎯 무대 ⑤의 정답 판별 신호: "신뢰를 잃었다"가 나오면 기준·범주 문제. "일관성이 없다"가 나오면 패스 분리나 실물 예시.</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S5-1 — Generator, meet reviewer",
        q:`Your pipeline stage generates a code patch with Claude, then — in the same session — appends "now review your patch carefully for bugs before we merge." Post-merge defect rates are no better than having no review at all. What is the structural explanation and fix?`,
        opts:[
@@ -401,7 +401,7 @@ window.CCAF_CONTENT.p6 = {
           <li>집계 정확도의 함정 → 세그먼트 분해 + 층화 표집</li>
           <li>신뢰도는 <strong>보정 후에만</strong> 라우팅 기준</li>
         </ul>
-        <div class="callout">🎯 무대 ⑥의 정답 냄새: "strict 스키마로 다 해결" 보기는 문법≠의미 함정. "무조건 재시도"는 정보 부재 판별 실패.</div>`},
+        <div class="callout">🎯 무대 ⑥의 정답 판별 신호: "strict 스키마로 다 해결" 보기는 문법≠의미 함정. "무조건 재시도"는 정보 부재 판별 실패.</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S6-1 — The invented signatory",
        q:`Your contract extractor's schema requires counterparty_signatory (the person who signed for the other party). For unsigned draft contracts — which have no signatory at all — the model outputs plausible executive names pulled from the letterhead. What is the correct fix?`,
        opts:[

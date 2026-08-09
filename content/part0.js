@@ -141,11 +141,11 @@ window.CCAF_CONTENT.p0 = {
         <div class="callout">🎯 교훈: 모의고사는 시나리오가 랜덤이라 <b>한 번의 결과로 도메인 실력을 판정하면 안 돼.</b> 도메인별 표본 수를 같이 봐야 해.</div>`},
 
       {type:"concept", kind:"TOPIC · 주제 설명", h:"틀린 5개가 가리키는 약점 4덩어리",
-       html:`<h4>① 내장 도구 6종 역할 미정착 — 오답 5개 중 2개</h4>
+       html:`<h4>① 기본 제공 도구(built-in tools) 6종 역할 미정착 — 오답 5개 중 2개</h4>
         <ul>
           <li>함수 <strong>호출자</strong> 찾기에 Glob을 골랐음 → 정답은 <strong>Grep</strong> (호출자 찾기 = 파일 <strong>내용</strong> 검색)</li>
           <li>Edit 앵커 중복 실패에도 Glob을 골랐음 → 정답은 <strong>Read + Write</strong></li>
-          <li>가장 큰 덩어리지만 <strong>암기 30분이면 끝나는 유형</strong>. 부록 결정표로</li>
+          <li>가장 큰 덩어리지만 <strong>암기 30분이면 끝나는 유형</strong>. 부록의 도구 선택표로</li>
         </ul>
         <h4>② nullable ↔ enum 확장 — <strong>3번째 재발</strong> (6/16 · 7월 · 8/8)</h4>
         <ul>
@@ -162,7 +162,7 @@ window.CCAF_CONTENT.p0 = {
           <li>"안티패턴은?" 질문에 <strong>권장 사항</strong>(시도한 쿼리 보고)을 골랐음 — 내용은 아는데 질문 방향을 놓친 것</li>
           <li>실전에서 점수를 가장 억울하게 잃는 유형이야</li>
         </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>시험장 습관 4개 — 이번 오답에서 뽑은 것</b><br>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>시험장 체크 항목 4개 — 이번 오답에서 도출</b><br>
 1. <b>부정형 표시</b>: anti-pattern · NOT · least · EXCEPT 가 보이면 그 단어에 표시하고, 고른 답이 "좋은 것"인지 "나쁜 것"인지 한 번 더 확인<br>
 2. <b>사후 처리 소거</b>: filter · post-process · suppress · dedupe · 새 분류기/레이어 신설 → 후보에서 내리기<br>
 3. <b>already / existing 밑줄</b>: 이미 끝난 작업을 다시 하는 보기는 함정<br>

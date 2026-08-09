@@ -59,8 +59,8 @@ window.CCAF_CONTENT.p1.lessons.push(
        {t:`Add a deduplication filter in the synthesis stage that drops repeated sources before the report is written.`},
        {t:`Allow the search agents to see each other's result sets directly so they stop re-fetching the same sources.`},
        {t:`Double the number of search subagents so more regions get covered.`}],
-     explain:{good:`증상이 두 개(중복 낭비 + 커버리지 구멍)인데 원인은 하나 — 좁고 겹치는 분해. 스코프를 상호배타적 하위주제·소스유형으로 파티셔닝하면 둘 다 풀려. 가이드 1.2의 "중복 최소화 파티셔닝" 그대로.`,
-       wrongs:[`<b>B:</b> 중복(증상)만 지우고 커버리지 구멍은 그대로. 이미 쓴 토큰도 못 살려.`,`<b>C:</b> 서브에이전트 간 직접 통신은 허브-앤-스포크 위반. 관측성·에러 처리 일관성이 깨져.`,`<b>D:</b> 분해를 안 고치면 에이전트가 늘어도 같은 EU 소스만 더 긁어.`]},
+     explain:{good:`증상이 두 개(중복 낭비 + 커버리지 공백)인데 원인은 하나 — 좁고 겹치는 분해. 스코프를 상호배타적 하위주제·소스유형으로 파티셔닝하면 둘 다 풀려. 가이드 1.2의 "중복 최소화 파티셔닝" 그대로.`,
+       wrongs:[`<b>B:</b> 중복(증상)만 지우고 커버리지 공백은 그대로. 이미 쓴 토큰도 못 살려.`,`<b>C:</b> 서브에이전트 간 직접 통신은 허브-앤-스포크 위반. 관측성·에러 처리 일관성이 깨져.`,`<b>D:</b> 분해를 안 고치면 에이전트가 늘어도 같은 EU 소스만 더 긁어.`]},
      principle:"원칙 ② 근본 원인 · 스코프 파티셔닝"},
 
     /* ---- 1.3 context passing ---- */

@@ -25,7 +25,7 @@ window.CCAF_CONTENT.p1 = {
         <div class="callout">🎯 이 파트의 공통 질문: <b>"정석 설계는 무엇이고, 그럴듯한 안티패턴은 무엇인가."</b> 특히 프로그램으로 강제할 일 vs 프롬프트로 지시할 일을 가르는 감각이 반복 출제됨.</div>`},
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"재료부터: 대화 히스토리와 stop_reason",
        html:`<p class="lead">이 레슨에 필요한 용어는 두 개. 그 전에 코스 전체의 바탕 용어부터.</p>
-        <div class="callout">📖 용어 카드 — <b>토큰</b>: 모델이 글을 세는 단위(대략 단어 조각 하나). 분량·비용·속도가 전부 토큰 수로 계산돼. <b>컨텍스트(창)</b>: 모델이 지금 한 번에 보고 있는 작업 기억 전체(이번 대화 + 받은 자료). 창 크기 = 한 번에 담을 수 있는 토큰 한도. 이 두 단어는 이후 모든 파트에서 그냥 등장하니 여기서 잡아두자.</div>
+        <div class="callout">📖 용어 카드 — <b>토큰</b>: 모델이 글을 세는 단위(대략 단어 조각 하나). 분량·비용·속도가 전부 토큰 수로 계산돼. <b>컨텍스트(창)</b>: 모델이 지금 한 번에 보고 있는 내용 전체(이번 대화 + 받은 자료). 창 크기 = 한 번에 담을 수 있는 토큰 한도. 이 두 단어는 이후 모든 파트에서 그냥 등장하니 여기서 잡아두자.</div>
         <h4>① 대화 히스토리</h4>
         <ul>
           <li>Claude API에서 대화 = 역할(user/assistant)이 붙은 <strong>메시지 목록</strong></li>
@@ -151,7 +151,7 @@ window.CCAF_CONTENT.p1 = {
        ],
        hint:`넷 중 하나만 "단계가 미리 정해져 있고 매번 같은" 작업이야. 나머지 셋의 공통점을 먼저 찾아봐.`,
        explain:{
-         good:`고정 관점의 반복 작업(용어→톤→링크, 매번 동일) = prompt chaining. 예측 가능성이 갈림길이야.`,
+         good:`고정 관점의 반복 작업(용어→톤→링크, 매번 동일) = prompt chaining. 예측 가능성이 판별 기준이야.`,
          wrongs:[
            `<b>B — 지연 원인 조사:</b> 발견이 다음 단계를 결정하는 전형적 조사형 — 동적 분해.`,
            `<b>C — 서비스 이해·개선:</b> 범위 자체가 탐색 중에 드러나는 열린 과제 — 동적 분해.`,
@@ -201,7 +201,7 @@ window.CCAF_CONTENT.p1 = {
        html:`__MAP:orch__<p class="lead">시험은 "다 잘 돌아가는데 결과가 이상한" 상황을 주고 원인을 찾게 한다.</p>
         <h4>무너짐 ①: 너무 좁은 작업 분해</h4>
         <ul>
-          <li>증상: 서브에이전트는 각자 완벽하게 일했는데 <strong>최종 리포트에 큰 구멍</strong></li>
+          <li>증상: 서브에이전트는 각자 완벽하게 일했는데 <strong>최종 리포트에 큰 공백</strong></li>
           <li>예: "창작 산업에 대한 AI 영향" → 코디네이터가 "디지털 아트/그래픽 디자인/사진"으로만 분해 → 음악·글·영화 통째로 누락</li>
           <li>범인은 하류(검색·분석·합성)가 아니라 <strong>분해를 한 코디네이터</strong></li>
         </ul>
@@ -508,7 +508,7 @@ window.CCAF_CONTENT.p1 = {
           <li>예: 코드베이스 분석까지 해놓고 → 테스트 전략 A안/B안을 각 분기에서 탐색</li>
           <li>이점: 분석을 두 번 안 해도 되고, 두 탐색이 서로를 오염시키지 않음</li>
         </ul>
-        <div class="callout">🎯 시험 포인트: "resume vs 새 세션+요약"의 갈림길은 <b>도구 결과의 신선도</b>. 지문에서 "그 사이 무엇이 바뀌었는가"를 찾아라.</div>`},
+        <div class="callout">🎯 시험 포인트: "resume vs 새 세션+요약"의 판별 기준은 <b>도구 결과의 신선도</b>. 지문에서 "그 사이 무엇이 바뀌었는가"를 찾아라.</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1 — Three situations, three tools",
        q:`Three situations came up this week: (a) overnight, an automated dependency upgrade rewrote imports across the entire repo you analyzed yesterday; (b) since your last session you renamed one class across 5 files; (c) on top of a completed analysis, you want to evaluate two competing caching strategies side by side. Which mechanism matches each situation?`,
        opts:[

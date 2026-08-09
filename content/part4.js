@@ -302,7 +302,7 @@ window.CCAF_CONTENT.p4 = {
           <li>실물: <code>"stated_total"</code> 칸엔 문서에 적힌 총액을 그대로, <code>"calculated_total"</code> 칸엔 items를 직접 합산한 값을 → <strong>내 코드가 두 칸을 비교</strong>해 다르면 플래그. 모델의 "맞아요"를 믿는 게 아니라 칸끼리 대조하는 구조</li>
           <li>원본 데이터 자체가 모순이면 <code>conflict_detected</code> 불리언으로 표시</li>
         </ul>
-        <h4>② detected_pattern — 오탐의 계보 추적</h4>
+        <h4>② detected_pattern — 오탐 발생 원인 추적</h4>
         <ul>
           <li>기각(dismiss) = 개발자가 봇의 지적을 "문제 아님"으로 닫아버리는 것</li>
           <li><code>detected_pattern</code> = 발견마다 <strong>"어떤 코드 모양이 이 지적을 촉발했나"</strong>를 적게 만든 칸</li>
@@ -465,9 +465,9 @@ window.CCAF_CONTENT.p4 = {
         <ul>
           <li>대형 리뷰 = <strong>파일별 로컬 분석 패스</strong> + <strong>파일 간 통합 패스</strong></li>
         </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>정답 구조 vs 3대 오답 장치 — 구조로 구분하기</b><br>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>정답 구조 vs 대표 오답 3종 — 구조 비교</b><br>
 <span style="color:var(--accent)">[정답] 독립 리뷰 + 다중 패스</span><br>
-&nbsp;&nbsp;생성 세션 ──코드만 전달──→ 리뷰 인스턴스 (새 눈, 생성 추론 없음)<br>
+&nbsp;&nbsp;생성 세션 ──코드만 전달──→ 리뷰 인스턴스 (생성 추론을 보지 않은 별도 세션)<br>
 &nbsp;&nbsp;리뷰: 패스1 = 파일별 집중 ×14회 → 패스2 = 파일 간 통합 ×1회 → 병합 리포트<br>
 <br>
 [오답 ①] self-review: 생성 세션 ──→ <b>같은 세션</b>이 자기 코드 리뷰 (추론 맥락 잔존 → 같은 맹점 반복)<br>

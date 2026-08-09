@@ -329,7 +329,7 @@ window.CCAF_CONTENT.p2 = {
     ]},
 
   /* ===== CH 5 · 2.5 내장 도구 6종 ===== */
-  { id:"p2c5", ch:"CH 5", title:"내장 도구 6종 선택 기준 (2.5)",
+  { id:"p2c5", ch:"CH 5", title:"기본 제공 도구 6종 선택 기준 (2.5)",
     steps:[
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"여섯 개의 연장, 각자의 자리",
        html:`<h4>검색 2종 — 가장 많이 헷갈리는 쌍</h4>

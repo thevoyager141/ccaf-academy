@@ -24,32 +24,32 @@ window.CCAF_CONTENT.p5 = {
           <li><strong>출처 보존·불확실성</strong> (Ch6)</li>
         </ul>
         <div class="callout">🎯 이 파트의 공통 질문: <b>"정보가 새거나 뭉개지는 지점이 어디고, 무엇으로 지키나."</b> 감·지시가 아니라 구조(블록, 매핑, 표집)로 지키는 보기가 정답.</div>`},
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"컨텍스트가 새는 세 개의 구멍",
-       html:`<p class="lead">긴 대화·큰 자료에서 정보가 사라지는 구멍은 딱 셋. 각 구멍을 <strong>[뭐가 새나 → 왜 새나 → 실물]</strong> 같은 틀로 보자.</p>
-        <div class="callout">📖 용어 카드 — <b>컨텍스트 창</b>: 모델이 한 번에 읽을 수 있는 작업대 크기. 작업대가 차면 뭔가를 내려놓아야 하는데, 그때 뭘 지킬지가 이 챕터의 주제.</div>
-        <h4>구멍 ① 요약 손실</h4>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"정보가 손실되는 세 가지 경로",
+       html:`<p class="lead">긴 대화나 큰 자료에서 정보가 사라지는 경로는 세 가지야. 각각을 <strong>[무엇이 손실되나 → 왜 손실되나 → 실물]</strong> 형식으로 정리했어.</p>
+        <div class="callout">📖 용어 카드 — <b>컨텍스트 창</b>: 모델이 한 번에 읽을 수 있는 분량의 한도. 한도가 차면 무언가는 빠져야 하는데, 그때 무엇을 지킬지가 이 챕터의 주제.</div>
+        <h4>경로 ① 요약 과정의 손실</h4>
         <ul>
-          <li><strong>뭐가 새나</strong>: 숫자·날짜·금액·고객이 말한 조건 같은 정밀한 값</li>
-          <li><strong>왜 새나</strong>: 대화가 길어지면 오래된 부분을 요약해 압축하는데, 요약은 "대충 무슨 얘기였는지"만 남기는 <strong>손실 압축</strong>이라 정밀한 값부터 뭉개짐</li>
+          <li><strong>무엇이 손실되나</strong>: 숫자·날짜·금액·고객이 말한 조건 같은 정밀한 값</li>
+          <li><strong>왜 손실되나</strong>: 대화가 길어지면 오래된 부분을 요약해 압축하는데, 요약은 "대충 무슨 얘기였는지"만 남기는 <strong>손실 압축</strong>이라 정밀한 값부터 뭉개짐</li>
           <li><strong>실물</strong>: "$847.50 환불, 3/15까지" → 요약 두어 번 뒤 → "환불 문의 처리 중"</li>
         </ul>
-        <h4>구멍 ② lost in the middle — 가운데 실종</h4>
+        <h4>경로 ② lost in the middle — 긴 입력의 중간 부분 누락</h4>
         <ul>
-          <li><strong>뭐가 새나</strong>: 긴 입력의 <strong>한가운데</strong> 놓인 정보</li>
-          <li><strong>왜 새나</strong>: 모델의 주의력은 입력의 <strong>처음</strong>(보통 지시문이 놓이는 자리)과 <strong>끝</strong>(방금 읽은 최신 내용)에 강하게 쏠린다는 게 실험으로 확인돼 있어. 사람이 긴 책의 서두와 결말은 기억해도 중간은 흐릿한 것과 비슷한 현상 — 그래서 이름이 "가운데서 잃어버린다"</li>
+          <li><strong>무엇이 손실되나</strong>: 긴 입력의 <strong>한가운데</strong> 놓인 정보</li>
+          <li><strong>왜 손실되나</strong>: 모델의 주의력은 입력의 <strong>처음</strong>(보통 지시문이 놓이는 자리)과 <strong>끝</strong>(방금 읽은 최신 내용)에 강하게 쏠린다는 게 실험으로 확인돼 있어. 그래서 이름이 lost in the middle이야</li>
           <li><strong>실물</strong>: 90K 토큰짜리 보고서 뭉치 한가운데 있는 핵심 수치를 물으면, 못 찾거나 지어냄</li>
         </ul>
-        <h4>구멍 ③ 도구 결과의 토큰 잠식</h4>
+        <h4>경로 ③ 도구 결과가 차지하는 분량</h4>
         <ul>
-          <li><strong>뭐가 새나</strong>: 컨텍스트 창의 <strong>빈자리</strong> (정보가 아니라 공간이 새는 구멍)</li>
-          <li><strong>왜 새나</strong>: 도구는 결과를 <strong>통째로</strong> 반환하거든. 예를 들어 주문 조회 도구를 한 번 부르면 금액·상태뿐 아니라 창고 코드, 세금 코드, 내부 ID 같은 <strong>40칸짜리 데이터 덩어리</strong>가 돌아오는데, 환불 판단에 실제로 쓰는 건 5칸뿐. 안 쓰는 35칸도 대화에 그대로 쌓여</li>
-          <li><strong>실물</strong>: 조회 10번이면 쓸모없는 350칸이 작업대를 차지 — 정작 지켜야 할 초반 대화가 밀려남</li>
+          <li><strong>무엇이 손실되나</strong>: 컨텍스트 창의 <strong>남은 분량</strong> (정보가 아니라 공간이 소모되는 경우)</li>
+          <li><strong>왜 손실되나</strong>: 도구는 결과를 <strong>통째로</strong> 반환하거든. 예를 들어 주문 조회 도구를 한 번 부르면 금액·상태뿐 아니라 창고 코드, 세금 코드, 내부 ID 같은 <strong>40칸짜리 데이터 덩어리</strong>가 돌아오는데, 환불 판단에 실제로 쓰는 건 5칸뿐. 안 쓰는 35칸도 대화에 그대로 쌓여</li>
+          <li><strong>실물</strong>: 조회 10번이면 불필요한 350칸이 컨텍스트를 차지 — 정작 지켜야 할 초반 대화가 밀려남</li>
         </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"구멍별 마개: 블록·트리밍·배치",
-       html:`__MAP5:ctx__<p class="lead">구멍마다 마개가 있어. 각 마개를 <strong>[처방 → 내가 하는 작업 → 실물]</strong> 틀로.</p>
-        <h4>마개 ① case facts 블록 — 구멍 ①(요약 손실)용</h4>
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"손실 유형별 대응책: 블록·트리밍·배치",
+       html:`__MAP5:ctx__<p class="lead">손실 경로마다 대응책이 있어. 각각을 <strong>[처방 → 내가 하는 작업 → 실물]</strong> 형식으로 정리했어.</p>
+        <h4>대응책 ① case facts 블록 — 경로 ①(요약 손실)에 대응</h4>
         <ul>
-          <li><strong>처방</strong>: 거래 사실(금액·날짜·주문번호·상태)을 <strong>요약 대상 밖의 금고</strong>에 따로 보관</li>
+          <li><strong>처방</strong>: 거래 사실(금액·날짜·주문번호·상태)을 <strong>요약 대상에서 제외되는 별도 블록</strong>으로 분리 보관</li>
           <li><strong>내가 하는 작업</strong>: 에이전트 지시문에 한 줄 — "금액·날짜·주문번호가 나오면 CASE FACTS 블록으로 추출해 유지하고, 이 블록은 요약하지 마." 매 턴 프롬프트를 조립하는 코드가 이 블록을 항상 그대로 끼워 넣게 하는 것</li>
         </ul>
         <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>case facts 블록의 실물 — 매 턴 프롬프트에 이렇게 들어간다</b><br>
@@ -58,7 +58,7 @@ window.CCAF_CONTENT.p5 = {
 주문: #A-1042 | 환불액: $847.50 | 기한: 2026-03-15 | 상태: 승인 대기 | 요구: 원 결제수단으로<br>
 <span style="color:var(--accent)">→ 20턴 뒤에도 "$847.50, 3/15"가 글자 그대로 살아 있음</span>
         </div>
-        <h4>마개 ② 트리밍 — 구멍 ③(토큰 잠식)용</h4>
+        <h4>대응책 ② 트리밍 — 경로 ③(분량 소모)에 대응</h4>
         <ul>
           <li><strong>처방</strong>: 도구 결과가 컨텍스트에 들어가기 <strong>전에</strong> 판단에 쓰이는 필드만 남기고 자르기</li>
           <li><strong>내가 하는 작업</strong>: 걸러내는 코드를 끼우는 것 — 정확히 <strong>1.5의 PostToolUse 훅</strong>이 하기 좋은 일이야 (실행 후, 모델이 보기 전). 아니면 도구 자체가 필요한 필드만 반환하게 수정</li>
@@ -68,25 +68,25 @@ window.CCAF_CONTENT.p5 = {
 컨텍스트 투입분: { id: "A-1042", status: "shipped", amount: 847.50, eligible_return: true, deadline: "03-15" }<br>
 <span style="color:var(--accent)">→ 환불 판단에 쓰이는 5개만 — 나머지 35개는 애초에 컨텍스트에 안 넣음</span>
         </div>
-        <h4>마개 ③ 위치 배치 — 구멍 ②(가운데 실종)용</h4>
+        <h4>대응책 ③ 위치 배치 — 경로 ②(중간 누락)에 대응</h4>
         <ul>
           <li><strong>처방</strong>: 핵심 요약은 <strong>맨 앞</strong>, 중요한 건 끝에서 재강조, 상세는 명시적 섹션 헤더로 구획</li>
           <li><strong>내가 하는 작업</strong>: 합성용 입력을 조립할 때 <strong>순서를 내가 정하는 것</strong>. 프롬프트 골격: "① 핵심 발견 요약(맨 앞) ② [소스별 상세 — 헤더 구획] ③ 끝에 질문 재명시"</li>
         </ul>
-        <h4>마개 ④ 상류에서 구조화 — 하류가 빠듯할 때</h4>
+        <h4>대응책 ④ 앞 단계에서 구조화 — 뒤 단계의 분량이 빠듯할 때</h4>
         <ul>
-          <li><strong>용어부터</strong>: 파이프라인을 강물로 생각해. 데이터가 흐르는 방향 기준으로 <strong>앞 단계 = 업스트림(상류)</strong>, 그 결과를 받아쓰는 <strong>뒤 단계 = 다운스트림(하류)</strong></li>
+          <li><strong>용어부터</strong>: 데이터가 흐르는 방향 기준으로 <strong>앞 단계 = 업스트림(upstream)</strong>, 그 결과를 받아 쓰는 <strong>뒤 단계 = 다운스트림(downstream)</strong></li>
         </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>업스트림 → 다운스트림 — 물길 그림</b><br>
-[상류 = 업스트림]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[하류 = 다운스트림]<br>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>업스트림 → 다운스트림 — 데이터 흐름</b><br>
+[앞 단계 = 업스트림]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[뒤 단계 = 다운스트림]<br>
 검색 에이전트 ──▶ 분석 에이전트 ──▶ 합성 에이전트<br>
 (데이터를 만들어 흘려보내는 쪽)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(흘러온 걸 받아쓰는 쪽)<br>
 <br>
-문제: 하류(합성)의 컨텍스트 예산이 작은데 상류가 장황한 산문 155K를 흘려보냄<br>
-<span style="color:var(--accent)">처방: 하류에서 물을 퍼내는 게 아니라 상류 수도꼭지를 조절 — 상류 에이전트의 지시문을 "산문 말고 핵심 사실·인용·관련도만 구조화해서 반환하라"로 수정</span>
+문제: 뒤 단계(합성)의 컨텍스트 예산이 작은데 앞 단계가 장황한 산문 155K를 넘김<br>
+<span style="color:var(--accent)">처방: 뒤 단계에서 줄이는 게 아니라 앞 단계의 출력을 조절 — 앞 단계 에이전트의 지시문을 "산문 말고 핵심 사실·인용·관련도만 구조화해서 반환하라"로 수정</span>
         </div>
         <ul>
-          <li><strong>내가 하는 작업</strong>: 상류 에이전트의 <strong>지시문 수정</strong> — 하류에 요약 장치를 덧대는 게 아니라 상류의 출력 형식을 바꾸는 것</li>
+          <li><strong>내가 하는 작업</strong>: 앞 단계 에이전트의 <strong>지시문 수정</strong> — 뒤 단계에 요약 장치를 덧대는 게 아니라 앞 단계의 출력 형식을 바꾸는 것</li>
         </ul>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1 — Crossed wires",
        q:`A customer has three open issues in one session: a refund on order #A-1042 ($89), a replacement for #A-1077, and a billing dispute over #A-1103 ($312). Twenty turns in, the agent offers "the $312 refund for your order #A-1042" — splicing issue 3's amount onto issue 1's order. A case-facts block exists, but it's one flat list of every number mentioned. What is the right fix?`,
@@ -327,16 +327,16 @@ window.CCAF_CONTENT.p5 = {
           <li>그러면 에이전트가 <strong>Write/Read 도구로 알아서</strong> 기록·참조해. 내가 손으로 받아 적는 게 아냐</li>
         </ul>
         <h4>③ 크래시 복구 — 매니페스트는 어디에 있고 어떻게 도나</h4>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>구조도 — 두 세계: 대화(컨텍스트) vs 파일 시스템</b><br>
-[대화의 세계 — 크래시하면 증발]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[파일의 세계 — 크래시에도 생존]<br>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>구조도 — 대화(컨텍스트)에 있는 것 vs 파일로 저장된 것</b><br>
+[대화에 있는 것 — 크래시하면 사라짐]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[파일로 저장된 것 — 크래시해도 남음]<br>
 코디네이터 ──Task──▶ 서브에이전트 A&nbsp;&nbsp;──Write──▶&nbsp;&nbsp;agent-state/A.json (매니페스트)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└──Write──▶&nbsp;&nbsp;findings/A.md + scratchpad.md<br>
 <br>
-💥 크래시 → 왼쪽 세계는 사라짐, 오른쪽 파일은 그대로<br>
+💥 크래시 → 왼쪽은 사라지고, 오른쪽 파일은 그대로<br>
 재시작한 코디네이터 ──Read──▶ 매니페스트 확인 → <span style="color:var(--accent)">"학술 DB부터 이어서"를 새 서브에이전트 프롬프트에 주입</span>
         </div>
         <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>파일 내용의 실물</b><br>
-# scratchpad.md&nbsp;&nbsp;<span style="color:var(--accent)">← 발견 기록 (연습장)</span><br>
+# scratchpad.md&nbsp;&nbsp;<span style="color:var(--accent)">← 발견 내용을 적어두는 파일</span><br>
 - 환불 흐름: RefundService.process() → PaymentGateway.reverse() (payment.ts 88행)<br>
 - 테스트 위치: tests/refund/ 아래 12개<br>
 <br>
@@ -347,7 +347,7 @@ window.CCAF_CONTENT.p5 = {
           <li><strong>내가 하는 작업</strong>: 각 에이전트 지시문에 "진행 상태를 agent-state/이름.json에 계속 갱신하라" 규칙을 넣고, 재개 절차(코디네이터가 그 파일들을 먼저 읽게)를 설계하는 것 — 기록 자체는 에이전트가 함</li>
           <li>1.7의 세션 복구와 같은 철학: <strong>기록이 기억을 대신한다</strong></li>
         </ul>
-        <div class="callout">📖 용어 카드 — <b>스크래치패드</b>: 연습장. 대화 밖의 파일이라 컨텍스트가 차도 안 사라짐. <b>매니페스트</b>: 짐 목록 — 어떤 상태 파일이 어디 있는지, 뭐가 끝났고 뭐가 남았는지의 색인.</div>`},
+        <div class="callout">📖 용어 카드 — <b>스크래치패드</b>: 발견한 내용을 적어두는 별도 파일. 대화 밖에 있어서 컨텍스트가 차도 사라지지 않음. <b>매니페스트</b>: 진행 상태 기록 파일 — 어떤 작업이 끝났고 뭐가 남았는지, 결과 파일이 어디 있는지를 담음.</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1 — Three symptoms, three tools",
        q:`One week with your codebase-analysis agent produced three incidents: (a) by hour three it answers "repositories typically handle caching like..." instead of citing the CacheManager class it analyzed at hour one; (b) every new question triggers Grep/Read floods that bury the conversation in raw output; (c) last night's six-hour run crashed at 2 AM and today restarted from zero. Which countermeasure mapping is correct?`,
        opts:[
@@ -388,11 +388,11 @@ window.CCAF_CONTENT.p5 = {
     steps:[
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"97%라는 숫자를 의심하라",
        html:`<p class="lead">이 챕터의 무대부터. 대량 추출 파이프라인에서 <strong>사람 리뷰를 어디에 배치하고, 언제 줄여도 되는가</strong>의 문제야.</p>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>이 챕터의 상황 전체도 — 갈림길 설계</b><br>
-문서 1만 건/일 ──▶ 모델이 추출 ──▶ 갈림길 (라우팅)<br>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>이 챕터의 전체 구조 — 검토 대상 분기 설계</b><br>
+문서 1만 건/일 ──▶ 모델이 추출 ──▶ 분기 (라우팅)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ 믿을 만함 → <span style="color:var(--accent)">자동 통과 (사람 안 봄)</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ 의심스러움 → <span style="color:var(--accent)">사람 리뷰 책상으로</span><br>
-질문 둘: ① 이 갈림길 기준을 뭘로 만드나 ② "자동 통과" 구간을 언제 넓혀도 되나 — 이게 5.5의 전부
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ 의심스러움 → <span style="color:var(--accent)">사람 검토로</span><br>
+질문 둘: ① 이 분기 기준을 무엇으로 정하나 ② "자동 통과" 구간을 언제 넓혀도 되나 — 이게 5.5의 전부
         </div>
         <div class="callout">📖 용어 카드 — <b>층화 무작위 표집 (stratified random sampling)</b>: 전체에서 막 뽑기(단순 무작위) 대신, 그룹(층 = strata, 예: 문서 유형)별로 나눠 <b>각 그룹에서 골고루 뽑기</b>. 왜: 손글씨 문서가 전체의 10%뿐이면 막 뽑기 표본엔 몇 장 안 걸려서 문제가 안 보여. <b>보정(calibration)</b>: 모델이 말하는 "90% 확신"이 진짜 90%인지 <b>정답지가 있는 검증 세트로 대조</b>하는 작업 — 거르는 건 <b>과신</b>(90%라 말하는데 실제 74%인 상태). <b>자동화 확대</b>: 사람 리뷰 없이 통과시키는 구간을 넓히는 것.</div>
         <h4>집계 지표의 함정</h4>
@@ -408,13 +408,13 @@ window.CCAF_CONTENT.p5 = {
         <h4>문서 단위 vs 필드 단위 신뢰도 — 해상도의 차이</h4>
         <ul>
           <li><strong>문서 단위</strong> = 문서 하나에 점수 1개 → 한 칸만 약해도 문서 전체가 사람 책상으로 (리뷰 시간 낭비)</li>
-          <li><strong>필드 단위</strong> = 칸마다 점수 → invoice_id는 99%인데 po_number만 60%라면 <strong>그 칸만</strong> 사람이 확인 — 같은 인력으로 훨씬 많은 문서를 처리</li>
-          <li>단, 어느 쪽이든 점수는 <strong>보정을 거친 뒤에만</strong> 갈림길 기준으로 사용</li>
+          <li><strong>필드 단위</strong> = 칸마다 점수 → invoice_id는 99%인데 po_number만 60%라면 <strong>해당 항목만</strong> 사람이 확인 — 같은 인력으로 훨씬 많은 문서를 처리</li>
+          <li>단, 어느 쪽이든 점수는 <strong>보정을 거친 뒤에만</strong> 분기 기준으로 사용</li>
         </ul>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"리뷰 인력이 모자랄 때의 설계",
        html:`__MAP5:conf__<h4>리뷰 라우팅 — 누가 하나부터</h4>
         <ul>
-          <li>라우팅(routing) = 어떤 추출을 사람 책상으로 보낼지 정하는 <strong>갈림길 규칙</strong></li>
+          <li>라우팅(routing) = 어떤 추출을 사람 검토로 보낼지 정하는 <strong>분기 규칙</strong></li>
           <li><strong>규칙 설계 = 사람</strong> (내가 임계값과 조건을 정해 코드에 넣음) / <strong>실행 = 파이프라인이 자동 분기</strong>. 에이전트가 재량으로 정하는 게 아냐</li>
           <li>우선 보낼 두 가지: ① 모델 신뢰도가 낮은 추출 ② 원본 자체가 모호하거나 모순인 문서 — 한정된 리뷰어 시간을 여기 집중</li>
         </ul>
@@ -597,7 +597,7 @@ window.CCAF_CONTENT.p5 = {
        {t:`Treat "no_data" as fatal and halt report generation for investigation.`},
        {t:`Add a disclaimer to all reports that sections may be missing during outages.`}],
      explain:{good:`접근 실패 vs 정상 빈 결과의 구분 — 2.2·5.3 공통 원리. 구분이 생기면 코디네이터가 상황별 올바른 행동(재시도 vs 수용)을 고를 수 있어.`,
-       wrongs:[`<b>B:</b> 진짜 빈 결과까지 재시도 — 낭비이고, 장애가 재시도 1회보다 길면 여전히 구멍.`,`<b>C:</b> 정상 빈 결과에도 전체 중단 — 과잉.`,`<b>D:</b> 면책 문구는 구분 불능이라는 원인을 안 고쳐.`]},
+       wrongs:[`<b>B:</b> 진짜 빈 결과까지 재시도 — 낭비이고, 장애가 재시도 1회보다 길면 여전히 해결 안 됨.`,`<b>C:</b> 정상 빈 결과에도 전체 중단 — 과잉.`,`<b>D:</b> 면책 문구는 구분 불능이라는 원인을 안 고쳐.`]},
      principle:"못 본 것과 없는 것을 가려라"},
     {ts:"5.4", lvl:"기초", q:`What is the telltale sign of context degradation in an extended code-exploration session?`,
      opts:[

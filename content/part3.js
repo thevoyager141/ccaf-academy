@@ -24,7 +24,7 @@ window.CCAF_CONTENT.p3 = {
         </ul>
         <div class="callout">🎯 이 파트의 공통 질문: <b>"이 지시/설정은 어디에 두는 게 맞나."</b> 판단 축은 두 개 — 누구에게 적용되나(나만? 팀?) × 언제 로드되나(항상? 조건부? 호출 시?).</div>`},
       {type:"concept", kind:"CONCEPT · 개념 설명 ①", h:"먼저 그림부터: CLAUDE.md는 컴퓨터 어디에 있는 파일인가",
-       html:`<p class="lead">CLAUDE.md는 그냥 <strong>메모장 파일</strong>이야. "Claude야, 일할 때 이거 지켜"라고 적어두는 쪽지. 다만 <strong>어느 폴더에 두느냐</strong>에 따라 적용 범위가 달라져. 아래 그림의 세 위치가 전부야.</p>
+       html:`<p class="lead">CLAUDE.md는 <strong>일반 텍스트 파일</strong>이야. "작업할 때 이 규칙을 지켜"라고 적어두는 지시문 파일. 다만 <strong>어느 폴더에 두느냐</strong>에 따라 적용 범위가 달라져. 아래 그림의 세 위치가 전부야.</p>
         <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto">
 🖥 <b>내 컴퓨터</b><br>
 ├─ 🏠 홈 폴더 <b>~</b> (내 계정의 개인 공간)<br>
@@ -49,8 +49,8 @@ window.CCAF_CONTENT.p3 = {
           <li>①만 <strong>팀 저장소 밖(내 홈 폴더)</strong>에 있어. 그래서 <strong>버전 관리로 공유되지 않음</strong> → "새 팀원에게 지시가 적용 안 됨" 문제의 원인은 항상 ①에 있는 팀 규칙</li>
         </ul>
         <div class="callout">📖 용어 카드 — <b>~ (물결)</b>: 내 홈 폴더의 줄임 표기. 컴퓨터에서 내 계정의 개인 서랍이라고 생각하면 됨. <b>저장소 복제(클론)</b>: 팀 공용 폴더를 내 컴퓨터로 통째로 내려받는 것 — ②③은 그 안에 있어서 팀 전체가 같은 파일을 가짐.</div>`},
-      {type:"concept", kind:"CONCEPT · 개념 설명 ②", h:"'연결 로드'의 정체: 쪽지 세 장을 스테이플러로 찍는다",
-       html:`<p class="lead">Claude가 frontend 폴더에서 일을 시작하면, 세 쪽지를 <strong>따로따로 참조하는 게 아니라</strong> 멀리 있는 것부터 순서대로 <strong>이어 붙여 한 장의 지시문으로 만든 뒤 통째로</strong> 읽어. 이게 "연결(concatenate) 로드"야.</p>
+      {type:"concept", kind:"CONCEPT · 개념 설명 ②", h:"'연결 로드'의 정체: 세 파일이 한 장으로 이어 붙는다",
+       html:`<p class="lead">Claude가 frontend 폴더에서 일을 시작하면, 세 파일을 <strong>따로따로 참조하는 게 아니라</strong> 멀리 있는 것부터 순서대로 <strong>이어 붙여 한 장의 지시문으로 만든 뒤 통째로</strong> 읽어. 이게 "연결(concatenate) 로드"야.</p>
         <div style="margin:16px 0">
           <div style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)"><span class="eyebrow">① 사용자 ~/.claude/CLAUDE.md</span><br><code>응답은 한국어로 해줘</code></div>
           <div style="text-align:center;color:var(--dim);font-weight:800;line-height:1.6">＋</div>
@@ -180,7 +180,7 @@ window.CCAF_CONTENT.p3 = {
         <ul>
           <li><strong>스킬</strong> = 필요할 때 호출하는 작업별 워크플로</li>
           <li><strong>CLAUDE.md</strong> = 항상 로드되는 보편 표준</li>
-          <li>"매번 적용돼야 하나?"가 갈림길 — 그렇다면 CLAUDE.md, 특정 작업에서만이라면 스킬</li>
+          <li>"매번 적용돼야 하나?"가 판별 기준 — 그렇다면 CLAUDE.md, 특정 작업에서만이라면 스킬</li>
         </ul>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1 — Three needs, three homes",
        q:`Your team has three requirements: (1) a "generate release notes from merged PRs" workflow every developer should run on demand; (2) your personal shortcut that reformats commit messages your preferred way; (3) the API error-handling standard that must shape every piece of generated code, always, for everyone. Which allocation is correct?`,
@@ -588,7 +588,7 @@ window.CCAF_CONTENT.p3 = {
        {t:`paths: ["db/migrations/*.sql"] — the other folders can be added later if problems appear.`},
        {t:`A root CLAUDE.md section titled "SQL migrations" that Claude applies when it sees .sql files.`}],
      explain:{good:`위치가 여럿 + 패턴은 하나(**/migrations/**/*.sql) — 글롭 하나로 산재 위치를 전부 커버. 3.3의 핵심 이점이야.`,
-       wrongs:[`<b>B:</b> 폴더마다 파일 복제 — 유지보수 부담과 누락 위험.`,`<b>C:</b> 알려진 위치를 일부러 빼는 건 구멍을 계획하는 것.`,`<b>D:</b> 항상 로드 + 추론 의존 — 조건부 명시 매칭보다 약해.`]},
+       wrongs:[`<b>B:</b> 폴더마다 파일 복제 — 유지보수 부담과 누락 위험.`,`<b>C:</b> 알려진 위치를 일부러 빼는 건 빈틈을 의도적으로 만드는 것.`,`<b>D:</b> 항상 로드 + 추론 의존 — 조건부 명시 매칭보다 약해.`]},
      principle:"산재 위치 = 글롭 하나로"},
     {ts:"3.4", lvl:"기초", q:`Which task is appropriate for direct execution rather than plan mode?`,
      opts:[

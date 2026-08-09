@@ -152,7 +152,7 @@ window.CCAF_EXAM_EXTRA = [
      {t:`One pass with triple the token budget so all concerns get room.`},
      {t:`Random rotation: one concern per night, cycling every three days.`}],
    explain:{good:`1.6: 고정된 관점 반복 = prompt chaining. 패스마다 한 관점에 주의력을 몰아주면 깊이가 생기고 스키마도 관점별로 최적화돼.`,
-     wrongs:[`<b>B:</b> 셋 다 "매일 반드시" — 에이전트가 고르게 두면 커버리지 구멍.`,`<b>C:</b> 토큰 예산은 주의력 희석을 못 풀어.`,`<b>D:</b> 3일 주기는 이틀 묵은 취약점을 허용 — 보안 검사에 부적합.`]},
+     wrongs:[`<b>B:</b> 셋 다 "매일 반드시" — 에이전트가 고르게 두면 커버리지 공백.`,`<b>C:</b> 토큰 예산은 주의력 희석을 못 풀어.`,`<b>D:</b> 3일 주기는 이틀 묵은 취약점을 허용 — 보안 검사에 부적합.`]},
    principle:"고정 관점 반복 = 체이닝"},
   {scenario:"s5", ts:"3.6", q:`To give your CI reviewer project context, the team debates where review criteria, testing standards, and fixture documentation should live so both interactive sessions and the -p pipeline runs pick them up consistently. What is the right home?`,
    opts:[
