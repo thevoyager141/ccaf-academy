@@ -7,106 +7,150 @@ window.CCAF_CONTENT.p3 = {
   { id:"p3c1", ch:"CH 1", title:"CLAUDE.md 계층과 모듈화 (3.1)",
     steps:[
       {type:"concept", kind:"PART BRIEFING · 파트 설명", h:"PART 03 · 팀 전체에 같은 설정을 적용하는 방법",
-       html:`<p class="lead">이 파트의 주제는 <strong>Claude Code Configuration & Workflows</strong>임.</p>
-        <h4>파트 프로필</h4>
-        <ul>
-          <li>출제 비중 <strong>20% ≈ 12문항</strong> · 여러 설정 수단 중 하나를 고르는 형태로 출제됨</li>
-          <li>챕터 6개 + 미니테스트 · 약 1.7시간 (세션 S8~S9)</li>
-        </ul>
-        <h4>다루는 범위</h4>
-        <ul>
-          <li><strong>CLAUDE.md 계층</strong>: 지시를 어디에 두는가 (Ch1)</li>
-          <li><strong>커맨드·스킬</strong>: 반복 작업의 패키징 (Ch2)</li>
-          <li><strong>경로별 규칙</strong>: 파일 위치에 따른 규칙 로딩 (Ch3)</li>
-          <li><strong>plan mode vs 직접 실행</strong>: 계획을 먼저 세울 시점의 판단 (Ch4)</li>
-          <li><strong>반복 개선 기법</strong>: 결과 품질을 높이는 대화 방식 (Ch5)</li>
-          <li><strong>CI/CD 통합</strong>: 자동화 파이프라인에서의 실행 (Ch6)</li>
-        </ul>
-        <div class="callout">🎯 이 파트의 공통 질문: <b>"이 지시나 설정을 어디에 둘 것인가."</b> 판단 기준은 두 가지임. 누구에게 적용되는가(개인만? 팀 전체?), 그리고 언제 로드되는가(항상? 조건부? 호출 시?).</div>`},
-      {type:"concept", kind:"CONCEPT · 개념 설명 ①", h:"먼저 그림부터: CLAUDE.md는 컴퓨터 어디에 있는 파일인가",
-       html:`<p class="lead">CLAUDE.md는 <strong>일반 텍스트 파일</strong>임. "작업할 때 이 규칙을 지킬 것"이라고 적어 두는 지시문 파일임. 다만 <strong>어느 폴더에 두는가</strong>에 따라 적용 범위가 달라짐. 아래 그림의 세 위치가 전부임.</p>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto">
-🖥 <b>로컬 컴퓨터</b><br>
-├─ 🏠 홈 폴더 <b>~</b> (사용자 계정의 개인 폴더)<br>
-│&nbsp;&nbsp;&nbsp;└─ .claude/<br>
-│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ CLAUDE.md&nbsp;&nbsp;<span style="color:var(--accent)">← ① 사용자 레벨: 모든 프로젝트에 적용, 해당 사용자에게만</span><br>
-│<br>
-└─ 📁 our-shop/ (프로젝트 폴더 = 팀 저장소(repository)를 로컬 컴퓨터로 복제한 것)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;├─ CLAUDE.md&nbsp;&nbsp;<span style="color:var(--accent)">← ② 프로젝트 레벨: 이 프로젝트에서 팀 전체에게 적용</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;├─ backend/<br>
-&nbsp;&nbsp;&nbsp;&nbsp;└─ frontend/<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ CLAUDE.md&nbsp;&nbsp;<span style="color:var(--accent)">← ③ 디렉토리 레벨: frontend 폴더 작업에만 추가 적용</span>
-        </div>
-        <h4>위치별 특성 한눈에</h4>
-        <table>
-          <tr><th>레벨</th><th>파일 위치</th><th>누구에게</th><th>팀 공유</th><th>여기 담는 것</th></tr>
-          <tr><td>① 사용자</td><td><code>~/.claude/CLAUDE.md</code></td><td>본인만, 모든 프로젝트</td><td>❌ (로컬 컴퓨터에만)</td><td>개인 설정 ("응답은 한국어로")</td></tr>
-          <tr><td>② 프로젝트</td><td>프로젝트 루트 <code>CLAUDE.md</code> 또는 <code>.claude/CLAUDE.md</code></td><td>이 프로젝트의 팀 전원</td><td>✅ (저장소에 커밋)</td><td>팀 표준 ("들여쓰기 4칸")</td></tr>
-          <tr><td>③ 디렉토리</td><td>하위 폴더 안 <code>CLAUDE.md</code></td><td>그 폴더 작업 시 추가</td><td>✅</td><td>그 영역 전용 규칙</td></tr>
-        </table>
-        <h4>가장 자주 틀리는 지점</h4>
-        <ul>
-          <li>①만 <strong>팀 저장소 밖(사용자 홈 폴더)</strong>에 있음. 그래서 <strong>버전 관리로 공유되지 않음</strong>. "새 팀원에게 지시가 적용되지 않음" 문제의 원인은 대부분 ①에 들어 있는 팀 규칙임</li>
-        </ul>
-        <div class="callout">📖 용어 카드. <b>~ (물결)</b>: 사용자 홈 폴더의 줄임 표기임. 컴퓨터에서 사용자 계정에 할당된 개인 폴더를 가리킴. <b>저장소 복제(clone)</b>: 팀 공용 저장소를 로컬 컴퓨터로 통째로 내려받는 것임. ②③은 그 안에 있으므로 팀 전체가 같은 파일을 가짐.</div>`},
-      {type:"concept", kind:"CONCEPT · 개념 설명 ②", h:"'연결 로드'의 실체: 세 파일이 하나의 지시문으로 합쳐진다",
-       html:`<p class="lead">Claude가 frontend 폴더에서 작업을 시작하면 세 파일을 <strong>따로 참조하지 않음</strong>. 상위 경로에 있는 것부터 순서대로 <strong>이어 붙여 하나의 지시문으로 만든 뒤 전체를</strong> 읽음. 이것이 "연결(concatenate) 로드"임.</p>
-        <div style="margin:16px 0">
-          <div style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)"><span class="eyebrow">① 사용자 ~/.claude/CLAUDE.md</span><br><code>응답은 한국어로 작성할 것</code></div>
-          <div style="text-align:center;color:var(--dim);font-weight:800;line-height:1.6">＋</div>
-          <div style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)"><span class="eyebrow">② 프로젝트 our-shop/CLAUDE.md</span><br><code>들여쓰기는 4칸으로</code></div>
-          <div style="text-align:center;color:var(--dim);font-weight:800;line-height:1.6">＋</div>
-          <div style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)"><span class="eyebrow">③ 디렉토리 frontend/CLAUDE.md</span><br><code>이 폴더는 들여쓰기 2칸으로</code></div>
-          <div style="text-align:center;color:var(--accent);font-weight:800;line-height:2.2">↓ 상위 경로에 있는 것부터 순서대로 이어 붙임 ↓</div>
-          <div style="border:2px solid var(--accent-line);border-radius:12px;padding:12px 16px;background:var(--accent-soft)"><span class="eyebrow">Claude가 실제로 읽는 것: 하나로 합쳐진 지시문</span><br>
-            <code>1. 응답은 한국어로 작성할 것</code><br>
-            <code>2. 들여쓰기는 4칸으로</code><br>
-            <code>3. 이 폴더는 들여쓰기 2칸으로</code>
-          </div>
-        </div>
-        <h4>이 그림이 보여 주는 규칙 세 가지</h4>
-        <ul>
-          <li><strong>덮어쓰기가 아니다</strong>: ③이 ②를 지우지 않음. 세 문장이 모두 남아 하나의 지시문에 들어감. 이것이 "연결"이라 부르는 이유임</li>
-          <li><strong>충돌이 없으면 전부 적용</strong>: "한국어로"는 상충하는 지시가 없으므로 그대로 적용됨</li>
-          <li><strong>충돌하는 경우(4칸 vs 2칸)</strong>: 작업 위치에 가까운 ③이 <strong>마지막에 읽히므로</strong> 그쪽이 적용될 가능성이 높음. 다만 공식 문서는 <strong>"충돌 시 임의로 하나를 고를 수 있다"</strong>고 명시함. 보장된 동작이 아니므로 <strong>충돌 자체를 만들지 않는 것이 정석임</strong> (예: ②를 "frontend 제외, 들여쓰기 4칸"으로 작성)</li>
-        </ul>
-        <h4>③에만 적용되는 규칙: 로드 시점이 다름</h4>
-        <ul>
-          <li>①②는 <strong>세션 시작 시 항상 로드됨</strong>. 로드 조건이 없음</li>
-          <li>③(하위 디렉토리)은 <strong>frontend 폴더의 파일을 실제로 읽거나 수정할 때 로드됨</strong>. 상시 로드가 아니므로 토큰이 절약됨</li>
-        </ul>
-        <h4>공식 문서가 추가로 명시하는 내용</h4>
-        <ul>
-          <li><strong>CLAUDE.md는 컨텍스트일 뿐 강제 설정이 아님</strong>: "행동을 차단해야 하면 PreToolUse 훅(hook)을 쓸 것"이라고 공식 문서가 명시함 (원칙 ①: 반드시 지켜야 하는 것은 프롬프트가 아니라 설정으로 강제한다)</li>
-          <li>계층은 실제로 네 단계임: 조직 관리(managed policy) → ① → ② → <code>CLAUDE.local.md</code>(개인용 프로젝트 메모, .gitignore 대상)</li>
-          <li>@import는 <strong>최대 4단계</strong>까지 재귀 가능함. 백틱(\`)으로 감싼 @경로는 임포트되지 않음</li>
-          <li>.claude/rules/에서 <strong>paths가 없는 규칙은 상시 로드됨</strong>. 조건부 규칙(conditional rules)이 되려면 paths가 있어야 함</li>
-        </ul>
-        <h4>모듈화 수단 2가지</h4>
-        <ul>
-          <li><code>@import</code>: 다른 파일을 참조로 불러와 CLAUDE.md의 분량을 줄임 (원본은 한 곳에 두고 필요한 것만 포함함)</li>
-          <li><code>.claude/rules/</code>: 주제별 파일(testing.md, api-conventions.md)로 분할함</li>
-        </ul>
-        <div class="callout">📖 용어 카드. <b>/memory 슬래시 커맨드(slash command)</b>: 현재 세션에 어떤 메모리 파일이 로드됐는지 확인하는 명령임. "세션마다 행동이 다름" 문제의 진단 수단임.</div>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"어디에 둘 것인가: 진단과 처방",
-       html:`__MAP3:hier__<h4>케이스 1: 새 팀원에게 코딩 표준이 적용되지 않음</h4>
-        <ul>
-          <li>진단: 표준이 작성자의 <code>~/.claude/CLAUDE.md</code>(사용자 레벨)에 있었음</li>
-          <li>처방: 프로젝트 레벨로 이동함. 저장소를 복제하면 전원에게 적용됨</li>
-        </ul>
-        <h4>케이스 2: 모노레포, 패키지마다 다른 표준</h4>
-        <ul>
-          <li>처방: 각 패키지 CLAUDE.md에서 <strong>@import로 관련 표준 파일만 선택해 포함함</strong></li>
-          <li>패키지 관리자가 자신의 도메인 지식을 근거로 필요한 표준을 선택함</li>
-        </ul>
-        <h4>케이스 3: CLAUDE.md가 800줄까지 커짐</h4>
-        <ul>
-          <li>처방: <code>.claude/rules/</code>에 주제별로 분할함 (testing.md / api-conventions.md / deployment.md)</li>
-        </ul>
-        <h4>케이스 4: 세션마다 다르게 동작함</h4>
-        <ul>
-          <li>진단 수단: <code>/memory</code>로 어떤 파일이 로드됐는지 먼저 확인함</li>
-        </ul>`},
+   html:`<h4>① 다루는 영역</h4>
+<ul>
+<li>Claude Code: 내 컴퓨터의 파일을 읽고 고치고 명령을 실행하는 Claude 프로그램</li>
+<li>이 파트의 주제: Claude Code에 규칙과 업무 과정을 알려 주는 설정, 그리고 실행 방식</li>
+<li>영어 이름: Claude Code Configuration &amp; Workflows</li>
+</ul>
+<h4>② 챕터 구성</h4>
+<table>
+<tr><th>챕터</th><th>주제</th></tr>
+<tr><td>CH 1</td><td>CLAUDE.md. Claude가 항상 읽는 규칙 파일</td></tr>
+<tr><td>CH 2</td><td>스킬. 반복하는 업무 과정을 저장해 두는 폴더</td></tr>
+<tr><td>CH 3</td><td>경로별 규칙. 파일 위치에 따라 불러오는 규칙</td></tr>
+<tr><td>CH 4</td><td>권한 모드와 plan mode. 승인 없이 진행할 범위</td></tr>
+<tr><td>CH 5</td><td>반복 개선 기법. 결과 품질을 높이는 대화 방식</td></tr>
+<tr><td>CH 6</td><td>CI/CD 통합. 자동 실행 체계 안에서의 사용</td></tr>
+<tr><td>CH 7</td><td>명령어 실행 옵션</td></tr>
+</table>
+<h4>③ 파트 전체에 쓰는 판단 기준</h4>
+<ul>
+<li>적용 대상: 나만 쓰는 설정인지 팀 전체가 쓰는 설정인지</li>
+<li>로드 시점: 항상인지, 조건에 맞을 때인지, 직접 실행할 때인지</li>
+<li>자격시험 출제 비중: 20%</li>
+</ul>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명 ①", h:"CLAUDE.md: Claude가 작업 전에 읽는 규칙 파일",
+   html:`<h4>① CLAUDE.md</h4>
+<ul>
+<li>Claude가 작업을 시작할 때 읽는 글 파일</li>
+<li>적는 내용: 지켜야 할 규칙과 프로젝트 정보</li>
+<li>파일을 두는 폴더에 따라 적용 범위가 달라짐</li>
+</ul>
+<div class="fig"><b>CLAUDE.md 위치 세 곳</b><br>
+🏠 홈 폴더 (~)<br>
+&nbsp;└─ .claude/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ CLAUDE.md&nbsp;&nbsp;<span class="an">← ① 사용자 위치. 나만 사용. 모든 프로젝트에 적용</span><br>
+<br>
+📁 our-shop/ (프로젝트 폴더)<br>
+&nbsp;├─ CLAUDE.md&nbsp;&nbsp;<span class="an">← ② 프로젝트 위치. 팀 전원에게 적용</span><br>
+&nbsp;├─ backend/<br>
+&nbsp;└─ frontend/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ CLAUDE.md&nbsp;&nbsp;<span class="an">← ③ 폴더 위치. frontend 폴더 작업에만 추가 적용</span>
+</div>
+<h4>② 위치별 적용 범위</h4>
+<table>
+<tr><th>위치</th><th>파일 경로</th><th>적용 대상</th><th>팀 공유</th><th>적는 내용</th></tr>
+<tr><td>① 사용자</td><td><code>~/.claude/CLAUDE.md</code></td><td>나만. 모든 프로젝트</td><td>안 됨</td><td>개인 설정. 예: "답은 한국어로"</td></tr>
+<tr><td>② 프로젝트</td><td>프로젝트 폴더의 <code>CLAUDE.md</code> 또는 <code>.claude/CLAUDE.md</code></td><td>이 프로젝트의 팀 전원</td><td>됨</td><td>팀 규칙. 예: "들여쓰기 4칸"</td></tr>
+<tr><td>③ 폴더</td><td>아래쪽 폴더의 <code>CLAUDE.md</code></td><td>그 폴더 작업</td><td>됨</td><td>그 폴더에만 쓰는 규칙</td></tr>
+</table>
+<h4>③ 팀 규칙의 위치</h4>
+<ul>
+<li>사용자 위치의 파일은 내 컴퓨터에만 존재. 팀 저장소에 포함되지 않아 팀원에게 전달되지 않음</li>
+<li>팀 규칙은 프로젝트 위치에 작성</li>
+<li>자주 생기는 문제: 새 팀원에게 팀 규칙이 적용되지 않음. 원인은 사용자 위치에 적어 둔 팀 규칙</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>홈 폴더(~)</b>: 컴퓨터 사용자마다 하나씩 있는 개인 폴더. 경로에서 쓰는 줄임 표기는 ~</li>
+<li><b>저장소(repository)</b>: 프로젝트 파일과 변경 이력을 함께 보관하는 공간. 팀이 같은 저장소를 공유</li>
+<li><b>복제(clone)</b>: 팀 저장소를 내 컴퓨터로 내려받는 일</li>
+<li><b>들여쓰기</b>: 코드 줄 앞에 넣는 빈칸. 팀마다 칸 수를 정해 둠</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명 ②", h:"여러 CLAUDE.md를 읽는 방식",
+   html:`<h4>① 이어 붙여 읽기</h4>
+<ul>
+<li>Claude는 해당하는 CLAUDE.md를 모두 읽음</li>
+<li>위쪽 폴더의 파일부터 순서대로 이어 붙여 하나의 지시문으로 사용</li>
+</ul>
+<div style="margin:16px 0">
+  <div style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)"><span class="eyebrow">① 사용자 ~/.claude/CLAUDE.md</span><br><code>답은 한국어로 작성</code></div>
+  <div style="text-align:center;color:var(--dim);font-weight:800;line-height:1.6">＋</div>
+  <div style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)"><span class="eyebrow">② 프로젝트 our-shop/CLAUDE.md</span><br><code>들여쓰기는 4칸</code></div>
+  <div style="text-align:center;color:var(--dim);font-weight:800;line-height:1.6">＋</div>
+  <div style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)"><span class="eyebrow">③ 폴더 frontend/CLAUDE.md</span><br><code>이 폴더는 들여쓰기 2칸</code></div>
+  <div style="text-align:center;color:var(--accent);font-weight:800;line-height:2.2">↓ 위쪽 폴더의 파일부터 순서대로 이어 붙임 ↓</div>
+  <div style="border:2px solid var(--accent-line);border-radius:12px;padding:12px 16px;background:var(--accent-soft)"><span class="eyebrow">Claude가 실제로 읽는 지시문</span><br>
+    <code>1. 답은 한국어로 작성</code><br>
+    <code>2. 들여쓰기는 4칸</code><br>
+    <code>3. 이 폴더는 들여쓰기 2칸</code>
+  </div>
+</div>
+<h4>② 규칙 세 가지</h4>
+<ul>
+<li>뒤에 읽은 파일이 앞 파일을 지우지 않음. 모든 문장이 남는 방식</li>
+<li>서로 어긋나지 않는 지시는 전부 적용</li>
+<li>서로 어긋나는 지시(4칸과 2칸): Claude가 둘 중 하나를 임의로 고를 수 있음</li>
+<li>해결: 어긋나는 지시를 만들지 않기. 예: 프로젝트 파일에 "frontend 폴더를 제외하고 들여쓰기 4칸"</li>
+</ul>
+<h4>③ 로드 시점</h4>
+<table>
+<tr><th>파일</th><th>로드 시점</th></tr>
+<tr><td>작업 폴더와 그 위쪽 폴더의 CLAUDE.md</td><td>세션 시작 시</td></tr>
+<tr><td>아래쪽 폴더의 CLAUDE.md</td><td>그 폴더의 파일을 읽거나 고칠 때</td></tr>
+</table>
+<h4>④ 함께 쓰는 기능</h4>
+<table>
+<tr><th>기능</th><th>내용</th></tr>
+<tr><td><code>CLAUDE.local.md</code></td><td>나만 쓰는 프로젝트 메모. 팀 저장소에 올리지 않는 파일</td></tr>
+<tr><td>관리형 정책</td><td>조직이 모든 구성원의 컴퓨터에 배포하는 CLAUDE.md</td></tr>
+<tr><td><code>@경로</code> 가져오기</td><td>다른 파일의 내용을 불러오는 표기. 가져온 파일이 다시 다른 파일을 가져오는 깊이는 최대 4단계</td></tr>
+<tr><td><code>.claude/rules/</code></td><td>규칙을 주제별 파일로 나누어 두는 폴더. CH 3에서 다루는 내용</td></tr>
+<tr><td>자동 메모리</td><td>Claude가 작업 중에 배운 내용을 스스로 적어 두는 메모. 파일 이름은 <code>MEMORY.md</code>. 세션 시작 시 처음 200줄까지 로드</td></tr>
+</table>
+<ul>
+<li>분량 기준: CLAUDE.md 파일 하나에 200줄 이하</li>
+<li>CLAUDE.md는 참고 자료. 반드시 막아야 하는 행동은 PreToolUse 훅으로 강제</li>
+<li>설명 전체: <a href="https://code.claude.com/docs/ko/memory" target="_blank" rel="noopener">Claude Code 공식 문서 'Claude가 프로젝트를 기억하는 방법' 페이지</a> (한국어)</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>로드(load)</b>: Claude가 파일 내용을 읽어 컨텍스트 창에 올리는 일</li>
+<li><b>/memory</b>: 지금 세션에 로드된 파일을 확인하는 명령</li>
+<li><b>PreToolUse 훅</b>: 도구 실행 전에 자동으로 실행되는 코드. Part 1 CH 6에서 다룬 내용</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"문제 상황별 원인과 해결",
+   html:`__MAP3:hier__<h4>① 상황별 해결</h4>
+<table>
+<tr><th>상황</th><th>원인</th><th>해결</th></tr>
+<tr><td>새 팀원에게 팀 규칙이 적용되지 않음</td><td>규칙이 작성자의 사용자 위치 파일에 있음</td><td>프로젝트 위치로 이동</td></tr>
+<tr><td>한 저장소 안의 패키지마다 다른 표준 사용</td><td>표준 문서 전체를 한 파일에서 관리</td><td>패키지별 CLAUDE.md에서 필요한 표준 파일만 <code>@경로</code>로 가져오기</td></tr>
+<tr><td>CLAUDE.md가 800줄까지 늘어남</td><td>모든 규칙을 한 파일에 작성</td><td><code>.claude/rules/</code>에 주제별 파일로 나누기. 예: testing.md, api-conventions.md</td></tr>
+<tr><td>세션마다 다르게 동작</td><td>로드된 파일이 세션마다 다름</td><td><code>/memory</code>로 로드된 파일 확인</td></tr>
+</table>
+<div class="screen"><div class="sbar">화면 예시 · /memory 실행 결과</div>
+&gt; /memory<br>
+로드된 파일<br>
+&nbsp;&nbsp;~/.claude/CLAUDE.md<br>
+&nbsp;&nbsp;our-shop/CLAUDE.md<br>
+&nbsp;&nbsp;our-shop/frontend/CLAUDE.md
+</div>
+<p class="cap">지금 세션이 읽은 파일 목록. 실제 화면과 글자 배치 차이 있음.</p>
+<h4>② 판단 순서</h4>
+<ul>
+<li>1단계: 규칙을 쓸 사람 확인. 나만 쓰면 사용자 위치, 팀이 쓰면 프로젝트 위치</li>
+<li>2단계: 규칙이 필요한 범위 확인. 한 폴더에만 필요하면 그 폴더의 CLAUDE.md</li>
+<li>3단계: 분량 확인. 길어지면 주제별 파일로 나누기</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>모노레포(monorepo)</b>: 여러 패키지를 한 저장소에 모아 둔 구조</li>
+<li><b>패키지(package)</b>: 저장소 안에서 독립된 기능을 맡는 코드 묶음</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: The ghost convention",
        q:`Three weeks ago your team deleted the "always write JSDoc for every function" rule from the project CLAUDE.md — yet on your machine, Claude still adds JSDoc everywhere, while teammates' sessions stopped. You've pulled latest; the rule is confirmed gone from the repo. What is the right diagnostic step, and the likely finding?`,
        opts:[
@@ -145,54 +189,138 @@ window.CCAF_CONTENT.p3 = {
   /* ===== CH 2 · 3.2 커맨드와 스킬 ===== */
   { id:"p3c2", ch:"CH 2", title:"커스텀 슬래시 커맨드와 스킬 (3.2)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"반복 작업을 패키징하는 두 가지 방법",
-       html:`<h4>슬래시 커맨드</h4>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"스킬: 반복하는 업무 과정을 저장해 뒀다가 불러 쓸 수 있는 폴더",
+       html:`<h4>① 스킬 구성</h4>
         <ul>
-          <li><code>/review</code>처럼 타이핑해서 실행하는 저장된 프롬프트</li>
-          <li><strong>프로젝트</strong> <code>.claude/commands/</code>: 저장소에 커밋되어 팀 전체가 공유함</li>
-          <li><strong>개인</strong> <code>~/.claude/commands/</code>: 해당 사용자에게만 적용됨</li>
+          <li>폴더 하나가 스킬 하나</li>
+          <li>폴더 안의 <code>SKILL.md</code>: 업무 과정을 순서대로 적은 글 파일</li>
+          <li>폴더 이름이 스킬 이름. 폴더 이름이 <code>weekly-report</code>이면 실행 명령은 <code>/weekly-report</code></li>
+          <li>양식이나 참고 자료 파일도 같은 폴더에 보관 가능</li>
         </ul>
-        <h4>스킬 (Skills)</h4>
+        <div class="fig"><b>스킬 폴더 구성</b><br>
+📁 weekly-report/&nbsp;&nbsp;<span class="an">← 스킬 폴더. 폴더 이름이 스킬 이름</span><br>
+&nbsp;&nbsp;├─ SKILL.md&nbsp;&nbsp;<span class="an">← 업무 과정을 적은 글 파일 (필수)</span><br>
+&nbsp;&nbsp;└─ report-template.md&nbsp;&nbsp;<span class="an">← 보고서 양식 (선택)</span>
+        </div>
+        <h4>② 스킬 위치</h4>
+        <table>
+          <tr><th>구분</th><th>폴더 경로</th><th>사용 범위</th></tr>
+          <tr><td>개인 스킬</td><td><code>~/.claude/skills/</code></td><td>본인만 사용. 모든 프로젝트에서 사용 가능</td></tr>
+          <tr><td>프로젝트 스킬</td><td><code>프로젝트 폴더/.claude/skills/</code></td><td>그 프로젝트를 함께 쓰는 팀 전원</td></tr>
+        </table>
         <ul>
-          <li><code>.claude/skills/</code> 폴더의 <code>SKILL.md</code>: 더 복잡한 작업을 담는 패키지임</li>
-          <li>파일 맨 위 <strong>YAML frontmatter</strong>로 동작을 설정함. frontmatter는 파일 첫머리에 ---로 감싸 넣는 설정 구역이고, YAML은 그 안을 "이름: 값" 형태로 적는 표기법임</li>
+          <li>이름이 같은 스킬이 두 위치에 모두 있으면 개인 스킬이 우선</li>
         </ul>
-        <h4>frontmatter 3종 (암기 필수)</h4>
+        <div class="fig"><b>스킬 위치</b><br>
+🏠 홈 폴더 (~)<br>
+&nbsp;&nbsp;└─ .claude/skills/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ my-memo/SKILL.md&nbsp;&nbsp;<span class="an">← 개인 스킬</span><br>
+📁 team-project/ (프로젝트 폴더)<br>
+&nbsp;&nbsp;└─ .claude/skills/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ weekly-report/SKILL.md&nbsp;&nbsp;<span class="an">← 프로젝트 스킬</span>
+        </div>
+        <h4>③ 스킬 실행 방식</h4>
         <ul>
-          <li><code>context: fork</code>: 스킬을 <strong>격리된 컨텍스트</strong>에서 실행함. 분량이 큰 출력이 본 대화에 남지 않음</li>
-          <li><code>allowed-tools</code>: 스킬 실행 중 <strong>사용 가능한 도구를 제한함</strong> (파일 삭제처럼 되돌릴 수 없는 동작을 막음)</li>
-          <li><code>argument-hint</code>: 인자 없이 호출하면 <strong>필요한 파라미터를 요청함</strong></li>
+          <li><strong>직접 실행</strong>: 입력창에 <code>/스킬 이름</code> 입력</li>
+          <li><strong>자동 실행</strong>: Claude가 스킬 설명을 읽고 지금 받은 요청에 맞는 스킬을 골라 실행</li>
+          <li>Claude가 읽는 범위
+            <ul>
+              <li>평소: 스킬 설명</li>
+              <li>실행할 때: <code>SKILL.md</code> 전체</li>
+            </ul>
+          </li>
+          <li><strong>슬래시 커맨드(slash command)</strong>: <code>/이름</code> 형태의 명령. <code>.claude/commands/</code> 폴더에 넣은 글 파일도 같은 방식으로 실행 가능</li>
         </ul>
-        <div class="callout">📖 용어 카드. <b>YAML frontmatter</b>: 파일 맨 위 <code>---</code> 두 줄 사이에 쓰는 설정 구역임.</div>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"스킬 설계와 배치 위치 판단",
-       html:`__MAP3:skills__<h4>frontmatter 사용 시나리오</h4>
+        <div class="screen"><div class="sbar">화면 예시 · Claude Code 입력창</div>
+&gt; /weekly<br>
+<span class="sel">&nbsp;/weekly-report [주차]&nbsp;&nbsp;&nbsp;이번 주 작업 기록으로 주간 보고서 작성&nbsp;</span><br>
+&nbsp;/weekly-plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;다음 주 일정 정리
+        </div>
+        <p class="cap">입력창에 <code>/</code>를 입력하면 나타나는 스킬 목록. 실제 화면과 글자 배치 차이 있음.</p>
+        <div class="callout">📖 <b>용어 카드</b>
+          <ul>
+            <li><b>폴더</b>: 파일을 모아 두는 공간</li>
+            <li><b>프로젝트 폴더</b>: 한 가지 일에 쓰는 파일을 모두 모아 둔 폴더</li>
+            <li><b>홈 폴더(~)</b>: 컴퓨터 사용자마다 하나씩 있는 개인 폴더. 경로에서 쓰는 줄임 표기는 <code>~</code></li>
+            <li><b>.md 파일</b>: 글만 들어 있는 파일. 메모장으로 열기 가능</li>
+            <li><b>입력창</b>: Claude Code에서 요청을 적는 칸</li>
+          </ul>
+        </div>`},
+      
+{type:"concept", kind:"TOPIC · 주제 설명", h:"스킬 설정과 사용 기준",
+       html:`__MAP3:skills__<h4>① 설정 구역</h4>
         <ul>
-          <li>코드베이스 분석처럼 <strong>출력 분량이 큰 스킬</strong>: <code>context: fork</code>로 격리하고 요약만 본 대화로 전달함</li>
-          <li>브레인스토밍처럼 <strong>탐색 컨텍스트</strong>가 쌓이는 스킬도 fork 대상임</li>
-          <li>파일 생성 스킬이 파일을 삭제하지 않게 하려면 <code>allowed-tools</code>를 쓰기 계열 도구로 제한함</li>
-          <li>대상 디렉토리 같은 필수 인자는 <code>argument-hint</code>로 요구함</li>
+          <li><code>SKILL.md</code> 맨 위 <code>---</code> 두 줄 사이가 설정 구역. 영어 이름은 frontmatter</li>
+          <li>설정 표기: 한 줄에 하나씩 <strong>"항목: 값"</strong> 형태</li>
+          <li>설정 구역 아래: 업무 과정</li>
         </ul>
-        <h4>개인 커스터마이징</h4>
+        <div class="fig"><b>weekly-report/SKILL.md 내용</b><br>
+---<br>
+description: 이번 주 작업 기록으로 주간 보고서 작성&nbsp;&nbsp;<span class="an">← 스킬 설명</span><br>
+argument-hint: [주차]&nbsp;&nbsp;<span class="an">← 스킬 이름 뒤에 적을 내용 안내</span><br>
+allowed-tools: Write&nbsp;&nbsp;<span class="an">← 승인 요청 없이 쓸 수 있는 도구</span><br>
+---<br>
+주간 보고서 작성 순서<br>
+1. notes 폴더에서 이번 주 작업 기록 읽기<br>
+2. report-template.md 양식에 맞춰 내용 정리<br>
+3. reports 폴더에 새 파일로 저장
+        </div>
+        <h4>② 주요 설정 항목</h4>
+        <table>
+          <tr><th>설정 항목</th><th>기능</th><th>사용 상황</th></tr>
+          <tr><td><code>description</code></td><td>스킬이 하는 일과 쓰는 때를 적는 설명</td><td>Claude가 자동 실행 여부를 판단하는 근거</td></tr>
+          <tr><td><code>argument-hint</code></td><td>스킬 이름 뒤에 적을 내용을 입력창에 보여 주는 안내 문구</td><td>주차나 폴더 이름처럼 매번 달라지는 값이 필요한 스킬</td></tr>
+          <tr><td><code>allowed-tools</code></td><td>승인 요청 없이 쓸 수 있는 도구 지정</td><td>매번 승인하지 않아도 되는 안전한 작업</td></tr>
+          <tr><td><code>disallowed-tools</code></td><td>쓸 수 없는 도구 지정</td><td>파일을 고치거나 지우면 안 되는 작업</td></tr>
+          <tr><td><code>context: fork</code></td><td>본 대화와 분리된 작업 공간에서 실행. 결과만 본 대화에 전달</td><td>중간 과정이 긴 분석 작업</td></tr>
+          <tr><td><code>disable-model-invocation: true</code></td><td>자동 실행 차단. 직접 실행만 가능</td><td>잘못 실행되면 안 되는 작업</td></tr>
+        </table>
         <ul>
-          <li>팀 스킬을 개인 방식대로 바꾸려면 <code>~/.claude/skills/</code>에 <strong>다른 이름으로 개인 변형을 만듦</strong>. 팀 스킬 파일은 수정하지 않음</li>
+          <li>전체 설정 항목: <a href="https://code.claude.com/docs/ko/skills#frontmatter-reference" target="_blank" rel="noopener">Claude Code 공식 문서 '스킬' 페이지의 설정 항목 표</a> (한국어)</li>
         </ul>
-        <h4>스킬과 CLAUDE.md의 판단 기준</h4>
+        <div class="screen"><div class="sbar">화면 예시 · 승인 요청</div>
+Claude의 파일 만들기 요청<br>
+&nbsp;&nbsp;reports/11월-3주차.md<br>
+<span class="sel">&nbsp;1. 허용&nbsp;</span><br>
+&nbsp;2. 이번 대화에서는 묻지 않고 허용<br>
+&nbsp;3. 거부
+        </div>
+        <p class="cap"><code>allowed-tools: Write</code>를 적은 스킬에서는 이 화면 없이 바로 파일 생성. 실제 화면의 문구는 영어.</p>
+        <h4>③ 팀 스킬의 개인용 수정</h4>
         <ul>
-          <li><strong>스킬</strong>은 필요할 때 호출하는 작업별 워크플로임</li>
-          <li><strong>CLAUDE.md</strong>는 항상 로드되는 보편 표준임</li>
-          <li>판별 기준은 "매번 적용돼야 하는가"임. 그렇다면 CLAUDE.md, 특정 작업에서만 필요하다면 스킬임</li>
-        </ul>`},
-      {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Three needs, three homes",
+          <li>팀 스킬 파일은 수정 금지</li>
+          <li>개인 스킬 위치(<code>~/.claude/skills/</code>)에 새 스킬 작성</li>
+          <li>같은 이름으로 만들면 내 실행에서만 팀 스킬 대신 실행</li>
+          <li>다른 이름으로 만들면 두 스킬 모두 사용 가능</li>
+        </ul>
+        <h4>④ 스킬과 CLAUDE.md 구분</h4>
+        <ul>
+          <li><strong>스킬</strong>: 필요할 때만 불러 쓰는 업무 과정</li>
+          <li><strong>CLAUDE.md</strong>: Claude가 항상 읽는 공통 규칙</li>
+          <li>판단 기준: 매번 적용할 내용이면 CLAUDE.md, 특정 작업에만 쓸 내용이면 스킬</li>
+        </ul>
+        <div class="callout">📖 <b>용어 카드</b>
+          <ul>
+            <li><b>도구(tool)</b>: Claude가 파일을 읽거나 고치거나 명령을 실행할 때 쓰는 기능</li>
+            <li><b>Read</b>: 파일을 읽는 도구</li>
+            <li><b>Write</b>: 파일을 새로 만드는 도구</li>
+            <li><b>Edit</b>: 파일을 고치는 도구</li>
+            <li><b>Bash</b>: 컴퓨터 명령을 실행하는 도구</li>
+            <li><b>승인 요청</b>: Claude가 파일을 만들거나 고치기 전에 진행 여부를 묻는 화면</li>
+          </ul>
+        </div>`},
+      
+{type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Three needs, three homes",
        q:`Your team has three requirements: (1) a "generate release notes from merged PRs" workflow every developer should run on demand; (2) your personal shortcut that reformats commit messages your preferred way; (3) the API error-handling standard that must shape every piece of generated code, always, for everyone. Which allocation is correct?`,
        opts:[
-         {t:`(1) a project-scoped command/skill in .claude/, shared via version control; (2) a user-scoped command in ~/.claude/commands/; (3) the project CLAUDE.md, since universal standards must load on every session rather than wait to be invoked.`, ok:true},
+         {t:`(1) a project skill in .claude/skills/, shared via version control; (2) a personal skill in ~/.claude/skills/; (3) the project CLAUDE.md, since universal standards must load on every session rather than wait to be invoked.`, ok:true},
          {t:`All three as project-scoped skills — skills are the most capable packaging, and consistency of mechanism simplifies maintenance.`},
          {t:`(1) and (3) as project skills invoked when relevant; (2) in the project CLAUDE.md marked "for Kim only."`},
-         {t:`All three in the project CLAUDE.md — fewer moving parts than commands and skills combined.`},
+         {t:`All three in the project CLAUDE.md — fewer moving parts than a set of separate skills.`},
        ],
        hint:`두 가지 기준으로 나눌 것. 누구에게 적용되는가(팀/개인), 언제 로드되는가(호출 시/항상). (3)의 "always"가 결정적 단서임.`,
        explain:{
-         good:`3.2의 배치 원칙임. 필요할 때 호출하는 팀 워크플로는 프로젝트 커맨드나 스킬, 개인 설정은 사용자 스코프, 항상 적용돼야 하는 보편 표준은 CLAUDE.md임. (3)을 스킬로 만들면 호출해야 로드되므로 매번 적용된다는 보장이 없음. 이 지점이 이 문제에서 자주 틀리는 부분임.`,
+         good:`배치 기준은 두 가지. 필요할 때 불러 쓰는 팀 업무 과정은 프로젝트 스킬, 개인용은 개인 스킬, 항상 적용할 공통 규칙은 CLAUDE.md. (3)을 스킬로 만들면 실행할 때만 읽히므로 매번 적용된다는 보장 없음.`,
          wrongs:[
            `<b>B(전부 스킬):</b> (3)이 어긋남. 표준이 호출될 때만 적용되므로 상당수 코드가 표준을 벗어난 상태로 생성됨. (2)는 개인 설정을 팀 저장소에 넣는 배치임.`,
            `<b>C(표준을 스킬로):</b> "관련될 때 호출"은 항상 적용돼야 한다는 요구와 맞지 않음. 개인 설정을 팀 파일에 넣은 것도 배치가 반대임.`,
@@ -202,80 +330,118 @@ window.CCAF_CONTENT.p3 = {
       {type:"quiz", kind:"PRACTICE · 실전형 변형", h:"Practice 2: Designing the audit skill",
        q:`You are building a dependency-audit skill that (a) produces extremely verbose scan output that shouldn't pollute the main conversation, (b) must never modify or delete files — read-only analysis, and (c) requires a target directory that developers keep forgetting to pass. Which frontmatter configuration is correct?`,
        opts:[
-         {t:`context: fork to isolate the verbose output, allowed-tools restricted to read-only tools, and argument-hint to prompt for the target directory.`, ok:true},
+         {t:`context: fork to isolate the verbose output, disallowed-tools to remove the tools that modify or delete files, and argument-hint to show which target directory to pass.`, ok:true},
          {t:`context: fork alone — isolation automatically prevents file modification and handles missing arguments.`},
-         {t:`allowed-tools alone — restricting tools also isolates output and can define default arguments.`},
+         {t:`disallowed-tools alone — removing tools also isolates output and can define default arguments.`},
          {t:`Write the three requirements as instructions in the skill's prompt body, since frontmatter is only for metadata.`}],
-       hint:`요구사항이 세 개이고 frontmatter 옵션도 세 개임. 각 요구사항을 옵션 하나씩에 연결할 것.`,
+       hint:`요구사항이 세 개이고 설정 항목도 세 개. 요구사항마다 설정 항목 하나씩 연결할 것.`,
        explain:{
-         good:`요구사항과 옵션이 1대1로 대응함. 출력 격리는 context: fork, 읽기 전용 강제는 allowed-tools, 필수 인자 요구는 argument-hint임. 세 옵션은 역할이 달라 서로를 대체하지 못함.`,
+         good:`요구사항과 설정 항목이 하나씩 대응. 출력 격리는 context: fork, 파일 수정 차단은 disallowed-tools, 넘길 값 안내는 argument-hint. 세 항목은 기능이 달라 서로 대체 불가.`,
          wrongs:[
-           `<b>B:</b> fork는 컨텍스트 격리만 담당함. 도구 제한과 인자 요구는 하지 않음.`,
-           `<b>C:</b> allowed-tools는 도구 제한만 담당함. 출력은 여전히 본 대화로 들어옴.`,
-           `<b>D:</b> 프롬프트 본문에 적은 지시는 지켜진다는 보장이 없음. "수정 금지"는 allowed-tools로 강제해야 함 (원칙 ①: 반드시 지켜야 하는 것은 설정으로 강제한다).`,
+           `<b>B:</b> fork의 기능은 컨텍스트 격리. 도구 차단과 값 안내 기능 없음.`,
+           `<b>C:</b> disallowed-tools의 기능은 도구 차단. 출력은 그대로 본 대화에 남음.`,
+           `<b>D:</b> 프롬프트 본문에 적은 지시는 지켜진다는 보장 없음. "수정 금지"는 disallowed-tools로 강제 (원칙 ①: 반드시 지켜야 하는 것은 설정으로 강제).`,
          ]},
-       principle:"강제는 설정으로. frontmatter 3종의 역할 구분"},
+       principle:"강제는 설정으로. 설정 항목의 기능 구분"},
     ]},
 
   /* ===== CH 3 · 3.3 경로별 규칙 ===== */
   { id:"p3c3", ch:"CH 3", title:"경로별 규칙: 조건부 컨벤션 로딩 (3.3)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"글롭 패턴(glob pattern): 여러 파일을 조건 한 줄로 지정하는 경로 표기법",
-       html:`<p class="lead">이 챕터에서 다루는 설정은 <strong>.claude/rules/ 와 paths</strong>임. paths에 적는 <strong>글롭 패턴</strong>을 먼저 알아야 함. 이것을 모르면 이후 내용을 읽을 수 없음.</p>
-        <h4>① 왜 필요한가: "어떤 파일을 편집할 때 이 규칙을 적용할 것인가"</h4>
-        <ul>
-          <li>규칙 파일에는 <strong>적용될 조건</strong>을 적어야 함. 대상 파일이 수백 개라면 이름을 전부 나열할 수 없음</li>
-          <li>글롭 패턴은 여러 파일을 <strong>조건 한 줄로 지정하는 표기법</strong>임. "terraform 폴더 아래 전부" 같은 조건을 프로그램이 읽을 수 있는 형태로 적은 것임</li>
-        </ul>
-        <h4>② 기호는 두 개뿐</h4>
-        <ul>
-          <li><code>*</code>: <strong>이름 한 단계</strong>를 대신함. 폴더 경계(/)를 <strong>넘지 못함</strong>. <code>*.ts</code>는 "이름은 무엇이든, 확장자가 .ts인 파일"이라는 뜻임</li>
-          <li><code>**</code>: <strong>폴더 몇 단계든</strong> 대신함. 깊이에 상관없이 하위 폴더 전체를 포함함</li>
-        </ul>
-        <h4>③ 읽는 법: 왼쪽부터 끊어 읽음</h4>
-        <ul>
-          <li><code>src/api/**/*.ts</code>는 <code>src/api/</code>(시작 위치) + <code>**/</code>(하위 폴더 몇 단계든) + <code>*.ts</code>(이름은 무엇이든 .ts로 끝남)으로 나뉨</li>
-          <li>한국어로 옮기면 <strong>"src/api 아래에 있다면 깊이에 상관없이 모든 .ts 파일"</strong>임</li>
-        </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto">
-<b>paths: ["src/api/**/*.ts"]</b> 가 적용되는 파일<br>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"글롭 패턴: 여러 파일을 조건 한 줄로 지정하는 표기법",
+   html:`<h4>① 필요한 이유</h4>
+<ul>
+<li>규칙 파일에는 적용 대상을 적어야 함</li>
+<li>대상 파일이 수백 개면 이름을 모두 적을 수 없음</li>
+<li>글롭 패턴(glob pattern): "terraform 폴더 아래 전부" 같은 조건을 한 줄로 적는 표기법</li>
+</ul>
+<h4>② 기호 두 개</h4>
+<table>
+<tr><th>기호</th><th>뜻</th><th>예</th></tr>
+<tr><td><code>*</code></td><td>이름 한 단계. 폴더 경계(/)는 넘지 못함</td><td><code>*.ts</code>: 이름이 .ts로 끝나는 파일</td></tr>
+<tr><td><code>**</code></td><td>폴더 여러 단계</td><td><code>src/**</code>: src 아래의 모든 폴더</td></tr>
+</table>
+<h4>③ 읽는 방법</h4>
+<ul>
+<li>왼쪽부터 끊어 읽기</li>
+<li><code>src/api/**/*.ts</code>는 <code>src/api/</code>, <code>**/</code>, <code>*.ts</code> 세 부분</li>
+<li>뜻: src/api 아래에 있는 모든 .ts 파일. 폴더 깊이와 무관</li>
+</ul>
+<div class="fig"><b>paths: ["src/api/**/*.ts"]에 해당하는 파일</b><br>
 📁 src/<br>
 &nbsp;&nbsp;├─ api/<br>
-&nbsp;&nbsp;│&nbsp;&nbsp;├─ index.ts&nbsp;&nbsp;<span style="color:var(--accent)">✅ 매칭 (바로 아래 깊이도 포함)</span><br>
-&nbsp;&nbsp;│&nbsp;&nbsp;├─ README.md&nbsp;&nbsp;❌ 끝이 .ts가 아님<br>
+&nbsp;&nbsp;│&nbsp;&nbsp;├─ index.ts&nbsp;&nbsp;<span class="an">✅ 해당. 바로 아래 파일도 포함</span><br>
+&nbsp;&nbsp;│&nbsp;&nbsp;├─ README.md&nbsp;&nbsp;❌ 이름이 .ts로 끝나지 않음<br>
 &nbsp;&nbsp;│&nbsp;&nbsp;└─ v2/handlers/<br>
-&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ payment.ts&nbsp;&nbsp;<span style="color:var(--accent)">✅ 매칭 (**가 v2/handlers 아래까지 포함)</span><br>
+&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ payment.ts&nbsp;&nbsp;<span class="an">✅ 해당. **가 v2/handlers 아래까지 포함</span><br>
 &nbsp;&nbsp;└─ web/<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ app.ts&nbsp;&nbsp;❌ src/api 밖<br>
 <br>
-같은 자리에 <b>*</b> 하나만 쓰면 <b>src/api/*.ts</b> 가 되어 payment.ts는 ❌ (한 단계를 넘어가므로 매칭되지 않음. 자주 틀리는 지점)
-        </div>
-        <h4>④ .claude/rules/ 와 paths</h4>
-        <ul>
-          <li>규칙 .md 파일의 YAML frontmatter에 <code>paths: ["terraform/**/*"]</code>처럼 글롭 패턴을 지정함</li>
-          <li>효과: <strong>매칭되는 파일을 편집할 때만</strong> 그 규칙이 컨텍스트에 로드됨</li>
-          <li>이점: 무관한 컨텍스트가 줄어 <strong>토큰이 절약되고</strong> 지시 간섭도 감소함</li>
-        </ul>
-        <h4>⑤ 글롭 패턴이 출제되는 두 지점</h4>
-        <ul>
-          <li><code>.claude/rules/</code>의 <code>paths</code>(이 챕터): 규칙을 <strong>언제 로드할지</strong> 정하는 조건임</li>
-          <li>기본 제공 도구(built-in tools)인 <code>Glob</code>(2.5): 같은 문법으로 <strong>파일을 찾는</strong> 도구임. 문법은 같고 용도가 다름</li>
-          <li><strong>CLAUDE.md에는 글롭 패턴이 쓰이지 않음</strong>. 항상 로드되므로 조건이 필요 없음. 글롭 패턴은 조건부 로딩을 만들 때만 사용함</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"글롭 규칙과 디렉토리 CLAUDE.md의 선택 기준",
-       html:`__MAP3:rules__<h4>결정 기준: 대상 파일이 어디에 있는가</h4>
-        <ul>
-          <li>대상이 <strong>한 폴더에 모여</strong> 있으면 디렉토리 CLAUDE.md도 사용 가능함</li>
-          <li>대상이 <strong>코드베이스 전역에 흩어져</strong> 있으면(Button.test.tsx가 Button.tsx 옆에 있는 구조) <strong>글롭 규칙이 정답임</strong></li>
-          <li>디렉토리 CLAUDE.md는 특정 폴더에만 적용되므로 흩어진 파일을 포괄하지 못함</li>
-        </ul>
-        <h4>공식 가이드 샘플 문제 6번 (가이드 말미 예시 12문항 중 하나로, 흩어져 있는 컨벤션의 자동 적용을 묻는 문제)</h4>
-        <ul>
-          <li>React 컴포넌트, API 핸들러, DB 모델, 테스트가 각각 다른 컨벤션을 따름</li>
-          <li>테스트 파일은 코드 옆에 흩어져 있고, 요구사항에 "자동 적용"이 명시됨</li>
-          <li>정답은 <code>.claude/rules/</code>와 글롭 패턴임 (스킬은 호출해야 하므로 자동 적용이 되지 않고, 루트 CLAUDE.md 한 파일에 몰아넣는 방식은 모델의 추론에 의존함)</li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: "spread throughout the codebase"와 "automatically"가 함께 보이면 글롭 규칙이 정답임.</div>`},
+<span class="an">* 하나만 쓴 src/api/*.ts에는 payment.ts가 해당하지 않음. *는 폴더 한 단계만 지정</span>
+</div>
+<h4>④ 규칙 파일과 paths</h4>
+<ul>
+<li>규칙 파일 위치: <code>.claude/rules/</code> 폴더의 .md 파일</li>
+<li>파일 맨 위 설정 구역의 <code>paths</code> 항목에 글롭 패턴 작성</li>
+<li>효과: 패턴에 해당하는 파일을 다룰 때만 규칙 로드</li>
+<li>장점: 관계없는 규칙이 줄어 토큰 절약. 지시끼리 섞이는 문제 감소</li>
+<li><code>paths</code>가 없는 규칙 파일은 항상 로드</li>
+</ul>
+<div class="fig"><b>.claude/rules/terraform.md 내용</b><br>
+---<br>
+paths: ["terraform/**/*"]&nbsp;&nbsp;<span class="an">← 이 패턴에 해당하는 파일을 다룰 때만 로드</span><br>
+---<br>
+리소스 이름은 소문자와 하이픈만 사용
+</div>
+<h4>⑤ 글롭 패턴을 쓰는 곳</h4>
+<ul>
+<li><code>.claude/rules/</code>의 <code>paths</code>: 규칙을 로드할 조건</li>
+<li>Glob 도구: 같은 표기법으로 파일을 찾는 도구. Part 2 CH 5에서 다룬 내용</li>
+<li>CLAUDE.md에는 쓰지 않음. 조건 없이 로드되는 파일</li>
+<li>설명 전체: <a href="https://code.claude.com/docs/ko/memory#path-specific-rules" target="_blank" rel="noopener">Claude Code 공식 문서 'Claude가 프로젝트를 기억하는 방법' 페이지의 경로별 규칙 항목</a> (한국어)</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>확장자</b>: 파일 이름 끝의 .ts, .md 같은 표시. 파일 종류를 나타냄</li>
+<li><b>설정 구역(frontmatter)</b>: 파일 맨 위 --- 두 줄 사이. 설정을 적는 자리</li>
+<li><b>토큰(token)</b>: Claude가 글을 세는 단위</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"경로별 규칙과 폴더별 CLAUDE.md의 선택 기준",
+   html:`__MAP3:rules__<h4>① 판단 기준: 대상 파일의 위치</h4>
+<table>
+<tr><th>대상 파일의 위치</th><th>맞는 수단</th></tr>
+<tr><td>한 폴더에 모여 있음</td><td>그 폴더의 CLAUDE.md. 경로별 규칙도 가능</td></tr>
+<tr><td>여러 폴더에 흩어져 있음</td><td>경로별 규칙</td></tr>
+</table>
+<ul>
+<li>폴더별 CLAUDE.md는 그 폴더에만 적용. 흩어진 파일을 한 번에 지정할 수 없음</li>
+</ul>
+<h4>② 사례: 흩어진 테스트 파일</h4>
+<ul>
+<li>상황: 화면 구성 코드, API 처리 코드, 데이터 모델, 테스트가 각각 다른 규칙 사용</li>
+<li>조건: 테스트 파일은 코드 파일 옆에 흩어져 있음. 규칙은 자동으로 적용돼야 함</li>
+<li>해결: <code>.claude/rules/</code>에 규칙 파일을 만들고 <code>paths</code>에 <code>**/*.test.tsx</code> 작성</li>
+</ul>
+<div class="fig"><b>흩어진 테스트 파일과 패턴 하나</b><br>
+src/components/Button.tsx<br>
+src/components/Button.test.tsx&nbsp;&nbsp;<span class="an">✅</span><br>
+src/api/orders.ts<br>
+src/api/orders.test.tsx&nbsp;&nbsp;<span class="an">✅</span><br>
+<br>
+paths: ["**/*.test.tsx"]&nbsp;&nbsp;<span class="an">← 위치와 무관하게 테스트 파일 전부 지정</span>
+</div>
+<table>
+<tr><th>다른 방법</th><th>문제</th></tr>
+<tr><td>스킬</td><td>직접 실행해야 적용. 자동 적용이 아님</td></tr>
+<tr><td>프로젝트 CLAUDE.md 한 파일에 전부 작성</td><td>어느 규칙이 어느 파일에 해당하는지 Claude의 판단에 의존</td></tr>
+</table>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>경로별 규칙</b>: paths에 적은 패턴에 해당하는 파일을 다룰 때만 로드되는 규칙 파일</li>
+<li><b>.test.tsx</b>: 테스트 코드를 담은 파일의 이름 끝 표시</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: The rule that won't fire",
        q:`You created .claude/rules/api-conventions.md with frontmatter paths: ["src/api/*.ts"]. It works when editing src/api/index.ts, but the conventions never load for src/api/v2/handlers/payment.ts or src/api/middleware/auth/verify.ts — where most API code actually lives. The rule file's content is correct. What is wrong?`,
        opts:[
@@ -312,44 +478,86 @@ window.CCAF_CONTENT.p3 = {
     ]},
 
   /* ===== CH 4 · 3.4 plan mode vs 직접 실행 ===== */
-  { id:"p3c4", ch:"CH 4", title:"plan mode vs 직접 실행 (3.4)",
+  { id:"p3c4", ch:"CH 4", title:"권한 모드와 plan mode (3.4)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"계획을 먼저 세울 작업과 바로 실행할 작업",
-       html:`<h4>plan mode</h4>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"권한 모드: Claude가 승인 없이 할 수 있는 일의 범위",
+       html:`<h4>① 권한 모드 여섯 가지</h4>
+        <table>
+          <tr><th>모드</th><th>승인 없이 하는 일</th><th>사용 상황</th></tr>
+          <tr><td><code>default</code></td><td>파일 읽기</td><td>수정할 때마다 직접 확인하려는 경우</td></tr>
+          <tr><td><code>acceptEdits</code></td><td>파일 읽기와 수정</td><td>수정 내용을 나중에 한꺼번에 검토하는 경우</td></tr>
+          <tr><td><code>plan</code></td><td>파일 읽기와 조사. 수정 전에 계획 제안</td><td>큰 작업을 시작하기 전</td></tr>
+          <tr><td><code>auto</code></td><td>대부분의 작업. 위험한 작업은 별도 검사 모델이 차단</td><td>긴 작업을 맡기는 경우</td></tr>
+          <tr><td><code>dontAsk</code></td><td>미리 허용한 도구만 사용. 나머지는 자동 거부</td><td>사람이 없는 자동 실행</td></tr>
+          <tr><td><code>bypassPermissions</code></td><td>모든 작업</td><td>외부와 분리된 실험 환경 전용</td></tr>
+        </table>
         <ul>
-          <li>코드 수정 전에 <strong>탐색과 설계만</strong> 하는 모드임. 먼저 조사하고 접근 방식을 정한 뒤 실행함</li>
-          <li>적합한 경우: <strong>대규모 변경 · 유효한 접근이 여러 개 · 아키텍처 결정 · 다중 파일 수정</strong></li>
-          <li>예: 모놀리스에서 마이크로서비스로의 전환(하나로 합쳐진 애플리케이션을 작은 서비스 여러 개로 분리하는 작업), 파일 45개 이상을 수정해야 하는 라이브러리 마이그레이션(사용하던 라이브러리를 다른 라이브러리로 전면 교체), 인프라 요구사항이 서로 다른 통합 방식 중 하나를 선택하는 작업</li>
+          <li>모드 전환: 입력창에서 Shift+Tab</li>
+          <li>모드별 조건과 설정 방법: <a href="https://code.claude.com/docs/ko/permission-modes" target="_blank" rel="noopener">Claude Code 공식 문서 '권한 모드' 페이지</a> (한국어)</li>
         </ul>
-        <h4>직접 실행</h4>
+        <h4>② plan mode</h4>
         <ul>
-          <li>적합한 경우: <strong>범위가 명확한 단순 변경</strong></li>
-          <li>예: 스택 트레이스가 있는 단일 파일 버그, 날짜 검증 조건 하나 추가</li>
+          <li>파일을 고치기 전에 조사와 계획만 하는 모드</li>
+          <li>Claude가 계획을 제안하고 사람이 승인한 뒤 수정 시작</li>
         </ul>
-        <div class="callout">📖 지문 독해 용어 카드 (시험 지문에 자주 나오는 4종). <b>crash</b>: 프로그램이 에러로 강제 종료되는 것임. <b>null</b>: 값이 없는 상태임. "crashes on null input"은 빈 값이 들어오면 프로그램이 종료된다는 뜻임. <b>stack trace</b>: 프로그램이 종료될 때 자동으로 출력되는 오류 기록이며, 어느 파일 몇 번째 줄에서 어떤 에러가 났는지 담김. 지문에 "stack trace makes the cause clear"가 있으면 <b>원인 진단이 이미 끝났다</b>는 뜻임. <b>guard clause</b>: 함수 첫머리에서 잘못된 입력을 걸러 내는 한 줄 코드임. "one-line guard clause fixes it"은 수정이 한 줄로 끝난다는 뜻임.</div>
-        <div class="callout">🎯 독해 기준: stack trace가 명확하고, 수정이 한 줄이며, 기존(existing) 테스트가 있으면 절차를 추가하는 선택지(plan mode, Explore, fork)는 전부 오답임. already와 existing에 표시하며 읽을 것.</div>
-        <h4>Explore 서브에이전트(subagent)</h4>
+        <div class="screen"><div class="sbar">화면 예시 · plan mode에서 제안한 계획</div>
+계획<br>
+&nbsp;1. 결제 관련 파일 12개 조사<br>
+&nbsp;2. 고칠 순서와 방법 정리<br>
+&nbsp;3. 승인 후 수정 시작<br>
+<span class="sel">&nbsp;1. 승인하고 진행&nbsp;</span><br>
+&nbsp;2. 계획 수정 요청
+        </div>
+        <p class="cap">plan mode에서는 승인하기 전까지 파일 수정 없음. 실제 화면의 문구는 영어.</p>
+        <h4>③ Explore 서브에이전트</h4>
         <ul>
-          <li>분량이 큰 <strong>탐색 출력을 격리</strong>하고 요약만 반환함. 본 대화의 컨텍스트가 보존됨</li>
-          <li>다단계 작업에서 컨텍스트 고갈을 막는 수단임</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"판단 기준과 두 모드의 조합",
-       html:`__MAP3:mode__<h4>판단 기준 세 가지</h4>
-        <ul>
-          <li>유효한 접근이 <strong>여러 개</strong>인가. 그렇다면 plan mode임</li>
-          <li>수정할 파일이 <strong>몇 개</strong>인가. 많으면 plan mode임</li>
-          <li>이미 <strong>수정 방법이 명확</strong>한가(스택 트레이스, 한 줄 수정). 그렇다면 직접 실행임</li>
+          <li>조사만 하는 기본 제공 서브에이전트</li>
+          <li>긴 조사 과정은 별도 공간에서 처리하고 요약만 본 대화에 전달</li>
+          <li>효과: 본 대화의 컨텍스트 창 절약</li>
         </ul>
-        <h4>조합 패턴</h4>
+        <div class="callout">📖 <b>용어 카드</b>
+          <ul>
+            <li><b>승인 요청</b>: Claude가 파일을 고치거나 명령을 실행하기 전에 진행 여부를 묻는 화면</li>
+            <li><b>권한 모드(permission mode)</b>: 승인 요청 없이 진행할 작업의 범위를 정하는 설정</li>
+            <li><b>서브에이전트(subagent)</b>: 맡은 일 하나를 별도 공간에서 수행하는 보조 에이전트</li>
+            <li><b>컨텍스트 창(context window)</b>: Claude가 한 번에 읽을 수 있는 글의 분량 한도</li>
+          </ul>
+        </div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"plan mode 사용 기준",
+       html:`__MAP3:mode__<h4>① 판단 기준</h4>
+        <table>
+          <tr><th>질문</th><th>plan mode</th><th>바로 실행</th></tr>
+          <tr><td>가능한 방법의 수</td><td>여러 개</td><td>하나</td></tr>
+          <tr><td>고칠 파일의 수</td><td>많음</td><td>한두 개</td></tr>
+          <tr><td>원인과 수정 방법</td><td>조사 필요</td><td>이미 확인됨</td></tr>
+        </table>
+        <h4>② 작업 예</h4>
         <ul>
-          <li><strong>plan mode로 조사와 설계를 하고 직접 실행으로 구현함</strong>. 마이그레이션의 기본 절차임</li>
-          <li>탐색 단계가 길면 <strong>Explore 서브에이전트</strong>로 탐색 출력을 격리함</li>
+          <li>plan mode: 프로그램 구조를 크게 바꾸는 작업</li>
+          <li>plan mode: 파일 수십 개를 함께 고치는 작업</li>
+          <li>plan mode: 방법마다 비용이 달라 비교가 필요한 작업</li>
+          <li>바로 실행: 오류 위치가 확인된 파일 하나 수정</li>
+          <li>바로 실행: 조건 한 줄 추가</li>
         </ul>
-        <h4>오답 유도 선택지 (공식 가이드 샘플 5번, plan mode와 직접 실행을 구분하는 문제 기준)</h4>
+        <h4>③ 조합</h4>
         <ul>
-          <li>"일단 직접 실행으로 시작하고 복잡해지면 plan mode로 전환한다": 복잡성이 <strong>이미 요구사항에 명시</strong>돼 있는데 이를 무시하는 선택지임</li>
-          <li>"구현하면서 작업 범위를 발견한다": 뒤늦은 재작업을 초래하는 선택지임</li>
-        </ul>`},
+          <li>plan mode로 조사와 계획, 승인 후 바로 실행으로 수정</li>
+          <li>조사가 길어지면 Explore 서브에이전트에게 조사 위임</li>
+        </ul>
+        <h4>④ 피할 진행 방식</h4>
+        <ul>
+          <li>큰 작업을 계획 없이 시작하고 복잡해지면 plan mode로 전환</li>
+          <li>수정하면서 작업 범위 파악. 뒤늦은 재작업 발생</li>
+        </ul>
+        <div class="callout">📖 <b>용어 카드 · 문제 지문에 나오는 영어</b>
+          <ul>
+            <li><b>crash</b>: 프로그램이 오류로 멈추는 현상</li>
+            <li><b>null</b>: 값이 비어 있는 상태</li>
+            <li><b>stack trace</b>: 오류가 난 파일과 줄 번호를 알려 주는 기록. 지문에 있으면 원인 확인이 끝났다는 뜻</li>
+            <li><b>guard clause</b>: 잘못된 입력을 먼저 걸러 내는 한 줄. 지문에 있으면 수정이 한 줄로 끝난다는 뜻</li>
+            <li><b>migration</b>: 쓰던 도구나 구조를 다른 것으로 옮기는 작업</li>
+          </ul>
+        </div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: The fix that grew",
        q:`You started in direct execution to fix "a timezone bug in the invoice renderer" — a clear, single-file task. Ten minutes in, Claude reports the real cause: three services each apply their own timezone conversion, sometimes double-converting; a proper fix means choosing where conversion should live and touching ~20 files. There are at least two defensible designs. What should you do?`,
        opts:[
@@ -389,34 +597,71 @@ window.CCAF_CONTENT.p3 = {
   { id:"p3c5", ch:"CH 5", title:"반복 개선 기법 (3.5)",
     steps:[
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"결과 품질을 높이는 네 가지 대화 기법",
-       html:`<h4>① 구체적 입출력 예시</h4>
-        <ul>
-          <li>문장으로 설명한 변환 요구가 <strong>일관되지 않게 해석</strong>될 때는 <strong>예시 2~3개</strong>를 제시하는 것이 가장 효과가 큼</li>
-          <li>엣지 케이스(예: 마이그레이션 중 null(값 없음)이 들어오는 경우)는 입력과 기대 출력을 함께 담은 테스트 케이스로 제시함</li>
-        </ul>
-        <h4>② 테스트 주도 반복</h4>
-        <ul>
-          <li>기대 동작, 엣지 케이스, 성능을 포함하는 <strong>테스트를 먼저</strong> 작성하고, 실패한 결과를 공유하며 점진적으로 개선함</li>
-        </ul>
-        <h4>③ 인터뷰 패턴</h4>
-        <ul>
-          <li>구현 전에 <strong>Claude가 질문하도록</strong> 함. 개발자가 놓친 고려사항을 찾아냄. 예: 캐시 무효화(저장해 둔 이전 결과를 언제 폐기할지), 실패 모드(어떤 방식으로 동작이 깨질 수 있는지)</li>
-          <li>익숙하지 않은 도메인일수록 효과가 큼</li>
-        </ul>
-        <h4>④ 한 번에 전달할지, 순차로 전달할지</h4>
-        <ul>
-          <li>문제들이 <strong>서로 영향을 주고받으면(interacting)</strong> 한 메시지에 상세히 함께 담음</li>
-          <li><strong>독립적</strong>이면 하나씩 순차로 수정함</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"증상별 처방 매칭",
-       html:`__MAP3:iterate__<h4>증상과 기법의 대응표</h4>
-        <ul>
-          <li>"설명은 자세히 했으나 출력 형식이 매번 다름": <strong>입출력 예시</strong></li>
-          <li>"수정했다고 하지만 엣지 케이스에서 여전히 실패함": <strong>구체적 테스트 케이스</strong>(null 입력과 기대 출력)</li>
-          <li>"요구사항을 다 전달했다고 생각했으나 빠진 항목이 계속 발견됨": <strong>인터뷰 패턴</strong>(구현 전에 질문을 받음)</li>
-          <li>"버그 5개를 하나씩 고치니 서로를 다시 깨뜨림": <strong>서로 영향을 주는 문제는 한 메시지에 함께 전달함</strong></li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: "prose 설명이 일관되지 않게 해석된다(interpreted inconsistently)"는 표현이 보이면 정답은 대부분 concrete examples임.</div>`},
+   html:`<h4>① 입력과 출력 예시</h4>
+<ul>
+<li>쓰는 상황: 글로 설명한 요구를 Claude가 매번 다르게 해석하는 경우</li>
+<li>방법: 입력과 기대하는 출력을 짝지은 예시 2~3개 제시</li>
+<li>드물게 생기는 경우도 예시로 제시. 예: 값이 비어 있는 입력과 그때 기대하는 출력</li>
+</ul>
+<div class="fig"><b>예시가 필요한 요청</b><br>
+글로만 설명: "날짜를 보기 좋게 바꿔 줘"&nbsp;&nbsp;<span class="an">← 실행마다 다른 형식</span><br>
+예시 추가: "2025-04-03은 2025년 4월 3일로"&nbsp;&nbsp;<span class="an">← 형식 고정</span>
+</div>
+<h4>② 테스트 먼저 작성</h4>
+<ul>
+<li>방법: 기대 동작, 드물게 생기는 경우, 성능 기준을 담은 테스트를 먼저 작성</li>
+<li>실패한 테스트 결과를 Claude에 보여 주며 고치기 반복</li>
+</ul>
+<h4>③ 인터뷰</h4>
+<ul>
+<li>방법: 만들기 전에 Claude가 먼저 질문하게 하기</li>
+<li>효과: 사용자가 놓친 고려 사항 발견</li>
+<li>잘 모르는 분야일수록 효과가 큼</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 인터뷰를 요청하는 입력</div>
+&gt; 캐시 기능을 만들기 전에 내가 놓친 부분이 없는지 먼저 질문해 줘.<br>
+<br>
+Claude: 1. 저장한 결과는 얼마 동안 유효한가요?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 원본 자료가 바뀌면 저장한 결과를 바로 지워야 하나요?
+</div>
+<h4>④ 한 번에 전달과 하나씩 전달</h4>
+<ul>
+<li>서로 영향을 주는 문제들: 한 메시지에 함께 자세히 전달</li>
+<li>서로 무관한 문제들: 하나씩 차례로 수정</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>엣지 케이스(edge case)</b>: 드물게 생기는 특수한 입력이나 상황</li>
+<li><b>null</b>: 값이 없다는 표시</li>
+<li><b>캐시(cache)</b>: 한 번 계산한 결과를 저장해 두고 다시 쓰는 기능</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"증상별 기법 선택",
+   html:`__MAP3:iterate__<h4>① 증상과 기법</h4>
+<table>
+<tr><th>증상</th><th>기법</th></tr>
+<tr><td>설명은 자세히 했는데 출력 형식이 매번 다름</td><td>입력과 출력 예시</td></tr>
+<tr><td>고쳤다고 하는데 드문 경우에서 계속 실패</td><td>그 경우의 입력과 기대 출력을 담은 테스트</td></tr>
+<tr><td>요구를 다 전달했다고 생각했는데 빠진 항목이 계속 발견</td><td>인터뷰</td></tr>
+<tr><td>오류 5개를 하나씩 고치면 서로를 다시 망가뜨림</td><td>서로 영향을 주는 오류를 한 메시지에 전달</td></tr>
+</table>
+<h4>② 판단 순서</h4>
+<ul>
+<li>1단계: 문제가 해석의 차이인지 확인. 해석이 매번 다르면 예시</li>
+<li>2단계: 문제가 특정 경우의 실패인지 확인. 특정 경우에만 실패하면 테스트</li>
+<li>3단계: 요구 자체가 덜 정리됐는지 확인. 빠진 항목이 계속 나오면 인터뷰</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 실패한 경우를 테스트로 전달</div>
+&gt; 아래 입력에서 계속 실패해. 이 테스트를 통과하도록 고쳐 줘.<br>
+&nbsp;&nbsp;입력: 주소 값이 비어 있음 (null)<br>
+&nbsp;&nbsp;기대 출력: "주소 없음"
+</div>
+<p class="cap">이해를 돕기 위한 예시. "드문 경우도 처리해 줘"라는 말보다 입력과 기대 출력 한 쌍이 정확.</p>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>테스트 케이스(test case)</b>: 입력 하나와 기대하는 출력 하나를 짝지은 확인 항목</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Five bugs, one queue",
        q:`Five bug reports landed on the checkout module: #1 and #2 both involve the shared CartState cache — last sprint, fixing one broke the other; #3 is a typo in an error message, #4 a broken date formatter in receipts, #5 a missing null check in an unrelated utility. How should you feed these to Claude Code?`,
        opts:[
@@ -455,49 +700,81 @@ window.CCAF_CONTENT.p3 = {
   /* ===== CH 6 · 3.6 CI/CD 통합 ===== */
   { id:"p3c6", ch:"CH 6", title:"CI/CD 파이프라인 통합 (3.6)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"사람이 개입하지 않는 환경에서 Claude를 실행하는 방법",
-       html:`<div class="callout">📖 용어 카드. <b>CI/CD</b>: 코드를 올릴 때마다 검사, 테스트, 배포를 자동으로 실행하는 체계임. <b>PR(pull request)</b>: 코드 변경을 반영해 달라고 요청하는 문서임. <b>파이프라인(pipeline)</b>: 그 자동 실행 단계들을 순서대로 연결한 것임.</div>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto">
-<b>CI에서 Claude가 실행되는 순서 (로컬 컴퓨터에서는 실행되지 않음)</b><br>
-[로컬 컴퓨터]&nbsp;&nbsp;코드 수정 → push (서버로 전송)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
-[GitHub 서버]&nbsp;&nbsp;PR 감지 → 저장소 안의 워크플로 설정 파일 발견 → <b>러너</b>(작업용 임시 가상 컴퓨터) 시작<br>
-&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
-[러너 안]&nbsp;&nbsp;① 저장소 내려받기 → ② Claude Code 설치 → ③ <b>claude -p "이 변경을 리뷰할 것" --output-format json</b> <span style="color:var(--accent)">← 사람이 없으므로 비대화형(-p)</span> → ④ 결과를 PR 코멘트로 게시<br>
-&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
-[GitHub 서버]&nbsp;&nbsp;러너 폐기 · <b>"적용"은 설정 파일을 저장소에 커밋하는 것 · "실행"은 GitHub 서버가 담당</b>
-        </div>
-        <h4>CLI 플래그 3종 (암기 필수)</h4>
-        <ul>
-          <li><code>-p</code>(<code>--print</code>): <strong>비대화형 모드</strong>임. 프롬프트를 처리하고 출력한 뒤 종료함. 이 플래그가 없으면 CI에서 입력을 기다리며 <strong>멈춤</strong></li>
-          <li><code>--output-format json</code>: 결과를 프로그램이 파싱할 수 있는 JSON으로 출력함</li>
-          <li><code>--json-schema</code>: 그 JSON의 <strong>구조를 스키마로 강제함</strong></li>
-        </ul>
-        <h4>CI에서의 컨텍스트 제공</h4>
-        <ul>
-          <li><strong>CLAUDE.md</strong>는 CI 실행에도 프로젝트 컨텍스트를 제공함. 테스트 표준, 픽스처, 리뷰 기준을 문서로 남겨 두면 CI 결과의 품질이 올라감</li>
-        </ul>
-        <h4>세션 격리 원칙</h4>
-        <ul>
-          <li>코드를 <strong>생성한 세션</strong>은 자신이 만든 변경을 리뷰하는 데 적합하지 않음. 생성 시점의 추론이 컨텍스트에 남아 자신의 결정을 다시 검토하기 어려움</li>
-          <li>리뷰는 <strong>독립 인스턴스</strong>로 실행함 (D4 Ch6에서 자세히 다룸)</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"CI 리뷰·테스트 생성의 품질 규칙",
-       html:`__MAP3:ci__<h4>① 중복 코멘트 방지</h4>
-        <ul>
-          <li>새 커밋 이후의 재리뷰가 <strong>같은 지적을 반복</strong>하는 문제임</li>
-          <li>처방: <strong>이전 리뷰의 발견 사항을 컨텍스트에 포함함</strong>. 여기에 "새 이슈와 미해결 항목만 보고할 것"을 함께 지시함</li>
-        </ul>
-        <h4>② 중복 테스트 방지</h4>
-        <ul>
-          <li>테스트 생성이 이미 존재하는 시나리오를 다시 제안하는 문제임</li>
-          <li>처방: <strong>기존 테스트 파일을 컨텍스트에 제공함</strong></li>
-        </ul>
-        <h4>③ 저가치 테스트 방지</h4>
-        <ul>
-          <li>처방: CLAUDE.md에 <strong>테스트 표준, 가치 판단 기준, 픽스처</strong>를 문서화함</li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: CI 문제의 오답 유도 선택지는 존재하지 않는 플래그임(CLAUDE_HEADLESS 환경변수, --batch 플래그). 실제로 존재하는 것은 -p, --output-format json, --json-schema임.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"CI/CD: 사람 없이 Claude Code를 실행하는 환경",
+   html:`<h4>① CI/CD</h4>
+<ul>
+<li>코드를 올릴 때마다 검사, 테스트, 배포를 자동으로 실행하는 체계</li>
+<li>Claude Code를 이 체계에 넣으면 코드 변경마다 자동 리뷰 가능</li>
+</ul>
+<div class="fig"><b>CI에서 Claude Code가 실행되는 순서</b><br>
+내 컴퓨터: 코드 수정 후 서버로 전송<br>
+&nbsp;&nbsp;↓<br>
+GitHub 서버: 변경 요청(PR) 감지. 러너 시작&nbsp;&nbsp;<span class="an">← 러너: 작업용 임시 컴퓨터</span><br>
+&nbsp;&nbsp;↓<br>
+러너: 저장소 내려받기 → Claude Code 설치 → claude -p "이 변경을 리뷰" → 결과를 PR 댓글로 게시<br>
+&nbsp;&nbsp;↓<br>
+GitHub 서버: 러너 삭제&nbsp;&nbsp;<span class="an">← 실행 장소는 내 컴퓨터가 아니라 서버</span>
+</div>
+<h4>② 실행 옵션</h4>
+<table>
+<tr><th>옵션</th><th>기능</th></tr>
+<tr><td><code>-p</code></td><td>요청 하나를 처리하고 결과를 출력한 뒤 종료. 없으면 다음 입력을 기다리며 멈춤</td></tr>
+<tr><td><code>--output-format json</code></td><td>결과를 프로그램이 읽을 수 있는 JSON으로 출력</td></tr>
+<tr><td><code>--json-schema</code></td><td>결과 JSON의 양식을 스키마로 고정. 결과는 <code>structured_output</code> 항목에 포함</td></tr>
+<tr><td><code>--bare</code></td><td>훅, 스킬, MCP 서버, 자동 메모리, CLAUDE.md를 불러오지 않고 시작. 스크립트 실행에 권장되는 옵션. 팀 규칙이 담긴 CLAUDE.md도 읽지 않는다는 점에 주의</td></tr>
+</table>
+<ul>
+<li><code>claude -p</code>는 Agent SDK를 명령어로 쓰는 방식</li>
+<li>CI 실행용으로 따로 있는 옵션이나 환경 변수는 없음. <code>--batch</code>, <code>CLAUDE_HEADLESS</code>는 없는 이름</li>
+<li>옵션 설명 전체: <a href="https://code.claude.com/docs/ko/headless" target="_blank" rel="noopener">Claude Code 공식 문서 'Claude Code를 프로그래밍 방식으로 실행하기' 페이지</a> (한국어)</li>
+<li>GitHub 연동 방법: <a href="https://code.claude.com/docs/ko/github-actions" target="_blank" rel="noopener">Claude Code 공식 문서 'Claude Code GitHub Actions' 페이지</a> (한국어)</li>
+</ul>
+<h4>③ CI에서 쓰는 CLAUDE.md</h4>
+<ul>
+<li>CI 실행에서도 CLAUDE.md가 프로젝트 정보 제공</li>
+<li>테스트 기준, 테스트용 자료, 리뷰 기준을 적어 두면 결과 품질 향상</li>
+</ul>
+<h4>④ 작성 세션과 리뷰 세션 분리</h4>
+<ul>
+<li>코드를 작성한 세션은 자기 코드 리뷰에 부적합. 작성할 때의 판단 과정이 남아 있는 상태</li>
+<li>리뷰는 별도 세션으로 실행. Part 4 CH 6에서 다루는 내용</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>PR(pull request)</b>: 코드 변경을 반영해 달라는 요청. 팀원이 검토한 뒤 반영</li>
+<li><b>러너(runner)</b>: 자동 실행 작업을 처리하는 임시 컴퓨터</li>
+<li><b>Agent SDK</b>: Claude Code의 기능을 다른 프로그램에서 쓰게 해 주는 개발 도구</li>
+<li><b>JSON</b>: 항목 이름과 값을 짝지어 적는 글 형식. 프로그램끼리 자료를 주고받을 때 사용</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"CI 리뷰와 테스트 생성의 품질 기준",
+   html:`__MAP3:ci__<h4>① 문제별 해결</h4>
+<table>
+<tr><th>문제</th><th>해결</th></tr>
+<tr><td>새 변경이 올라올 때마다 같은 지적 반복</td><td>이전 리뷰 결과를 함께 전달. "새 문제와 해결되지 않은 문제만 보고"라고 지시</td></tr>
+<tr><td>이미 있는 테스트를 다시 제안</td><td>기존 테스트 파일을 함께 전달</td></tr>
+<tr><td>가치가 낮은 테스트 생성</td><td>CLAUDE.md에 테스트 기준, 가치 판단 기준, 테스트용 자료 작성</td></tr>
+</table>
+<h4>② 공통 원리</h4>
+<ul>
+<li>Claude는 전달받지 않은 내용을 알 수 없음</li>
+<li>반복과 중복의 원인: 이전 결과와 기존 자료가 전달되지 않은 상태</li>
+<li>해결의 방향: 필요한 자료를 요청에 포함</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · PR에 달린 리뷰 댓글</div>
+Claude 리뷰<br>
+새로 발견한 문제 1건<br>
+&nbsp;&nbsp;결제 파일 42번째 줄: 금액 반올림 오류<br>
+이전 리뷰의 미해결 문제 1건<br>
+&nbsp;&nbsp;주문 파일 17번째 줄: 입력값 확인 누락<br>
+<span class="sel">이미 해결된 문제 3건은 다시 보고하지 않음</span>
+</div>
+<p class="cap">이해를 돕기 위한 예시. 이전 리뷰 결과를 함께 전달한 경우의 댓글.</p>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>테스트용 자료(fixture)</b>: 테스트를 실행할 때 쓰는 미리 준비한 입력 자료</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Pipeline design review",
        q:`A teammate's new CI review stage: (i) runs claude -p "Review this diff..." — works; (ii) extracts findings from the prose output with regex patterns like /(?:issue|bug):\\s*(.+)/i, which breaks weekly; (iii) reuses the same pipeline session that generated the code fix earlier in the job "to save tokens on context." Reviews miss obvious problems in the generated code. Which revision addresses the actual defects?`,
        opts:[
@@ -508,7 +785,7 @@ window.CCAF_CONTENT.p3 = {
        ],
        hint:`결함이 두 가지임. 출력 구조를 보장하는 수단이 없다는 점(ii), 그리고 코드를 생성한 세션이 자기 코드를 리뷰한다는 점(iii)임. 두 결함의 공식 처방을 모두 담은 선택지를 고를 것. 일부만 고치는 선택지가 오답 유도임.`,
        explain:{
-         good:`3.6의 두 항목을 함께 적용함. 구조화 출력(structured output)은 --output-format json과 --json-schema로 만들고(정규식 보완이 아님), 리뷰 품질은 세션 격리로 확보함(생성 맥락이 없는 독립 인스턴스). -p는 이미 올바르게 쓰고 있으므로 유지함. 무엇이 결함이고 무엇이 결함이 아닌지 구분하는 것까지가 이 문제의 요구사항임.`,
+         good:`3.6의 두 항목을 함께 적용함. 구조화된 출력(structured output)은 --output-format json과 --json-schema로 만들고(정규식 보완이 아님), 리뷰 품질은 세션 격리로 확보함(생성 맥락이 없는 독립 인스턴스). -p는 이미 올바르게 쓰고 있으므로 유지함. 무엇이 결함이고 무엇이 결함이 아닌지 구분하는 것까지가 이 문제의 요구사항임.`,
          wrongs:[
            `<b>B(정규식 강화):</b> 자연어 출력의 표현이 바뀔 때마다 정규식을 계속 따라가야 함. 매주 깨지는 구조가 그대로 남음.`,
            `<b>C(플래그 혼동):</b> --output-format json은 출력 구조만 담당함. 비대화형 실행(-p)을 대체하지 않음. 일반적으로는 맞는 설명이지만 이 문제의 조건에서는 틀린 선택지임.`,
@@ -565,13 +842,13 @@ window.CCAF_CONTENT.p3 = {
      principle:"출력 분량이 큰 스킬은 fork"},
     {ts:"3.2", lvl:"실전", q:`Your team's shared format-commit skill works well, but you personally want a variant with different commit message conventions — without affecting teammates. What is the correct approach?`,
      opts:[
-       {t:`Create a personal variant under ~/.claude/skills/ with a different name, leaving the team's skill untouched.`, ok:true},
+       {t:`Create a personal skill under ~/.claude/skills/, leaving the team's skill untouched.`, ok:true},
        {t:`Edit the team's skill in .claude/skills/ — your preferences are improvements others will appreciate.`},
        {t:`Add an if-branch inside the team skill keyed to your username.`},
-       {t:`Override the team skill by creating a personal skill with the exact same name.`}],
-     explain:{good:`가이드 3.2에 명시됨. 개인 커스터마이징은 ~/.claude/skills/에 다른 이름의 변형으로 만듦. 팀 자산을 수정하지 않는 격리 원칙임.`,
-       wrongs:[`<b>B:</b> 저장소에 커밋되는 팀 스킬을 임의로 변경하는 것임. 팀 전원에게 영향을 줌.`,`<b>C:</b> 팀 스킬에 개인용 분기를 넣는 방식임.`,`<b>D:</b> 이름이 같으면 어느 스킬이 실행되는지 불분명해짐. 가이드가 다른 이름을 명시한 이유임.`]},
-     principle:"개인 변형은 개인 스코프 + 다른 이름"},
+       {t:`Add your variant to the project's .claude/skills/ under a new name so it is versioned with the repository.`}],
+     explain:{good:`개인 스킬 위치(~/.claude/skills/)에 만들면 본인에게만 적용. 팀 스킬 파일은 그대로. 이름이 같으면 본인 실행에서만 개인 스킬이 우선.`,
+       wrongs:[`<b>B:</b> 저장소에 커밋되는 팀 스킬을 임의로 변경하는 것임. 팀 전원에게 영향을 줌.`,`<b>C:</b> 팀 스킬에 개인용 분기를 넣는 방식임.`,`<b>D:</b> 저장소에 올라가 팀 전원에게 적용. 개인용이라는 조건 위반.`]},
+     principle:"개인 변형은 개인 스킬 위치에"},
     {ts:"3.3", lvl:"기초", q:`What does the paths field in a .claude/rules/ file's YAML frontmatter control?`,
      opts:[
        {t:`When the rule loads — only while editing files that match the glob patterns.`, ok:true},
@@ -632,7 +909,7 @@ window.CCAF_CONTENT.p3 = {
        {t:`--print together with --verbose.`},
        {t:`--json together with --strict.`},
        {t:`--output xml together with --schema.`}],
-     explain:{good:`CI의 구조화 출력은 --output-format json과 --json-schema의 조합임.`,
+     explain:{good:`CI의 구조화된 출력은 --output-format json과 --json-schema의 조합임.`,
        wrongs:[`<b>B:</b> -p는 비대화형 실행 플래그일 뿐이며 출력 구조를 보장하지 않음.`,`<b>C:</b> --json과 --strict는 존재하지 않는 플래그임. 오답 유도 선택지임.`,`<b>D:</b> --output xml과 --schema도 존재하지 않는 조합임.`]},
      principle:"실제로 존재하는 플래그 3종 암기"},
     {ts:"3.6", lvl:"실전", q:`Your CI test-generation job produces many low-value tests (trivial getters) and duplicates of scenarios the suite already covers. Which combination of fixes matches best practice?`,

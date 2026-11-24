@@ -100,7 +100,7 @@ window.CCAF_EXAM_EXTRA = [
    opts:[
      {t:`Subagents don't inherit the coordinator's conversation history — the document list must be included explicitly in the spawning prompt.`, ok:true},
      {t:`The subagent's clarifying question indicates its system prompt lacks initiative instructions.`},
-     {t:`The Task tool call failed to attach the conversation context flag.`},
+     {t:`The Agent tool call failed to attach the conversation context flag.`},
      {t:`The document list exceeded the subagent's context limit and was silently dropped.`}],
    explain:{good:`1.3의 첫 번째 규칙임. 서브에이전트(subagent)는 코디네이터의 대화 히스토리(conversation history)를 물려받지 않음. 검색 단계에서 모은 12개 URL은 서브에이전트를 띄우는 프롬프트에 직접 적어 넘겨야 함.`,
      wrongs:[`<b>B:</b> 모르는 것을 되묻는 동작 자체는 정상임. 문제는 정보를 전달하지 않은 코디네이터 쪽에 있음.`,`<b>C:</b> 대화 컨텍스트를 첨부하는 플래그는 존재하지 않음. 없는 기능을 제시한 오답 유도 선택지임.`,`<b>D:</b> URL 12개는 컨텍스트 한계에 한참 못 미치는 분량이며, 지문에 그런 근거도 없음.`]},
@@ -111,9 +111,9 @@ window.CCAF_EXAM_EXTRA = [
      {t:`Prohibit the synthesis agent from ever combining two numbers into a trend statement.`},
      {t:`Have synthesis flag any pair of differing numbers as a contradiction for human review.`},
      {t:`Limit research to sources from a single year so temporal mixing can't occur.`}],
-   explain:{good:`5.6의 내용임. 조사 시점과 방법론 맥락(대상 집단, 조사 범위)을 구조화 출력(structured output)의 필수 필드로 둠. 두 숫자를 비교할 수 있는지 판단할 근거를 상류 단계가 제공해야 함. 22%와 38%는 추세가 아니라 조건이 다른 두 번의 측정임.`,
+   explain:{good:`5.6의 내용임. 조사 시점과 방법론 맥락(대상 집단, 조사 범위)을 구조화된 출력(structured output)의 필수 필드로 둠. 두 숫자를 비교할 수 있는지 판단할 근거를 상류 단계가 제공해야 함. 22%와 38%는 추세가 아니라 조건이 다른 두 번의 측정임.`,
      wrongs:[`<b>B:</b> 정당한 추세 서술까지 막는 과한 조치임. 같은 조사의 시계열이면 두 숫자를 묶는 것이 맞음.`,`<b>C:</b> 숫자쌍마다 사람이 검토하면 리뷰 단계가 막힘. 판단 근거를 필드로 주면 자동으로 걸러낼 수 있음.`,`<b>D:</b> 단일 연도로 제한하면 리서치 범위가 좁아지고 시계열 분석 자체가 불가능해짐.`]},
-   principle:"조사 시점과 방법론은 구조화 출력의 필수 필드임"},
+   principle:"조사 시점과 방법론은 구조화된 출력의 필수 필드임"},
 
   /* ---- s4 ---- */
   {scenario:"s4", ts:"2.5", q:`Task: "find where the config value MAX_RETRY_DELAY is defined, and every file that reads it." The codebase has 1,400 files. Which tool sequence is correct?`,
@@ -199,7 +199,7 @@ window.CCAF_EXAM_EXTRA = [
      {t:`Expand the enum to 60 categories preemptively to cover future types.`},
      {t:`Reject documents containing clauses outside the current 15 categories.`}],
    explain:{good:`4.3의 확장 가능한 분류 설계임. 확정된 범주는 enum으로 두고, 새 유형은 "other"와 상세 설명 문자열로 받고, 판단이 어려운 건은 "unclear"로 받음. "other"로 들어온 값을 매달 검토하면 분류 체계를 넓히는 절차도 함께 생김.`,
-     wrongs:[`<b>B:</b> 자유 텍스트는 집계와 검색이 되지 않음. 구조화 출력을 쓰는 이유가 사라짐.`,`<b>C:</b> 앞으로 나올 유형 60개를 미리 맞힐 수 없고, 비슷한 범주가 늘어나면 오분류만 많아짐.`,`<b>D:</b> 새 조항이 들어 있는 계약이 법무팀이 확인해야 할 문서임. 거부하면 도구의 목적과 반대가 됨.`]},
+     wrongs:[`<b>B:</b> 자유 텍스트는 집계와 검색이 되지 않음. 구조화된 출력을 쓰는 이유가 사라짐.`,`<b>C:</b> 앞으로 나올 유형 60개를 미리 맞힐 수 없고, 비슷한 범주가 늘어나면 오분류만 많아짐.`,`<b>D:</b> 새 조항이 들어 있는 계약이 법무팀이 확인해야 할 문서임. 거부하면 도구의 목적과 반대가 됨.`]},
    principle:"enum에 other와 unclear를 더해 분류 체계를 확장함"},
 ];
 

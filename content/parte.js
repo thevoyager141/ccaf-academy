@@ -4,134 +4,145 @@ window.CCAF_CONTENT.pe = {
   lessons: [
 
   /* ================= E-1 · 시험 문항 해부 ================= */
-  { id:"pec1", ch:"E-1", title:"시험 문항 해부",
+  { id:"pec1", ch:"E-1", title:"시험 문항의 구조",
     steps:[
-      {type:"concept", kind:"PART BRIEFING · 파트 설명", h:"PART E: 영어 학습이 아니라 이 시험 영어의 패턴을 익히는 파트",
-       html:`<p class="lead">이 파트는 <strong>Exam English</strong>(시험 영어)를 다룸. 공식 시험 범위에 포함된 파트는 아니지만, 영어 지문 자체가 가장 큰 장벽이 되기 때문에 따로 구성함.</p>
-        <h4>이 파트가 필요한 이유</h4>
-        <ul>
-          <li>이 시험의 문항은 지문과 선택지가 전부 영어로 출제됨</li>
-          <li>실전은 <strong>60문항 · 120분</strong>이므로 한 문항에 쓸 수 있는 시간은 2분임. 긴 영어 지문을 처음부터 끝까지 정독하면 그 2분이 읽는 데만 소모됨</li>
-          <li>내용을 알고도 시간이 부족해 풀지 못하는 상태가 발생함. 이것은 지식의 문제가 아니라 읽는 순서의 문제임</li>
-        </ul>
-        <h4>이 파트가 다루지 않는 것</h4>
-        <ul>
-          <li>영어 자체를 가르치지 않음. 문법 설명과 단어 암기는 포함하지 않음</li>
-          <li>대신 <strong>이 시험의 영어가 반복하는 패턴</strong>만 다룸: 문항 구조, 지시어, 조건 구절, 반복 어휘</li>
-          <li>패턴의 수는 한정되어 있음. 60문항이 서로 다른 영어를 쓰는 것이 아니라 같은 형식에 내용만 바뀌어 출제됨</li>
-        </ul>
-        <h4>구성</h4>
-        <ul>
-          <li><strong>E-1 문항 해부</strong>: 문항이 어떤 구성 요소로 되어 있고 2분 안에 어디부터 읽어야 하는지</li>
-          <li><strong>E-2 지시어 사전</strong>: 지시어(qualifier)인 MOST / BEST / FIRST / LEAST / NOT이 각각 요구하는 답의 성격</li>
-          <li><strong>E-3 조건을 숨기는 표현</strong>: 한 구절 때문에 정답이 바뀌는 지점</li>
-          <li><strong>E-4 시험 어휘장</strong>: 기존 문항에서 실제로 쓰인 표현 120개</li>
-          <li><strong>E-5 30초 스캔 훈련</strong>: 긴 지문에서 네 가지만 확인하는 방법</li>
-          <li><strong>E-6 영어 독해 미니테스트</strong>: 10문항</li>
-        </ul>`},
+      {type:"concept", kind:"PART BRIEFING · 파트 설명", h:"PART E · 시험 영어 읽는 방법",
+   html:`<h4>① 다루는 내용</h4>
+<ul>
+<li>시험 문항의 영어가 반복해서 쓰는 형식</li>
+<li>문항 구조, 지시어, 조건 표현, 자주 나오는 어휘</li>
+<li>문법 설명과 단어 암기는 다루지 않음</li>
+<li>자격시험의 출제 범위에 들어가는 내용은 아님. 영어로 응시하는 사람을 위한 보충 파트</li>
+</ul>
+<h4>② 필요한 이유</h4>
+<ul>
+<li>시험 언어는 영어와 일본어. 영어로 응시하면 브리핑과 선택지가 모두 영어</li>
+<li>60문항 120분. 문항 하나에 2분</li>
+<li>긴 영어 글을 처음부터 끝까지 읽으면 2분을 읽는 데 모두 사용</li>
+<li>내용을 알아도 시간이 모자라 풀지 못하는 경우의 원인은 읽는 순서</li>
+<li>문항의 형식은 몇 가지로 정해져 있고 내용만 바뀌어 출제</li>
+</ul>
+<h4>③ 구성</h4>
+<table>
+<tr><th>레슨</th><th>내용</th></tr>
+<tr><td>E-1 문항 구조</td><td>문항의 구성 요소와 2분 안에 읽는 순서</td></tr>
+<tr><td>E-2 지시어</td><td>MOST, BEST, FIRST, LEAST, NOT이 요구하는 답의 종류</td></tr>
+<tr><td>E-3 조건 표현</td><td>정답을 바꾸는 짧은 표현</td></tr>
+<tr><td>E-4 어휘</td><td>문항에 자주 나오는 표현 120개</td></tr>
+<tr><td>E-5 30초 확인 연습</td><td>긴 글에서 네 가지만 확인하는 방법</td></tr>
+<tr><td>E-6 미니테스트</td><td>영어 독해 10문항</td></tr>
+</table>`},
 
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"문항은 성격이 다른 구성 요소 여섯 개로 이루어짐",
-       html:`<p class="lead">시험 문항이 길어 보이는 이유는 문장이 어렵기 때문이 아님. <strong>성격이 완전히 다른 구성 요소 여섯 개</strong>가 하나로 붙어 있기 때문임. 구성 요소를 구분할 수 있으면 어디를 건너뛸지가 바로 보임.</p>
-        <h4>구성 요소 6종</h4>
-        <ul>
-          <li><strong>① 시나리오 브리핑(scenario briefing)</strong>: 어떤 시스템에 관한 이야기인지 소개함. V2는 시나리오 4개 아래에 문항이 묶여 출제되므로, 같은 묶음의 문항들은 <strong>이 브리핑을 공유함</strong></li>
-          <li><strong>② 상황 서술(situation)</strong>: 현재 무엇을 하고 있는지. 팀 구성, 도구 목록, 목표치</li>
-          <li><strong>③ 증상 · 로그 · 수치(symptoms)</strong>: 무엇이 잘못됐는지. <code>40% false positives</code>, <code>crashed at 3 AM</code>, <code>8,400 rows</code> 같은 구체적 숫자가 여기에 나옴</li>
-          <li><strong>④ 제약(constraint)</strong>: 지켜야 하는 조건. 보통 <strong>한 구절</strong>이며, 이것이 정답을 가름</li>
-          <li><strong>⑤ 질문(stem)</strong>: 실제로 묻는 문장. 거의 항상 <strong>맨 마지막 한 문장</strong>이고 물음표로 끝남</li>
-          <li><strong>⑥ 보기(options)</strong>: 4개, 복수응답이면 5개</li>
-        </ul>
-        <h4>구성 요소마다 정보 밀도가 다름</h4>
-        <ul>
-          <li>①②는 <strong>길지만 정보량이 적음</strong>. 배경이므로 정답 판별에 거의 쓰이지 않음</li>
-          <li>③④⑤는 <strong>짧지만 정보량이 거의 전부임</strong>. 정답 조건이 여기에 모두 들어 있음</li>
-          <li>⑥은 <strong>지문만큼 김</strong>. 보기 4개를 합치면 지문 절반 분량인 경우가 흔함</li>
-          <li>그러므로 위에서 아래로 정독하는 방식이 가장 불리함. 밀도가 낮은 곳에서 시간을 소모하고, 보기를 읽다가 <strong>지문으로 되돌아가게 됨</strong>. 결과적으로 2회독이 됨</li>
-        </ul>
-        <div class="callout">📖 용어 카드. <b>stem(스템)</b>: 시험 업계 용어로 실제로 묻는 문장을 가리킴. 지문 전체가 아니라 물음표가 붙은 한 줄만 해당함. <b>option(옵션·보기)</b>: A~E 선택지. <b>distractor(디스트랙터)</b>: 오답 보기를 부르는 말. 주의를 분산시키는 것이라는 뜻이며, 실제로 그 목적으로 설계됨.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"문항의 구성 요소 여섯 가지",
+   html:`<h4>① 구성 요소</h4>
+<table>
+<tr><th>번호</th><th>구성 요소</th><th>내용</th><th>정답 판단에 쓰이는 정도</th></tr>
+<tr><td>1</td><td>시나리오 브리핑<br><small>scenario briefing</small></td><td>어떤 시스템인지 소개. 같은 시나리오의 문항이 함께 사용</td><td>낮음</td></tr>
+<tr><td>2</td><td>상황<br><small>situation</small></td><td>팀 구성, 도구 목록, 목표 수치</td><td>낮음</td></tr>
+<tr><td>3</td><td>증상과 숫자<br><small>symptoms</small></td><td>잘못된 내용. 예: 40% false positives, crashed at 3 AM</td><td>높음</td></tr>
+<tr><td>4</td><td>제약<br><small>constraint</small></td><td>지켜야 하는 조건. 대개 짧은 표현 하나</td><td>높음</td></tr>
+<tr><td>5</td><td>질문<br><small>stem</small></td><td>실제로 묻는 문장. 대개 마지막 문장이고 물음표로 끝남</td><td>높음</td></tr>
+<tr><td>6</td><td>선택지<br><small>options</small></td><td>4개. 답을 여러 개 고르는 문항은 5개</td><td>높음</td></tr>
+</table>
+<h4>② 분량과 정보량의 차이</h4>
+<ul>
+<li>1번과 2번은 길고 정답 판단에 거의 쓰이지 않는 배경</li>
+<li>3번, 4번, 5번은 짧고 정답의 조건이 모두 들어 있는 부분</li>
+<li>선택지 네 개의 분량은 브리핑의 절반 정도인 경우가 많음</li>
+<li>위에서 아래로 읽으면 배경에 시간을 쓰고 선택지를 읽다가 다시 위로 돌아가게 됨</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>stem</b>: 문항에서 실제로 묻는 문장. 물음표가 붙은 한 줄</li>
+<li><b>option</b>: 선택지. A부터 D 또는 E까지</li>
+<li><b>distractor</b>: 오답 선택지. 그럴듯하게 보이도록 만든 선택지</li>
+</ul>
+</div>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"실제 형태의 문항 하나를 구성 요소별로 분해하기",
-       html:`<p class="lead">아래는 실전과 같은 형태로 만든 문항 하나임. 구성 요소마다 색 표시를 붙여 둠. 왼쪽 색 막대만 보고도 배경인지 결정적인 부분인지 구분되어야 함.</p>
-        <div style="font-size:12px;color:var(--muted);margin:8px 0">
-          <span style="color:var(--dim)">■ 회색 = 배경 (건너뛰어도 됨)</span> &nbsp;·&nbsp;
-          <span style="color:var(--no)">■ 빨강 = 증상·수치</span> &nbsp;·&nbsp;
-          <span style="color:var(--warn)">■ 노랑 = 제약</span> &nbsp;·&nbsp;
-          <span style="color:var(--accent)">■ 주황 = 질문</span> &nbsp;·&nbsp;
-          <span style="color:var(--ok)">■ 초록 = 보기</span>
-        </div>
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"문항 하나의 구성 요소 구분",
+   html:`<ul>
+<li>실제 시험과 같은 형태로 만든 문항 하나를 구성 요소별로 구분한 예시</li>
+<li>왼쪽 막대 색의 뜻: 회색은 배경, 빨강은 증상과 숫자, 노랑은 제약, 주황은 질문, 초록은 선택지</li>
+</ul>
+<div style="border-left:4px solid var(--dim);background:var(--surface2);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
+<div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--dim)">1 SCENARIO BRIEFING 시나리오 브리핑</div>
+<div style="margin-top:4px">Your team runs a structured data extraction service built on the Claude API. It processes scanned supplier contracts and returns typed JSON for a procurement dashboard.</div>
+<div style="font-size:12px;color:var(--muted);margin-top:5px">확인할 내용: 계약서 추출, JSON, 대시보드. 같은 시나리오의 다음 문항에서는 읽지 않음</div>
+</div><div style="border-left:4px solid var(--dim);background:var(--surface2);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
+<div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--dim)">2 SITUATION 상황</div>
+<div style="margin-top:4px">The pipeline uses a single extraction tool defined with a strict JSON schema. Fields include governing_law, renewal_term_months, and termination_notice_days. Roughly 9,000 contracts are processed each night.</div>
+<div style="font-size:12px;color:var(--muted);margin-top:5px">확인할 내용: 항목 이름 renewal_term_months 하나. 나머지 항목과 9,000이라는 숫자는 이 문항에서 쓰이지 않음</div>
+</div><div style="border-left:4px solid var(--no);background:var(--surface2);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
+<div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--no)">3 SYMPTOMS 증상과 숫자</div>
+<div style="margin-top:4px">Since last week's schema update, the dashboard shows renewal_term_months: 12 for a batch of contracts that are one-time purchase orders with no renewal clause at all. Spot checks confirm the source documents contain no renewal language.</div>
+<div style="font-size:12px;color:var(--muted);margin-top:5px">확인할 내용: 문서에 없는 값을 12로 채움. 값이 없는 경우이므로 필요한 해결은 빈 값 허용</div>
+</div><div style="border-left:4px solid var(--warn);background:var(--surface2);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
+<div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--warn)">4 CONSTRAINT 제약</div>
+<div style="margin-top:4px">The dashboard's downstream consumers cannot be modified this quarter, so the field must remain present in every record.</div>
+<div style="font-size:12px;color:var(--muted);margin-top:5px">확인할 내용: 항목 삭제 불가. 이 문장으로 항목을 빼는 선택지 제외</div>
+</div><div style="border-left:4px solid var(--accent);background:var(--surface2);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
+<div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--accent)">5 QUESTION 질문</div>
+<div style="margin-top:4px">What is the MOST effective schema change?</div>
+<div style="font-size:12px;color:var(--muted);margin-top:5px">확인할 내용: MOST는 맞는 선택지가 여러 개라는 뜻. schema change는 스키마를 고치는 답만 후보라는 뜻</div>
+</div><div style="border-left:4px solid var(--ok);background:var(--surface2);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
+<div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--ok)">6 OPTIONS 선택지</div>
+<div style="margin-top:4px">A. Make renewal_term_months nullable and instruct the model to return null when the contract has no renewal clause.<br>B. Remove renewal_term_months from the schema for purchase-order documents.<br>C. Add an enum of common renewal terms (6, 12, 24, 36) so the model only picks valid values.<br>D. Lower the temperature so the model stops inventing values.</div>
+<div style="font-size:12px;color:var(--muted);margin-top:5px">B는 4번 제약으로 제외. C는 3번 증상으로 제외. 값이 없는 문서에 목록을 줘도 하나를 고르게 됨. D의 temperature 조정은 규칙을 만드는 수단이 아님. 남는 답은 A</div>
+</div>
+<h4>정답을 정한 부분</h4>
+<ul>
+<li>정답을 정한 부분은 3번과 4번. 영어 세 문장</li>
+<li>1번과 2번의 다섯 문장은 정답 판단에 쓰이지 않음</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>nullable</b>: 값을 비워 둘 수 있게 허용한 항목</li>
+<li><b>enum</b>: 정해진 값 중 하나만 고르게 한 항목</li>
+<li><b>temperature</b>: 답의 무작위 정도를 정하는 설정값</li>
+</ul>
+</div>`},
 
-        <div style="border-left:4px solid var(--dim);background:var(--surface2);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
-          <div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--dim)">① SCENARIO BRIEFING · 시나리오 브리핑</div>
-          <div style="margin-top:4px">Your team runs a structured data extraction service built on the Claude API. It processes scanned supplier contracts and returns typed JSON for a procurement dashboard.</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:5px">→ 확인할 것: <b>계약서 추출 · JSON · 대시보드</b> 세 단어. 같은 시나리오의 다음 문항에서는 읽지 않음</div>
-        </div>
-
-        <div style="border-left:4px solid var(--dim);background:var(--surface2);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
-          <div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--dim)">② SITUATION · 상황 서술</div>
-          <div style="margin-top:4px">The pipeline uses a single extraction tool defined with a strict JSON schema. Fields include governing_law, renewal_term_months, and termination_notice_days. Roughly 9,000 contracts are processed each night.</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:5px">→ 확인할 것: <b>필드 이름 하나</b>인 renewal_term_months. 나머지 필드와 9,000이라는 숫자는 이 문항에서 쓰이지 않음. 배경 숫자와 결정적 숫자를 구분하는 방법은 E-5에서 다룸</div>
-        </div>
-
-        <div style="border-left:4px solid var(--no);background:var(--no-soft);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
-          <div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--no)">③ SYMPTOMS · 증상 · 수치</div>
-          <div style="margin-top:4px">Since last week's schema update, the dashboard shows renewal_term_months: 12 for a batch of contracts that are one-time purchase orders with no renewal clause at all. Spot checks confirm the source documents contain no renewal language.</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:5px">→ 확인할 것: <b>없는 값을 12로 채워 넣음</b>. 이 한 줄이 nullable(값이 없음)인지 enum 확장(값이 맞지 않음)인지를 이미 결정함</div>
-        </div>
-
-        <div style="border-left:4px solid var(--warn);background:var(--warn-soft);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
-          <div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--warn)">④ CONSTRAINT · 제약</div>
-          <div style="margin-top:4px">The dashboard's downstream consumers cannot be modified this quarter, so the field must remain present in every record.</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:5px">→ 확인할 것: <b>필드를 삭제하면 안 됨</b>. 이 한 문장이 그 필드를 빼라는 보기를 탈락시킴. 제약은 대개 이렇게 <strong>보기 하나를 정확히 겨냥해서</strong> 놓임</div>
-        </div>
-
-        <div style="border-left:4px solid var(--accent);background:var(--accent-soft);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
-          <div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--accent)">⑤ QUESTION (STEM) · 질문</div>
-          <div style="margin-top:4px">What is the MOST effective schema change?</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:5px">→ 확인할 것: <b>MOST</b>(최상급이므로 여러 보기가 맞는 말이라는 뜻) + <b>schema change</b>(스키마를 수정하는 답만 후보). 여덟 단어에 판단 기준 두 개가 들어 있음</div>
-        </div>
-
-        <div style="border-left:4px solid var(--ok);background:var(--ok-soft);padding:8px 12px;margin:8px 0;border-radius:0 8px 8px 0">
-          <div style="font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--ok)">⑥ OPTIONS · 보기</div>
-          <div style="margin-top:4px">
-            A. Make renewal_term_months nullable and instruct the model to return null when the contract has no renewal clause.<br>
-            B. Remove renewal_term_months from the schema for purchase-order documents.<br>
-            C. Add an enum of common renewal terms (6, 12, 24, 36) so the model only picks valid values.<br>
-            D. Lower the temperature so the model stops inventing values.
-          </div>
-          <div style="font-size:12px;color:var(--muted);margin-top:5px">→ B는 ④ 때문에 탈락하고, C는 ③ 때문에 탈락함(값이 없는 문서에 목록을 줘도 여전히 하나를 고르게 됨). D는 온도로 규칙을 만들 수 없음. 남는 것은 A임</div>
-        </div>
-
-        <div class="callout">🎯 여기서 확인되는 것. 답을 결정한 것은 ③과 ④이고 합쳐서 <b>영어 세 문장</b>임. ①②의 다섯 문장은 하나도 쓰이지 않음. 그런데 정독하면 ①②를 먼저, 그것도 가장 천천히 읽게 됨.</div>`},
-
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"2분을 지키는 읽기 순서: 질문부터 읽고 배경은 마지막",
-       html:`<p class="lead">구성 요소를 파악했으면 다음은 순서임. 위에서 아래로 읽지 말고 <strong>⑤ → ④ → ⑥ → ③ → ②①</strong> 순으로 읽을 것.</p>
-        <h4>순서와 이유</h4>
-        <table>
-          <tr><th>순서</th><th>어디를</th><th>왜 여기부터인가</th></tr>
-          <tr><td>1</td><td>⑤ 질문. 맨 마지막 물음표 문장</td><td>무엇을 묻는지 모르고 지문을 읽으면 <b>전부 중요해 보임</b>. 질문을 먼저 알면 읽는 목적이 생겨 나머지가 걸러짐</td></tr>
-          <tr><td>2</td><td>④ 제약</td><td>정답을 가르는 한 구절. 질문 문장 안이나 <b>바로 앞 문장</b>에 붙어 있는 경우가 대부분임</td></tr>
-          <tr><td>3</td><td>⑥ 보기 4~5개</td><td>보기를 먼저 보면 <b>지문에서 확인할 것이 특정됨</b>. A가 nullable이고 C가 enum이면 지문에서 찾을 것은 값이 없는 것인지 맞지 않는 것인지 하나임</td></tr>
-          <tr><td>4</td><td>③ 증상 · 수치</td><td>보기를 가르는 근거. 여기서 결정됨</td></tr>
-          <tr><td>5</td><td>② 상황 · ① 브리핑</td><td>③④로 이미 갈렸으면 <b>읽지 않고 넘어감</b>. 갈리지 않았을 때만 확인함</td></tr>
-        </table>
-        <h4>같은 문항을 두 가지 순서로 읽었을 때의 차이</h4>
-        <ul>
-          <li><strong>정독 순서</strong>: 브리핑 30단어 → 상황 40 → 증상 45 → 제약 20 → 질문 8 → 보기 90. <strong>233단어를 모두 읽은 뒤에야</strong> 무엇을 묻는지 알게 됨. 그리고 보기를 읽다가 지문으로 되돌아가므로 사실상 <strong>2회독</strong>이 됨</li>
-          <li><strong>역순</strong>: 질문 8 → 제약 20 → 보기 90 → 증상 45. <strong>163단어에서 답이 나오고</strong> 브리핑과 상황 70단어는 읽지 않음</li>
-          <li>실제 절약 효과는 단어 수보다 <strong>되돌아 읽기를 없앤 데</strong> 있음. 정독 순서는 거의 항상 2회독이 됨</li>
-        </ul>
-        <h4>시나리오 묶음에서 시간을 더 줄이는 방법</h4>
-        <ul>
-          <li>V2는 시나리오 문항 풀 6개 중 4개가 선택되고, 문항이 그 아래에 묶여 출제됨</li>
-          <li>같은 시나리오의 <strong>①브리핑은 첫 문항에서 한 번만</strong> 읽고 두 번째 문항부터는 건너뜀. 같은 텍스트임</li>
-          <li>대신 첫 문항에서 읽을 때 <strong>시스템 이름 하나와 도구 이름 3~4개</strong>를 기억해 둘 것. 뒤 문항에서 그 이름이 나오면 배경을 아는 상태로 시작함</li>
-        </ul>
-        <h4>순서를 바꿔야 하는 예외 두 가지</h4>
-        <ul>
-          <li><strong>부정형</strong>: <code>NOT</code> / <code>LEAST</code> / <code>EXCEPT</code> / <code>FALSE</code>가 보이면 보기를 먼저 모두 읽고 참·거짓을 표시하는 편이 빠름. E-2에서 다룸</li>
-          <li><strong>복수응답</strong>: <code>Select TWO</code>가 붙으면 보기 5개를 모두 읽어야 개수를 맞출 수 있음. 하나를 찾았다고 멈추면 그 문항은 오답이 됨</li>
-        </ul>
-        <div class="callout">⏱ 실전 시간 배분. 질문과 제약 15초 / 보기 1회독 35초 / 증상 대조 30초 / 결정 20초로 약 100초임. 남은 20초가 안전 마진임. 브리핑과 상황까지 내려갔다면 이미 마진을 쓰고 있는 상태임.</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"읽는 순서",
+   html:`<h4>① 순서</h4>
+<table>
+<tr><th>순서</th><th>읽을 부분</th><th>이유</th></tr>
+<tr><td>1</td><td>질문. 마지막 물음표 문장</td><td>묻는 내용을 알아야 나머지 글에서 필요한 부분을 고를 수 있음</td></tr>
+<tr><td>2</td><td>제약</td><td>정답을 정하는 짧은 표현. 대개 질문 문장 안이나 바로 앞 문장에 위치</td></tr>
+<tr><td>3</td><td>선택지 4~5개</td><td>선택지를 보면 글에서 확인할 내용이 정해짐</td></tr>
+<tr><td>4</td><td>증상과 숫자</td><td>선택지를 가르는 근거</td></tr>
+<tr><td>5</td><td>상황과 브리핑</td><td>앞 단계에서 답이 정해지지 않은 경우에만 확인</td></tr>
+</table>
+<h4>② 두 가지 순서의 비교</h4>
+<table>
+<tr><th>순서</th><th>읽는 분량</th><th>결과</th></tr>
+<tr><td>위에서 아래로</td><td>233단어 전부</td><td>마지막에야 묻는 내용 확인. 선택지를 읽다가 다시 위로 돌아가 두 번 읽게 됨</td></tr>
+<tr><td>질문부터</td><td>163단어</td><td>브리핑과 상황 70단어는 읽지 않고 답 결정</td></tr>
+</table>
+<ul>
+<li>줄어드는 시간의 대부분은 다시 읽는 시간</li>
+</ul>
+<h4>③ 같은 시나리오의 문항</h4>
+<ul>
+<li>시나리오 브리핑은 첫 문항에서 한 번만 읽기. 다음 문항부터는 같은 글</li>
+<li>처음 읽을 때 시스템 이름 하나와 도구 이름 서너 개 기억</li>
+</ul>
+<h4>④ 순서를 바꾸는 경우</h4>
+<table>
+<tr><th>경우</th><th>표시</th><th>읽는 방법</th></tr>
+<tr><td>부정형 질문</td><td>NOT, LEAST, EXCEPT, FALSE</td><td>선택지를 먼저 모두 읽고 맞는 내용과 틀린 내용 표시</td></tr>
+<tr><td>답이 여러 개인 문항</td><td>Select TWO</td><td>선택지 5개를 모두 읽기. 하나만 찾고 멈추면 오답</td></tr>
+</table>
+<h4>⑤ 시간 배분</h4>
+<table>
+<tr><th>단계</th><th>시간</th></tr>
+<tr><td>질문과 제약</td><td>15초</td></tr>
+<tr><td>선택지 한 번 읽기</td><td>35초</td></tr>
+<tr><td>증상과 대조</td><td>30초</td></tr>
+<tr><td>결정</td><td>20초</td></tr>
+</table>
+<ul>
+<li>합계 약 100초. 남는 20초는 여유 시간</li>
+</ul>`},
 
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Read the last sentence first",
        q:`SCENARIO: A CI job runs Claude Code on every pull request and posts a review comment.<br>SITUATION: The job runs inside a GitHub Actions container with no TTY. It invokes the CLI, waits for the review, and posts whatever text comes back.<br>SYMPTOMS: Two thirds of runs end with the CLI still sitting at an interactive prompt and an empty comment body. The runs that do finish post free-form prose, which the comment parser silently discards.<br>CONSTRAINT: The parser belongs to another team, consumes strict JSON only, and will not change this quarter.<br>QUESTION: Which single change addresses both symptoms?`,
@@ -171,121 +182,132 @@ window.CCAF_CONTENT.pe = {
     ]},
 
   /* ================= E-2 · 지시어 사전 ================= */
-  { id:"pec2", ch:"E-2", title:"지시어 사전: MOST · BEST · FIRST · LEAST · NOT",
+  { id:"pec2", ch:"E-2", title:"지시어: MOST, BEST, FIRST, LEAST, NOT",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"지시어: 질문 문장에 들어 있는 채점 기준",
-       html:`<p class="lead">질문 문장(stem)에는 <strong>답의 성격을 지정하는 단어</strong>가 하나씩 들어 있음. 이것을 지시어라고 함. 지시어를 놓치면 지문을 정확히 읽어도 다른 답을 고르게 됨.</p>
-        <h4>지시어의 형태</h4>
-        <ul>
-          <li>대문자로 인쇄되는 경우가 많음: <code>MOST</code> <code>BEST</code> <code>LEAST</code> <code>NOT</code> <code>EXCEPT</code> <code>FALSE</code> <code>TWO</code></li>
-          <li>대문자가 아닌 것도 있음: <code>first</code> <code>single</code> <code>both</code> <code>primary</code> <code>guarantees</code></li>
-          <li>위치는 거의 항상 <strong>질문 문장 안</strong>임. 지문 본문이 아니라 물음표가 붙은 한 줄임</li>
-        </ul>
-        <h4>지시어가 채점 기준인 이유</h4>
-        <ul>
-          <li>같은 지문과 같은 보기 4개라도 지시어만 바꾸면 <strong>정답이 다른 선택지로 옮겨감</strong></li>
-          <li>예를 들어 "What is the correct fix?"의 정답과 "What is the most effective FIRST step?"의 정답은 대개 다른 보기임. 하나는 최종 해결책이고 하나는 진단이기 때문임</li>
-          <li>그러므로 지문보다 지시어를 먼저 읽음. E-1의 읽기 순서가 질문부터인 이유가 이것임</li>
-        </ul>
-        <div class="callout">📖 용어 카드. <b>qualifier(지시어·한정어)</b>: 답의 범위를 좁히는 단어. <b>superlative(최상급)</b>: most / best / greatest / least처럼 가장 ~한을 만드는 형태. 최상급이 붙으면 비교 대상이 여럿이라는 뜻이고, 이는 <b>보기 여러 개가 모두 맞는 말</b>이라는 뜻임.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"지시어",
+   html:`<h4>① 뜻</h4>
+<ul>
+<li>질문 문장에서 답의 종류를 정하는 단어</li>
+<li>지시어를 놓치면 글을 정확히 읽어도 다른 답을 고르게 됨</li>
+</ul>
+<h4>② 형태와 위치</h4>
+<ul>
+<li>대문자로 적는 경우: MOST, BEST, LEAST, NOT, EXCEPT, FALSE, TWO</li>
+<li>소문자로 적는 경우: first, single, both, primary, guarantees</li>
+<li>위치: 물음표가 붙은 질문 문장 안</li>
+</ul>
+<h4>③ 지시어에 따른 정답의 차이</h4>
+<table>
+<tr><th>질문</th><th>정답의 종류</th></tr>
+<tr><td>What is the correct fix?</td><td>최종 해결 방법</td></tr>
+<tr><td>What is the most effective FIRST step?</td><td>원인을 확인하는 첫 조치</td></tr>
+</table>
+<ul>
+<li>브리핑과 선택지가 같아도 지시어가 바뀌면 정답이 다른 선택지로 이동</li>
+<li>글보다 지시어를 먼저 읽는 이유</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>qualifier</b>: 지시어. 답의 범위를 좁히는 단어</li>
+<li><b>superlative</b>: 최상급. most, best, least처럼 '가장'의 뜻을 만드는 형태. 맞는 선택지가 여러 개라는 표시</li>
+</ul>
+</div>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"지시어 전체 목록: 다섯 계열",
-       html:`<p class="lead">시험에 출제되는 지시어는 다섯 계열임. 계열을 알면 처음 보는 표현도 어느 쪽인지 바로 분류됨.</p>
-        <h4>① 최상급 계열: 모두 맞는 말 중 하나 고르기</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>요구하는 답</th></tr>
-          <tr><td><code>MOST effective</code></td><td>가장 효과적인</td><td>여러 보기가 모두 맞는 말임. 그 중 지문 조건에 가장 잘 맞는 하나</td></tr>
-          <tr><td><code>BEST</code> · <code>best fix</code> · <code>best design</code></td><td>가장 좋은</td><td>MOST와 사실상 동일함. 정석 설계를 고르라는 뜻</td></tr>
-          <tr><td><code>MOST likely cause</code></td><td>가장 그럴듯한 원인</td><td>로그와 수치가 <b>직접</b> 가리키는 원인. 일반적으로 흔한 원인이 아님</td></tr>
-          <tr><td><code>PRIMARY</code></td><td>주된 · 1차적인</td><td>여럿이 작동하지만 그 중 주된 것. 보조 요인은 오답</td></tr>
-          <tr><td><code>GREATEST</code></td><td>가장 큰</td><td>영향과 위험의 <b>크기</b> 비교. 눈에 잘 띄는 것이 아니라 파급이 큰 것</td></tr>
-          <tr><td><code>MOST reliable</code> · <code>MOST maintainable</code></td><td>가장 믿을 만한 · 유지하기 좋은</td><td>뒤에 붙은 형용사가 판단 기준임. reliable이면 결정론적인 쪽, maintainable이면 한 곳에서 관리되는 쪽</td></tr>
-        </table>
-        <h4>② 순서 계열: 무엇부터</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>요구하는 답</th></tr>
-          <tr><td><code>FIRST step</code> · <code>first move</code></td><td>첫 조치</td><td>원인을 확인하는 <b>진단</b>이거나, 비용이 적게 들면서 원인을 직접 다루는 조치. 큰 재설계는 first가 아님</td></tr>
-          <tr><td><code>next step</code></td><td>다음 단계</td><td>지문이 이미 한 것의 바로 다음 한 단계. 두 단계를 건너뛴 답은 오답</td></tr>
-          <tr><td><code>before</code> · <code>must happen before</code></td><td>~ 전에</td><td>선행 조건. 자동화 전에 무엇을 해야 하는가 형태로 자주 출제됨</td></tr>
-          <tr><td><code>going forward</code></td><td>앞으로는</td><td>이번 사고 수습이 아니라 <b>재발 방지</b> 설계를 고르라는 뜻</td></tr>
-        </table>
-        <h4>③ 부정 계열: 뒤집어서 고르기</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>요구하는 답</th></tr>
-          <tr><td><code>NOT</code></td><td>~이 아닌 것</td><td>보기 3개가 참, 1개가 거짓임. <b>거짓인 것</b>을 고름</td></tr>
-          <tr><td><code>LEAST appropriate</code> · <code>LEAST effective</code></td><td>가장 부적절한 · 가장 효과 없는</td><td>나머지 3개는 <b>모두 적절한 조치</b>임. 셋이 모두 좋아 보이면 제대로 읽고 있는 것임</td></tr>
-          <tr><td><code>EXCEPT</code></td><td>~을 제외하고</td><td>NOT과 같은 구조임. 다음 중 ~이 아닌 것은</td></tr>
-          <tr><td><code>FALSE</code></td><td>거짓인 것</td><td>사실 3개 + 거짓 1개</td></tr>
-          <tr><td><code>anti-pattern</code></td><td>안티패턴</td><td>부정어가 없어도 부정형임. 하면 안 되는 것을 고르라는 뜻</td></tr>
-        </table>
-        <h4>④ 개수 계열: 몇 개</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>요구하는 답</th></tr>
-          <tr><td><code>Select TWO.</code> · <code>Which TWO</code></td><td>두 개 고르기</td><td>정확히 2개. 1개만 고르거나 3개를 고르면 그 문항은 오답 처리됨</td></tr>
-          <tr><td><code>a single change</code> · <code>one change</code></td><td>단 하나의 변경</td><td>하나로 문제 전부를 해결해야 함. 두 개를 합쳐야 하는 답은 탈락</td></tr>
-          <tr><td><code>both symptoms</code> · <code>all three</code></td><td>둘 다 · 셋 다</td><td>증상 개수만큼 모두 설명하거나 해결해야 함. 하나만 고치는 보기는 탈락</td></tr>
-          <tr><td><code>combination</code> · <code>pairing</code></td><td>조합 · 짝짓기</td><td>보기 하나가 이미 여러 조치를 묶고 있음. <b>그 안의 모든 항목</b>이 맞아야 정답</td></tr>
-        </table>
-        <h4>⑤ 강도 계열: 얼마나 확실해야 하는가</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>요구하는 답</th></tr>
-          <tr><td><code>guarantees</code> · <code>a guarantee, not a best effort</code></td><td>보장 · 최선이 아니라 보장</td><td>예외가 0이어야 함. 프롬프트 지시나 few-shot 같은 <b>확률적 처방은 전부 탈락</b></td></tr>
-          <tr><td><code>deterministic</code></td><td>결정론적인</td><td>매번 같은 결과. 훅(hook)이나 게이트처럼 코드가 강제하는 쪽</td></tr>
-          <tr><td><code>reliably</code> · <code>consistently</code></td><td>안정적으로 · 일관되게</td><td>guarantee보다 약하지만 방향은 같음. 결정론적인 쪽</td></tr>
-          <tr><td><code>regardless of</code></td><td>~와 무관하게</td><td>예외 없음. 조건 분기를 두는 보기는 탈락</td></tr>
-          <tr><td><code>appropriate</code> · <code>legitimate</code></td><td>적절한 · 정당한</td><td>정석 기준에 부합하는지. 동작은 하지만 정석은 아닌 답이 오답으로 배치됨</td></tr>
-        </table>
-        <div class="callout">🎯 문항을 열면 먼저 할 일. 질문 문장에서 <b>이 다섯 계열 중 어느 것이 붙었는지</b>를 확정할 것. 3초면 충분함.</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"지시어 다섯 종류",
+   html:`<h4>① 최상급: 맞는 선택지 여러 개 중 하나 고르기</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>요구하는 답</th></tr>
+<tr><td>MOST effective</td><td>가장 효과적인</td><td>브리핑의 조건에 가장 잘 맞는 선택지 하나</td></tr>
+<tr><td>BEST, best fix, best design</td><td>가장 좋은</td><td>MOST와 같은 기준</td></tr>
+<tr><td>MOST likely cause</td><td>가장 가능성이 높은 원인</td><td>기록과 숫자가 직접 가리키는 원인. 흔한 원인과 다를 수 있음</td></tr>
+<tr><td>PRIMARY</td><td>주된</td><td>여러 원인 중 가장 큰 것. 부수적인 원인은 오답</td></tr>
+<tr><td>GREATEST</td><td>가장 큰</td><td>영향과 위험의 크기 비교</td></tr>
+<tr><td>MOST reliable, MOST maintainable</td><td>가장 안정적인, 가장 관리하기 쉬운</td><td>뒤에 붙은 형용사가 판단 기준</td></tr>
+</table>
+<h4>② 순서: 먼저 할 일</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>요구하는 답</th></tr>
+<tr><td>FIRST step, first move</td><td>첫 조치</td><td>원인을 확인하는 조치, 또는 비용이 적고 원인을 직접 고치는 조치</td></tr>
+<tr><td>next step</td><td>다음 단계</td><td>브리핑에서 이미 한 일의 바로 다음 단계 하나</td></tr>
+<tr><td>before, must happen before</td><td>~ 전에</td><td>먼저 갖춰야 하는 조건</td></tr>
+<tr><td>going forward</td><td>앞으로는</td><td>이번 문제의 수습이 아니라 다시 생기지 않게 하는 설계</td></tr>
+</table>
+<h4>③ 부정: 맞지 않는 것 고르기</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>요구하는 답</th></tr>
+<tr><td>NOT</td><td>~이 아닌 것</td><td>선택지 셋은 맞는 내용. 틀린 내용 하나 선택</td></tr>
+<tr><td>LEAST appropriate, LEAST effective</td><td>가장 적절하지 않은, 가장 효과가 적은</td><td>나머지 셋은 모두 적절한 조치</td></tr>
+<tr><td>EXCEPT</td><td>~을 제외하고</td><td>NOT과 같은 구조</td></tr>
+<tr><td>FALSE</td><td>틀린 것</td><td>맞는 내용 셋과 틀린 내용 하나</td></tr>
+<tr><td>anti-pattern</td><td>피해야 하는 방식</td><td>부정어가 없어도 부정형 질문</td></tr>
+</table>
+<h4>④ 개수: 고를 수와 해결할 수</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>요구하는 답</th></tr>
+<tr><td>Select TWO, Which TWO</td><td>두 개 선택</td><td>정확히 두 개. 하나나 세 개를 고르면 오답</td></tr>
+<tr><td>a single change, one change</td><td>변경 하나</td><td>변경 하나로 문제 전부 해결</td></tr>
+<tr><td>both symptoms, all three</td><td>둘 다, 셋 다</td><td>증상의 수만큼 모두 해결. 하나만 고치는 선택지 제외</td></tr>
+<tr><td>combination, pairing</td><td>조합</td><td>선택지 하나에 조치가 여러 개. 그 안의 조치가 모두 맞아야 정답</td></tr>
+</table>
+<h4>⑤ 강도: 필요한 확실성</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>요구하는 답</th></tr>
+<tr><td>guarantees, a guarantee, not a best effort</td><td>보장</td><td>예외 없는 수단. 지시문이나 예시로 요청하는 방법 제외</td></tr>
+<tr><td>deterministic</td><td>매번 같은 결과를 내는</td><td>훅이나 사전 조건 검사처럼 프로그램이 강제하는 수단</td></tr>
+<tr><td>reliably, consistently</td><td>안정적으로, 일관되게</td><td>guarantee보다 약한 표현. 방향은 같음</td></tr>
+<tr><td>regardless of</td><td>~와 관계없이</td><td>예외 없음. 조건에 따라 달리 처리하는 선택지 제외</td></tr>
+<tr><td>appropriate, legitimate</td><td>적절한, 정당한</td><td>권장 기준에 맞는 방법. 동작은 하지만 권장되지 않는 방법이 오답으로 등장</td></tr>
+</table>
+<ul>
+<li>문항을 열면 먼저 질문 문장의 지시어가 다섯 종류 중 어느 것인지 확인</li>
+</ul>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"최상급 문항에서 소거법이 통하지 않는 이유와 대신 쓰는 3단 기준",
-       html:`<p class="lead">최상급 문항은 선택지 네 개가 모두 맞는 말이 되도록 설계됨. 그래서 틀린 것을 지우는 방식이 통하지 않음.</p>
-        <h4>소거법이 통하지 않는 이유</h4>
-        <ul>
-          <li>일반 문항: 오답 3개가 <strong>틀린 말</strong>임. 틀린 것을 지우면 하나가 남으므로 소거법이 통함</li>
-          <li>최상급 문항: 보기 4개가 <strong>그 자체로는 모두 맞는 말</strong>임. 지울 대상이 없음</li>
-          <li>공식 가이드는 오답 보기를 불완전하게 아는 사람이 고를 만하게 설계한다고 밝히고 있음. 최상급 문항이 그 설계의 결과임</li>
-        </ul>
-        <h4>대신 3단 기준으로 판단함</h4>
-        <ul>
-          <li><strong>1단, 조건 위반 탈락.</strong> 맞는 말이어도 지문의 제약을 위반하면 오답임. 여기서 보통 1~2개가 탈락함(E-3에서 다룸)</li>
-          <li><strong>2단, 증상 전부 설명.</strong> 증상이 두 개인데 하나만 고치는 보기는 탈락함. 질문에 <code>both</code>나 <code>single change</code>가 붙어 있으면 이 단계가 판단의 핵심임</li>
-          <li><strong>3단, 비용이 적고 원인을 직접 다루는 쪽.</strong> 그래도 둘이 남으면 원인을 직접 다루면서 비용이 낮은 쪽을 고름. 별도 모델 학습이나 라우팅 레이어 구축 같은 큰 조치는 여기서 탈락함</li>
-        </ul>
-        <h4>FIRST가 붙으면 후보가 줄어듦</h4>
-        <ul>
-          <li><code>MOST effective FIRST step</code>은 최상급과 순서가 겹친 형태인데, <strong>first가 후보를 크게 줄임</strong></li>
-          <li>후보에서 자동 탈락: 대규모 재설계, 새 인프라 도입, 프롬프트 전면 재작성. 이런 것은 first step이 아님</li>
-          <li>남는 것: <strong>원인을 확인하는 진단</strong>이거나 <strong>한 줄짜리 직접 수정</strong>임. 지문에 원인 미상이라는 서술이 있으면 진단이 정답인 경우가 많음</li>
-        </ul>
-        <div class="callout">⚠️ 최상급 문항에서 자주 하는 실수. 보기 하나를 읽고 맞다고 판단해 바로 확정하는 것임. 최상급은 <b>맞는 것을 찾는 문제가 아니라 더 나은 것을 고르는 문제</b>이므로 4개를 모두 읽기 전에는 확정하면 안 됨. V2는 되돌아가기가 없으므로 그 자리에서 확정됨.</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"최상급 문항의 판단 순서",
+   html:`<h4>① 최상급 문항의 특징</h4>
+<table>
+<tr><th>문항 종류</th><th>선택지</th><th>푸는 방법</th></tr>
+<tr><td>일반 문항</td><td>틀린 내용 셋과 맞는 내용 하나</td><td>틀린 선택지 제외</td></tr>
+<tr><td>최상급 문항</td><td>네 개 모두 맞는 내용</td><td>조건에 가장 잘 맞는 하나 비교</td></tr>
+</table>
+<h4>② 판단 순서</h4>
+<ul>
+<li>첫째, 브리핑의 제약에 어긋나는 선택지 제외. 대개 한두 개가 제외</li>
+<li>둘째, 증상을 모두 해결하지 못하는 선택지 제외. 질문에 both나 single change가 있으면 이 단계가 중심</li>
+<li>셋째, 남은 선택지 중 비용이 적고 원인을 직접 고치는 선택지 선택. 별도 모델 학습 같은 큰 조치는 이 단계에서 제외</li>
+</ul>
+<h4>③ FIRST가 함께 붙은 경우</h4>
+<ul>
+<li>제외되는 선택지: 전체 재설계, 새 시스템 도입, 지시문 전체 다시 쓰기</li>
+<li>남는 선택지: 원인을 확인하는 조치, 또는 작은 직접 수정</li>
+<li>브리핑에 원인을 모른다는 내용이 있으면 원인 확인이 정답인 경우가 많음</li>
+</ul>
+<h4>④ 주의할 점</h4>
+<ul>
+<li>선택지 네 개를 모두 읽은 뒤에 결정</li>
+<li>첫 선택지가 맞는 내용이어도 더 잘 맞는 선택지가 뒤에 있을 수 있음</li>
+<li>읽은 뒤에는 그 자리에서 결정</li>
+</ul>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"부정형 문항에서 자주 발생하는 오답 유형 세 가지",
-       html:`<p class="lead">부정형은 아는 사람도 틀림. 지식이 아니라 <strong>앞 문항을 풀던 관성</strong> 때문에 틀리기 때문임.</p>
-        <h4>오답 유형 ① 관성 오답. 가장 흔함</h4>
-        <ul>
-          <li>앞 문항이 전부 가장 좋은 것을 고르는 형태였으므로 자동으로 <strong>좋은 보기</strong>를 선택하게 됨</li>
-          <li>NOT을 읽고도 좋은 답을 고름. 읽은 내용과 선택이 일치하지 않는 상태임</li>
-          <li>V2는 <strong>답을 골라야 다음으로 넘어가고 건너뛰기가 없으므로</strong> 그 자리에서 확정됨</li>
-        </ul>
-        <h4>오답 유형 ② 이중 부정. 두 번 뒤집어 읽음</h4>
-        <ul>
-          <li><code>Which of the following is NOT a valid way to terminate the loop?</code>에서 <code>valid</code>까지 함께 뒤집어 읽음</li>
-          <li>뒤집는 것은 <strong>NOT 하나뿐</strong>임. valid하지 않은 것, 즉 잘못된 종료 방식을 고르면 됨</li>
-          <li>보기 안에 <code>not</code>, <code>never</code>, <code>without</code>이 또 들어 있으면 더 혼동됨. 그럴 때는 보기를 <strong>긍정문으로 바꿔 읽은 뒤</strong> 참·거짓을 표시할 것</li>
-        </ul>
-        <h4>오답 유형 ③ LEAST를 가장 나쁜 것으로 읽음</h4>
-        <ul>
-          <li><code>LEAST appropriate</code>은 안 좋은 것들 중 제일 안 좋은 것이라는 뜻이 아님</li>
-          <li><strong>나머지 셋이 모두 적절</strong>하고 하나만 부적절한 구조임. 셋이 모두 괜찮아 보이는 것이 정상이며 제대로 읽고 있다는 신호임</li>
-          <li>셋이 모두 좋아 보이면 <strong>나머지 하나를 찾을 것</strong>. 대개 프롬프트로 규칙을 강제하려는 보기, 원인 확인 없이 큰 변경을 하는 보기, 실패를 감추는 보기 중 하나임</li>
-        </ul>
-        <h4>3초 대응 절차</h4>
-        <ul>
-          <li>질문에서 <strong>대문자 단어</strong>를 먼저 찾을 것. NOT · LEAST · EXCEPT · FALSE 중 하나가 보이면 그 문항은 부정형으로 확정함</li>
-          <li>E-1 읽기 순서의 예외를 적용함. <strong>보기 4개를 먼저 모두 읽고</strong> 옆에 참·거짓을 표시함</li>
-          <li>참이 셋, 거짓이 하나면 거짓인 것이 답임. <strong>참이 둘만 나오면 잘못 읽은 것</strong>이므로 질문을 다시 확인할 것</li>
-          <li>고르기 직전에 질문 문장을 <strong>한 번 더</strong> 읽을 것. 이 한 번이 관성 오답을 대부분 막아 줌</li>
-        </ul>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"부정형 문항의 오답 유형",
+   html:`<h4>① 오답 유형 세 가지</h4>
+<table>
+<tr><th>유형</th><th>내용</th><th>대응</th></tr>
+<tr><td>앞 문항의 습관</td><td>앞 문항에서 가장 좋은 것을 고르던 대로 좋은 선택지 선택. NOT을 읽고도 발생</td><td>질문의 대문자 단어부터 확인</td></tr>
+<tr><td>두 번 뒤집어 읽기</td><td>NOT a valid way에서 valid까지 반대로 해석</td><td>반대로 읽을 단어는 NOT 하나. 선택지 안의 not, never, without은 긍정문으로 바꿔 읽기</td></tr>
+<tr><td>LEAST의 오해</td><td>나쁜 선택지 여러 개 중 가장 나쁜 것을 찾는 문항으로 이해</td><td>나머지 셋은 모두 적절한 조치. 적절하지 않은 하나 찾기</td></tr>
+</table>
+<h4>② LEAST 문항에서 답이 되는 선택지</h4>
+<ul>
+<li>지시문으로 규칙을 강제하려는 선택지</li>
+<li>원인을 확인하지 않고 큰 변경을 하는 선택지</li>
+<li>실패를 감추는 선택지</li>
+</ul>
+<h4>③ 푸는 순서</h4>
+<ul>
+<li>첫째, 질문에서 NOT, LEAST, EXCEPT, FALSE 확인</li>
+<li>둘째, 선택지 네 개를 먼저 모두 읽고 맞는 내용과 틀린 내용 표시</li>
+<li>셋째, 맞는 내용이 셋이고 틀린 내용이 하나면 틀린 내용이 답. 그렇지 않으면 질문 다시 확인</li>
+</ul>`},
 
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Three of these are fine",
        q:`A subagent's overnight run failed at 03:12 with a tool timeout after two local retries. The on-call engineer has the full run log, the failing tool call, and a one-line fix already prepared for a known bug in that tool's argument handling. Which action is LEAST appropriate?`,
@@ -343,184 +365,199 @@ window.CCAF_CONTENT.pe = {
     ]},
 
   /* ================= E-3 · 조건을 숨기는 표현 ================= */
-  { id:"pec3", ch:"E-3", title:"조건을 숨기는 표현: 한 구절이 정답을 바꿈",
+  { id:"pec3", ch:"E-3", title:"정답을 바꾸는 조건 표현",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"제약은 문장이 아니라 구절로 제시됨",
-       html:`<p class="lead">E-1에서 구성 요소 ④ 제약을 다뤘음. 이 챕터는 그 제약이 <strong>실제 영어로 어떤 형태인지</strong>를 다룸. 제약은 문단이 아니라 <strong>구절 하나</strong>로 제시됨.</p>
-        <h4>제약이 놓이는 세 자리</h4>
-        <ul>
-          <li><strong>라벨이 붙은 경우</strong>: <code>Constraint:</code> <code>Team constraint:</code> <code>Requirement:</code> <code>Company policy:</code>. 표시가 되어 있으므로 놓치기 어려움</li>
-          <li><strong>질문 문장 안에 붙은 경우</strong>: "Which implementation guarantees compliance <b>while keeping normal refunds automated</b>?"처럼 물음표 문장 끝에 붙어 있음. 이 경우가 가장 많음</li>
-          <li><strong>상황 서술 마지막 줄에 섞어 놓은 경우</strong>: "The parser belongs to another team and will not change this quarter."처럼 평범한 문장 형태로 섞여 있음. 이 경우가 가장 놓치기 쉬움</li>
-        </ul>
-        <h4>제약의 역할</h4>
-        <ul>
-          <li><strong>보기 하나(가끔 둘)를 정확히 겨냥해 탈락시킴</strong>. 제약이 없으면 그 보기가 정답이었을 상황이 대부분임</li>
-          <li>그러므로 제약을 놓치면 <strong>탈락해야 할 보기를 고르게 됨</strong>. 지문을 정확히 읽고도 틀리는 전형적인 경로임</li>
-          <li>반대로 말하면 보기 중에 유난히 그럴듯한 것이 있으면 <strong>그것을 겨냥한 제약이 지문 어딘가에 있는지</strong> 먼저 확인하는 편이 빠름</li>
-        </ul>
-        <h4>신호가 되는 단어 여섯 개</h4>
-        <ul>
-          <li><code>without</code> · <code>while</code> · <code>only</code> · <code>must</code> · <code>before</code> · <code>cannot</code></li>
-          <li>이 여섯 개가 보이면 해당 구절을 커서나 손가락으로 짚을 것. 눈으로만 훑으면 그냥 지나가게 됨</li>
-        </ul>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"제약이 적히는 형태",
+   html:`<h4>① 제약이 놓이는 위치</h4>
+<table>
+<tr><th>위치</th><th>예</th><th>특징</th></tr>
+<tr><td>이름표가 붙은 줄</td><td>Constraint:, Team constraint:, Requirement:, Company policy:</td><td>찾기 쉬움</td></tr>
+<tr><td>질문 문장 안</td><td>Which implementation guarantees compliance while keeping normal refunds automated?</td><td>가장 많은 형태</td></tr>
+<tr><td>상황 설명의 마지막 줄</td><td>The parser belongs to another team and will not change this quarter.</td><td>평범한 문장처럼 보여 놓치기 쉬움</td></tr>
+</table>
+<h4>② 제약의 역할</h4>
+<ul>
+<li>선택지 하나나 둘을 제외하는 근거</li>
+<li>제약이 없었다면 정답이었을 선택지가 제외 대상인 경우가 많음</li>
+<li>유난히 그럴듯한 선택지가 있으면 그 선택지를 제외하는 제약이 있는지 확인</li>
+</ul>
+<h4>③ 제약을 알리는 단어 여섯 개</h4>
+<ul>
+<li>without, while, only, must, before, cannot</li>
+<li>이 단어가 든 표현은 손가락이나 커서로 짚으며 읽기</li>
+</ul>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"조건 구절 카탈로그: 여덟 종류",
-       html:`<p class="lead">기존 문항들에서 실제로 쓰인 표현만 모았음. 종류별로 묶어 두면 처음 보는 구절도 어느 항목인지 바로 분류됨.</p>
-        <h4>A. 변경할 수 없는 대상을 지정</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>탈락하는 보기</th></tr>
-          <tr><td><code>without changing X</code></td><td>X는 그대로 두고</td><td>X를 수정하는 답</td></tr>
-          <tr><td><code>without affecting teammates</code> · <code>without affecting anyone else</code></td><td>팀에 영향 없이</td><td>공유 설정이나 리포지토리 파일을 수정하는 답</td></tr>
-          <tr><td><code>cannot be modified</code> · <code>will not change this quarter</code></td><td>수정 불가 · 이번 분기에는 변경되지 않음</td><td>그쪽을 수정하자는 답</td></tr>
-          <tr><td><code>is owned by another team</code></td><td>다른 팀 소유</td><td>다른 팀의 컴포넌트를 수정하는 답</td></tr>
-          <tr><td><code>must remain present</code> · <code>keyed to three downstream reports</code></td><td>남아 있어야 함 · 하류가 연결되어 있음</td><td>필드나 카테고리를 삭제하자는 답</td></tr>
-          <tr><td><code>while preserving Y</code> · <code>while keeping Z automated</code></td><td>Y를 유지하면서 · Z는 자동인 채로</td><td>전부 사람에게 넘기는 답</td></tr>
-          <tr><td><code>read-only</code></td><td>읽기 전용</td><td>원본에 쓰겠다는 답</td></tr>
-        </table>
-        <h4>B. 비용 · 자원 상한</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>탈락하는 보기</th></tr>
-          <tr><td><code>with minimal token spend</code></td><td>토큰 최소로</td><td>전부 다시 읽는 답, 컨텍스트를 통째로 다시 채우는 답</td></tr>
-          <tr><td><code>at the lowest cost</code></td><td>가장 낮은 비용으로</td><td>새 인프라나 별도 모델을 구축하는 답</td></tr>
-          <tr><td><code>within the existing context budget</code></td><td>현재 컨텍스트 예산 안에서</td><td>창을 키우면 된다는 답</td></tr>
-          <tr><td><code>without adding infrastructure</code></td><td>인프라 추가 없이</td><td>벡터 DB나 별도 서비스를 구축하는 답</td></tr>
-          <tr><td><code>in a single batch run</code> · <code>in one pass</code></td><td>한 번의 배치로 · 한 번에</td><td>여러 번 나눠 실행하자는 답</td></tr>
-        </table>
-        <h4>C. 순서 · 시점</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>요구하는 것</th></tr>
-          <tr><td><code>before Z</code> · <code>must happen before</code></td><td>Z 전에</td><td>선행 조건. Z를 먼저 하는 답은 전부 탈락</td></tr>
-          <tr><td><code>until</code></td><td>~할 때까지</td><td>그때까지는 차단되어 있어야 함</td></tr>
-          <tr><td><code>as soon as</code></td><td>~하자마자</td><td>지연이 들어간 답은 탈락</td></tr>
-          <tr><td><code>the cutoff has passed</code> · <code>the window has closed</code></td><td>마감이 지남 · 기간이 종료됨</td><td>처음부터 다시 하는 답이 불가능해짐</td></tr>
-        </table>
-        <h4>D. 조건부</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>요구하는 것</th></tr>
-          <tr><td><code>only if</code></td><td>~인 경우에만</td><td>그 경우가 아니면 하면 안 됨. 항상 하는 답은 탈락</td></tr>
-          <tr><td><code>unless</code></td><td>~가 아니라면</td><td>기본은 수행하고 예외에만 수행하지 않음</td></tr>
-          <tr><td><code>provided that</code></td><td>~라는 조건 하에</td><td>전제가 깨지면 그 답은 무효</td></tr>
-        </table>
-        <h4>E. 금지 · 강제</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>탈락하는 보기</th></tr>
-          <tr><td><code>must NOT be suppressed</code></td><td>억제하면 안 됨</td><td>걸러내기나 삭제로 노이즈를 줄이는 답</td></tr>
-          <tr><td><code>must not improvise</code> · <code>is not permitted</code></td><td>지어내면 안 됨 · 허용되지 않음</td><td>없는 정책을 만들어내는 답</td></tr>
-          <tr><td><code>is required to</code> · <code>has to</code></td><td>반드시 해야 함</td><td>선택으로 두는 답</td></tr>
-          <tr><td><code>regardless of</code></td><td>~와 무관하게</td><td>조건 분기를 두는 답(예: 신뢰도 점수로 거르는 답)</td></tr>
-        </table>
-        <h4>F. 확실성 강도</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>탈락하는 보기</th></tr>
-          <tr><td><code>a guarantee, not a best effort</code></td><td>최선이 아니라 보장</td><td>프롬프트 지시 · few-shot · temperature 조정. 전부 확률적이므로 탈락</td></tr>
-          <tr><td><code>guarantees compliance</code></td><td>준수를 보장</td><td>위와 동일</td></tr>
-          <tr><td><code>deterministic</code></td><td>결정론적인</td><td>모델 판단에 맡기는 답</td></tr>
-          <tr><td><code>in every case</code> · <code>every time</code></td><td>모든 경우에</td><td>대부분 잡힌다는 답</td></tr>
-        </table>
-        <h4>G. 실행 환경</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>요구하는 것</th></tr>
-          <tr><td><code>non-interactively</code> · <code>with no TTY</code></td><td>대화 없이 · 터미널 없이</td><td>비대화형 실행 플래그가 필요해짐</td></tr>
-          <tr><td><code>unattended</code> · <code>overnight</code></td><td>무인 · 야간</td><td>사람이 중간에 응답해야 하는 답은 탈락</td></tr>
-          <tr><td><code>in CI</code> · <code>on every pull request</code></td><td>CI에서 · PR마다</td><td>기계가 파싱할 출력이 필요해짐</td></tr>
-          <tr><td><code>a missing report is a failed control</code></td><td>리포트 누락 자체가 통제 실패</td><td>중단하고 아무것도 발행하지 않는 답</td></tr>
-        </table>
-        <h4>H. 범위 한정</h4>
-        <table>
-          <tr><th>영어</th><th>한국어</th><th>요구하는 것</th></tr>
-          <tr><td><code>a single change</code></td><td>단 하나의 변경</td><td>하나로 전부 해결해야 함</td></tr>
-          <tr><td><code>the minimal change</code></td><td>최소 변경</td><td>가장 적게 수정하는 쪽</td></tr>
-          <tr><td><code>without redoing completed work</code></td><td>끝난 일을 다시 하지 않고</td><td>전체 재실행 답</td></tr>
-          <tr><td><code>only the affected parts</code></td><td>영향받은 부분만</td><td>전면 재분석 답</td></tr>
-        </table>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"조건 표현 여덟 종류",
+   html:`<h4>① 바꿀 수 없는 대상</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>제외되는 선택지</th></tr>
+<tr><td>without changing X</td><td>X는 그대로 두고</td><td>X를 고치는 답</td></tr>
+<tr><td>without affecting teammates, without affecting anyone else</td><td>다른 팀원에게 영향 없이</td><td>공유 설정이나 저장소 파일을 고치는 답</td></tr>
+<tr><td>cannot be modified, will not change this quarter</td><td>수정 불가, 이번 분기에는 바뀌지 않음</td><td>그 대상을 고치는 답</td></tr>
+<tr><td>is owned by another team</td><td>다른 팀 담당</td><td>다른 팀의 프로그램을 고치는 답</td></tr>
+<tr><td>must remain present</td><td>남아 있어야 함</td><td>항목이나 분류를 삭제하는 답</td></tr>
+<tr><td>while preserving Y, while keeping Z automated</td><td>Y를 유지하면서, Z는 자동 처리를 유지하면서</td><td>모두 사람에게 넘기는 답</td></tr>
+<tr><td>read-only</td><td>읽기 전용</td><td>원본에 기록하는 답</td></tr>
+</table>
+<h4>② 비용과 자원의 상한</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>제외되는 선택지</th></tr>
+<tr><td>with minimal token spend</td><td>토큰을 가장 적게 써서</td><td>전부 다시 읽는 답</td></tr>
+<tr><td>at the lowest cost</td><td>가장 낮은 비용으로</td><td>새 시스템이나 별도 모델을 만드는 답</td></tr>
+<tr><td>within the existing context budget</td><td>지금의 컨텍스트 한도 안에서</td><td>컨텍스트 창을 키우는 답</td></tr>
+<tr><td>without adding infrastructure</td><td>새 시스템 추가 없이</td><td>벡터 DB나 별도 서비스를 만드는 답</td></tr>
+<tr><td>in a single batch run, in one pass</td><td>배치 한 번으로, 한 번에</td><td>여러 번 나눠 실행하는 답</td></tr>
+</table>
+<h4>③ 순서와 시점</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>요구하는 내용</th></tr>
+<tr><td>before Z, must happen before</td><td>Z 전에</td><td>먼저 할 일. Z를 먼저 하는 답 제외</td></tr>
+<tr><td>until</td><td>~할 때까지</td><td>그때까지 차단 유지</td></tr>
+<tr><td>as soon as</td><td>~하자마자</td><td>지연이 있는 답 제외</td></tr>
+<tr><td>the cutoff has passed, the window has closed</td><td>마감이 지남, 기간이 끝남</td><td>처음부터 다시 하는 답 제외</td></tr>
+</table>
+<h4>④ 조건</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>요구하는 내용</th></tr>
+<tr><td>only if</td><td>~인 경우에만</td><td>항상 수행하는 답 제외</td></tr>
+<tr><td>unless</td><td>~가 아니라면</td><td>기본은 수행. 예외인 경우에만 수행하지 않음</td></tr>
+<tr><td>provided that</td><td>~라는 조건에서</td><td>조건이 맞지 않으면 그 답은 무효</td></tr>
+</table>
+<h4>⑤ 금지와 의무</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>제외되는 선택지</th></tr>
+<tr><td>must NOT be suppressed</td><td>숨기면 안 됨</td><td>걸러 내거나 삭제해서 양을 줄이는 답</td></tr>
+<tr><td>must not improvise, is not permitted</td><td>지어내면 안 됨, 허용되지 않음</td><td>없는 규칙을 만들어 처리하는 답</td></tr>
+<tr><td>is required to, has to</td><td>반드시 해야 함</td><td>선택 사항으로 두는 답</td></tr>
+<tr><td>regardless of</td><td>~와 관계없이</td><td>조건에 따라 달리 처리하는 답</td></tr>
+</table>
+<h4>⑥ 확실성</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>제외되는 선택지</th></tr>
+<tr><td>a guarantee, not a best effort</td><td>노력이 아니라 보장</td><td>지시문, 예시, temperature 조정</td></tr>
+<tr><td>guarantees compliance</td><td>규정 준수 보장</td><td>위와 같음</td></tr>
+<tr><td>deterministic</td><td>매번 같은 결과를 내는</td><td>Claude의 판단에 맡기는 답</td></tr>
+<tr><td>in every case, every time</td><td>모든 경우에</td><td>대부분 걸러 낸다는 답</td></tr>
+</table>
+<h4>⑦ 실행 환경</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>요구하는 내용</th></tr>
+<tr><td>non-interactively, with no TTY</td><td>대화 없이, 터미널 없이</td><td>사람 없이 실행하는 옵션</td></tr>
+<tr><td>unattended, overnight</td><td>사람 없이, 밤사이</td><td>중간에 사람의 답이 필요한 답 제외</td></tr>
+<tr><td>in CI, on every pull request</td><td>CI에서, PR마다</td><td>프로그램이 읽을 수 있는 출력 형식</td></tr>
+<tr><td>a missing report is a failed control</td><td>보고서가 빠지면 통제 실패</td><td>중단하고 아무것도 내지 않는 답 제외</td></tr>
+</table>
+<h4>⑧ 범위</h4>
+<table>
+<tr><th>영어</th><th>뜻</th><th>요구하는 내용</th></tr>
+<tr><td>a single change</td><td>변경 하나</td><td>하나로 모두 해결</td></tr>
+<tr><td>the minimal change</td><td>가장 작은 변경</td><td>가장 적게 고치는 답</td></tr>
+<tr><td>without redoing completed work</td><td>끝난 일을 다시 하지 않고</td><td>전체를 다시 실행하는 답 제외</td></tr>
+<tr><td>only the affected parts</td><td>영향받은 부분만</td><td>전체를 다시 분석하는 답 제외</td></tr>
+</table><div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>TTY</b>: 사람이 글자를 입력하고 결과를 보는 터미널 화면</li>
+<li><b>CI</b>: 코드가 올라올 때마다 검사와 테스트를 자동으로 실행하는 장치</li>
+<li><b>배치(batch)</b>: 여러 건을 한 번에 제출하고 나중에 결과를 받는 처리 방식</li>
+</ul>
+</div>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"구절 하나로 정답이 바뀌는 실제 예시 다섯",
-       html:`<p class="lead">같은 상황과 같은 보기에서 조건 구절 하나만 다를 때 정답이 어떻게 옮겨 가는지 확인할 것. 이 다섯 쌍이 시험에서 반복되는 형태임.</p>
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"조건 표현에 따른 정답 변화 다섯 가지",
+   html:`<h4>① without affecting teammates</h4>
+<table>
+<tr><th>브리핑</th><th>정답</th></tr>
+<tr><td>팀이 함께 쓰는 /commit 스킬의 메시지 형식 변경</td><td>저장소의 .claude/skills/commit/SKILL.md 수정</td></tr>
+<tr><td>같은 상황에 without affecting anyone else 추가</td><td>개인 스킬 위치인 ~/.claude/skills/에 배치</td></tr>
+</table>
+<ul>
+<li>공유 파일을 고치면 팀 전체에 적용</li>
+<li>개인 위치에 두면 내 실행에만 적용</li>
+</ul>
+<h4>② with minimal token spend</h4>
+<table>
+<tr><th>브리핑</th><th>정답</th></tr>
+<tr><td>어제 세션에서 큰 코드베이스 분석. 밤사이 자동 업그레이드로 저장소 전반이 변경</td><td>새 세션에 어제 결론의 요약 전달. 이전 도구 결과가 지금 코드와 다르기 때문</td></tr>
+<tr><td>같은 상황에서 바뀐 파일이 3개뿐이고 continue with minimal token spend 추가</td><td>세션을 이어 가고 바뀐 파일 3개를 알려 그 부분만 다시 분석</td></tr>
+</table>
+<ul>
+<li>이전 분석을 계속 쓸지는 변경의 범위로 판단</li>
+<li>토큰 상한 표현은 전부 다시 읽는 답을 제외</li>
+</ul>
+<h4>③ must NOT be suppressed before humans see them</h4>
+<table>
+<tr><th>브리핑</th><th>정답</th></tr>
+<tr><td>리뷰 봇의 오탐이 40%여서 개발자가 의견을 읽지 않기 시작</td><td>신뢰도가 낮은 지적을 걸러 내 양 줄이기</td></tr>
+<tr><td>같은 상황에 Team constraint: findings must NOT be suppressed before humans see them 추가</td><td>걸러 내지 않고 심각도 순으로 정렬. 지적마다 근거 표시</td></tr>
+</table>
+<ul>
+<li>제약이 걸러 내기를 금지</li>
+<li>남는 방법은 삭제가 아니라 순서와 근거 표시</li>
+</ul>
+<h4>④ runs in CI with no human at the terminal</h4>
+<table>
+<tr><th>브리핑</th><th>정답</th></tr>
+<tr><td>Claude Code로 코드 리뷰 실행</td><td>평소처럼 대화하며 실행</td></tr>
+<tr><td>같은 작업에 runs in a container with no TTY, on every pull request 추가</td><td>-p 옵션으로 사람 없이 실행. --output-format json으로 프로그램이 읽을 수 있는 출력</td></tr>
+</table>
+<ul>
+<li>사람이 없다는 표현이 있으면 대화하며 실행하는 답은 모두 제외</li>
+</ul>
+<h4>⑤ downstream consumers cannot be modified</h4>
+<table>
+<tr><th>브리핑</th><th>정답</th></tr>
+<tr><td>새 문서 종류에는 renewal_term_months에 해당하는 값이 없는데 Claude가 12를 채움</td><td>그 문서 종류의 스키마에서 해당 항목 삭제</td></tr>
+<tr><td>같은 상황에 the field must remain present in every record 추가</td><td>항목은 유지하고 빈 값 허용. 해당 조항이 없으면 null 반환</td></tr>
+</table>
+<ul>
+<li>제약이 항목 삭제를 제외</li>
+<li>항목을 유지하면서 같은 문제를 해결하는 방법은 빈 값 허용</li>
+</ul>
+<h4>⑥ 다섯 예시의 공통점</h4>
+<ul>
+<li>제약이 없을 때의 정답은 더 단순하고 범위가 큰 조치</li>
+<li>제약이 붙으면 같은 목적을 더 좁은 수단으로 이루는 답으로 이동</li>
+</ul>`},
 
-        <h4>예시 1: <code>without affecting teammates</code></h4>
-        <table>
-          <tr><th>지문</th><th>정답</th></tr>
-          <tr><td>팀이 공유하는 <code>/commit</code> 슬래시 커맨드(slash command)의 메시지 형식을 변경하려 함</td><td>리포지토리의 <code>.claude/commands/commit.md</code>를 수정</td></tr>
-          <tr><td>같은 상황 + <b>"without affecting anyone else"</b></td><td><b>개인 스코프(user scope)인 <code>~/.claude/commands/</code>에 <u>다른 이름</u>으로 배치(예: <code>/my-commit</code>)</b></td></tr>
-        </table>
-        <ul>
-          <li>구절 하나가 파일을 두는 위치를 바꿈. 공유 파일을 수정하는 순간 팀 전원에게 영향이 감</li>
-          <li>그리고 지켜야 할 기준이 <b>두 개</b>임. 위치만 개인 스코프로 옮기고 <b>이름을 그대로 두면</b> 개인 커맨드가 팀 커맨드를 덮어써서 왜 다르게 동작하는지 추적할 수 없게 됨. 이름까지 바꿔야 조건을 온전히 만족함</li>
-        </ul>
-
-        <h4>예시 2: <code>with minimal token spend</code></h4>
-        <table>
-          <tr><th>지문</th><th>정답</th></tr>
-          <tr><td>어제 세션이 대형 코드베이스를 분석했고 밤사이 자동 업그레이드가 리포지토리 전반을 변경함. 오늘 이어서 작업해야 함</td><td>새 세션 + 어제 결론의 구조화 요약. 도구 결과(tool result)가 이미 stale이기 때문</td></tr>
-          <tr><td>같은 상황이지만 변경된 파일이 <b>3개뿐</b>이고 <b>"continue with minimal token spend"</b>가 붙음</td><td><b>세션 재개 + 변경된 파일 3개를 고지 + 그 부분만 재분석</b></td></tr>
-        </table>
-        <ul><li>stale 판단은 파일이 바뀌었는지가 아니라 <b>변경의 범위</b>로 함. 그리고 토큰 상한 구절이 전부 다시 읽는 답을 탈락시킴</li></ul>
-
-        <h4>예시 3: <code>must NOT be suppressed before humans see them</code></h4>
-        <table>
-          <tr><th>지문</th><th>정답</th></tr>
-          <tr><td>리뷰 봇의 false positive가 40%여서 개발자들이 코멘트를 무시하기 시작함</td><td>신뢰도가 낮은 findings를 걸러 노이즈를 줄이기</td></tr>
-          <tr><td>같은 상황 + <b>"Team constraint: findings must NOT be suppressed before humans see them"</b></td><td><b>억제 대신 심각도 기준으로 정렬하고 근거를 함께 붙여, 사람이 보는 목록은 그대로 두되 읽는 순서를 바꾸기</b></td></tr>
-        </table>
-        <ul><li>제약이 걸러내기라는 처방 자체를 금지함. 남은 방법은 삭제가 아니라 <b>순서와 맥락을 바꾸는</b> 쪽임</li></ul>
-
-        <h4>예시 4: <code>runs in CI with no human at the terminal</code></h4>
-        <table>
-          <tr><th>지문</th><th>정답</th></tr>
-          <tr><td>Claude Code로 코드 리뷰를 실행하려 함</td><td>평소대로 대화형으로 실행</td></tr>
-          <tr><td>같은 작업이지만 <b>"runs in a container with no TTY, on every pull request"</b>가 붙음</td><td><b><code>-p</code>로 비대화형 실행 + <code>--output-format json</code>으로 기계가 파싱할 수 있는 출력</b></td></tr>
-        </table>
-        <ul><li>환경 조건 구절이 플래그를 강제함. 사람이 없다는 서술이 나오면 대화형 답은 전부 탈락함</li></ul>
-
-        <h4>예시 5: <code>downstream consumers cannot be modified</code></h4>
-        <table>
-          <tr><th>지문</th><th>정답</th></tr>
-          <tr><td>새 문서 유형에는 <code>renewal_term_months</code>에 해당하는 값이 아예 없는데 모델이 12를 채워 넣음</td><td>그 문서 유형에서는 해당 필드를 스키마에서 제거</td></tr>
-          <tr><td>같은 상황 + <b>"the downstream consumers cannot be modified, so the field must remain present in every record"</b></td><td><b>필드는 유지하고 nullable로 변경해, 조항이 없으면 null을 반환하게 하기</b></td></tr>
-        </table>
-        <ul><li>제약이 필드 제거를 탈락시키므로 필드를 유지한 채 같은 문제를 푸는 방법을 찾아야 함. 그것이 nullable임</li></ul>
-
-        <div class="callout">🎯 다섯 쌍의 공통 구조. 제약이 없을 때의 정답은 <b>더 단순하고 더 과감한 조치</b>이고, 제약이 붙으면 <b>같은 목적을 더 좁은 수단으로</b> 달성하는 답으로 옮겨 감. 그러므로 보기 중에 유난히 깔끔한 것이 있으면 그것을 탈락시키는 구절이 지문에 있는지 확인할 것.</div>`},
-
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"제약을 놓치지 않는 절차: 실전에서 실제로 하는 동작",
-       html:`<p class="lead">아는 것과 실전에서 수행하는 것은 다름. 시험장에서 실제로 할 수 있는 동작으로 정리함.</p>
-        <h4>3단 절차</h4>
-        <ul>
-          <li><strong>① 질문 문장에서 신호 여섯 개를 짚음</strong>: <code>without</code> <code>while</code> <code>only</code> <code>must</code> <code>before</code> <code>cannot</code>. 화면이라 밑줄은 그을 수 없지만 커서나 손가락으로 짚는 것만으로 인식이 달라짐</li>
-          <li><strong>② 짚은 구절을 한국어 한 마디로 바꿔 기억함</strong>: 팀을 건드리면 안 됨, 토큰을 아껴야 함, 리포트는 반드시 발행해야 함. 영어 그대로 기억하면 보기를 읽는 동안 흐려짐</li>
-          <li><strong>③ 보기마다 그 한 마디로 확인함</strong>: 이 보기가 그 조건을 위반하는가. 위반하면 아무리 맞는 말이어도 즉시 탈락시킴</li>
-        </ul>
-        <h4>제약이 없는 문항도 있음</h4>
-        <ul>
-          <li>모든 문항에 제약이 있는 것은 아님. 없으면 <strong>제약 없음이라고 확정</strong>하고 넘어갈 것</li>
-          <li>확정하지 않으면 보기를 고르는 동안 무엇을 놓쳤는지 계속 확인하게 되어 시간이 소모됨. 없다고 확정하는 것도 성과임</li>
-        </ul>
-        <h4>제약이 두 개 붙는 문항</h4>
-        <ul>
-          <li>실전에서 자주 출제됨. "guarantees compliance <b>while keeping</b> normal refunds automated"처럼 강도 조건과 유지 조건이 겹침</li>
-          <li>이 경우 보기 4개는 <strong>하나만 만족 / 하나만 만족 / 둘 다 위반 / 둘 다 만족</strong> 구조가 대부분임</li>
-          <li>그러므로 맞는 것을 찾았다고 판단해도 <strong>나머지 조건을 한 번 더 대조할 것</strong>. 절반만 만족하는 보기가 가장 그럴듯하게 서술되어 있음</li>
-        </ul>
-        <div class="callout">⏱ 시간 계산. 제약을 짚는 데 드는 시간은 <b>5초 안팎</b>임. 그 5초가 보기 두 개를 미리 탈락시키면 보기를 읽는 시간이 절반으로 줄어듦.</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"제약 확인 순서",
+   html:`<h4>① 확인 순서</h4>
+<ul>
+<li>첫째, 질문 문장에서 without, while, only, must, before, cannot 찾기</li>
+<li>둘째, 찾은 표현을 짧은 한국어로 바꿔 기억. 예: 팀 설정 변경 금지, 토큰 절약, 보고서 발행 필수</li>
+<li>셋째, 선택지마다 그 조건에 어긋나는지 확인. 어긋나면 맞는 내용이어도 제외</li>
+</ul>
+<h4>② 제약이 없는 문항</h4>
+<ul>
+<li>모든 문항에 제약이 있는 것은 아님</li>
+<li>제약이 없다고 판단했으면 다시 찾지 않고 선택지 비교로 진행</li>
+</ul>
+<h4>③ 제약이 두 개인 문항</h4>
+<ul>
+<li>예: guarantees compliance while keeping normal refunds automated</li>
+<li>선택지 구성: 하나만 만족하는 선택지 둘, 둘 다 어기는 선택지 하나, 둘 다 만족하는 선택지 하나</li>
+<li>맞는 선택지를 찾은 뒤에도 나머지 조건과 한 번 더 대조</li>
+</ul>
+<h4>④ 드는 시간</h4>
+<ul>
+<li>제약을 찾는 데 약 5초</li>
+</ul>`},
 
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: One clause, two locations",
-       q:`Your repository ships a shared /review slash command that every engineer on the team runs. You want your own runs of it to use a stricter security checklist and a different output format, without changing what your teammates get when they run /review. What do you do?`,
+       q:`Your repository ships a shared /review skill that every engineer on the team runs. You want /review itself to apply a stricter security checklist and a different output format whenever you run it, without changing what your teammates get when they run /review. What do you do?`,
        opts:[
-         {t:`Put the variant in your user scope (~/.claude/commands/) under a different name such as /review-strict, leaving the repository's command untouched.`, ok:true},
-         {t:`Put the variant in your user scope under the same name /review, so it cleanly overrides the team version for your runs only.`},
-         {t:`Edit the repository's .claude/commands/review.md to include your stricter checklist, with a note in the file that the extra checks are optional.`},
-         {t:`Add the variant to the project's .claude/commands/ as /review-strict so it is backed up along with the repository.`},
+         {t:`Create a personal skill named review in ~/.claude/skills/ that holds your stricter version; when a personal and a project skill share a name, the personal one runs, and only for you.`, ok:true},
+         {t:`Create a personal skill under a different name such as /review-strict, leaving the repository's skill untouched.`},
+         {t:`Edit the repository's .claude/skills/review/SKILL.md to include your stricter checklist, with a note in the file that the extra checks are optional.`},
+         {t:`Add the stricter checklist to the project's CLAUDE.md so that it applies whenever /review runs.`},
        ],
-       hint:`질문 문장 끝에 without으로 시작하는 구절이 붙어 있음. 그것을 한국어 한 마디로 바꿔 보기 네 개를 확인할 것. 그리고 개인 변형에는 지켜야 할 기준이 하나가 아니라 둘임. 어디에 두는가와 무엇이라고 부르는가임.`,
+       hint:`질문 문장에 조건이 두 개. /review itself와 without으로 시작하는 구절. 두 조건을 한국어 한 마디씩으로 바꾼 뒤 보기 네 개 확인.`,
        explain:{
-         good:`개인 변형의 기준은 <b>user 스코프와 다른 이름</b>임. 위치를 개인 쪽으로 옮겨야 팀에 영향이 없고, 이름을 바꿔야 팀 커맨드를 덮어쓰지 않음. 둘 다 지켜야 팀을 건드리지 않는다는 조건을 온전히 만족함.`,
+         good:`조건은 두 가지. <b>실행 명령은 그대로 /review</b>, <b>팀원의 실행 결과는 그대로</b>. 개인 스킬 위치에 같은 이름으로 만들면 내 컴퓨터에서만 개인 스킬이 우선 실행. 두 조건 모두 충족.`,
          wrongs:[
-           `<b>B: 개인 스코프 + 같은 이름.</b> 가장 그럴듯한 오답임. 위치 기준은 맞지만 이름이 겹쳐서 개인 <code>/review</code>가 팀 커맨드를 <b>덮어씀</b>. 나중에 팀 커맨드가 왜 다르게 동작하는지 추적할 수 없음.`,
-           `<b>C: 공유 파일 수정 + 안내문.</b> 조건을 직접 위반함. 커밋하는 순간 팀 전원의 실행이 바뀌고, 선택 사항이라는 안내문은 강제력이 없음.`,
-           `<b>D: 프로젝트 폴더에 다른 이름.</b> 이름 기준은 맞지만 위치가 틀림. 프로젝트 폴더에 넣으면 커밋되어 팀 전원에게 적용됨. 일반적으로는 맞지만 이 문제의 조건에서는 틀린 선택지임.`,
+           `<b>B: 다른 이름의 개인 스킬.</b> 가장 고르기 쉬운 오답. 팀에 영향은 없지만 <code>/review</code> 자체는 그대로. 첫째 조건 미충족.`,
+           `<b>C: 공유 파일 수정 + 안내문.</b> 저장소에 올리는 순간 팀 전원의 <code>/review</code>가 바뀜. 안내문에는 강제력 없음.`,
+           `<b>D: 프로젝트 CLAUDE.md에 추가.</b> CLAUDE.md는 팀 전원이 항상 읽는 파일. 팀원의 실행 결과도 바뀜.`,
          ]},
-       principle:"개인 변형 = user 스코프 + 다른 이름"},
+       principle:"개인 변형 = 개인 스킬 위치. 이름이 같으면 개인 스킬 우선"},
 
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 2: Two constraints at once",
        q:`Your invoice-processing agent auto-approves vendor invoices end to end. Compliance now requires that every invoice containing a tax-ID field go to human review — as a guarantee, not a best effort — while invoices without a tax-ID field stay fully automated. Extraction confidence on the tax_id field currently averages 0.94. Which implementation satisfies both requirements?`,
@@ -560,254 +597,286 @@ window.CCAF_CONTENT.pe = {
     ]},
 
   /* ================= E-4 · 시험 어휘장 ================= */
-  { id:"pec4", ch:"E-4", title:"시험 어휘장: 실제로 출제된 표현 120개",
+  { id:"pec4", ch:"E-4", title:"시험 어휘: 문항에 자주 나오는 표현 120개",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"이 어휘장을 만든 방법과 사용하는 방법",
-       html:`<p class="lead">일반 영단어장이 아님. 이 코스의 P1~P6 문항과 확장 문제 풀에서 <strong>실제로 쓰인 표현만</strong> 뽑아 도메인별로 묶은 것임. 지어낸 항목은 없음.</p>
-        <h4>구성</h4>
-        <ul>
-          <li>여섯 묶음, 총 <strong>120개</strong></li>
-          <li>각 항목은 <strong>[영어 / 한국어 / 이 시험에서의 의미 한 줄]</strong>로 구성됨</li>
-          <li>세 번째 칸이 가장 중요함. 사전적 뜻이 아니라 <strong>이 시험에서 그 단어가 나오면 어떤 판단을 하라는 신호인지</strong>를 적어 둠</li>
-        </ul>
-        <h4>사용 방법</h4>
-        <ul>
-          <li><strong>1회차</strong>: 세 칸을 모두 읽으며 훑음. 소요 시간 20분. 모르는 항목이 몇 개인지만 확인함</li>
-          <li><strong>2회차</strong>: 영어 칸만 보고 세 번째 칸이 떠오르는지 확인함. 떠오르지 않는 것만 표시함</li>
-          <li><strong>3회차</strong>: 표시한 것만 확인함. 대개 15~25개로 줄어듦</li>
-          <li>모의고사를 풀다가 막히는 단어가 나오면 이 표에서 찾을 것. 표에 없으면 시험에 잘 출제되지 않는 단어이므로 넘어가도 됨</li>
-        </ul>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"어휘 표 사용 방법",
+   html:`<h4>① 구성</h4>
+<ul>
+<li>이 사이트의 연습 문항에 쓰인 표현 120개</li>
+<li>영역별 여섯 묶음</li>
+<li>항목마다 영어, 뜻, 문항에서의 쓰임 표시</li>
+<li>가장 중요한 칸은 문항에서의 쓰임. 그 표현이 나왔을 때 판단할 내용</li>
+</ul>
+<h4>② 사용 방법</h4>
+<ul>
+<li>첫째, 세 칸을 모두 읽으며 모르는 항목 수 확인. 약 20분</li>
+<li>둘째, 영어 칸만 보고 문항에서의 쓰임 떠올리기. 떠오르지 않는 항목에 표시</li>
+<li>셋째, 표시한 항목만 다시 확인</li>
+<li>모의고사에서 모르는 단어가 나오면 이 표에서 찾기</li>
+</ul>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"묶음 A: 에이전트 루프 · 오케스트레이션 (22개)",
-       html:`<table>
-        <tr><th>영어</th><th>한국어</th><th>이 시험에서의 의미</th></tr>
-        <tr><td><code>agentic loop</code></td><td>에이전트 루프</td><td>요청 → 도구 실행 → 결과를 대화에 추가를 반복하는 구조</td></tr>
-        <tr><td><code>stop_reason</code></td><td>중단 이유</td><td>루프를 계속할지 멈출지 정하는 유일한 공식 신호</td></tr>
-        <tr><td><code>tool_use</code></td><td>도구 사용</td><td>도구가 필요해 멈춘 상태. 아직 작업 중이라는 뜻</td></tr>
-        <tr><td><code>end_turn</code></td><td>턴 종료</td><td>할 말을 마쳤다는 신호. 루프 종료의 정석 신호</td></tr>
-        <tr><td><code>max_tokens</code></td><td>출력 한도</td><td>출력 길이 상한에 걸려 멈춘 상태. 종료 신호가 아니라 별도 처리 분기</td></tr>
-        <tr><td><code>tool_result</code></td><td>도구 결과</td><td>실행 결과를 대화로 되돌려 넣는 블록. 이것이 빠지면 모델은 실행 사실을 알지 못함</td></tr>
-        <tr><td><code>iteration</code></td><td>반복 회차</td><td>루프 한 회. "12 iterations" 같은 상한은 보조 안전망일 때만 정당함</td></tr>
-        <tr><td><code>terminate</code></td><td>종료하다</td><td>루프를 끝내는 것. 종료 조건을 묻는 문항의 핵심어</td></tr>
-        <tr><td><code>coordinator</code></td><td>코디네이터</td><td>하위 작업을 분해하고 위임하며 결과를 취합하는 상위 에이전트</td></tr>
-        <tr><td><code>subagent</code></td><td>서브에이전트</td><td>위임받은 하위 작업을 수행하는 에이전트. 코디네이터의 대화 히스토리(conversation history)를 물려받지 않음</td></tr>
-        <tr><td><code>delegate</code></td><td>위임하다</td><td>코디네이터가 하위 작업을 넘기는 것</td></tr>
-        <tr><td><code>spawn</code></td><td>띄우다 · 생성하다</td><td>서브에이전트를 새로 만드는 것. Task 도구가 없으면 불가능함</td></tr>
-        <tr><td><code>hub-and-spoke</code></td><td>허브 앤 스포크</td><td>모든 통신이 코디네이터를 거치는 표준 구조</td></tr>
-        <tr><td><code>decomposition</code></td><td>작업 분해</td><td>큰 작업을 하위 작업으로 나누기. 리서치 누락 사고의 주요 원인 지점</td></tr>
-        <tr><td><code>prompt chaining</code></td><td>프롬프트 체이닝</td><td>순서가 미리 고정된 파이프라인. 예측 가능한 반복 작업용</td></tr>
-        <tr><td><code>dynamic decomposition</code></td><td>동적 분해</td><td>중간 발견이 다음 작업을 바꾸는 방식. 열린 조사 과제용</td></tr>
-        <tr><td><code>synthesis</code></td><td>합성 · 종합</td><td>서브에이전트 결과를 하나의 보고서로 묶는 마지막 단계</td></tr>
-        <tr><td><code>handoff</code></td><td>인계</td><td>한 에이전트에서 다음으로 넘기는 지점. 컨텍스트가 유실되는 지점</td></tr>
-        <tr><td><code>orchestration</code></td><td>오케스트레이션</td><td>여러 에이전트를 조율하는 설계 전반</td></tr>
-        <tr><td><code>in parallel</code></td><td>병렬로</td><td>서브에이전트를 동시에 실행하는 것. 중복 조사가 생기면 분해가 문제임</td></tr>
-        <tr><td><code>sequential</code></td><td>순차적인</td><td>앞 단계가 끝나야 다음이 시작되는 방식</td></tr>
-        <tr><td><code>anti-pattern</code></td><td>안티패턴</td><td>그럴듯하지만 틀린 설계. 오답 보기의 정체이며 부정형 문항의 정답임</td></tr>
-        </table>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"A. 에이전트 루프와 오케스트레이션 22개",
+   html:`<table>
+<tr><th>영어</th><th>뜻</th><th>문항에서의 쓰임</th></tr>
+<tr><td><code>agentic loop</code></td><td>에이전트 루프</td><td>요청, 도구 실행, 결과를 대화에 추가하는 과정을 반복하는 구조</td></tr>
+<tr><td><code>stop_reason</code></td><td>중단 이유</td><td>루프를 계속할지 정하는 기준 값</td></tr>
+<tr><td><code>tool_use</code></td><td>도구 사용</td><td>도구가 필요해 멈춘 상태. 아직 작업 중이라는 뜻</td></tr>
+<tr><td><code>end_turn</code></td><td>턴 종료</td><td>할 말을 마쳤다는 신호. 루프 종료의 정석 신호</td></tr>
+<tr><td><code>max_tokens</code></td><td>출력 한도</td><td>출력 길이 상한에 걸려 멈춘 상태. 종료 신호가 아니라 별도 처리 분기</td></tr>
+<tr><td><code>tool_result</code></td><td>도구 결과</td><td>실행 결과를 대화로 되돌려 넣는 블록. 이 블록이 빠지면 Claude는 도구가 실행된 사실을 알 수 없음</td></tr>
+<tr><td><code>iteration</code></td><td>반복 회차</td><td>루프 한 회. "12 iterations" 같은 상한은 보조 안전망일 때만 정당</td></tr>
+<tr><td><code>terminate</code></td><td>종료하다</td><td>루프를 끝내는 것. 종료 조건을 묻는 문항의 핵심어</td></tr>
+<tr><td><code>coordinator</code></td><td>코디네이터</td><td>하위 작업을 분해하고 위임하며 결과를 취합하는 상위 에이전트</td></tr>
+<tr><td><code>subagent</code></td><td>서브에이전트</td><td>위임받은 하위 작업을 수행하는 에이전트. 코디네이터의 대화 히스토리(conversation history)를 물려받지 않음</td></tr>
+<tr><td><code>delegate</code></td><td>위임하다</td><td>코디네이터가 하위 작업을 넘기는 것</td></tr>
+<tr><td><code>spawn</code></td><td>띄우다, 생성하다</td><td>서브에이전트를 새로 만드는 것. Agent 도구가 없으면 불가능</td></tr>
+<tr><td><code>hub-and-spoke</code></td><td>허브 앤 스포크</td><td>모든 통신이 코디네이터를 거치는 표준 구조</td></tr>
+<tr><td><code>decomposition</code></td><td>작업 분해</td><td>큰 작업을 하위 작업으로 나누기. 리서치 누락 사고의 주요 원인 지점</td></tr>
+<tr><td><code>prompt chaining</code></td><td>프롬프트 체이닝</td><td>순서가 미리 고정된 파이프라인. 예측 가능한 반복 작업용</td></tr>
+<tr><td><code>dynamic decomposition</code></td><td>동적 분해</td><td>중간 발견이 다음 작업을 바꾸는 방식. 열린 조사 과제용</td></tr>
+<tr><td><code>synthesis</code></td><td>합성, 종합</td><td>서브에이전트 결과를 하나의 보고서로 묶는 마지막 단계</td></tr>
+<tr><td><code>handoff</code></td><td>인계</td><td>한 에이전트에서 다음으로 넘기는 지점. 컨텍스트가 유실되는 지점</td></tr>
+<tr><td><code>orchestration</code></td><td>오케스트레이션</td><td>여러 에이전트를 조율하는 설계 전반</td></tr>
+<tr><td><code>in parallel</code></td><td>병렬로</td><td>서브에이전트를 동시에 실행하는 것. 중복 조사가 생기면 분해가 문제</td></tr>
+<tr><td><code>sequential</code></td><td>순차적인</td><td>앞 단계가 끝나야 다음이 시작되는 방식</td></tr>
+<tr><td><code>anti-pattern</code></td><td>안티패턴</td><td>그럴듯하지만 틀린 설계. 오답 보기의 정체이며 부정형 문항의 정답</td></tr>
+</table>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"묶음 B: 도구 설계 · MCP (20개)",
-       html:`<table>
-        <tr><th>영어</th><th>한국어</th><th>이 시험에서의 의미</th></tr>
-        <tr><td><code>tool description</code></td><td>도구 설명</td><td>모델이 도구를 고르는 <b>1차 근거</b>. 선택 오류 문항의 정답이 여기인 경우가 많음</td></tr>
-        <tr><td><code>tool selection</code></td><td>도구 선택</td><td>어느 도구를 부를지 정하는 일. 도구가 많을수록 오선택이 늘어남</td></tr>
-        <tr><td><code>tool_choice</code></td><td>도구 선택 모드</td><td>auto · any · 특정 도구 강제 중 하나를 지정</td></tr>
-        <tr><td><code>auto</code></td><td>자동</td><td>모델이 스스로 고르고, 필요 없으면 부르지 않을 수도 있음</td></tr>
-        <tr><td><code>any</code></td><td>아무거나 하나</td><td>반드시 도구 하나는 부르게 강제함. 어느 것인지는 모델이 고름</td></tr>
-        <tr><td><code>built-in tools</code></td><td>기본 제공 도구</td><td>Read · Write · Edit · Bash · Grep · Glob 여섯 개</td></tr>
-        <tr><td><code>Grep</code></td><td>내용 검색</td><td>파일 <b>안의 내용</b>을 찾을 때 사용함. 함수 호출자 찾기가 대표 사례</td></tr>
-        <tr><td><code>Glob</code></td><td>이름 패턴 검색</td><td>경로나 파일명으로 찾을 때 사용함. 내용 검색이 아님</td></tr>
-        <tr><td><code>MCP server</code></td><td>MCP 서버</td><td>외부 도구와 리소스를 에이전트에 연결하는 창구</td></tr>
-        <tr><td><code>.mcp.json</code></td><td>프로젝트 MCP 설정</td><td>팀 공유용. 리포지토리에 커밋해 모두가 같은 서버를 사용함</td></tr>
-        <tr><td><code>~/.claude.json</code></td><td>개인 MCP 설정</td><td>개인만 사용하는 실험용 서버 자리. 팀에 영향이 없음</td></tr>
-        <tr><td><code>MCP resource</code></td><td>MCP 리소스</td><td>탐색 호출 없이 바로 조회되는 카탈로그성 데이터. 탐색 비용을 없앰</td></tr>
-        <tr><td><code>isError</code></td><td>에러 표시</td><td>도구 결과가 실패임을 알리는 플래그. 빠지면 실패가 성공으로 전달됨</td></tr>
-        <tr><td><code>errorCategory</code></td><td>에러 분류</td><td>transient · validation · business 중 하나. 이것이 다음 행동을 정함</td></tr>
-        <tr><td><code>isRetryable</code></td><td>재시도 가능</td><td>다시 호출할 가치가 있는 실패인지. transient만 true임</td></tr>
-        <tr><td><code>transient</code></td><td>일시적인</td><td>타임아웃이나 502처럼 다시 하면 성공할 수도 있는 실패</td></tr>
-        <tr><td><code>validation error</code></td><td>검증 오류</td><td>입력이 틀린 것. 같은 인자로 재시도하면 동일하게 실패하므로 인자를 수정해야 함</td></tr>
-        <tr><td><code>business rule</code></td><td>업무 규칙</td><td>정책상 불가능한 것. 재시도 대상이 아니며 대안 경로나 에스컬레이션(escalation)으로 처리함</td></tr>
-        <tr><td><code>retry</code></td><td>재시도</td><td>실패한 호출을 다시 거는 것. 실패 종류를 확인하지 않고 하면 무한 반복이 됨</td></tr>
-        <tr><td><code>narrow tool</code></td><td>좁은 전용 도구</td><td>고빈도 요구 하나만 처리하는 도구. 나머지는 기존 경로를 유지함</td></tr>
-        </table>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"B. 도구 설계와 MCP 20개",
+   html:`<table>
+<tr><th>영어</th><th>뜻</th><th>문항에서의 쓰임</th></tr>
+<tr><td><code>tool description</code></td><td>도구 설명</td><td>모델이 도구를 고르는 <b>1차 근거</b>. 선택 오류 문항의 정답이 여기인 경우가 많음</td></tr>
+<tr><td><code>tool selection</code></td><td>도구 선택</td><td>어느 도구를 부를지 정하는 일. 도구가 많을수록 잘못된 선택 증가</td></tr>
+<tr><td><code>tool_choice</code></td><td>도구 선택 모드</td><td>auto, any, tool, none 중 하나로 지정</td></tr>
+<tr><td><code>auto</code></td><td>자동</td><td>모델이 스스로 고르고, 필요 없으면 부르지 않을 수도 있음</td></tr>
+<tr><td><code>any</code></td><td>아무거나 하나</td><td>반드시 도구 하나를 호출하게 하는 설정. 어느 도구인지는 Claude가 선택. 항상 사고하는 최신 모델에서는 400 오류</td></tr>
+<tr><td><code>built-in tools</code></td><td>기본 제공 도구</td><td>Read, Write, Edit, Bash, Grep, Glob 여섯 개</td></tr>
+<tr><td><code>Grep</code></td><td>내용 검색</td><td>파일 <b>안의 내용</b>을 찾을 때 사용. 함수 호출자 찾기가 대표 사례</td></tr>
+<tr><td><code>Glob</code></td><td>이름 패턴 검색</td><td>경로나 파일명으로 찾을 때 사용. 내용 검색이 아님</td></tr>
+<tr><td><code>MCP server</code></td><td>MCP 서버</td><td>외부 도구와 리소스를 에이전트에 연결하는 창구</td></tr>
+<tr><td><code>.mcp.json</code></td><td>프로젝트 MCP 설정</td><td>팀 공유용. 리포지토리에 커밋해 모두가 같은 서버를 사용</td></tr>
+<tr><td><code>~/.claude.json</code></td><td>개인 MCP 설정</td><td>개인만 사용하는 실험용 서버 자리. 팀에 영향이 없음</td></tr>
+<tr><td><code>MCP resource</code></td><td>MCP 리소스</td><td>탐색 호출 없이 바로 조회되는 카탈로그성 데이터. 탐색 비용 없음</td></tr>
+<tr><td><code>isError</code></td><td>에러 표시</td><td>도구 결과가 실패임을 알리는 플래그. 빠지면 실패가 성공으로 전달</td></tr>
+<tr><td><code>errorCategory</code></td><td>에러 분류</td><td>transient, validation, business 중 하나. 다음 행동을 정하는 기준</td></tr>
+<tr><td><code>isRetryable</code></td><td>재시도 가능</td><td>다시 호출할 가치가 있는 실패인지. transient만 true</td></tr>
+<tr><td><code>transient</code></td><td>일시적인</td><td>타임아웃이나 502처럼 다시 하면 성공할 수도 있는 실패</td></tr>
+<tr><td><code>validation error</code></td><td>검증 오류</td><td>입력이 틀린 것. 같은 입력으로 재시도하면 같은 실패. 입력 수정 필요</td></tr>
+<tr><td><code>business rule</code></td><td>업무 규칙</td><td>정책상 불가능한 것. 재시도 대상이 아니며 대안 경로나 에스컬레이션(escalation)으로 처리</td></tr>
+<tr><td><code>retry</code></td><td>재시도</td><td>실패한 호출을 다시 거는 것. 실패 종류를 확인하지 않고 재시도하면 무한 반복</td></tr>
+<tr><td><code>narrow tool</code></td><td>좁은 전용 도구</td><td>고빈도 요구 하나만 처리하는 도구. 나머지는 기존 경로를 유지</td></tr>
+</table>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"묶음 C: Claude Code · 워크플로 (20개)",
-       html:`<table>
-        <tr><th>영어</th><th>한국어</th><th>이 시험에서의 의미</th></tr>
-        <tr><td><code>CLAUDE.md</code></td><td>프로젝트 지침 파일</td><td>세션 시작 때 <b>항상</b> 로드되는 지침. 위치가 적용 범위를 정함</td></tr>
-        <tr><td><code>frontmatter</code></td><td>프론트매터</td><td>파일 맨 위 --- 사이의 YAML 설정 블록. 프롬프트 본문이 아님</td></tr>
-        <tr><td><code>allowed-tools</code></td><td>허용 도구</td><td>그 커맨드나 스킬이 사용할 수 있는 도구 목록. 프론트매터에 들어감</td></tr>
-        <tr><td><code>argument-hint</code></td><td>인자 힌트</td><td>슬래시 커맨드가 어떤 인자를 받는지 알려 주는 프론트매터 항목</td></tr>
-        <tr><td><code>slash command</code></td><td>슬래시 커맨드</td><td>/commit처럼 호출하는 사용자 정의 명령. 프로젝트용과 개인용의 위치가 다름</td></tr>
-        <tr><td><code>skill</code></td><td>스킬</td><td>필요할 때 로드되는 작업 지침 묶음. 항상 로드되는 CLAUDE.md와 대비됨</td></tr>
-        <tr><td><code>hook</code></td><td>훅</td><td>정해진 시점에 자동 실행되는 프로그램. 확률이 아니라 강제임</td></tr>
-        <tr><td><code>PreToolUse</code></td><td>도구 실행 전 훅</td><td>호출 자체를 <b>차단</b>할 수 있는 지점. 금액 상한이나 전제조건 게이트가 여기에 해당함</td></tr>
-        <tr><td><code>PostToolUse</code></td><td>도구 실행 후 훅</td><td>결과 정규화와 포맷 강제 지점. 차단은 불가능함</td></tr>
-        <tr><td><code>plan mode</code></td><td>플랜 모드</td><td>실행 전에 계획을 먼저 제출하게 하는 모드. 파급이 큰 작업에 사용함</td></tr>
-        <tr><td><code>-p</code> (print)</td><td>비대화형 실행</td><td>사람 없이 한 번 실행하고 종료함. CI와 무인 실행에 필수임</td></tr>
-        <tr><td><code>--output-format json</code></td><td>JSON 출력</td><td>기계가 파싱할 형태로 출력함. <b>-p를 대신하지 않음</b>. 자주 틀리는 지점임</td></tr>
-        <tr><td><code>--json-schema</code></td><td>스키마 강제</td><td>그 JSON의 형태를 고정함. 정규식으로 추출하는 방식을 대체함</td></tr>
-        <tr><td><code>session</code></td><td>세션</td><td>대화 한 줄기. 이름을 붙여 관리하고 나중에 이어갈 수 있음</td></tr>
-        <tr><td><code>--resume</code></td><td>세션 이어가기</td><td>이전 세션을 그대로 다시 여는 것. 변경이 작을 때의 정답</td></tr>
-        <tr><td><code>fork</code></td><td>분기</td><td>같은 지점에서 두 접근을 나눠 비교함. stale 문제의 해법은 아님</td></tr>
-        <tr><td><code>stale</code></td><td>낡음 · 유효하지 않게 됨</td><td>세션이 기록해 둔 결론이 현재 상태와 맞지 않게 된 것</td></tr>
-        <tr><td><code>CI/CD</code></td><td>지속적 통합 · 배포</td><td>PR마다 자동으로 실행되는 파이프라인. 사람이 없다는 뜻임</td></tr>
-        <tr><td><code>pull request</code> (PR)</td><td>풀 리퀘스트</td><td>변경을 합치기 전 리뷰 단위. 리뷰 봇 시나리오가 놓이는 상황임</td></tr>
-        <tr><td><code>diff</code></td><td>변경 내역</td><td>무엇이 어떻게 바뀌었는지의 차이. 원인 특정의 1순위 도구</td></tr>
-        </table>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"C. Claude Code와 작업 흐름 20개",
+   html:`<table>
+<tr><th>영어</th><th>뜻</th><th>문항에서의 쓰임</th></tr>
+<tr><td><code>CLAUDE.md</code></td><td>프로젝트 지침 파일</td><td>세션 시작 때 <b>항상</b> 로드되는 지침. 파일 위치에 따라 적용 범위 결정</td></tr>
+<tr><td><code>frontmatter</code></td><td>프론트매터</td><td>파일 맨 위 --- 사이의 YAML 설정 블록. 프롬프트 본문이 아님</td></tr>
+<tr><td><code>allowed-tools</code></td><td>사전 허용 도구</td><td>스킬이 실행되는 동안 승인 질문 없이 쓸 수 있는 도구 목록. 도구를 제한하는 설정은 disallowed-tools</td></tr>
+<tr><td><code>argument-hint</code></td><td>인자 힌트</td><td>스킬에 넘길 입력값의 형식을 알려 주는 설정 항목</td></tr>
+<tr><td><code>slash command</code></td><td>슬래시 명령</td><td>/commit처럼 입력해 스킬을 실행하는 방식</td></tr>
+<tr><td><code>skill</code></td><td>스킬</td><td>필요할 때 로드되는 작업 지침 묶음. 항상 로드되는 CLAUDE.md와 대비</td></tr>
+<tr><td><code>hook</code></td><td>훅</td><td>정해진 시점에 자동 실행되는 프로그램. 확률이 아니라 강제</td></tr>
+<tr><td><code>PreToolUse</code></td><td>도구 실행 전 훅</td><td>호출 자체를 <b>차단</b>할 수 있는 지점. 금액 상한이나 전제조건 게이트가 여기에 해당</td></tr>
+<tr><td><code>PostToolUse</code></td><td>도구 실행 후 훅</td><td>결과 정규화와 포맷 강제 지점. 차단은 불가능</td></tr>
+<tr><td><code>plan mode</code></td><td>플랜 모드</td><td>실행 전에 계획을 먼저 제출하게 하는 모드. 파급이 큰 작업에 사용</td></tr>
+<tr><td><code>-p</code> (print)</td><td>비대화형 실행</td><td>사람 없이 한 번 실행하고 종료. CI와 무인 실행에 필수</td></tr>
+<tr><td><code>--output-format json</code></td><td>JSON 출력</td><td>기계가 파싱할 형태로 출력. <b>-p를 대신하지 않음</b>. 자주 틀리는 지점</td></tr>
+<tr><td><code>--json-schema</code></td><td>스키마 강제</td><td>그 JSON의 형태를 고정. 정규식으로 추출하는 방식을 대체</td></tr>
+<tr><td><code>session</code></td><td>세션</td><td>대화 한 줄기. 이름을 붙여 관리하고 나중에 이어갈 수 있음</td></tr>
+<tr><td><code>--resume</code></td><td>세션 이어가기</td><td>이전 세션을 그대로 다시 여는 것. 변경이 작을 때의 정답</td></tr>
+<tr><td><code>fork</code></td><td>분기</td><td>같은 지점에서 두 접근을 나눠 비교. stale 문제의 해법은 아님</td></tr>
+<tr><td><code>stale</code></td><td>오래되어 지금 상태와 맞지 않음</td><td>세션이 기록해 둔 결론이 현재 상태와 맞지 않게 된 것</td></tr>
+<tr><td><code>CI/CD</code></td><td>지속적 통합, 배포</td><td>PR마다 자동으로 실행되는 파이프라인. 사람이 없다는 뜻</td></tr>
+<tr><td><code>pull request</code> (PR)</td><td>풀 리퀘스트</td><td>변경을 합치기 전 리뷰 단위. 리뷰 봇 시나리오가 놓이는 상황</td></tr>
+<tr><td><code>diff</code></td><td>변경 내역</td><td>무엇이 어떻게 바뀌었는지의 차이. 원인 특정의 1순위 도구</td></tr>
+</table>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"묶음 D: 프롬프트 · 구조화 출력 (20개)",
-       html:`<table>
-        <tr><th>영어</th><th>한국어</th><th>이 시험에서의 의미</th></tr>
-        <tr><td><code>system prompt</code></td><td>시스템 프롬프트</td><td>역할과 규칙을 정하는 최상위 지시. 확률적이므로 보장 수단은 아님</td></tr>
-        <tr><td><code>few-shot examples</code></td><td>예시 몇 개</td><td>원하는 판단을 보여 주는 본보기. 개수보다 <b>무엇을 고르는지</b>가 중요함</td></tr>
-        <tr><td><code>edge case</code></td><td>경계 사례</td><td>애매해서 실제로 틀리는 경우. few-shot은 여기를 겨냥해야 효과가 있음</td></tr>
-        <tr><td><code>clear-cut case</code></td><td>명백한 사례</td><td>이미 잘 맞히는 쉬운 경우. 여기만 예시로 넣으면 개선이 없음</td></tr>
-        <tr><td><code>JSON schema</code></td><td>JSON 스키마</td><td>출력의 형태를 미리 정의한 틀</td></tr>
-        <tr><td><code>strict</code></td><td>엄격 모드</td><td>스키마를 위반한 출력을 막는 설정. 형태는 보장해도 <b>내용의 진위는 보장하지 않음</b></td></tr>
-        <tr><td><code>required</code></td><td>필수 필드</td><td>반드시 값이 있어야 하는 항목. 값이 없는 문서에서 지어내기를 유발함</td></tr>
-        <tr><td><code>nullable</code></td><td>null 허용</td><td>값이 <b>아예 없을 때</b> 사용하는 처방</td></tr>
-        <tr><td><code>enum</code></td><td>열거형</td><td>정해진 목록 중에서만 고르게 하는 것. 목록에 없는 경우가 생기면 확장이 필요함</td></tr>
-        <tr><td><code>unclear</code></td><td>불명확 값</td><td>값이 있지만 <b>어느 항목에도 맞지 않을 때</b> 사용하는 처방. null과 혼동하면 오답이 됨</td></tr>
-        <tr><td><code>field</code></td><td>필드</td><td>스키마의 항목 하나</td></tr>
-        <tr><td><code>schema evolution</code></td><td>스키마 확장</td><td>새로운 경우가 생겼을 때 스키마를 수정하는 일</td></tr>
-        <tr><td><code>force-fit</code></td><td>억지로 끼워 맞춤</td><td>맞지 않는 값을 있는 항목에 밀어 넣는 실패. enum이 좁을 때 발생함</td></tr>
-        <tr><td><code>fabricate</code></td><td>지어내다</td><td>없는 값을 만들어내는 것. required와 값 없음의 조합이 원인임</td></tr>
-        <tr><td><code>confidence score</code></td><td>신뢰도 점수</td><td>모델이 스스로 매긴 확신도. <b>실제 정확도가 아님</b>. 보정 없이 쓰면 위험함</td></tr>
-        <tr><td><code>structured output</code></td><td>구조화 출력</td><td>파싱 가능한 형태의 출력</td></tr>
-        <tr><td><code>free-form prose</code></td><td>자유 서술</td><td>파싱할 수 없는 산문. CI 파이프라인에서 조용히 버려지는 형태</td></tr>
-        <tr><td><code>extraction</code></td><td>추출</td><td>문서에서 필드 값을 뽑아내는 작업</td></tr>
-        <tr><td><code>classification</code></td><td>분류</td><td>정해진 범주로 나누는 작업</td></tr>
-        <tr><td><code>temperature</code></td><td>온도</td><td>출력의 무작위성. <b>규칙을 강제하는 수단이 아님</b>. 오답 보기로 자주 등장함</td></tr>
-        </table>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"D. 프롬프트와 구조화된 출력 20개",
+   html:`<table>
+<tr><th>영어</th><th>뜻</th><th>문항에서의 쓰임</th></tr>
+<tr><td><code>system prompt</code></td><td>시스템 프롬프트</td><td>역할과 규칙을 정하는 최상위 지시. 확률적이므로 보장 수단은 아님</td></tr>
+<tr><td><code>few-shot examples</code></td><td>예시 몇 개</td><td>원하는 판단을 보여 주는 본보기. 개수보다 <b>무엇을 고르는지</b>가 중요</td></tr>
+<tr><td><code>edge case</code></td><td>경계 사례</td><td>애매해서 실제로 틀리는 경우. few-shot은 여기를 겨냥해야 효과가 있음</td></tr>
+<tr><td><code>clear-cut case</code></td><td>명백한 사례</td><td>이미 잘 맞히는 쉬운 경우. 여기만 예시로 넣으면 개선이 없음</td></tr>
+<tr><td><code>JSON schema</code></td><td>JSON 스키마</td><td>출력의 형태를 미리 정의한 틀</td></tr>
+<tr><td><code>strict</code></td><td>엄격 모드</td><td>스키마를 위반한 출력을 막는 설정. 형태는 보장해도 <b>내용의 진위는 보장하지 않음</b></td></tr>
+<tr><td><code>required</code></td><td>필수 필드</td><td>반드시 값이 있어야 하는 항목. 값이 없는 문서에서 지어내기를 유발</td></tr>
+<tr><td><code>nullable</code></td><td>null 허용</td><td>값이 <b>아예 없을 때</b> 사용하는 처방</td></tr>
+<tr><td><code>enum</code></td><td>열거형</td><td>정해진 목록 중에서만 고르게 하는 것. 목록에 없는 경우가 생기면 확장이 필요</td></tr>
+<tr><td><code>unclear</code></td><td>불명확 값</td><td>값이 있지만 <b>어느 항목에도 맞지 않을 때</b> 사용하는 처방. null과 혼동하면 오답</td></tr>
+<tr><td><code>field</code></td><td>필드</td><td>스키마의 항목 하나</td></tr>
+<tr><td><code>schema evolution</code></td><td>스키마 확장</td><td>새로운 경우가 생겼을 때 스키마를 수정하는 일</td></tr>
+<tr><td><code>force-fit</code></td><td>억지로 끼워 맞춤</td><td>맞지 않는 값을 있는 항목에 밀어 넣는 실패. enum이 좁을 때 발생</td></tr>
+<tr><td><code>fabricate</code></td><td>지어내다</td><td>없는 값을 만들어내는 것. required와 값 없음의 조합이 원인</td></tr>
+<tr><td><code>confidence score</code></td><td>신뢰도 점수</td><td>모델이 스스로 매긴 확신도. <b>실제 정확도가 아님</b>. 보정 없이 쓰면 위험</td></tr>
+<tr><td><code>structured output</code></td><td>구조화된 출력</td><td>파싱 가능한 형태의 출력</td></tr>
+<tr><td><code>free-form prose</code></td><td>자유 서술</td><td>파싱할 수 없는 산문. CI 파이프라인에서 조용히 버려지는 형태</td></tr>
+<tr><td><code>extraction</code></td><td>추출</td><td>문서에서 필드 값을 뽑아내는 작업</td></tr>
+<tr><td><code>classification</code></td><td>분류</td><td>정해진 범주로 나누는 작업</td></tr>
+<tr><td><code>temperature</code></td><td>온도</td><td>출력의 무작위성. <b>규칙을 강제하는 수단이 아님</b>. 오답 보기로 자주 등장</td></tr>
+</table>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"묶음 E: 컨텍스트 · 신뢰성 (20개)",
-       html:`<table>
-        <tr><th>영어</th><th>한국어</th><th>이 시험에서의 의미</th></tr>
-        <tr><td><code>context window</code></td><td>컨텍스트 창</td><td>한 번에 볼 수 있는 내용의 한도. 키운다고 주의력 문제가 해결되지는 않음</td></tr>
-        <tr><td><code>token</code></td><td>토큰</td><td>분량 · 비용 · 속도를 재는 단위</td></tr>
-        <tr><td><code>token spend</code></td><td>토큰 소모</td><td>이번 작업이 사용한 양. "minimal token spend"가 붙으면 재실행 답이 탈락함</td></tr>
-        <tr><td><code>context budget</code></td><td>컨텍스트 예산</td><td>이 작업에 허용된 컨텍스트 분량</td></tr>
-        <tr><td><code>context degradation</code></td><td>컨텍스트 열화</td><td>대화가 길어질수록 앞부분 내용을 사용하지 못하게 되는 현상</td></tr>
-        <tr><td><code>progressive summarization</code></td><td>점진적 요약</td><td>오래된 대화를 압축해 가는 방식. 숫자와 날짜가 여기서 사라짐</td></tr>
-        <tr><td><code>case facts</code></td><td>사건 사실 블록</td><td>요약 대상에서 <b>제외</b>하고 원문 그대로 보존하는 항목. 금액과 주문번호가 들어감</td></tr>
-        <tr><td><code>scratchpad</code></td><td>스크래치패드</td><td>발견과 제약을 적어 두는 외부 파일. 컨텍스트 밖에 두는 기록</td></tr>
-        <tr><td><code>escalate</code></td><td>사람에게 넘기다</td><td>에이전트가 판단을 멈추고 사람에게 인계하는 것</td></tr>
-        <tr><td><code>escalation trigger</code></td><td>에스컬레이션 조건</td><td>넘겨야 하는 상황의 정의. 감정 점수와 턴 수는 근거가 되지 못함</td></tr>
-        <tr><td><code>policy gap</code></td><td>정책 공백</td><td>규정에 해당 조항이 아예 없는 경우. 지어내지 말고 사람에게 넘겨야 함</td></tr>
-        <tr><td><code>improvise</code></td><td>즉흥적으로 만들어내다</td><td>없는 정책을 그 자리에서 지어내는 것. 감사에서 문제가 되는 행동</td></tr>
-        <tr><td><code>suppress</code></td><td>억누르다 · 걸러 없애다</td><td>결과를 조건으로 걸러 삭제하는 것. 대개 오답 방향임</td></tr>
-        <tr><td><code>attribution</code></td><td>출처 표시</td><td>어떤 주장이 어느 소스에서 왔는지 표시하는 것</td></tr>
-        <tr><td><code>verifiable</code></td><td>검증 가능한</td><td>원 소스로 되짚어 갈 수 있는 상태</td></tr>
-        <tr><td><code>partial results</code></td><td>부분 결과</td><td>일부만 성공했을 때 남은 것. 감추지 말고 표시해 발행할 것</td></tr>
-        <tr><td><code>observability</code></td><td>관측 가능성</td><td>무슨 일이 있었는지 한 곳에서 확인할 수 있는 정도</td></tr>
-        <tr><td><code>audit</code></td><td>감사</td><td>나중에 기록을 되짚어 검증하는 것. 흔적을 남기는 설계가 정답이 됨</td></tr>
-        <tr><td><code>SLA</code></td><td>서비스 수준 합의</td><td>"N시간 안에" 같은 약속. 시간 제약 문항의 판단 기준</td></tr>
-        <tr><td><code>stratified sampling</code></td><td>층화 표집</td><td>범주별로 나눠 표본을 뽑는 것. 전체 정확도 수치의 착시를 제거함</td></tr>
-        </table>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"E. 컨텍스트와 신뢰성 20개",
+   html:`<table>
+<tr><th>영어</th><th>뜻</th><th>문항에서의 쓰임</th></tr>
+<tr><td><code>context window</code></td><td>컨텍스트 창</td><td>한 번에 볼 수 있는 내용의 한도. 키운다고 주의력 문제가 해결되지는 않음</td></tr>
+<tr><td><code>token</code></td><td>토큰</td><td>분량, 비용, 속도를 재는 단위</td></tr>
+<tr><td><code>token spend</code></td><td>토큰 소모</td><td>이번 작업이 사용한 양. "minimal token spend"가 붙으면 재실행 답이 탈락</td></tr>
+<tr><td><code>context budget</code></td><td>컨텍스트 예산</td><td>이 작업에 허용된 컨텍스트 분량</td></tr>
+<tr><td><code>context degradation</code></td><td>컨텍스트 열화</td><td>대화가 길어질수록 앞부분 내용을 사용하지 못하게 되는 현상</td></tr>
+<tr><td><code>progressive summarization</code></td><td>점진적 요약</td><td>오래된 대화를 압축해 가는 방식. 숫자와 날짜가 사라지는 단계</td></tr>
+<tr><td><code>case facts</code></td><td>사건 사실 블록</td><td>요약 대상에서 <b>제외</b>하고 원문 그대로 보존하는 항목. 금액과 주문 번호 보관</td></tr>
+<tr><td><code>scratchpad</code></td><td>스크래치패드</td><td>발견과 제약을 적어 두는 외부 파일. 컨텍스트 밖에 두는 기록</td></tr>
+<tr><td><code>escalate</code></td><td>사람에게 넘기다</td><td>에이전트가 판단을 멈추고 사람에게 인계하는 것</td></tr>
+<tr><td><code>escalation trigger</code></td><td>에스컬레이션 조건</td><td>넘겨야 하는 상황의 정의. 감정 점수와 대화 횟수는 근거가 아님</td></tr>
+<tr><td><code>policy gap</code></td><td>정책 공백</td><td>규정에 해당 조항이 아예 없는 경우. 지어내지 않고 사람에게 전달</td></tr>
+<tr><td><code>improvise</code></td><td>즉흥적으로 만들어내다</td><td>없는 정책을 그 자리에서 지어내는 것. 감사에서 문제가 되는 행동</td></tr>
+<tr><td><code>suppress</code></td><td>억누르다, 걸러 없애다</td><td>결과를 조건으로 걸러 삭제하는 것. 대개 오답 방향</td></tr>
+<tr><td><code>attribution</code></td><td>출처 표시</td><td>어떤 주장이 어느 소스에서 왔는지 표시하는 것</td></tr>
+<tr><td><code>verifiable</code></td><td>검증 가능한</td><td>원 소스로 되짚어 갈 수 있는 상태</td></tr>
+<tr><td><code>partial results</code></td><td>부분 결과</td><td>일부만 성공했을 때 남은 것. 감추지 말고 표시해 발행할 것</td></tr>
+<tr><td><code>observability</code></td><td>관측 가능성</td><td>무슨 일이 있었는지 한 곳에서 확인할 수 있는 정도</td></tr>
+<tr><td><code>audit</code></td><td>감사</td><td>나중에 기록을 되짚어 검증하는 것. 기록을 남기는 설계가 정답</td></tr>
+<tr><td><code>SLA</code></td><td>서비스 수준 합의</td><td>"N시간 안에" 같은 약속. 시간 제약 문항의 판단 기준</td></tr>
+<tr><td><code>stratified sampling</code></td><td>층화 표집</td><td>범주별로 나눠 표본을 뽑는 것. 전체 정확도 수치의 착시를 제거</td></tr>
+</table>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"묶음 F: 문항 문장이 반복하는 동사 · 표현 (18개)",
-       html:`<p class="lead">도메인 지식이 아니라 <strong>문항 문장 자체가 반복해서 쓰는</strong> 표현임. 이것이 읽히지 않으면 지문 내용을 알아도 질문을 파악하지 못함.</p>
-        <table>
-        <tr><th>영어</th><th>한국어</th><th>이 시험에서의 의미</th></tr>
-        <tr><td><code>address</code></td><td>해결하다 · 다루다</td><td>이 조치가 그 문제를 실제로 다루는지 묻는 말</td></tr>
-        <tr><td><code>mitigate</code> · <code>mitigation</code></td><td>완화하다 · 완화책</td><td>제거하지는 못해도 줄이는 것. 근본 처방과 구분해 물음</td></tr>
-        <tr><td><code>surface</code> (동사)</td><td>드러내다</td><td>숨어 있던 실패나 정보를 보이게 하는 것. 정답 방향인 경우가 많음</td></tr>
-        <tr><td><code>propagate</code></td><td>전파하다</td><td>에러나 정보가 상위로 올라가는 것. 코디네이터까지 도달해야 함</td></tr>
-        <tr><td><code>enforce</code> · <code>enforcement</code></td><td>강제하다 · 강제</td><td>프로그램으로 지키게 만드는 것. 프롬프트 지시와 대비되는 말</td></tr>
-        <tr><td><code>guarantee</code></td><td>보장하다</td><td>예외가 0이라는 뜻. 확률적 처방은 이 단어 앞에서 전부 탈락함</td></tr>
-        <tr><td><code>preserve</code></td><td>보존하다</td><td>그대로 유지하기. 요약 과정에서 무엇을 남길지 묻는 문항의 핵심어</td></tr>
-        <tr><td><code>bypass</code></td><td>우회하다</td><td>규칙을 건너뛰기. 우회가 가능한 설계는 보장이 아님</td></tr>
-        <tr><td><code>warrant</code></td><td>~할 만하다</td><td>이 작업이 그것을 쓸 만한지 묻는 말. 과잉 대응을 가려냄</td></tr>
-        <tr><td><code>telltale sign</code></td><td>결정적 징후</td><td>원인을 특정해 주는 신호. 지문에 이 표현이 나오면 그곳이 답의 근거임</td></tr>
-        <tr><td><code>root cause</code></td><td>근본 원인</td><td>증상이 아닌 실제 원인. 원칙 ②와 동일함</td></tr>
-        <tr><td><code>countermeasure</code></td><td>대응책</td><td>증상에 맞는 처방. 짝짓기 문항으로 자주 출제됨</td></tr>
-        <tr><td><code>safeguard</code></td><td>안전장치</td><td>사고를 막는 장치. "ongoing safeguard"이면 재발 방지 설계를 묻는 것임</td></tr>
-        <tr><td><code>redesign</code></td><td>재설계</td><td>구조를 바꾸는 수정. FIRST step 문항에서는 대개 오답임</td></tr>
-        <tr><td><code>overhead</code></td><td>부가 비용</td><td>본 작업 외에 드는 비용. 탐색 호출과 중복 조사가 대표 사례</td></tr>
-        <tr><td><code>downstream</code></td><td>하류 · 후속</td><td>이 단계 뒤에 붙는 것. "downstream consumers"는 수정할 수 없는 대상인 경우가 많음</td></tr>
-        <tr><td><code>upstream</code></td><td>상류 · 선행</td><td>이 단계 앞에 있는 것. 원인이 여기 있는 경우가 많음</td></tr>
-        <tr><td><code>verbatim</code></td><td>글자 그대로</td><td>수정 없이 그대로 가져다 쓰는 것. 원본이 바뀌면 그대로 영향을 받음</td></tr>
-        </table>
-        <div class="callout">📌 합계 22 + 20 + 20 + 20 + 20 + 18 = <b>120개</b>임. 전부 이 코스의 기존 문항에서 실제로 쓰인 표현임.</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"F. 문항에 반복해서 나오는 동사와 표현 18개",
+   html:`<p class="lead">도메인 지식이 아니라 <strong>문항 문장 자체가 반복해서 쓰는</strong> 표현. 이 표현을 모르면 내용을 알아도 질문을 이해할 수 없음.</p>
+<table>
+<tr><th>영어</th><th>뜻</th><th>문항에서의 쓰임</th></tr>
+<tr><td><code>address</code></td><td>해결하다, 다루다</td><td>이 조치가 그 문제를 실제로 다루는지 묻는 말</td></tr>
+<tr><td><code>mitigate</code>, <code>mitigation</code></td><td>완화하다, 완화책</td><td>제거하지는 못해도 줄이는 것. 근본 해결과 구분해서 출제</td></tr>
+<tr><td><code>surface</code> (동사)</td><td>드러내다</td><td>숨어 있던 실패나 정보를 보이게 하는 것. 정답 방향인 경우가 많음</td></tr>
+<tr><td><code>propagate</code></td><td>전파하다</td><td>에러나 정보가 상위로 올라가는 것. 코디네이터까지 전달 필요</td></tr>
+<tr><td><code>enforce</code>, <code>enforcement</code></td><td>강제하다, 강제</td><td>프로그램으로 지키게 만드는 것. 프롬프트 지시와 대비되는 말</td></tr>
+<tr><td><code>guarantee</code></td><td>보장하다</td><td>예외가 0이라는 뜻. 확률적 처방은 이 단어 앞에서 전부 탈락</td></tr>
+<tr><td><code>preserve</code></td><td>보존하다</td><td>그대로 유지하기. 요약 과정에서 무엇을 남길지 묻는 문항의 핵심어</td></tr>
+<tr><td><code>bypass</code></td><td>우회하다</td><td>규칙을 건너뛰기. 우회가 가능한 설계는 보장이 아님</td></tr>
+<tr><td><code>warrant</code></td><td>~할 만하다</td><td>이 작업이 그것을 쓸 만한지 묻는 말. 지나치게 큰 조치를 제외하는 기준</td></tr>
+<tr><td><code>telltale sign</code></td><td>결정적 징후</td><td>원인을 특정해 주는 신호. 지문에 이 표현이 나오면 그곳이 답의 근거</td></tr>
+<tr><td><code>root cause</code></td><td>근본 원인</td><td>증상이 아닌 실제 원인. 원칙 ②와 동일</td></tr>
+<tr><td><code>countermeasure</code></td><td>대응책</td><td>증상에 맞는 처방. 짝짓기 문항으로 자주 출제</td></tr>
+<tr><td><code>safeguard</code></td><td>안전장치</td><td>사고를 막는 장치. "ongoing safeguard"이면 재발 방지 설계를 묻는 것</td></tr>
+<tr><td><code>redesign</code></td><td>재설계</td><td>구조를 바꾸는 수정. FIRST step 문항에서는 대개 오답</td></tr>
+<tr><td><code>overhead</code></td><td>부가 비용</td><td>본 작업 외에 드는 비용. 탐색 호출과 중복 조사가 대표 사례</td></tr>
+<tr><td><code>downstream</code></td><td>하류, 후속</td><td>이 단계 뒤에 붙는 것. "downstream consumers"는 수정할 수 없는 대상인 경우가 많음</td></tr>
+<tr><td><code>upstream</code></td><td>상류, 선행</td><td>이 단계 앞에 있는 것. 원인이 여기 있는 경우가 많음</td></tr>
+<tr><td><code>verbatim</code></td><td>글자 그대로</td><td>수정 없이 그대로 가져다 쓰는 것. 원본이 바뀌면 함께 영향</td></tr>
+</table>
+<div class="callout">📌 합계 22 + 20 + 20 + 20 + 20 + 18 = <b>120개</b>임. 전부 이 코스의 기존 문항에서 실제로 쓰인 표현.</div>`},
     ]},
 
   /* ================= E-5 · 30초 스캔 훈련 ================= */
-  { id:"pec5", ch:"E-5", title:"30초 스캔 훈련: 네 칸 채우기",
+  { id:"pec5", ch:"E-5", title:"30초 확인 연습: 네 가지 항목",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"긴 지문에서 확인할 항목은 네 개임",
-       html:`<p class="lead">E-1이 <strong>어디부터 읽을지</strong>를 다뤘다면 E-5는 <strong>읽은 내용을 어떻게 정리해 둘지</strong>를 다룸. 200단어짜리 지문을 모두 기억할 필요는 없음. 네 칸만 채우면 됨.</p>
-        <h4>스캔 카드의 네 칸</h4>
-        <table>
-          <tr><th>칸</th><th>영어에서 무엇을 찾는가</th><th>어떻게 적는가</th></tr>
-          <tr><td><strong>① SCENARIO · 시나리오</strong></td><td>어떤 시스템에 관한 이야기인지</td><td>한 단어로: 추출 / 리뷰봇 / 리서치 / 지원 에이전트 / 마이그레이션 / CI</td></tr>
-          <tr><td><strong>② SYMPTOM · 증상</strong></td><td>무엇이 잘못됐는지</td><td>동사 하나 + 숫자 하나로: "누락 8,400행", "터키어 71%"</td></tr>
-          <tr><td><strong>③ CONSTRAINT · 제약</strong></td><td>무엇을 지켜야 하는지</td><td>한국어 한 마디로: "재실행 불가", "필드 유지". 없으면 <b>없음이라고 확정</b></td></tr>
-          <tr><td><strong>④ ASK · 질문</strong></td><td>무엇을 묻는지 + 지시어</td><td>지시어 + 대상으로: "MOST + 스키마 변경", "LEAST + 재발 방지"</td></tr>
-        </table>
-        <h4>스캔 규칙 다섯</h4>
-        <ul>
-          <li><strong>각 칸은 다섯 단어 이내로 적음.</strong> 문장으로 적기 시작하면 시간이 다시 늘어남</li>
-          <li><strong>숫자는 반드시 확인함.</strong> 40% · 3 AM · 0.94 · 8,400. 시험이 숫자를 넣은 이유는 그 숫자로 보기를 가르기 위해서임</li>
-          <li><strong>고유명사는 철자를 읽지 않음.</strong> <code>process_refund</code>와 <code>lookup_order</code>를 서로 구분할 정도면 충분함. 발음하려고 하면 시간이 소모됨</li>
-          <li><strong>③이 없음인 것도 성과임.</strong> 없다고 확정해야 보기를 고를 때 흔들리지 않음</li>
-          <li><strong>배경 숫자와 결정적 숫자를 구분함.</strong> "9,000 contracts each night"처럼 규모만 알려 주는 숫자는 대개 쓰이지 않음. 증상 문장 안에 있는 숫자가 판단에 쓰이는 숫자임</li>
-        </ul>
-        <div class="callout">⏱ 네 칸을 채우는 목표 시간은 <b>30초</b>임. 모두 채워지면 보기 읽기로 넘어가고, 채워지지 않은 칸이 있으면 그 칸에 해당하는 부분만 지문에서 다시 찾을 것. 지문 전체를 다시 읽지 않음.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"긴 글에서 확인할 네 가지",
+   html:`<h4>① 확인할 항목</h4>
+<table>
+<tr><th>항목</th><th>찾을 내용</th><th>기억하는 방법</th></tr>
+<tr><td>시나리오<br><small>scenario</small></td><td>어떤 시스템인지</td><td>한 단어. 예: 추출, 리뷰 봇, 리서치, 고객지원, 이전 작업, CI</td></tr>
+<tr><td>증상<br><small>symptom</small></td><td>잘못된 내용</td><td>동작 하나와 숫자 하나. 예: 8,400행 누락, 터키어 71%</td></tr>
+<tr><td>제약<br><small>constraint</small></td><td>지켜야 하는 조건</td><td>짧은 한국어. 예: 다시 실행 불가, 항목 유지. 없으면 없음으로 판단</td></tr>
+<tr><td>질문<br><small>ask</small></td><td>묻는 내용과 지시어</td><td>지시어와 대상. 예: MOST와 스키마 변경</td></tr>
+</table>
+<h4>② 확인 규칙</h4>
+<ul>
+<li>항목마다 다섯 단어 안으로 기억. 문장으로 정리하면 시간이 늘어남</li>
+<li>숫자는 모두 확인. 예: 40%, 3 AM, 0.94, 8,400</li>
+<li>도구 이름은 서로 구분할 수 있는 정도로만 읽기. 예: process_refund와 lookup_order</li>
+<li>규모만 알려 주는 숫자와 판단에 쓰이는 숫자 구분. 증상 문장 안의 숫자가 판단에 쓰이는 숫자</li>
+</ul>
+<h4>③ 목표 시간</h4>
+<ul>
+<li>네 항목 확인에 30초</li>
+<li>확인하지 못한 항목이 있으면 그 항목에 해당하는 부분만 다시 찾기</li>
+</ul>`},
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"시연 1: 다국어 리뷰 분류 파이프라인",
-       html:`<p class="lead">먼저 지문을 읽을 것. 그 다음에 네 칸을 어떻게 채웠는지 확인할 것.</p>
-        <div style="border:1px solid var(--line);background:var(--surface2);padding:10px 14px;border-radius:8px;margin:8px 0;line-height:1.7">
-          Your team runs a review-triage service on the Claude API. Every night it classifies roughly 40,000 customer reviews written in eleven languages into one of six product-issue categories, and the output feeds a quality dashboard used by regional managers.
-          <br><br>
-          Since the Turkish and Vietnamese locales were added six weeks ago, managers in those regions report that the dashboard shows almost everything under "general feedback." Sampling confirms it: 71% of Turkish reviews land in "general feedback" against 12% for English, even where the reviewer plainly describes shipping damage or a sizing problem.
-          <br><br>
-          The classification prompt carries eight few-shot examples, all written in English, all drawn from clear-cut cases. The six categories are keyed to three downstream reports and cannot be changed.
-          <br><br>
-          Which change MOST improves classification accuracy for the new locales?
-        </div>
-        <h4>네 칸</h4>
-        <table>
-          <tr><th>칸</th><th>채운 내용</th><th>어느 문장에서</th></tr>
-          <tr><td>① 시나리오</td><td>야간 리뷰 분류</td><td>첫 문장. 여기서 더 읽지 않아도 됨</td></tr>
-          <tr><td>② 증상</td><td>터키어 71% → general feedback (영어 12%)</td><td>둘째 문단. 두 숫자를 <b>함께</b> 확인하는 것이 핵심임. 71%만 보면 원래 어려운 언어인가로 오해하게 됨</td></tr>
-          <tr><td>③ 제약</td><td>카테고리 6개 변경 불가</td><td>셋째 문단 끝. "keyed to three downstream reports"가 이유이고 "cannot be changed"가 제약임</td></tr>
-          <tr><td>④ 질문</td><td>MOST + 정확도 개선</td><td>마지막 줄. MOST가 붙었으므로 보기 여럿이 맞는 말임</td></tr>
-        </table>
-        <h4>네 칸만으로 보기가 갈리는 과정</h4>
-        <ul>
-          <li>카테고리를 하나 추가하자는 보기: <strong>③이 탈락시킴</strong></li>
-          <li>영어 예시를 더 넣자는 보기: <strong>②의 대비(71% 대 12%)가 탈락시킴</strong>. 영어는 이미 잘 처리되고 있음</li>
-          <li>전부 영어로 번역한 뒤 분류하자는 보기: 그럴듯하지만 원인이 언어 자체가 아니라 <strong>예시가 clear-cut 사례뿐</strong>이라는 데 있음. 셋째 문단이 그것을 알려 주었음</li>
-          <li>남는 것은 새 로케일의 애매한 사례로 예시를 보강하는 답임</li>
-        </ul>
-        <div class="callout">🎯 여기서 읽지 않은 것. 40,000이라는 규모, 11개 언어라는 숫자, 대시보드를 누가 보는지에 대한 서술임. 셋 다 보기를 가르는 데 쓰이지 않았음. 배경 숫자였음.</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"예시 1: 여러 언어의 리뷰 분류",
+   html:`<ul>
+<li>아래 글을 먼저 읽은 뒤 네 항목 확인</li>
+</ul>
+<div style="border:1px solid var(--line);background:var(--surface2);padding:10px 14px;border-radius:8px;margin:8px 0;line-height:1.7">
+Your team runs a review-triage service on the Claude API. Every night it classifies roughly 40,000 customer reviews written in eleven languages into one of six product-issue categories, and the output feeds a quality dashboard used by regional managers.
+<br><br>
+Since the Turkish and Vietnamese locales were added six weeks ago, managers in those regions report that the dashboard shows almost everything under "general feedback." Sampling confirms it: 71% of Turkish reviews land in "general feedback" against 12% for English, even where the reviewer plainly describes shipping damage or a sizing problem.
+<br><br>
+The classification prompt carries eight few-shot examples, all written in English, all drawn from clear-cut cases. The six categories are keyed to three downstream reports and cannot be changed.
+<br><br>
+Which change MOST improves classification accuracy for the new locales?
+</div>
 
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"시연 2: 야간 데이터 마이그레이션 검증",
-       html:`<p class="lead">이번에는 제약이 두 개 붙어 있고, 증상 문장 안에 원인 진술이 들어 있음.</p>
-        <div style="border:1px solid var(--line);background:var(--surface2);padding:10px 14px;border-radius:8px;margin:8px 0;line-height:1.7">
-          A migration agent moves records from a legacy inventory database into a new schema. It runs unattended overnight in a container with no human present. For each table it reads a batch of rows, transforms them, writes them, and calls verify_batch to compare counts.
-          <br><br>
-          Last night's run reported "migration complete" at 04:12. This morning the new database is missing 8,400 rows from the supplier_lots table. The run log shows verify_batch returned ok for every batch — including three batches whose write step had timed out. The tool's author made verify_batch report ok whenever it could not reach the target database, "so a flaky connection wouldn't fail the whole migration."
-          <br><br>
-          The cutover window has closed and the legacy database is now read-only.
-          <br><br>
-          What is the correct fix?
-        </div>
-        <h4>네 칸</h4>
-        <table>
-          <tr><th>칸</th><th>채운 내용</th><th>놓치기 쉬운 지점</th></tr>
-          <tr><td>① 시나리오</td><td>야간 무인 DB 이관</td><td>"unattended"와 "no human present"는 사람이 개입하는 답이 전부 탈락한다는 신호임</td></tr>
-          <tr><td>② 증상</td><td>8,400행 누락 · verify가 실패를 ok로 보고</td><td>증상이 사실 <b>두 개</b>임. 누락은 결과이고 ok 보고가 원인임. 인용부호 안의 "so a flaky connection wouldn't fail..."이 원인 진술임</td></tr>
-          <tr><td>③ 제약</td><td>전체 재실행 불가(cutover 종료 · 원본 읽기 전용)</td><td>따로 떨어진 한 줄이라 지나치기 쉬움. 그러나 이것이 보기 두세 개를 탈락시킴</td></tr>
-          <tr><td>④ 질문</td><td>correct fix. 지시어 없음</td><td>최상급이 없으므로 소거법이 통함. 명백히 틀린 것을 지우면 됨</td></tr>
-        </table>
-        <h4>인용부호를 만나면</h4>
-        <ul>
-          <li>지문에 <strong>큰따옴표로 누군가의 말</strong>이 인용되어 있으면 거의 항상 <strong>잘못된 판단의 근거</strong>임</li>
-          <li>"so one flaky source doesn't fail the whole pipeline", "error noise confuses the model", "to save tokens". 전부 선의로 한 최적화가 사고를 낸 형태임</li>
-          <li>그러므로 인용부호가 보이면 <strong>그곳이 원인</strong>이라고 먼저 확인할 것. 스캔에서 이것은 비용 없이 얻는 정보임</li>
-        </ul>
-        <div class="callout">🎯 정답 방향. 도달 실패를 실패로 드러내도록 verify_batch를 수정하고, 로그에서 실패한 세 배치만 특정해 그 부분만 다시 옮기는 것임. ③이 전체 재실행을 막았으므로 남은 방법은 부분 복구뿐임.</div>`},
+<h4>① 네 항목</h4>
+<table>
+<tr><th>항목</th><th>확인한 내용</th><th>근거가 되는 위치</th></tr>
+<tr><td>시나리오</td><td>밤마다 실행하는 리뷰 분류</td><td>첫 문장</td></tr>
+<tr><td>증상</td><td>터키어 리뷰의 71%가 general feedback으로 분류. 영어는 12%</td><td>둘째 문단. 두 숫자를 함께 확인</td></tr>
+<tr><td>제약</td><td>분류 6개 변경 불가</td><td>셋째 문단의 cannot be changed</td></tr>
+<tr><td>질문</td><td>MOST와 정확도 개선</td><td>마지막 줄. 맞는 선택지가 여러 개라는 표시</td></tr>
+</table>
+<h4>② 선택지 판단</h4>
+<table>
+<tr><th>선택지</th><th>판단</th><th>근거</th></tr>
+<tr><td>분류를 하나 추가</td><td>제외</td><td>제약</td></tr>
+<tr><td>영어 예시 추가</td><td>제외</td><td>증상의 두 숫자. 영어는 이미 정확히 분류</td></tr>
+<tr><td>모두 영어로 번역한 뒤 분류</td><td>제외</td><td>예시가 모두 분명한 경우뿐이라는 셋째 문단의 내용</td></tr>
+<tr><td>새 언어의 애매한 경우를 예시로 추가</td><td>정답</td><td>증상과 원인에 모두 대응</td></tr>
+</table>
+<h4>③ 판단에 쓰이지 않은 내용</h4>
+<ul>
+<li>40,000건이라는 규모</li>
+<li>언어 11개라는 숫자</li>
+<li>대시보드를 보는 사람</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>few-shot 예시</b>: 지시문에 함께 넣는 입력과 출력의 본보기</li>
+<li><b>locale</b>: 언어와 지역 설정. 예: 터키어, 베트남어</li>
+</ul>
+</div>`},
+
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"예시 2: 밤사이 실행하는 데이터 이전",
+   html:`<ul>
+<li>제약이 두 개이고 증상 문장 안에 원인이 적힌 글</li>
+</ul>
+<div style="border:1px solid var(--line);background:var(--surface2);padding:10px 14px;border-radius:8px;margin:8px 0;line-height:1.7">
+A migration agent moves records from a legacy inventory database into a new schema. It runs unattended overnight in a container with no human present. For each table it reads a batch of rows, transforms them, writes them, and calls verify_batch to compare counts.
+<br><br>
+Last night's run reported "migration complete" at 04:12. This morning the new database is missing 8,400 rows from the supplier_lots table. The run log shows verify_batch returned ok for every batch, including three batches whose write step had timed out. The tool's author made verify_batch report ok whenever it could not reach the target database, "so a flaky connection wouldn't fail the whole migration."
+<br><br>
+The cutover window has closed and the legacy database is now read-only.
+<br><br>
+What is the correct fix?
+</div>
+
+<h4>① 네 항목</h4>
+<table>
+<tr><th>항목</th><th>확인한 내용</th><th>놓치기 쉬운 점</th></tr>
+<tr><td>시나리오</td><td>사람 없이 밤사이 실행하는 데이터 이전</td><td>unattended와 no human present는 사람이 개입하는 답을 제외하는 표현</td></tr>
+<tr><td>증상</td><td>8,400행 누락. verify_batch가 실패를 ok로 보고</td><td>누락은 결과, ok 보고는 원인. 따옴표 안의 문장이 원인 설명</td></tr>
+<tr><td>제약</td><td>전체 다시 실행 불가. 이전 기간이 끝났고 원본은 읽기 전용</td><td>따로 떨어진 한 줄이라 놓치기 쉬움</td></tr>
+<tr><td>질문</td><td>correct fix. 지시어 없음</td><td>최상급이 없으므로 틀린 선택지를 제외하는 방법 사용</td></tr>
+</table>
+<h4>② 따옴표 안의 문장</h4>
+<ul>
+<li>브리핑에서 누군가의 말을 따옴표로 인용한 부분은 잘못된 판단의 근거인 경우가 많음</li>
+<li>예: "so one flaky source doesn't fail the whole pipeline", "error noise confuses the model", "to save tokens"</li>
+<li>따옴표가 보이면 그 부분을 원인 후보로 먼저 확인</li>
+</ul>
+<h4>③ 정답 방향</h4>
+<ul>
+<li>대상 데이터베이스에 연결하지 못한 경우를 실패로 보고하도록 verify_batch 수정</li>
+<li>기록에서 실패한 배치 세 개를 찾아 그 부분만 다시 이전</li>
+<li>제약 때문에 전체 다시 실행은 불가. 남는 방법은 부분 복구</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>이전 작업(migration)</b>: 쓰던 시스템의 자료를 새 시스템으로 옮기는 작업</li>
+<li><b>배치(batch)</b>: 한 번에 묶어 처리하는 자료 단위</li>
+<li><b>읽기 전용(read-only)</b>: 읽을 수만 있고 고칠 수 없는 상태</li>
+</ul>
+</div>`},
 
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Two numbers, one cause",
        q:`New engineers ask an internal onboarding agent questions like "how do I request a staging database?" The agent has one tool, search_wiki, which returns the full text of every matching page from a 4,000-page internal wiki.<br><br>First-month metrics: a typical session runs 14 turns; from about turn 8 onward the agent starts answering with generic industry advice ("most teams handle staging access by...") instead of quoting the wiki pages it retrieved earlier in the same session; and 30% of sessions end with the engineer repeating their original question. Each search_wiki call returns between four and nine full pages, averaging 6,000 tokens per call.<br><br>The wiki's page structure is owned by the docs team and will not be reorganized. What is the MOST effective fix?`,

@@ -2,13 +2,13 @@
 window.CCAF_APPENDIX = {
 
 cheat: `
-<h4>🛠 기본 제공 도구(built-in tools) 6종 선택표: 상황별 도구 선택</h4>
+<h4>🛠 자주 쓰는 기본 제공 도구(built-in tools) 6개 선택표: 상황별 도구 선택</h4>
 <p style="font-size:13px;color:var(--muted)">지문의 상황 서술만 보고 도구 하나를 고르는 형태로 반복 출제됨. 도구 사이의 역할 차이를 구분하지 못하면 정답률이 크게 떨어지는 영역이므로 표 전체를 외울 것.</p>
 <table>
 <tr><th>상황 (지문에 이렇게 나옴)</th><th>답</th></tr>
 <tr><td>"find all <b>callers</b> of function X" · "어디서 이 함수를 쓰나"</td><td><b>Grep</b>: 호출자 찾기는 파일 <b>내용</b> 검색</td></tr>
 <tr><td>"find all files <b>named</b> *.test.tsx" · 경로·확장자 패턴</td><td><b>Glob</b>: 파일 <b>이름·경로</b> 패턴 전용</td></tr>
-<tr><td>Edit이 <b>앵커 중복</b>으로 실패 · "non-unique match"</td><td><b>Read + Write</b> (공식적으로 제시된 대안) · 확인은 Grep</td></tr>
+<tr><td>Edit이 <b>앵커 중복</b>으로 실패 · "non-unique match"</td><td>앞뒤 내용을 포함한 더 긴 기준 문장 지정 · 전부 바꿀 때는 <code>replace_all</code> · 시험 가이드에 적힌 대안은 <b>Read + Write</b></td></tr>
 <tr><td>파일 일부만 정확히 수정 · 앵커가 유일함</td><td><b>Edit</b></td></tr>
 <tr><td>파일 전체 내용이 필요 · 통째로 새로 씀</td><td><b>Read</b> / <b>Write</b></td></tr>
 <tr><td>테스트 실행·빌드·git 등 명령 실행</td><td><b>Bash</b></td></tr>
@@ -19,7 +19,7 @@ cheat: `
 <p style="font-size:13px;color:var(--muted)">실제 시험 보기에는 아래 이름들이 별도 설명 없이 등장함. 각각의 뜻을 한 줄로 정확히 알고 있으면 보기를 해석할 수 있음.</p>
 <table>
 <tr><th>표기</th><th>뜻</th></tr>
-<tr><td><code>Read / Write / Edit</code></td><td>파일 읽기 / 통째 쓰기 / <b>유일한 앵커 텍스트</b>로 부분 수정 (앵커가 여러 곳이면 실패하므로 Read+Write로 처리)</td></tr>
+<tr><td><code>Read / Write / Edit</code></td><td>파일 읽기 / 통째 쓰기 / <b>유일한 앵커 텍스트</b>로 부분 수정 (앵커가 여러 곳이면 실패. 더 긴 기준 문장을 지정하거나 Read+Write로 처리)</td></tr>
 <tr><td><code>Grep / Glob / Bash</code></td><td>파일 <b>속 내용</b> 검색 / 파일 <b>이름·경로 패턴</b>으로 찾기 / 터미널 명령 실행</td></tr>
 <tr><td><code>claude -p</code> (=--print)</td><td><b>비대화형</b> 1회 실행. CI에서 이 플래그가 없으면 입력 대기 상태로 정지함</td></tr>
 <tr><td><code>--output-format json</code> · <code>--json-schema</code></td><td>기계가 파싱할 JSON 출력 / 그 JSON의 형태 강제</td></tr>
@@ -31,26 +31,26 @@ cheat: `
 <tr><td><code>stop_reason</code> 7값</td><td>end_turn(끝)·tool_use(도구 요청)·max_tokens(잘림)·stop_sequence·pause_turn(이어서)·refusal(거부)·model_context_window_exceeded</td></tr>
 <tr><td><code>tool_use / tool_result / isError</code></td><td>모델의 도구 요청 블록 / 애플리케이션이 돌려주는 결과 블록 / 그 결과가 에러라는 표시</td></tr>
 <tr><td><code>CLAUDE.md · .claude/rules/ · .mcp.json · settings.local.json</code></td><td>항상 로드 지침 / paths 글롭 조건부 규칙(conditional rules) / 팀 공유 MCP 설정 / <b>커밋 안 되는</b> 프로젝트 개인 설정</td></tr>
-<tr><td><code>context: fork · allowed-tools · argument-hint</code></td><td>스킬 격리 실행 / 도구 허용 목록(강제) / 인자 힌트(<b>강제 아님</b>)</td></tr>
+<tr><td><code>context: fork · allowed-tools · disallowed-tools · argument-hint</code></td><td>본 대화와 분리된 공간에서 스킬 실행 / 승인 요청 없이 쓸 도구 지정 / 쓸 수 없는 도구 지정 / 스킬 이름 뒤에 적을 내용 안내(<b>강제 아님</b>)</td></tr>
 <tr><td><code>custom_id · nullable · enum · strict</code></td><td>배치 요청-응답 짝 맞추기 / 비워도 되는 칸 / 정해진 값 중 선택 / 문법만 보장(의미 오류는 막지 못함)</td></tr>
 </table>
 
 <h4>숫자 암기표</h4>
 <table>
 <tr><th>항목</th><th>값</th></tr>
-<tr><td>시험</td><td><b>60문항 · 120분</b> · 시나리오 6개 중 <b>4개 랜덤</b> · 합격 <b>720</b>/1000 · 유효 <b>12개월</b> · 답해야 다음 문항 진행(건너뛰기 불가)</td></tr>
+<tr><td>시험</td><td><b>60문항 · 120분</b> · 시나리오 6개 중 <b>4개 랜덤</b> · 합격 <b>720</b>/1000 · 유효 <b>12개월</b></td></tr>
 <tr><td>도메인 가중치</td><td>D1 <b>27%</b> · D3 20% · D4 20% · D2 18% · D5 15%</td></tr>
-<tr><td>Batches API</td><td>비용 <b>50% 절감</b> · 처리 <b>최대 24시간</b> · <b>SLA 없음</b> · 요청 내 멀티턴 도구 호출 불가 · 짝 맞추기는 custom_id</td></tr>
+<tr><td>Batches API</td><td>비용 <b>50% 절감</b> · 처리 <b>최대 24시간</b> · <b>SLA 없음</b> · 내 프로그램에서 실행하는 도구의 결과를 요청 중간에 돌려주는 흐름 불가(서버 도구는 동작) · 짝 맞추기는 custom_id</td></tr>
 <tr><td>도구 개수 감각</td><td>역할당 <b>4~5개</b>가 적정함. 18개면 도구 선택 신뢰도가 떨어짐</td></tr>
-<tr><td>few-shot</td><td>애매한 케이스 <b>2~4개</b> + 선택 이유 포함</td></tr>
+<tr><td>few-shot</td><td>애매한 경우의 예시 + 선택 이유 포함 · 공식 문서 권장 개수 <b>3~5개</b> · 시험 가이드 표현은 2~4개</td></tr>
 </table>
 
 <h4>위치 암기표: 설정을 어디에 두는가</h4>
 <table>
 <tr><th>항목</th><th>팀 공유</th><th>개인</th></tr>
-<tr><td>슬래시 커맨드</td><td><code>.claude/commands/</code></td><td><code>~/.claude/commands/</code></td></tr>
-<tr><td>스킬</td><td><code>.claude/skills/</code> (SKILL.md)</td><td><code>~/.claude/skills/</code> (다른 이름으로)</td></tr>
-<tr><td>MCP 서버</td><td><code>.mcp.json</code> + <code>\${ENV_VAR}</code></td><td><code>~/.claude.json</code></td></tr>
+<tr><td>슬래시 커맨드 (스킬로 통합. 기존 파일도 동작)</td><td><code>.claude/commands/</code></td><td><code>~/.claude/commands/</code></td></tr>
+<tr><td>스킬</td><td><code>.claude/skills/</code> (SKILL.md)</td><td><code>~/.claude/skills/</code></td></tr>
+<tr><td>MCP 서버</td><td><code>.mcp.json</code> + <code>\${ENV_VAR}</code> (project 범위)</td><td><code>~/.claude.json</code> (user 범위는 모든 프로젝트, 기본값 local 범위는 이 프로젝트에서만)</td></tr>
 <tr><td>항상 로드 지시</td><td>프로젝트 <code>CLAUDE.md</code> (+디렉토리)</td><td><code>~/.claude/CLAUDE.md</code></td></tr>
 <tr><td>조건부 규칙</td><td colspan="2"><code>.claude/rules/</code> + frontmatter <code>paths: ["글롭"]</code>. 여러 폴더에 흩어진 파일에는 <code>**/*.test.tsx</code></td></tr>
 </table>
@@ -58,10 +58,10 @@ cheat: `
 <h4>플래그·명령 암기표</h4>
 <ul>
 <li><code>-p</code> (<code>--print</code>): 비대화형 실행이며 CI에서 필수임. 없으면 입력 대기 상태로 정지함</li>
-<li><code>--output-format json</code> + <code>--json-schema</code>: 기계 파싱용 구조화 출력(structured output)</li>
-<li><code>--resume &lt;세션이름&gt;</code>: 세션 이어가기 / <code>fork_session</code>: 공통 기반에서 분기 비교</li>
+<li><code>--output-format json</code> + <code>--json-schema</code>: 기계 파싱용 구조화된 출력(structured output)</li>
+<li><code>--continue</code>: 가장 최근 세션 이어가기 / <code>--resume &lt;세션&gt;</code>: 지정한 세션 이어가기 / <code>fork_session</code>: 공통 기반에서 분기 비교</li>
 <li><code>/memory</code>: 로드된 메모리 파일 확인(행동 불일치 진단) / <code>/compact</code>: 탐색이 길어진 뒤 대화 압축</li>
-<li>스킬 frontmatter 3종: <code>context: fork</code>(격리) · <code>allowed-tools</code>(도구 제한) · <code>argument-hint</code>(인자 요구)</li>
+<li>스킬 설정 항목: <code>context: fork</code>(분리된 공간에서 실행) · <code>allowed-tools</code>(승인 요청 없이 쓸 도구) · <code>disallowed-tools</code>(쓸 수 없는 도구) · <code>argument-hint</code>(입력 안내 문구)</li>
 </ul>
 
 <h4>stop_reason</h4>
@@ -85,6 +85,7 @@ cheat: `
 <ul>
 <li><code>"auto"</code>는 텍스트 응답 허용(도구 제공 시 기본값) · <code>"any"</code>는 어떤 도구든 강제 · <code>{"type":"tool","name":"..."}</code>는 특정 도구 강제 · <code>"none"</code>은 도구 금지(공식 4번째 값이며 도구 미제공 시 기본값)</li>
 <li>실제 API 표기는 전부 객체 형태(<code>{"type":"auto"}</code>)이고 가이드가 축약 표기를 씀. any 또는 특정 도구를 강제하면 자연어 설명 없이 곧장 도구를 호출함</li>
+<li>모델 조건: any와 특정 도구 지정은 Claude Fable 5.2, Opus 5.5, Sonnet 5.5에서 400 오류. 이 모델에서는 auto와 strict: true를 함께 쓰거나 JSON 출력 사용 (2026-11-23 확인)</li>
 </ul>
 
 <h4>공식 문서와 대조해 확인한 세부 사항</h4>
@@ -103,7 +104,7 @@ cheat: `
 <tr><td>도구 오선택 "첫 조치"</td><td>description 확충 (입력·예시·경계)</td></tr>
 <tr><td>결과 이상 + 분해 로그 제시</td><td>코디네이터 분해 수정 (하류 탓 금지)</td></tr>
 <tr><td>합성이 발견 무시</td><td>프롬프트에 명시 전달 (자동 상속 없음)</td></tr>
-<tr><td>지연·왕복 과다</td><td>한 응답 병렬 Task / 85%엔 scoped 도구</td></tr>
+<tr><td>지연·왕복 과다</td><td>한 응답 병렬 Agent 호출 / 85%엔 scoped 도구</td></tr>
 <tr><td>형식이 일정하지 않음</td><td>입출력 예시 / few-shot 형식 데모</td></tr>
 <tr><td>없는 값을 지어냄(환각)</td><td>nullable + enum other/unclear</td></tr>
 <tr><td>재시도 무한</td><td>원인 판별: 형식 오류(재시도 O) vs 정보 부재(재시도 X)</td></tr>
@@ -121,7 +122,7 @@ cheat: `
 <li><b>가짜 지표:</b> 감정 점수·보정하지 않은 자기 신뢰도·턴 수로 판단하는 보기</li>
 <li><b>과잉 설계:</b> 분류기 학습, 라우팅 레이어, 파이프라인 복제, 파인튜닝</li>
 <li><b>실패 은폐:</b> 빈 결과를 성공으로 처리, "unavailable" 한 마디로 끝내기, 전체 작업 중단</li>
-<li><b>같은 세션 리뷰:</b> extended thinking이나 강한 지시로 자기 리뷰를 개선하려는 시도</li>
+<li><b>같은 세션 리뷰:</b> 사고(thinking) 기능이나 강한 지시로 자기 리뷰를 개선하려는 시도</li>
 <li><b>존재하지 않는 기능:</b> CLAUDE_HEADLESS, --batch 플래그, 세션 공유 메모리, 도구 배열 순서 = 실행 순서</li>
 <li><b>범위 밖 해법:</b> 벡터 DB, Kubernetes, RLHF, OAuth 구현 (파트 0의 비출제 범위 레슨에서 다룸)</li>
 <li><b>일반적으로는 맞지만 이 문제의 조건에서는 틀린 보기:</b> 맞는 서술로 시작해 틀린 결론에 도달함 ("배치는 보통 빨리 끝나니까...", "파일 다시 읽으면 최신이니까...")</li>
@@ -137,10 +138,10 @@ glossary: [
  {c:"기초", t:"글롭 패턴", d:"파일 경로 패턴. *는 한 단계 이름, **는 모든 하위 폴더를 뜻함. **/*.test.tsx는 위치와 무관하게 모든 테스트 파일을 가리킴."},
  {c:"기초", t:"CI/CD · PR", d:"코드를 올릴 때마다 자동으로 검사하고 배포하는 자동화 절차 / 코드 변경 승인 요청서."},
  {c:"D1", t:"에이전틱 루프", d:"요청, stop_reason 확인, 도구 실행, 결과를 대화에 추가, 반복의 순서로 진행됨. 도구 결과(tool result)를 대화에 추가하는 데까지가 1회임."},
- {c:"D1", t:"stop_reason", d:"응답이 멈춘 이유를 알려주는 값으로 응답마다 함께 반환됨. tool_use(계속), end_turn(종료), max_tokens(한도), stop_sequence(지정 문자열)."},
+ {c:"D1", t:"stop_reason", d:"답이 멈춘 이유를 알려 주는 값. 답마다 함께 반환. tool_use(도구 실행 후 계속), end_turn(종료), max_tokens(길이 한도), stop_sequence(지정 문자열), pause_turn(서버 도구 반복 한도. 이어서 요청), refusal(거절), model_context_window_exceeded(컨텍스트 창 가득 참)."},
  {c:"D1", t:"대화 히스토리", d:"role(user/assistant)이 붙은 메시지 목록. 모델은 매번 전체를 다시 읽음. 모델의 기억이 아니라 요청마다 함께 보내는 기록임."},
  {c:"D1", t:"허브-앤-스포크", d:"코디네이터가 모든 서브에이전트(subagent) 통신과 에러, 정보 흐름을 중계하는 구조. 관측성과 일관성, 통제가 이 구조를 쓰는 이유임."},
- {c:"D1", t:"Task 도구 / allowedTools", d:"서브에이전트를 만드는 공식 수단 / 에이전트가 쓸 수 있는 도구 목록. Task 도구가 없으면 위임이 불가능함."},
+ {c:"D1", t:"Agent 도구 / allowedTools", d:"서브에이전트를 만드는 공식 수단 / 에이전트가 쓸 수 있는 도구 목록. Agent 도구가 없으면 위임이 불가능함."},
  {c:"D1", t:"AgentDefinition", d:"서브에이전트를 정의하는 설정. 설명, 시스템 프롬프트, 사용 가능한 도구 제한을 담음."},
  {c:"D1", t:"prompt chaining / 동적 분해", d:"미리 정해 둔 순차 단계(예측 가능한 반복 작업) / 앞 단계의 발견이 다음 단계를 정하는 방식(범위가 열린 과제)."},
  {c:"D1", t:"훅 (PostToolUse / PreToolUse)", d:"실행 흐름의 정해진 지점에서 조건 없이 실행되는 코드. Post는 결과 변환(정규화·트리밍), Pre는 호출 차단과 리다이렉트를 담당함."},
@@ -150,15 +151,15 @@ glossary: [
  {c:"D2", t:"isError / errorCategory / isRetryable", d:"MCP 실패 신호 / 실패 유형(transient·validation·business·permission) / 재시도할 가치가 있는지를 나타내는 불리언 값."},
  {c:"D2", t:"tool_choice", d:"auto는 자율 판단, any는 어떤 도구든 호출 강제, 특정 도구 지정은 호출 순서까지 보장함. 요구 수준에 맞춰 선택함."},
  {c:"D2", t:"MCP / MCP 리소스", d:"외부 시스템 연결 표준 프로토콜 / 행동(도구)이 아니라 콘텐츠 카탈로그(스키마·문서 목록)를 노출하는 기능. 탐색용 도구 호출을 줄임."},
- {c:"D2", t:"내장 도구 6종", d:"Grep은 내용 검색, Glob은 이름 패턴, Read/Write는 전체 읽기와 쓰기, Edit은 고유 앵커 매칭 수정(실패 시 Read+Write), Bash는 셸 명령 실행."},
- {c:"D3", t:"CLAUDE.md 3계층", d:"사용자 범위(~/.claude, 본인에게만 적용), 프로젝트 범위(팀 공유), 디렉토리 범위. 세 계층이 함께 로드되며 충돌 시 더 구체적인 위치가 우선하는 경향이 있음."},
+ {c:"D2", t:"내장 도구 6종", d:"Grep은 내용 검색, Glob은 이름 패턴, Read와 Write는 전체 읽기와 쓰기, Edit은 파일에 한 번만 나오는 문장을 찾아 수정, Bash는 명령 실행. Edit이 실패하면 더 긴 기준 문장 지정, replace_all, 또는 Read와 Write."},
+ {c:"D3", t:"CLAUDE.md 3계층", d:"사용자 위치(~/.claude, 나에게만 적용), 프로젝트 위치(팀 공유), 폴더 위치. 해당하는 파일을 모두 이어 붙여 로드. 지시가 서로 어긋나면 Claude가 임의로 하나를 고를 수 있으므로 어긋나는 지시를 만들지 않는 것이 해결책."},
  {c:"D3", t:"@import", d:"CLAUDE.md에서 외부 표준 파일을 참조로 포함함. 원본 파일은 하나만 두고 필요한 곳에서 선택적으로 불러옴."},
  {c:"D3", t:".claude/rules/ + paths", d:"글롭에 매칭되는 파일을 편집할 때만 로드되는 조건부 규칙(conditional rules). 토큰을 절약하고 무관한 규칙의 간섭을 없앰."},
  {c:"D3", t:"plan mode / Explore", d:"파일을 수정하지 않고 탐색과 설계부터 하는 모드(대규모 작업, 접근법이 여럿인 경우, 아키텍처 결정) / 길어지는 탐색을 격리하고 요약만 돌려주는 서브에이전트."},
- {c:"D3", t:"context: fork / allowed-tools / argument-hint", d:"스킬을 격리해 실행 / 스킬 실행 중 도구 제한 / 인자가 없으면 사용자에게 요구. 세 가지 모두 스킬 frontmatter 항목임."},
+ {c:"D3", t:"context: fork / allowed-tools / argument-hint", d:"본 대화와 분리된 공간에서 스킬 실행 / 승인 요청 없이 쓸 도구 지정 / 스킬 이름 뒤에 적을 내용을 입력창에 보여 주는 안내 문구. 도구를 막는 설정은 disallowed-tools. 모두 SKILL.md 설정 구역의 항목."},
  {c:"D3", t:"인터뷰 패턴", d:"구현 전에 Claude가 먼저 질문하게 해서 놓친 고려사항(캐시 무효화, 실패 모드)을 찾아냄. 익숙하지 않은 도메인에서 사용함."},
  {c:"D4", t:"오탐 (false positive)", d:"문제가 아닌 것을 문제라고 보고하는 것. 오탐이 많은 범주 하나가 결과 전체에 대한 신뢰를 떨어뜨림. 해당 범주를 일시 비활성화하고 기준을 개선함."},
- {c:"D4", t:"few-shot", d:"예시를 제시해 판단 기준을 학습시키는 방법. 애매한 케이스 2~4개와 선택 이유를 함께 주면 새로운 패턴으로 일반화됨."},
+ {c:"D4", t:"few-shot", d:"예시로 판단 기준을 전달하는 방법. 애매한 경우의 예시와 선택 이유를 함께 제시. 공식 문서 권장 개수는 3~5개."},
  {c:"D4", t:"Pydantic", d:"파이썬 형식 검사기. 출력이 스키마에 맞는지 대조하고 어긋난 지점을 알려줌. 재시도 시 피드백 재료로 사용함."},
  {c:"D4", t:"재시도 3종 세트", d:"원본 문서, 실패한 출력, 구체적 오류를 함께 넣어 재요청함. 정보가 없어서 실패한 경우는 재시도로 해결되지 않으므로 null 처리하거나 사람에게 전달함."},
  {c:"D4", t:"Batches API / custom_id / SLA", d:"비용 50% 절감에 최대 24시간이 걸리고 지연 보장이 없는 처리 방식 / 요청과 응답의 짝을 맞추는 식별자 / 처리 완료 시점에 대한 보장. 배치에는 SLA가 없음."},
@@ -171,7 +172,44 @@ glossary: [
  {c:"D5", t:"층화 표집 / 보정", d:"그룹별로 고르게 표본을 뽑아 자동화 구간을 감시하는 방법(stratified sampling) / 모델이 말한 90% 확신이 실제로 몇 %인지 정답지와 대조하는 것(calibration)."},
  {c:"D5", t:"claim-source 매핑", d:"주장, 증거 발췌, 출처, 발행일을 하나로 묶어 두는 것. 요약을 거치더라도 이 묶음을 보존하고 병합해야 출처가 남음."},
  {c:"D5", t:"커버리지 주석", d:"리포트에서 근거가 충분한 발견과 자료가 부족한 영역을 구분해 표시함. 확인된 범위를 있는 그대로 밝히기 위한 장치임."},
+ {c:"기초", t:"다음 토큰 예측 (next token prediction)", d:"앞의 내용 뒤에 올 가능성이 높은 말을 이어 쓰는 방식. 생성형 AI가 답을 만드는 원리. 매끄러운 글과 지어낸 내용이 같은 원리에서 나옴."},
+ {c:"기초", t:"지식 기준 시점", d:"학습 자료가 끝나는 시점. 그 뒤의 일은 웹 검색 같은 도구 없이 알 수 없음."},
+ {c:"기초", t:"조종 가능성 (steerability)", d:"지시에 따라 답을 바꾸는 성질. 짧고 구체적이고 확인 가능한 지시에서 강하고 긴 추론이나 모호한 지시에서 약함."},
+ {c:"기초", t:"4D 프레임워크", d:"AI와 함께 일할 때 필요한 네 가지 역량. 위임(Delegation), 설명(Description), 분별(Discernment), 책임(Diligence)."},
+ {c:"기초", t:"진입점 (entry point)", d:"Claude 앱에서 일을 시작하는 곳. 대화(Chat), 프로젝트(Projects), 아티팩트(Artifacts), 리서치(Research) 네 가지."},
+ {c:"D1", t:"Managed Agents", d:"Anthropic이 반복 실행과 실행 환경을 운영해 주는 에이전트 서비스. 구성 요소는 에이전트, 환경, 세션, 이벤트."},
+ {c:"D1", t:"Agent SDK", d:"Claude Code의 도구, 권한, 세션, 훅을 내 프로그램에서 쓰게 해 주는 개발 도구. claude -p는 Agent SDK를 명령어로 쓰는 방식."},
+ {c:"D2", t:"서버 도구 (server tools)", d:"Anthropic 서버에서 실행되는 도구. 웹 검색, 웹 페이지 가져오기, 코드 실행, 도구 검색. 내 프로그램이 도구를 실행할 필요 없음."},
+ {c:"D2", t:"Agent Skills", d:"업무 과정과 참고 자료를 폴더로 묶어 Claude가 필요할 때 불러 쓰는 기능. 이름과 설명은 항상, 본문은 필요할 때 로드."},
+ {c:"D3", t:"자동 메모리", d:"Claude가 작업 중에 배운 내용을 스스로 적어 두는 메모. 파일 이름은 MEMORY.md. 세션 시작 시 처음 200줄까지 로드."},
+ {c:"D3", t:"auto 모드", d:"분류 모델이 작업을 검토하고 진행 여부를 판단하는 권한 모드."},
+ {c:"D4", t:"JSON 출력 (JSON outputs)", d:"output_config.format에 넣은 스키마로 답 전체를 양식에 맞추는 기능. 도구 정의가 필요 없음."},
+ {c:"D4", t:"엄격한 도구 사용 (strict tool use)", d:"도구 정의에 strict: true를 넣어 도구 입력값이 스키마와 일치하도록 보장하는 기능."},
+ {c:"D4", t:"적응형 사고 (adaptive thinking)", d:"질문의 난이도에 따라 추론할지와 얼마나 추론할지를 Claude가 결정하는 방식."},
+ {c:"D4", t:"effort", d:"추론의 깊이를 정하는 설정. low, medium, high(기본값), xhigh, max. 설정 위치는 output_config."},
+ {c:"D5", t:"압축 (compaction)", d:"오래된 대화를 Anthropic 서버가 요약으로 교체하는 API 기능."},
+ {c:"D5", t:"컨텍스트 편집 (context editing)", d:"오래된 도구 결과를 서버가 비우는 API 기능."},
+ {c:"D5", t:"메모리 도구 (memory tool)", d:"Claude가 파일에 정보를 적고 다시 읽는 도구. 파일은 내 저장 공간에 보관."},
 ],
+
+courses: `
+<p style="font-size:13px;color:var(--muted)">Anthropic Partner Academy의 Claude Architect 학습 경로. 강의 11개. 열람하려면 파트너 계정 로그인 필요. 확인 날짜 2026-11-23.</p>
+<table>
+<tr><th>강의</th><th>내용</th><th>이 사이트의 위치</th></tr>
+<tr><td>AI Capabilities and Limitations</td><td>생성형 AI의 네 가지 성질과 한계</td><td>Part 기초 CH 1</td></tr>
+<tr><td>AI Fluency for Builders</td><td>위임, 설명, 분별, 책임</td><td>Part 기초 CH 2</td></tr>
+<tr><td>Claude Platform &amp; Model Foundations</td><td>프롬프트 작성 전 네 가지 선택</td><td>Part 기초 CH 3</td></tr>
+<tr><td>Choosing the right Claude model</td><td>모델 선택</td><td>Part 기초 CH 4</td></tr>
+<tr><td>Claude Platform 101</td><td>API, 에이전트 루프, 도구, 사고, 컨텍스트 관리, Managed Agents</td><td>Part 1, Part 2, Part 4, Part 5</td></tr>
+<tr><td>Claude Code 101</td><td>Claude Code 사용법, CLAUDE.md, 서브에이전트, 스킬, MCP, 훅</td><td>Part 3</td></tr>
+<tr><td>Introduction to MCP</td><td>MCP 서버와 클라이언트 만들기</td><td>Part 2 CH 4</td></tr>
+<tr><td>Introduction to subagents</td><td>서브에이전트 만들기와 설계</td><td>Part 1 CH 3, CH 4</td></tr>
+<tr><td>Product Foundations</td><td>고객사에 Claude를 도입할 때의 제품 이해</td><td>다루지 않음</td></tr>
+<tr><td>Deployment Architecture</td><td>고객사 도입 구조 설계</td><td>다루지 않음</td></tr>
+<tr><td>Delivery Methodology</td><td>고객사 도입 진행 절차</td><td>다루지 않음</td></tr>
+</table>
+<ul><li>학습 경로 주소: <a href="https://anthropic-partners.skilljar.com/path/claude-architect" target="_blank" rel="noopener">Anthropic Partner Academy의 Claude Architect 학습 경로</a></li></ul>
+`,
 
 principles: `
 <ul>

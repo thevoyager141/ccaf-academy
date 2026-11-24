@@ -7,68 +7,123 @@ window.CCAF_CONTENT.p1 = {
   { id:"p1c1", ch:"CH 1", title:"에이전트 루프의 생명주기 (1.1)",
     steps:[
       {type:"concept", kind:"PART BRIEFING · 파트 설명", h:"PART 01. 스스로 판단하고 실행하는 구조",
-       html:`<p class="lead">이 파트가 다루는 영역은 <strong>Agentic Architecture & Orchestration</strong>(에이전트 아키텍처와 오케스트레이션)임.</p>
-        <h4>파트 프로필</h4>
-        <ul>
-          <li>출제 비중: <strong>27%, 약 16문항</strong>(5개 도메인 중 최대)</li>
-          <li>출제 비중이 가장 크므로 학습 우선순위가 가장 높은 파트임. 이 영역에서 실점하면 다른 파트로 만회하기 어려움</li>
-          <li>구성: 챕터 7개와 미니테스트, 약 2시간 분량(세션 S2~S5)</li>
-        </ul>
-        <h4>다루는 범위</h4>
-        <ul>
-          <li><strong>에이전트 루프(agent loop)</strong>: 작업이 끝날 때까지 반복되는 실행 주기 (Ch1)</li>
-          <li><strong>작업 분해 전략</strong>: 큰 작업을 하위 작업으로 나누는 방식 (Ch2)</li>
-          <li><strong>멀티에이전트</strong>: 코디네이터(coordinator)와 서브에이전트(subagent)의 역할 분담, 컨텍스트 전달 (Ch3~4)</li>
-          <li><strong>강제 패턴과 훅(hook)</strong>: 규칙 위반을 코드로 차단하는 방법 (Ch5~6)</li>
-          <li><strong>세션 관리</strong>: 이전 작업을 이어받는 방법(<code>--resume</code>, fork) (Ch7)</li>
-        </ul>
-        <div class="callout">🎯 이 파트의 공통 질문: <b>"권장 설계는 무엇이고, 겉보기에 그럴듯한 안티패턴은 무엇인가."</b> 프로그램으로 강제할 규칙과 프롬프트로 지시할 규칙을 구분하는 판단이 반복 출제됨.</div>`},
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"기본 용어: 대화 히스토리와 stop_reason",
-       html:`<p class="lead">이 레슨에 필요한 용어는 두 개임. 그에 앞서 코스 전체에서 쓰는 기본 용어를 먼저 정리함.</p>
-        <div class="callout">📖 용어 카드. <b>토큰(token)</b>: 모델이 글을 세는 단위(대략 단어 조각 하나). 분량과 비용, 속도가 모두 토큰 수로 계산됨. <b>컨텍스트 창(context window)</b>: 모델이 한 번에 보고 있는 내용 전체(현재 대화와 전달받은 자료). 창 크기는 한 번에 담을 수 있는 토큰 한도임. 두 용어는 이후 모든 파트에서 설명 없이 등장하므로 여기서 정리해 둘 것.</div>
-        <h4>① 대화 히스토리</h4>
-        <ul>
-          <li>Claude API에서 대화 히스토리(conversation history)는 역할(user/assistant)이 붙은 <strong>메시지 목록</strong>임</li>
-          <li>Claude는 매번 <strong>이 목록 전체를 다시 읽고</strong> 다음 응답을 생성함</li>
-          <li>즉 기억이 아니라 <strong>기록을 읽는 방식</strong>임. 기록에 없는 내용은 알지 못함</li>
-        </ul>
-        <h4>② stop_reason</h4>
-        <ul>
-          <li>Claude 응답마다 붙는 <strong>응답을 중단한 이유를 나타내는 라벨</strong>임</li>
-          <li><code>"tool_use"</code>: 도구 실행이 필요해서 중단했다는 뜻. 작업이 아직 끝나지 않은 상태임</li>
-          <li><code>"end_turn"</code>: 할 응답을 모두 마쳤다는 뜻. 작업이 끝난 상태임</li>
-          <li>보조 값 두 개도 알아 둘 것. <code>"max_tokens"</code>: 출력 길이 한도에 도달함(오류 처리, 한도를 늘려 재시도, 부분 결과 수용 중에서 선택). <code>"stop_sequence"</code>: 미리 지정한 중단 문자열을 감지함</li>
-          <li>단, <strong>루프 종료의 공식 신호는 end_turn 하나</strong>임. 나머지 두 값은 각각 별도의 처리 분기를 갖는 상태값임</li>
-        </ul>
-        <div class="callout">📖 용어 카드. <b>API</b>: 프로그램끼리 요청과 응답을 주고받는 통로. "요청을 보낸다"는 것은 대화 기록 전체와 사용 가능한 도구 목록을 Claude에게 전송한다는 뜻임.</div>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"에이전트 루프가 반복되는 순서",
-       html:`__MAP:loop__<p class="lead">위의 두 요소를 합친 것이 <strong>에이전트 루프</strong>임. 에이전트는 한 번 응답하고 끝나는 것이 아니라, 작업이 끝날 때까지 같은 단계를 반복함.</p>
-        <div class="loopdia">
-          <span class="nd">① 요청 보내기<small>대화 기록 전체</small></span><span class="ar">→</span>
-          <span class="nd hot">② stop_reason 확인<small>tool_use? end_turn?</small></span><span class="ar">→</span>
-          <span class="nd">③ 도구 실행<small>Claude가 요청한 도구</small></span><span class="ar">→</span>
-          <span class="nd">④ 결과를 대화에 추가<small>다시 ①로</small></span>
-        </div>
-        <p>위 그림은 순서도임. 화살표는 실행 순서를 뜻하며, ④가 끝나면 다시 ①로 돌아가 ②에서 <code>"end_turn"</code>이 나올 때까지 같은 순서를 반복함.</p>
-        <h4>핵심 규칙 두 가지</h4>
-        <ul>
-          <li>종료 판단의 공식 기준은 <strong>stop_reason 하나</strong>임. <code>"end_turn"</code>이면 멈추고, <code>"tool_use"</code>면 도구를 실행한 뒤 계속함(공식 문서의 루프도 "while stop_reason == tool_use" 형태임)</li>
-          <li><strong>④ 결과 추가까지가 한 주기</strong>임. Claude의 요청은 <code>tool_use</code> 블록(도구 이름과 입력)으로 오고, 도구 결과(tool result)는 <code>tool_result</code> 블록에 담아 user 메시지로 돌려보냄. 이 블록이 없으면 Claude는 결과를 보지 못함</li>
-        </ul>
-        <h4>다음 행동을 정하는 주체: 모델 주도와 사전 결정 트리</h4>
-        <ul>
-          <li><strong>모델 주도(model-driven)</strong>: 다음에 호출할 도구를 <strong>Claude가 문맥을 보고 매번 판단함</strong>. 에이전트 루프의 핵심 성질임</li>
-          <li><strong>사전 결정 트리(pre-configured decision tree)</strong>: 도구와 순서를 <strong>코드가 미리 고정함</strong>. 동작이 예측 가능하지만 계획에 없던 상황에는 대응하지 못함</li>
-          <li>구분 기준: 이번 주기에 무엇을 할지 <strong>누가</strong> 정하는가. 모델이 정하면 에이전트, 코드가 정하면 고정 워크플로임(1.6의 프롬프트 체이닝 계열)</li>
-          <li>결정성이 반드시 필요한 지점(정책, 검증)에서는 모델 주도를 버리는 것이 아니라 <strong>훅과 게이트로 보완함</strong>(1.4, 1.5)</li>
-        </ul>
-        <h4>안티패턴 세 가지(오답 선택지로 자주 출제됨)</h4>
-        <ul>
-          <li>반복 횟수 상한을 <strong>주 종료 조건</strong>으로 사용함. 상한은 보조 안전장치일 때만 타당함</li>
-          <li>응답에 <strong>텍스트가 있는지</strong>로 완료를 판단함. 도구 요청과 텍스트는 한 응답에 함께 나올 수 있음</li>
-          <li>"완료했습니다" 같은 <strong>자연어 표현을 파싱해</strong> 판단함. 표현이 바뀌면 동작하지 않음</li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: 보조 안전장치를 주 종료 조건으로 바꿔 놓은 선택지가 자주 틀리는 지점임.</div>`},
+   html:`<h4>① 다루는 영역</h4>
+<ul>
+<li>에이전트(agent): 목표를 받으면 필요한 작업을 스스로 골라 끝날 때까지 실행하는 AI 프로그램</li>
+<li>이 파트의 주제: 에이전트 한 개의 작동 방식과 에이전트 여러 개의 역할 분담</li>
+<li>영어 이름: Agentic Architecture &amp; Orchestration</li>
+</ul>
+<h4>② 챕터 구성</h4>
+<table>
+<tr><th>챕터</th><th>주제</th></tr>
+<tr><td>CH 1</td><td>에이전트 루프(agent loop). 작업이 끝날 때까지 반복되는 실행 순서</td></tr>
+<tr><td>CH 2</td><td>작업 분해. 큰 작업을 작은 작업으로 나누는 방식</td></tr>
+<tr><td>CH 3, CH 4</td><td>코디네이터(coordinator)와 서브에이전트(subagent)의 역할 분담과 자료 전달</td></tr>
+<tr><td>CH 5, CH 6</td><td>규칙 위반을 프로그램으로 막는 방법. 게이트와 훅(hook)</td></tr>
+<tr><td>CH 7</td><td>세션 관리. 이전 작업을 이어받는 방법</td></tr>
+<tr><td>CH 8</td><td>에이전트를 실행하는 네 가지 방법</td></tr>
+</table>
+<h4>③ 파트 전체에 쓰는 판단 기준</h4>
+<ul>
+<li>반드시 지켜야 하는 규칙: 프로그램으로 강제</li>
+<li>권장 사항과 문체: 프롬프트로 지시</li>
+<li>자격시험 출제 비중: 27%. 다섯 영역 중 최대</li>
+</ul>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"대화 기록과 중지 이유(stop_reason)",
+   html:`<h4>① 대화 기록</h4>
+<ul>
+<li>Claude에 요청을 보낼 때 함께 보내는 메시지 목록. 영어 이름은 conversation history</li>
+<li>메시지마다 말한 쪽 표시. 사용자는 user, Claude는 assistant</li>
+<li>Claude는 요청을 받을 때마다 목록 전체를 처음부터 읽고 답을 작성</li>
+<li>목록에 없는 내용은 Claude가 알 수 없음</li>
+</ul>
+<div class="fig"><b>대화 기록 예시</b><br>
+user: "주문 1024번 배송 상태 알려 줘"<br>
+assistant: 주문 조회 도구 호출&nbsp;&nbsp;<span class="an">← 도구가 필요해서 멈춤</span><br>
+user: 도구 결과 "배송 중. 내일 도착 예정"&nbsp;&nbsp;<span class="an">← 결과를 기록에 추가</span><br>
+assistant: "내일 도착 예정입니다."&nbsp;&nbsp;<span class="an">← 답을 마침</span>
+</div>
+<h4>② 중지 이유</h4>
+<ul>
+<li>Claude의 답마다 붙는 값. 답을 멈춘 이유를 표시</li>
+<li>항목 이름: <code>stop_reason</code></li>
+</ul>
+<table>
+<tr><th>값</th><th>뜻</th><th>다음 행동</th></tr>
+<tr><td><code>tool_use</code></td><td>도구 실행이 필요해서 멈춤</td><td>도구를 실행하고 결과를 돌려보내기</td></tr>
+<tr><td><code>end_turn</code></td><td>할 답을 모두 마침</td><td>작업 종료</td></tr>
+<tr><td><code>max_tokens</code></td><td>답 길이 한도 도달</td><td>한도를 늘려 다시 요청. 또는 이어서 작성 요청</td></tr>
+<tr><td><code>stop_sequence</code></td><td>미리 정해 둔 중단 문자열 출력</td><td>정해 둔 처리 진행</td></tr>
+<tr><td><code>pause_turn</code></td><td>Anthropic 서버에서 실행하는 도구의 반복 한도 도달</td><td>받은 답을 그대로 붙여 다시 요청</td></tr>
+<tr><td><code>refusal</code></td><td>Claude가 요청을 거절</td><td>요청 내용 수정. 또는 다른 모델로 재시도</td></tr>
+<tr><td><code>model_context_window_exceeded</code></td><td>답이 컨텍스트 창을 가득 채움</td><td>잘린 답으로 처리</td></tr>
+</table>
+<ul>
+<li>반복을 계속하는 값: <code>tool_use</code></li>
+<li>작업을 마쳤다는 값: <code>end_turn</code></li>
+<li>값별 처리 방법: <a href="https://platform.claude.com/docs/ko/build-with-claude/handling-stop-reasons" target="_blank" rel="noopener">Claude 공식 문서 '중지 이유와 폴백' 페이지</a> (한국어)</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>토큰(token)</b>: Claude가 글을 세는 단위. 분량, 비용, 속도를 계산하는 기준</li>
+<li><b>컨텍스트 창(context window)</b>: Claude가 한 번에 읽을 수 있는 글의 한도. 대화 기록과 전달받은 자료가 모두 포함</li>
+<li><b>API</b>: 프로그램끼리 요청과 답을 주고받는 통로</li>
+<li><b>도구(tool)</b>: Claude가 호출할 수 있게 연결해 둔 기능. 예: 주문 조회, 파일 읽기</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"에이전트 루프의 반복 순서",
+   html:`__MAP:loop__<h4>① 반복 순서</h4>
+<div class="loopdia">
+  <span class="nd">① 요청 보내기<small>대화 기록 전체</small></span><span class="ar">→</span>
+  <span class="nd hot">② stop_reason 확인<small>tool_use? end_turn?</small></span><span class="ar">→</span>
+  <span class="nd">③ 도구 실행<small>Claude가 요청한 도구</small></span><span class="ar">→</span>
+  <span class="nd">④ 결과를 대화에 추가<small>다시 ①로</small></span>
+</div>
+<ul>
+<li>④가 끝나면 ①로 돌아가 같은 순서 반복</li>
+<li>②에서 <code>end_turn</code>이 나오면 종료</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 루프 실행 기록</div>
+1회차&nbsp;&nbsp;stop_reason: tool_use&nbsp;&nbsp;주문 조회 도구 실행<br>
+2회차&nbsp;&nbsp;stop_reason: tool_use&nbsp;&nbsp;배송 조회 도구 실행<br>
+<span class="sel">3회차&nbsp;&nbsp;stop_reason: end_turn&nbsp;&nbsp;종료. 최종 답 전달</span>
+</div>
+<p class="cap">이해를 돕기 위한 예시. 요청 세 번 만에 작업이 끝난 경우.</p>
+<h4>② 규칙 두 가지</h4>
+<ul>
+<li>계속할지 멈출지는 <code>stop_reason</code> 값으로 판단</li>
+<li>도구 결과는 반드시 대화 기록에 추가. 추가하지 않은 결과는 Claude가 볼 수 없음</li>
+</ul>
+<div class="fig"><b>도구 요청과 결과가 오가는 형태</b><br>
+Claude의 답: tool_use 블록&nbsp;&nbsp;<span class="an">← 도구 이름과 입력값</span><br>
+다음 요청: tool_result 블록&nbsp;&nbsp;<span class="an">← 도구 실행 결과. user 메시지에 담아 전송</span>
+</div>
+<ul>
+<li>Anthropic이 제공하는 개발 도구(SDK)의 도구 러너(tool runner)는 이 반복을 대신 처리</li>
+</ul>
+<h4>③ 다음 행동을 정하는 주체</h4>
+<table>
+<tr><th>방식</th><th>정하는 주체</th><th>특징</th></tr>
+<tr><td>모델 주도<br>model-driven</td><td>Claude가 상황을 보고 매번 판단</td><td>예상하지 못한 상황에 대응 가능</td></tr>
+<tr><td>사전 결정 트리<br>pre-configured decision tree</td><td>사람이 미리 작성한 순서</td><td>동작 예측 가능. 계획에 없던 상황에는 대응 불가</td></tr>
+</table>
+<ul>
+<li>에이전트 루프는 모델 주도 방식</li>
+<li>반드시 지켜야 하는 규칙이 있는 지점은 게이트와 훅으로 보완. CH 5와 CH 6의 내용</li>
+</ul>
+<h4>④ 잘못된 종료 판단</h4>
+<table>
+<tr><th>방식</th><th>문제</th></tr>
+<tr><td>반복 횟수 상한을 종료 기준으로 사용</td><td>작업이 끝나기 전에 멈추는 경우 발생. 상한은 보조 안전장치 용도</td></tr>
+<tr><td>답에 글이 있으면 종료로 판단</td><td>도구 요청과 글이 한 답에 함께 나오는 경우 존재</td></tr>
+<tr><td>"완료했습니다" 같은 표현을 찾아 판단</td><td>표현이 바뀌면 동작 불가</td></tr>
+</table>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>블록(block)</b>: 답이나 요청 안에서 내용을 종류별로 나눈 단위. 글, 도구 요청, 도구 결과가 각각 다른 블록</li>
+<li><b>SDK</b>: 프로그램을 쉽게 만들 수 있게 미리 만들어 둔 개발 도구 묶음</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Four implementations",
        q:`Four teammates each implemented the agentic loop for your support agent. Whose implementation is correct?`,
        opts:[
@@ -109,39 +164,63 @@ window.CCAF_CONTENT.p1 = {
   { id:"p1c2", ch:"CH 2", title:"작업 분해 전략 (1.6)",
     steps:[
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"작업을 나누는 두 가지 방식",
-       html:`<p class="lead">큰 작업을 에이전트에게 맡길 때 작업을 나누는 방식은 크게 두 가지임.</p>
-        <h4>① 프롬프트 체이닝(prompt chaining): 고정 순차 파이프라인</h4>
-        <ul>
-          <li>순서가 <strong>미리 정해진</strong> 단계를 차례로 실행함</li>
-          <li>예: 각 파일을 하나씩 분석한 뒤, 마지막에 파일 간 통합 검토를 수행함</li>
-          <li>어떤 단계가 필요한지 <strong>미리 예측할 수 있는 작업</strong>에 적합함</li>
-        </ul>
-        <h4>② 동적 분해(dynamic decomposition)</h4>
-        <ul>
-          <li>중간에 <strong>발견한 내용에 따라</strong> 다음에 할 일이 바뀜</li>
-          <li>예: 조사 중에 의존성(A를 고치려면 B도 함께 수정해야 하는 연결 관계)을 발견하면 계획에 새 하위 작업을 추가함</li>
-          <li>무엇이 나올지 미리 알 수 없는 <strong>열린 조사 과제</strong>에 적합함</li>
-        </ul>
-        <div class="callout">📖 용어 카드. <b>파이프라인(pipeline)</b>: 한 단계의 결과물이 다음 단계의 입력이 되도록 정해진 순서로 이어 놓은 처리 구조.</div>`},
+   html:`<h4>① 프롬프트 체이닝(prompt chaining)</h4>
+<ul>
+<li>미리 정한 단계를 순서대로 실행하는 방식</li>
+<li>앞 단계의 결과가 다음 단계의 입력</li>
+<li>맞는 작업: 필요한 단계를 시작 전에 모두 알 수 있는 작업</li>
+<li>예: 파일을 하나씩 검토한 뒤 마지막에 파일 사이의 관계 검토</li>
+</ul>
+<h4>② 동적 분해(dynamic decomposition)</h4>
+<ul>
+<li>진행하면서 알게 된 내용에 따라 다음 작업을 정하는 방식</li>
+<li>맞는 작업: 무엇이 나올지 미리 알 수 없는 조사</li>
+<li>예: A를 고치는 중에 B도 함께 고쳐야 한다는 사실을 발견하면 B 수정을 계획에 추가</li>
+</ul>
+<div class="fig"><b>두 방식 비교</b><br>
+프롬프트 체이닝: 1단계 → 2단계 → 3단계&nbsp;&nbsp;<span class="an">← 시작 전에 단계 확정</span><br>
+동적 분해: 조사 → 발견 → 새 작업 추가 → 조사&nbsp;&nbsp;<span class="an">← 발견에 따라 계획 변경</span>
+</div>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>파이프라인(pipeline)</b>: 앞 단계의 결과가 다음 단계의 입력이 되도록 순서대로 이어 놓은 처리 구조</li>
+<li><b>의존성(dependency)</b>: A를 고치려면 B도 함께 고쳐야 하는 연결 관계</li>
+</ul>
+</div>`},
       {type:"concept", kind:"TOPIC · 주제 설명", h:"작업 유형별 분해 방식 선택",
-       html:`__MAP:decomp__<p class="lead">시험은 특정 작업에 어느 방식이 맞는지를 묻는다. 판별 기준과 대표 사례 두 가지를 정리함.</p>
-        <h4>판별 기준</h4>
-        <ul>
-          <li>단계를 미리 예측할 수 있고 매번 같은 관점을 적용함: <strong>프롬프트 체이닝</strong></li>
-          <li>중간 발견이 다음 단계를 결정함: <strong>동적 분해</strong></li>
-        </ul>
-        <h4>사례 1: 대형 코드 리뷰(프롬프트 체이닝의 대표 사례)</h4>
-        <ul>
-          <li>파일 14개를 한 번에 리뷰하면 <strong>주의력 희석</strong>이 생김. 일부 파일은 얕게 검토되고, 같은 패턴에 서로 모순된 피드백이 나옴</li>
-          <li>권장 설계: <strong>파일별 개별 분석 패스</strong>와 별도의 <strong>파일 간 통합 패스</strong>를 나눠 실행함</li>
-          <li>더 큰 모델이나 더 큰 컨텍스트로 해결한다는 선택지는 오답임. 주의력 희석 문제가 그대로 남음</li>
-        </ul>
-        <h4>사례 2: 레거시 코드(legacy code, 문서와 담당자가 남아 있지 않은 오래된 기존 코드)에 테스트를 전면 추가하는 작업(동적 분해의 대표 사례)</h4>
-        <ul>
-          <li>① 구조 파악(매핑) → ② 고영향 영역 식별 → ③ 우선순위 계획 수립</li>
-          <li>계획은 고정하지 않고 <strong>의존성이 발견될 때마다 조정함</strong></li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: 알파벳 순서로 파일마다 테스트를 생성하는 기계적 순회, 한 번에 전부 처리하는 방식이 오답 선택지로 출제됨.</div>`},
+   html:`__MAP:decomp__<h4>① 판단 기준</h4>
+<table>
+<tr><th>작업의 성격</th><th>맞는 방식</th></tr>
+<tr><td>단계를 미리 알 수 있고 매번 같은 기준 적용</td><td>프롬프트 체이닝</td></tr>
+<tr><td>중간에 발견한 내용이 다음 단계를 결정</td><td>동적 분해</td></tr>
+</table>
+<h4>② 사례: 파일이 많은 코드 리뷰</h4>
+<ul>
+<li>문제: 파일 14개를 한 번에 검토하면 일부 파일은 얕게 검토. 같은 문제에 서로 다른 판정</li>
+<li>원인: 한 번에 볼 내용이 많아 주의 분산</li>
+<li>해결: 파일별 검토와 파일 사이의 관계 검토를 따로 실행. 프롬프트 체이닝에 해당</li>
+<li>효과 없는 방법: 더 큰 모델이나 더 큰 컨텍스트 창. 주의 분산 문제는 그대로</li>
+</ul>
+<h4>③ 사례: 오래된 코드에 테스트 추가</h4>
+<ul>
+<li>대상: 문서와 담당자가 남아 있지 않은 오래된 코드(legacy code)</li>
+<li>순서: 구조 파악, 영향이 큰 부분 찾기, 우선순위 계획</li>
+<li>계획은 의존성을 발견할 때마다 수정. 동적 분해에 해당</li>
+<li>효과 없는 방법: 파일 이름 순서대로 테스트 작성. 한 번에 전부 처리</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 동적 분해 계획의 변화</div>
+처음 계획: ① 결제 모듈 테스트 ② 주문 모듈 테스트<br>
+발견: 결제 모듈이 환율 모듈에 의존<br>
+<span class="sel">수정한 계획: ① 환율 모듈 테스트 ② 결제 모듈 테스트 ③ 주문 모듈 테스트</span>
+</div>
+<p class="cap">이해를 돕기 위한 예시. 발견한 의존성 때문에 계획 맨 앞에 작업 하나 추가.</p>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>코드 리뷰(code review)</b>: 다른 사람이나 AI가 코드를 읽고 문제를 찾는 검토</li>
+<li><b>테스트(test)</b>: 프로그램이 의도대로 동작하는지 확인하는 코드</li>
+<li><b>모듈(module)</b>: 프로그램을 기능별로 나눈 한 부분</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: The odd one out",
        q:`Which of these workloads should use a fixed sequential pipeline (prompt chaining) rather than dynamic adaptive decomposition?`,
        opts:[
@@ -181,54 +260,88 @@ window.CCAF_CONTENT.p1 = {
   /* ================= CH 3 · 1.2 ================= */
   { id:"p1c3", ch:"CH 3", title:"코디네이터-서브에이전트 오케스트레이션 (1.2)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"코디네이터와 서브에이전트: 허브 앤 스포크 구조",
-       html:`<p class="lead">에이전트를 여러 개 운영할 때 쓰는 표준 구조임.</p>
-        <h4>허브 앤 스포크(hub-and-spoke)</h4>
-        <ul>
-          <li>중심에 <strong>코디네이터</strong>가 있고, 그 바깥에 여러 <strong>서브에이전트</strong>가 연결됨</li>
-          <li>모든 통신과 에러 처리, 정보 전달이 <strong>코디네이터를 거쳐 이뤄짐</strong></li>
-          <li>이유: 관측 가능성(observability, 무슨 일이 있었는지 한 곳에서 확인 가능함), 일관된 에러 처리, 통제된 정보 흐름</li>
-        </ul>
-        <h4>컨텍스트 격리: 가장 많이 틀리는 지점</h4>
-        <ul>
-          <li>서브에이전트는 코디네이터의 대화 히스토리를 <strong>자동으로 물려받지 않음</strong></li>
-          <li>서브에이전트는 프롬프트로 전달받은 내용만 알 수 있고, 코디네이터의 대화 기록 전체는 볼 수 없음</li>
-        </ul>
-        <h4>코디네이터가 담당하는 네 가지 일</h4>
-        <ul>
-          <li>작업 분해, 위임, 결과 취합, 그리고 <strong>어떤 서브에이전트를 호출할지 동적으로 선택함</strong>(쿼리 복잡도 기준)</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"코디네이터 설계가 실패하는 두 가지 유형과 처방",
-       html:`__MAP:orch__<p class="lead">시험은 모든 구성 요소가 정상 동작하는데도 결과가 잘못된 상황을 제시하고 원인을 찾게 한다.</p>
-        <h4>실패 유형 ①: 너무 좁은 작업 분해</h4>
-        <ul>
-          <li>증상: 서브에이전트는 각자 정상 수행했는데 <strong>최종 리포트에 큰 공백</strong>이 생김</li>
-          <li>예: 창작 산업에 대한 AI 영향이라는 주제를 코디네이터가 디지털 아트, 그래픽 디자인, 사진으로만 분해하면 음악과 글, 영화가 전부 누락됨</li>
-          <li>원인은 하위 단계(검색, 분석, 합성)가 아니라 <strong>분해를 수행한 코디네이터</strong>임</li>
-        </ul>
-        <h4>실패 유형 ②: 항상 전체 파이프라인 실행</h4>
-        <ul>
-          <li>단순 질의에도 매번 전체 서브에이전트를 실행하면 시간과 비용이 낭비됨</li>
-          <li>권장 설계: 쿼리 요구사항을 분석해 <strong>필요한 서브에이전트만 동적으로 선택함</strong></li>
-        </ul>
-        <h4>처방: 반복 개선 루프(iterative refinement)</h4>
-        <ul>
-          <li>합성 결과의 <strong>공백을 코디네이터가 평가함</strong></li>
-          <li>공백 영역을 겨냥한 쿼리로 검색과 분석에 <strong>재위임함</strong></li>
-          <li>커버리지가 충분해질 때까지 <strong>재합성함</strong></li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: 지문 로그에 분해 내역이 제시되면 그것이 정답의 근거임. 서브에이전트가 잘 수행했는지보다 무엇을 할당받았는지를 먼저 확인할 것.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"허브 앤 스포크: 코디네이터를 중심에 둔 역할 분담 구조",
+   html:`<h4>① 구조</h4>
+<ul>
+<li>코디네이터(coordinator): 작업을 나누고 맡기고 결과를 모으는 에이전트</li>
+<li>서브에이전트(subagent): 코디네이터가 맡긴 작업 하나를 수행하는 에이전트</li>
+<li>모든 지시, 결과, 오류 보고가 코디네이터를 거치는 구조</li>
+</ul>
+<div class="fig"><b>허브 앤 스포크(hub-and-spoke)</b><br>
+코디네이터<br>
+&nbsp;├─ 검색 서브에이전트&nbsp;&nbsp;<span class="an">← 지시를 받고 결과를 보고</span><br>
+&nbsp;├─ 분석 서브에이전트<br>
+&nbsp;└─ 작성 서브에이전트<br>
+<span class="an">서브에이전트끼리 직접 주고받는 연결 없음</span>
+</div>
+<ul>
+<li>장점: 진행 상황을 한 곳에서 확인. 오류 처리 방식 통일. 정보 흐름 통제</li>
+</ul>
+<h4>② 서브에이전트가 아는 범위</h4>
+<ul>
+<li>서브에이전트는 코디네이터의 대화 기록을 물려받지 않음</li>
+<li>아는 내용: 코디네이터가 지시문에 적어 준 내용</li>
+<li>예외: 포크(fork)로 만든 서브에이전트. 지금까지의 대화 전체를 물려받음</li>
+<li>포크 설명: <a href="https://code.claude.com/docs/ko/sub-agents#fork-the-current-conversation" target="_blank" rel="noopener">Claude Code 공식 문서 '사용자 정의 subagent 만들기' 페이지의 '현재 대화 포크' 항목</a> (한국어)</li>
+</ul>
+<h4>③ 코디네이터의 역할</h4>
+<ul>
+<li>작업 분해</li>
+<li>위임</li>
+<li>결과 취합</li>
+<li>호출할 서브에이전트 선택. 질문의 복잡도에 따라 필요한 서브에이전트만 호출</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>허브 앤 스포크(hub-and-spoke)</b>: 자전거 바퀴의 중심축(hub)과 바퀴살(spoke)처럼 중심 하나에 여럿이 연결된 구조</li>
+<li><b>위임(delegation)</b>: 작업을 다른 에이전트에 맡기는 일</li>
+<li><b>포크(fork)</b>: 지금까지의 대화를 그대로 복사해서 갈라져 나온 작업 공간</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"코디네이터 설계의 실패 유형과 해결",
+   html:`__MAP:orch__<h4>① 좁은 작업 분해</h4>
+<ul>
+<li>증상: 서브에이전트는 맡은 일을 모두 정상 수행. 최종 보고서에는 빠진 영역 존재</li>
+<li>원인: 서브에이전트가 아니라 분해를 맡은 코디네이터</li>
+<li>확인 순서: 서브에이전트의 수행 결과보다 서브에이전트가 받은 작업 목록 먼저 확인</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 코디네이터의 작업 분해 기록</div>
+주제: AI가 창작 산업에 미치는 영향<br>
+서브에이전트 1: 디지털 아트<br>
+서브에이전트 2: 그래픽 디자인<br>
+서브에이전트 3: 사진<br>
+<span class="sel">음악, 글, 영화는 어느 서브에이전트에도 배정되지 않음</span>
+</div>
+<p class="cap">이해를 돕기 위한 예시. 세 서브에이전트가 일을 잘해도 보고서에는 음악, 글, 영화가 빠짐.</p>
+<h4>② 매번 전체 실행</h4>
+<ul>
+<li>증상: 간단한 질문에도 모든 서브에이전트 실행. 시간과 비용 낭비</li>
+<li>해결: 질문을 먼저 분석하고 필요한 서브에이전트만 선택</li>
+</ul>
+<h4>③ 반복 개선(iterative refinement)</h4>
+<ul>
+<li>1단계: 코디네이터가 모은 결과에서 빠진 영역 확인</li>
+<li>2단계: 빠진 영역만 겨냥한 지시로 다시 위임</li>
+<li>3단계: 결과를 다시 합치기</li>
+<li>내용이 충분해질 때까지 1단계부터 반복. 반복을 멈추는 기준도 함께 지정</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>취합</b>: 여러 서브에이전트의 결과를 하나로 모으는 일</li>
+<li><b>커버리지(coverage)</b>: 다뤄야 할 범위 중 실제로 다룬 범위</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Fast reports, slow answers",
        q:`Your research system produces excellent deep reports, but simple factual queries ("who is the CEO of X?") take 90+ seconds and cost the same as full reports. Logs show the coordinator always invokes all five subagents — search, two analysts, synthesis, report-writer — one after another, for every query. Subagent behavior is correct. What should change?`,
        opts:[
-         {t:`Redesign the coordinator to analyze each query's requirements and dynamically select which subagents to invoke — and emit independent Task calls in a single response so the selected agents run in parallel.`, ok:true},
+         {t:`Redesign the coordinator to analyze each query's requirements and dynamically select which subagents to invoke — and emit independent Agent tool calls in a single response so the selected agents run in parallel.`, ok:true},
          {t:`Cache completed reports and serve them for sufficiently similar future queries, refreshing the cache on a weekly schedule so answers stay reasonably current.`},
          {t:`Let simple queries bypass the coordinator entirely and go directly to the synthesis agent, which is already good at producing concise, well-written answers.`},
          {t:`Build a second, lighter pipeline of faster subagents dedicated to simple queries, keeping the full pipeline untouched for deep research reports.`},
        ],
        hint:`코디네이터의 네 가지 역할 중 마지막 항목을 확인할 것. 지문의 "one after another"라는 표현도 근거임. 병렬 실행 규칙과 함께 볼 것.`,
        explain:{
-         good:`결함이 두 가지임. ① 전체 파이프라인 고정 실행은 쿼리 복잡도 기반 동적 선택으로 고침(1.2). ② 순차 실행은 한 응답에 Task 호출을 함께 내보내는 병렬 실행으로 고침(1.3). 정답은 두 가지를 함께 고치는 선택지임.`,
+         good:`결함이 두 가지임. ① 전체 파이프라인 고정 실행은 쿼리 복잡도 기반 동적 선택으로 고침(1.2). ② 순차 실행은 한 응답에 Agent 도구 호출을 함께 내보내는 병렬 실행으로 고침(1.3). 정답은 두 가지를 함께 고치는 선택지임.`,
          wrongs:[
            `<b>B(리포트 캐시):</b> 충분히 비슷한 질의인지 판단하는 문제가 새로 생기고, 오래된 답을 제공할 위험도 있음. 구조 결함은 그대로 남음.`,
            `<b>C(합성 에이전트로 직행):</b> 합성 에이전트에는 검색 도구가 없으므로 자체 지식으로 답하게 됨. 출처 없는 환각이 발생하는 경로임.`,
@@ -257,66 +370,116 @@ window.CCAF_CONTENT.p1 = {
   /* ================= CH 4 · 1.3 ================= */
   { id:"p1c4", ch:"CH 4", title:"컨텍스트 전달과 병렬 실행 (1.3)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"서브에이전트를 생성하고 지시하는 구성 요소",
-       html:`<p class="lead">Ch3에서 전체 구조를 다뤘음. 이번에는 서브에이전트를 실제로 생성하고 지시하는 구성 요소를 다룸.</p>
-        <h4>Task 도구</h4>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"서브에이전트 생성과 지시",
+       html:`<h4>① Agent 도구</h4>
         <ul>
-          <li>서브에이전트를 생성(스폰, spawn)하는 공식 수단임</li>
-          <li>단, 코디네이터의 <code>allowedTools</code> 목록에 <code>"Task"</code>가 있어야 호출할 수 있음. 목록에 없으면 서브에이전트를 생성할 수단 자체가 없음</li>
+          <li>서브에이전트를 만드는 도구</li>
+          <li>코디네이터가 Agent 도구를 호출하면 서브에이전트 하나가 생성되어 맡은 일을 수행</li>
+          <li>사용 조건: 코디네이터의 허용 도구 목록(<code>allowedTools</code>)에 <code>"Agent"</code> 포함</li>
+          <li>목록에 없으면 서브에이전트 생성 불가</li>
         </ul>
-        <h4>AgentDefinition</h4>
+        <div class="fig"><b>서브에이전트 생성 흐름</b><br>
+코디네이터&nbsp;&nbsp;──&nbsp;Agent 도구 호출&nbsp;──▶&nbsp;&nbsp;서브에이전트&nbsp;&nbsp;<span class="an">← 프롬프트에 적힌 내용만 전달</span><br>
+코디네이터&nbsp;&nbsp;◀──&nbsp;&nbsp;결과 반환&nbsp;&nbsp;──&nbsp;&nbsp;&nbsp;서브에이전트&nbsp;&nbsp;<span class="an">← 작업 결과만 반환</span>
+        </div>
+        <h4>② 서브에이전트 정의(AgentDefinition)</h4>
         <ul>
-          <li>서브에이전트의 정의 데이터임. 설명, 시스템 프롬프트, 사용 가능한 도구 제한을 담음</li>
+          <li>서브에이전트마다 미리 적어 두는 설정 묶음</li>
         </ul>
-        <h4>컨텍스트는 자동으로 전달되지 않음(재확인)</h4>
+        <table>
+          <tr><th>항목</th><th>내용</th></tr>
+          <tr><td><code>description</code></td><td>이 서브에이전트에게 맡길 일의 종류</td></tr>
+          <tr><td><code>prompt</code></td><td>서브에이전트의 역할과 일하는 방식</td></tr>
+          <tr><td><code>tools</code></td><td>서브에이전트가 쓸 수 있는 도구 목록</td></tr>
+        </table>
+        <h4>③ 서브에이전트가 아는 범위</h4>
         <ul>
-          <li>서브에이전트에게 알려줄 내용은 <strong>프롬프트에 직접 써서</strong> 넘겨야 함</li>
-          <li>호출 사이에 공유되는 메모리도 없음. 호출할 때마다 사전 정보가 없는 상태에서 시작함</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"컨텍스트 전달 방법과 병렬 실행 방법",
-       html:`__MAP:pass__<h4>① 발견 내용은 전체를 전달함</h4>
-        <ul>
-          <li>합성 에이전트에게는 검색 결과와 문서 분석 결과를 <strong>요약이 아니라 완전한 형태로</strong> 프롬프트에 포함함</li>
-          <li>서브에이전트가 알아서 참조하는 경로는 없음. 프롬프트에 없는 내용은 알지 못함</li>
+          <li>서브에이전트는 아무 정보 없이 시작</li>
+          <li>아는 내용은 코디네이터가 프롬프트에 적어 준 내용뿐</li>
+          <li>코디네이터의 이전 대화는 전달 안 됨</li>
+          <li>서브에이전트끼리 공유하는 기억 없음</li>
+          <li>예외: 포크(fork) 방식으로 만든 서브에이전트는 코디네이터의 대화를 이어받음</li>
         </ul>
-        <h4>② 내용과 메타데이터 분리</h4>
+        <div class="callout">📖 <b>용어 카드</b>
+          <ul>
+            <li><b>에이전트(agent)</b>: 목표를 받으면 필요한 작업을 스스로 골라 수행하는 AI</li>
+            <li><b>코디네이터(coordinator)</b>: 일을 나누어 서브에이전트에게 맡기는 에이전트</li>
+            <li><b>서브에이전트(subagent)</b>: 코디네이터가 맡긴 일 하나를 수행하는 보조 에이전트</li>
+            <li><b>프롬프트(prompt)</b>: AI에게 전달하는 지시문</li>
+            <li><b>도구(tool)</b>: 에이전트가 검색이나 파일 읽기 같은 작업을 할 때 쓰는 기능</li>
+            <li><b>허용 도구 목록(allowedTools)</b>: 에이전트가 쓸 수 있는 도구를 적어 둔 목록</li>
+          </ul>
+        </div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"자료 전달과 병렬 실행",
+       html:`__MAP:pass__<h4>① 자료 전달: 전체를 프롬프트에 포함</h4>
         <ul>
-          <li>전달할 때 <strong>구조화된 형식</strong>을 씀. 내용과 출처(URL, 문서명, 페이지)를 분리함</li>
-          <li>목적: 최종 리포트에서 <strong>출처 표기(attribution)를 보존하기 위함</strong></li>
+          <li>앞 단계에서 찾은 자료는 요약하지 않고 전체를 프롬프트에 포함</li>
+          <li>프롬프트에 없는 내용은 서브에이전트가 알 수 없음</li>
+        </ul>
+        <div class="fig"><b>프롬프트 비교</b><br>
+✗ 부족한 프롬프트<br>
+&nbsp;&nbsp;앞에서 찾은 자료로 보고서를 써 줘&nbsp;&nbsp;<span class="an">← 자료가 없음</span><br>
+✓ 충분한 프롬프트<br>
+&nbsp;&nbsp;목표: 전기차 배터리 시장 요약 보고서 작성<br>
+&nbsp;&nbsp;자료 1: (기사 전문)&nbsp;&nbsp;출처: 기사 주소, 발행일&nbsp;&nbsp;<span class="an">← 내용과 출처를 함께 전달</span><br>
+&nbsp;&nbsp;자료 2: (보고서 전문)&nbsp;&nbsp;출처: 문서 이름, 쪽수<br>
+&nbsp;&nbsp;결과 형식: 항목별 요약과 출처 표기
+        </div>
+        <h4>② 내용과 출처 분리</h4>
+        <ul>
+          <li>자료마다 내용과 출처(주소, 문서 이름, 쪽수)를 구분해서 전달</li>
+          <li>목적: 최종 보고서의 출처 표기 유지</li>
         </ul>
         <h4>③ 병렬 실행</h4>
         <ul>
-          <li>독립적인 하위 작업은 <strong>한 응답 안에 Task 호출 여러 개</strong>를 함께 내보냄</li>
-          <li>턴을 나눠 하나씩 호출하면 순차 실행이 되어 지연이 늘어남</li>
+          <li>서로 영향을 주지 않는 작업은 한 응답에서 Agent 도구를 여러 번 호출</li>
+          <li>한 번에 하나씩 호출하면 앞 작업이 끝나야 다음 작업 시작</li>
         </ul>
-        <h4>④ 프롬프트는 목표 중심으로 작성함</h4>
+        <div class="fig"><b>검색 작업 세 개의 소요 시간 (작업당 30초 가정)</b><br>
+순차 실행&nbsp;&nbsp;[ 검색 A ]→[ 검색 B ]→[ 검색 C ]&nbsp;&nbsp;<span class="an">← 합계 90초</span><br>
+병렬 실행&nbsp;&nbsp;[ 검색 A ]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ 검색 B ]&nbsp;&nbsp;<span class="an">← 합계 30초</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ 검색 C ]
+        </div>
+        <h4>④ 프롬프트 작성 기준</h4>
         <ul>
-          <li>절차를 일일이 지시하지 않고 <strong>연구 목표와 품질 기준</strong>을 명시함</li>
-          <li>그래야 서브에이전트가 상황에 맞춰 판단할 수 있음</li>
+          <li>절차를 하나하나 지시하는 대신 목표와 품질 기준 제시</li>
+          <li>효과: 서브에이전트가 상황에 맞게 판단</li>
         </ul>
-        <div class="callout">🎯 시험 포인트: 합성 결과가 앞선 발견을 반영하지 못하는 증상이 나오면, 원인은 대부분 발견 내용을 프롬프트에 넣지 않은 것임. 컨텍스트가 자동 상속된다고 전제한 선택지는 오답임.</div>`},
+        <h4>⑤ 자주 생기는 문제</h4>
+        <ul>
+          <li>증상: 최종 결과에 앞 단계에서 찾은 내용이 빠짐</li>
+          <li>원인: 찾은 내용을 프롬프트에 넣지 않음</li>
+        </ul>
+        <div class="callout">📖 <b>용어 카드</b>
+          <ul>
+            <li><b>병렬 실행</b>: 여러 작업을 동시에 진행하는 방식</li>
+            <li><b>순차 실행</b>: 한 작업이 끝난 뒤 다음 작업을 진행하는 방식</li>
+            <li><b>출처 표기(attribution)</b>: 내용이 어디서 나왔는지 밝히는 표시</li>
+          </ul>
+        </div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: The delegating coordinator that doesn't",
        q:`Your coordinator is configured with allowedTools: ["WebSearch", "Read"] and a detailed system prompt explaining exactly how to delegate to its three subagents. In production it never spawns a single subagent — it just answers everything itself using web search. What is wrong?`,
        opts:[
-         {t:`"Task" is missing from the coordinator's allowedTools — without the Task tool it has no mechanism to spawn subagents, no matter how well the prompt describes delegation.`, ok:true},
+         {t:`"Agent" is missing from the coordinator's allowedTools — without the Agent tool it has no mechanism to spawn subagents, no matter how well the prompt describes delegation.`, ok:true},
          {t:`The system prompt's delegation language is too weak; it should state "you MUST use your subagents for every request."`},
          {t:`The subagents' AgentDefinitions are likely missing descriptions, making them invisible to the coordinator.`},
          {t:`WebSearch should be removed from allowedTools so the coordinator has no choice but to delegate.`},
        ],
        hint:`위임 지시는 완전한데 위임 수단이 있는지 확인할 것. allowedTools 목록을 항목별로 점검할 것.`,
        explain:{
-         good:`서브에이전트를 생성하는 유일한 수단은 Task 도구임. 코디네이터의 allowedTools에 "Task"가 있어야 호출할 수 있음(1.3). 프롬프트가 아무리 정교해도 존재하지 않는 수단을 만들어 내지는 못함. 설정 진단 유형의 대표 문제임.`,
+         good:`서브에이전트를 생성하는 유일한 수단은 Agent 도구임. 코디네이터의 allowedTools에 "Agent"가 있어야 호출할 수 있음(1.3). 프롬프트가 아무리 정교해도 존재하지 않는 수단을 만들어 내지는 못함. 설정 진단 유형의 대표 문제임.`,
          wrongs:[
-           `<b>B(지시 강화):</b> MUST를 반복해서 써도 Task 도구가 없으면 호출 자체가 불가능함.`,
-           `<b>C(정의 누락 추정):</b> 정의가 완전해도 Task 도구가 없으면 호출할 수 없음. 지문에 근거가 없는 추측이기도 함.`,
+           `<b>B(지시 강화):</b> MUST를 반복해서 써도 Agent 도구가 없으면 호출 자체가 불가능함.`,
+           `<b>C(정의 누락 추정):</b> 정의가 완전해도 Agent 도구가 없으면 호출할 수 없음. 지문에 근거가 없는 추측이기도 함.`,
            `<b>D(WebSearch 제거):</b> 위임 수단이 생기는 것이 아니라 코디네이터가 할 수 있는 일만 줄어듦.`,
          ]},
        principle:"수단 먼저, 지시는 그다음"},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 2: Five subtasks, two shapes",
-       q:`A research run has five subtasks: three independent topic searches, plus (4) a comparison that requires all three search results, and (5) an executive summary that requires the comparison. How should the coordinator schedule its Task calls?`,
+       q:`A research run has five subtasks: three independent topic searches, plus (4) a comparison that requires all three search results, and (5) an executive summary that requires the comparison. How should the coordinator schedule its Agent tool calls?`,
        opts:[
-         {t:`Emit the three search Task calls together in a single response so they run in parallel; then invoke the comparison in a follow-up turn with the three results injected into its prompt, then the summary with the comparison's output.`, ok:true},
-         {t:`Emit all five Task calls in one response — maximum parallelism minimizes total latency.`},
+         {t:`Emit the three search Agent tool calls together in a single response so they run in parallel; then invoke the comparison in a follow-up turn with the three results injected into its prompt, then the summary with the comparison's output.`, ok:true},
+         {t:`Emit all five Agent tool calls in one response — maximum parallelism minimizes total latency.`},
          {t:`Run all five sequentially — mixing parallel and sequential execution complicates error handling too much.`},
          {t:`Run the searches in parallel, then let the comparison agent read the search results from the shared session memory.`},
        ],
@@ -334,36 +497,68 @@ window.CCAF_CONTENT.p1 = {
   /* ================= CH 5 · 1.4 ================= */
   { id:"p1c5", ch:"CH 5", title:"강제 패턴과 핸드오프 (1.4)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"반드시 지켜야 하는 규칙: 결정론적 강제와 확률적 지시",
-       html:`<p class="lead">이 챕터는 파트 1에서 출제 비중이 가장 높은 주제임. 공식 가이드 샘플 문제 1번(신원 검증 전 환불을 훅으로 차단하는 문제)도 이 주제에서 출제됨.</p>
-        <h4>두 가지 통제 수단</h4>
-        <ul>
-          <li><strong>프로그램적 강제</strong>: 훅과 전제조건 게이트를 씀. 코드가 차단하므로 <strong>항상 지켜짐(결정론적)</strong></li>
-          <li><strong>프롬프트 지시</strong>: 지시문으로 순서를 요구함. 대체로 따르지만 <strong>실패율이 0이 되지는 않음(확률적)</strong></li>
-        </ul>
-        <h4>판별 기준</h4>
-        <ul>
-          <li>위반 시 금전, 법률, 안전 사고로 이어지는 규칙: <strong>프로그램으로 강제함</strong></li>
-          <li>문체, 성향, 품질 가이드: 프롬프트 지시로 충분함</li>
-        </ul>
-        <div class="callout">📖 용어 카드. <b>전제조건 게이트(prerequisite gate)</b>: A가 완료되기 전에는 B를 실행할 수 없도록 코드로 차단하는 장치. 예: 신원 확인(<code>get_customer</code>)이 끝나기 전에는 환불(<code>process_refund</code>) 호출 자체가 차단됨.</div>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"게이트 설계와 사람에게 넘기는 핸드오프",
-       html:`__MAP:gate__<h4>① 전제조건 게이트: 자주 출제되는 정답 패턴</h4>
-        <ul>
-          <li>지문 단서: 12%의 사례에서 에이전트가 검증을 건너뛴다는 식의 <strong>실패율 데이터</strong>가 제시됨</li>
-          <li>정답 패턴: <code>get_customer</code>가 검증된 고객 ID를 반환하기 전까지 <code>lookup_order</code>와 <code>process_refund</code> 호출을 <strong>프로그램으로 차단함</strong></li>
-          <li>오답 패턴: 시스템 프롬프트 강화와 few-shot 예시 추가. 준수 확률을 높일 뿐 실패율을 0으로 만들지 못함</li>
-        </ul>
-        <h4>② 여러 문제가 섞인(multi-concern) 요청 처리</h4>
-        <ul>
-          <li>한 메시지에 여러 문제(환불, 배송, 계정)가 함께 들어오면 <strong>항목별로 분해</strong>한 뒤 공유 컨텍스트로 <strong>병렬 조사</strong>하고 <strong>하나의 답변으로 통합함</strong></li>
-        </ul>
-        <h4>③ 사람에게 넘기는 에스컬레이션 핸드오프(handoff)</h4>
-        <ul>
-          <li>전제: 상담사는 <strong>에이전트의 대화 기록에 접근할 수 없음</strong></li>
-          <li>구조화 요약 4요소: <strong>고객 ID · 근본 원인 분석 · 환불 금액 · 권고 조치</strong></li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: 신뢰성을 가장 효과적으로 높이는 조치를 묻고 선택지에 프롬프트 강화, few-shot, 게이트, 라우팅 분류기를 함께 제시하는 형태로 출제됨. 금전 사고가 걸린 상황이면 정답은 게이트임.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"프로그램 강제와 프롬프트 지시",
+   html:`<h4>① 규칙을 지키게 하는 두 가지 방법</h4>
+<table>
+<tr><th>방법</th><th>방식</th><th>지켜지는 정도</th></tr>
+<tr><td>프로그램 강제</td><td>조건을 충족하지 않은 실행을 프로그램이 차단</td><td>항상 지켜짐. 결정론적</td></tr>
+<tr><td>프롬프트 지시</td><td>지시문에 순서와 규칙 작성</td><td>대부분 지켜지지만 어기는 경우가 남음. 확률적</td></tr>
+</table>
+<h4>② 선택 기준</h4>
+<ul>
+<li>어기면 돈, 법, 안전 문제로 이어지는 규칙: 프로그램 강제</li>
+<li>문체, 말투, 품질 기준: 프롬프트 지시</li>
+</ul>
+<h4>③ 전제조건 게이트</h4>
+<ul>
+<li>앞 단계가 끝나기 전에는 뒤 단계를 실행할 수 없게 막는 장치. 영어 이름은 prerequisite gate</li>
+<li>예: 본인 확인(<code>get_customer</code>)이 끝나기 전에는 환불(<code>process_refund</code>) 호출 차단</li>
+</ul>
+<div class="fig"><b>본인 확인 전에 들어온 환불 요청</b><br>
+프롬프트 지시만 있는 경우: 대부분 본인 확인 후 처리&nbsp;&nbsp;<span class="an">← 일부는 확인 없이 환불</span><br>
+게이트가 있는 경우: 본인 확인 여부 검사 후 미확인이면 차단&nbsp;&nbsp;<span class="an">← 예외 없음</span>
+</div>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>결정론적(deterministic)</b>: 같은 조건에서 항상 같은 결과가 나오는 성질</li>
+<li><b>확률적(probabilistic)</b>: 대체로 같지만 가끔 다른 결과가 나오는 성질</li>
+<li><b>get_customer, process_refund</b>: 예시에 쓴 도구 이름. 고객 확인 도구와 환불 처리 도구</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"게이트 설계와 상담사 인계",
+   html:`__MAP:gate__<h4>① 게이트가 필요한 신호</h4>
+<ul>
+<li>신호: "12%의 경우 본인 확인을 건너뜀" 같은 실패 비율 기록</li>
+<li>해결: <code>get_customer</code>가 확인된 고객 번호를 돌려주기 전까지 <code>lookup_order</code>와 <code>process_refund</code> 호출 차단</li>
+<li>효과가 부족한 방법: 시스템 프롬프트 강화와 예시 추가. 어길 확률을 낮출 뿐 0으로 만들지 못함</li>
+</ul>
+<h4>② 요청 하나에 문제가 여러 개인 경우</h4>
+<ul>
+<li>예: 메시지 하나에 환불, 배송, 계정 문의가 함께 들어온 경우</li>
+<li>1단계: 문제별로 나누기</li>
+<li>2단계: 같은 고객 정보를 공유하며 동시에 조사</li>
+<li>3단계: 답변 하나로 합치기</li>
+</ul>
+<h4>③ 상담사 인계</h4>
+<ul>
+<li>전제: 상담사는 에이전트의 대화 기록을 볼 수 없음</li>
+<li>정리해서 넘길 네 가지: 고객 번호, 문제 원인, 환불 금액, 권고 조치</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 상담사에게 넘기는 요약</div>
+고객 번호: C-20931<br>
+문제 원인: 배송 9일 지연. 포장 파손<br>
+환불 금액: 62,000원<br>
+권고 조치: 전액 환불 승인
+</div>
+<p class="cap">이해를 돕기 위한 예시. 상담사가 대화 기록 없이 이 요약만 보고 처리할 수 있는 분량.</p>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>에스컬레이션(escalation)</b>: 에이전트가 직접 처리하지 않고 사람에게 넘기는 일</li>
+<li><b>핸드오프(handoff)</b>: 넘길 때 필요한 정보를 함께 전달하는 일</li>
+<li><b>시스템 프롬프트(system prompt)</b>: 대화 전체에 적용되는 기본 지시문</li>
+<li><b>lookup_order</b>: 예시에 쓴 도구 이름. 주문 조회 도구</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Four policies, one matrix",
        q:`Your support agent has four policies to uphold: (1) identity must be verified before any account operation; (2) refunds over $500 must never auto-execute; (3) replies should address the customer by name; (4) responses should stay under 150 words. Which enforcement allocation is correct?`,
        opts:[
@@ -404,39 +599,81 @@ window.CCAF_CONTENT.p1 = {
   { id:"p1c6", ch:"CH 6", title:"Agent SDK 훅 (1.5)",
     steps:[
       {type:"concept", kind:"CONCEPT · 개념 설명", h:"훅: 정해진 실행 지점에서 자동으로 실행되는 코드",
-       html:`<p class="lead">Ch5의 프로그램적 강제를 실제로 구현하는 수단이 훅임.</p>
-        <h4>훅이란</h4>
-        <ul>
-          <li>에이전트 실행 흐름의 <strong>정해진 실행 지점</strong>에서 자동으로 실행되는 코드임</li>
-          <li>에이전트의 판단과 무관하게 <strong>항상 실행됨</strong>. 그래서 결정론적임</li>
-        </ul>
-        <h4>시험에 출제되는 두 종류</h4>
-        <ul>
-          <li><strong>PostToolUse 훅</strong>: 도구 <strong>결과</strong>가 모델에 전달되기 전에 가로채서 변환함</li>
-          <li><strong>도구 호출 가로채기 훅</strong>(통용 명칭 <strong>PreToolUse</strong>): 나가는 도구 <strong>호출</strong>을 검사해 정책 위반이면 차단하고 다른 경로로 전환함</li>
-          <li>이름 구분: Post는 실행 <strong>후</strong>의 결과를 변환하고, Pre는 실행 <strong>전</strong>에 차단함</li>
-        </ul>
-        <div class="callout">📖 용어 카드. <b>Unix 타임스탬프</b>: 1970년 1월 1일부터 흐른 초를 센 숫자(예: 1785340800). <b>ISO 8601</b>: "2026-07-03T09:00:00" 형식의 국제 표준 날짜 표기. 시스템마다 날짜 표기가 다르므로 정규화가 필요함.</div>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"두 훅의 사용처: 정규화와 차단",
-       html:`__MAP:gate__<h4>① PostToolUse: 형식이 다른 데이터의 정규화</h4>
-        <ul>
-          <li>상황: MCP 도구 A는 Unix 타임스탬프, B는 ISO 8601, C는 숫자 상태코드를 반환함</li>
-          <li>형식이 섞인 데이터로 모델이 추론하면 오류가 발생함</li>
-          <li>처방: PostToolUse 훅이 <strong>모델이 결과를 보기 전에</strong> 한 형식으로 통일함</li>
-          <li>프롬프트로 형식을 변환해 추론하라고 지시하는 방식은 확률적이므로 오답 패턴임</li>
-        </ul>
-        <h4>② 호출 가로채기: 정책 위반 차단과 대체 경로 연결</h4>
-        <ul>
-          <li>상황: 500달러를 넘는 환불은 자동 처리를 금지한다는 식의 <strong>비즈니스 규칙</strong>이 있음</li>
-          <li>처방: 훅이 <code>process_refund</code> 호출의 금액을 검사하고, 한도를 넘으면 <strong>차단한 뒤 사람에게 넘기는 에스컬레이션 경로로 전환함</strong></li>
-          <li>주의: 차단만 해서는 설계가 완성되지 않음. <strong>대체 워크플로 연결까지</strong> 포함해야 정답임</li>
-        </ul>
-        <h4>훅과 프롬프트의 선택 기준(Ch5 복습)</h4>
-        <ul>
-          <li>보장이 필요한 규칙: 훅</li>
-          <li>성향과 문체 유도: 프롬프트</li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: 여러 MCP 도구의 응답 형식이 서로 다르다는 조건이 보이면 PostToolUse 정규화를 선택할 것.</div>`},
+   html:`<h4>① 훅(hook)</h4>
+<ul>
+<li>에이전트가 일하는 흐름의 정해진 지점에서 자동으로 실행되는 코드</li>
+<li>에이전트의 판단과 무관하게 항상 실행</li>
+<li>CH 5의 프로그램 강제를 구현하는 수단</li>
+</ul>
+<h4>② 자주 쓰는 훅 이벤트</h4>
+<table>
+<tr><th>이벤트</th><th>실행 시점</th></tr>
+<tr><td><code>PreToolUse</code></td><td>도구 실행 전</td></tr>
+<tr><td><code>PostToolUse</code></td><td>도구 실행 후</td></tr>
+<tr><td><code>UserPromptSubmit</code></td><td>사용자가 요청을 보낸 직후</td></tr>
+<tr><td><code>Stop</code></td><td>Claude가 답을 마칠 때</td></tr>
+<tr><td><code>SessionStart</code></td><td>세션을 시작하거나 다시 열 때</td></tr>
+</table>
+<ul>
+<li>이름 구분: Pre는 실행 전, Post는 실행 후</li>
+<li>이벤트 전체 목록: <a href="https://code.claude.com/docs/ko/hooks" target="_blank" rel="noopener">Claude Code 공식 문서 'Hooks 참조' 페이지</a> (한국어). 이벤트는 30개 이상</li>
+</ul>
+<h4>③ 두 이벤트에서 할 수 있는 일</h4>
+<table>
+<tr><th>이벤트</th><th>할 수 있는 일</th></tr>
+<tr><td><code>PreToolUse</code></td><td>허용. 차단. 사용자 확인 요청. 도구 입력값 수정</td></tr>
+<tr><td><code>PostToolUse</code></td><td>도구 결과 교체. Claude에 전달할 내용 추가</td></tr>
+</table>
+<div class="fig"><b>도구 호출 하나가 지나가는 순서</b><br>
+Claude의 도구 호출<br>
+&nbsp;→ PreToolUse 훅&nbsp;&nbsp;<span class="an">← 차단 가능</span><br>
+&nbsp;→ 도구 실행<br>
+&nbsp;→ PostToolUse 훅&nbsp;&nbsp;<span class="an">← 결과 교체 가능</span><br>
+&nbsp;→ Claude가 결과 확인
+</div>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>이벤트(event)</b>: 훅이 실행되는 시점의 이름</li>
+<li><b>Unix 타임스탬프</b>: 1970년 1월 1일부터 흐른 초를 센 숫자. 예: 1785340800</li>
+<li><b>ISO 8601</b>: 2026-07-29T09:00:00 형태의 국제 표준 날짜 표기</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"훅 사용 사례: 형식 통일과 차단",
+   html:`__MAP:gate__<h4>① PostToolUse: 결과 형식 통일</h4>
+<ul>
+<li>상황: 도구마다 날짜와 상태를 적는 형식이 다름</li>
+<li>문제: 형식이 섞인 자료로 Claude가 판단하면 오류 발생</li>
+<li>해결: PostToolUse 훅이 Claude가 결과를 보기 전에 한 가지 형식으로 통일</li>
+<li>효과가 부족한 방법: 형식을 바꿔서 읽으라는 프롬프트 지시. 지켜지지 않는 경우가 남음</li>
+</ul>
+<div class="fig"><b>형식 통일 전후</b><br>
+도구 A: 1785340800&nbsp;&nbsp;<span class="an">→ 2026-07-29</span><br>
+도구 B: 2026-07-29T09:00:00&nbsp;&nbsp;<span class="an">→ 2026-07-29</span><br>
+도구 C: 상태 코드 3&nbsp;&nbsp;<span class="an">→ 배송 중</span>
+</div>
+<h4>② PreToolUse: 규칙 위반 차단</h4>
+<ul>
+<li>상황: 500달러가 넘는 환불은 자동 처리 금지</li>
+<li>해결: 훅이 <code>process_refund</code> 호출의 금액 검사. 한도를 넘으면 차단하고 상담사 인계 절차로 연결</li>
+<li>주의: 차단만으로는 미완성. 차단 뒤에 이어질 절차까지 포함해야 완성</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 훅이 환불 호출을 막은 기록</div>
+도구 호출: process_refund (금액 720달러)<br>
+PreToolUse 훅: 차단. 사유 "500달러 초과 환불은 상담사 승인 필요"<br>
+<span class="sel">다음 단계: 상담사 인계 절차 시작</span>
+</div>
+<p class="cap">이해를 돕기 위한 예시. 차단 사유가 Claude에 전달되어 다음 행동의 근거로 쓰임.</p>
+<h4>③ 훅과 프롬프트 선택 기준</h4>
+<ul>
+<li>반드시 지켜야 하는 규칙: 훅</li>
+<li>말투와 문체: 프롬프트</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>정규화(normalization)</b>: 서로 다른 형식을 한 가지로 맞추는 작업</li>
+<li><b>MCP 도구</b>: 외부 서비스와 연결해 쓰는 도구. Part 2에서 다루는 내용</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: 44 fields, three date formats",
        q:`lookup_order returns 44 fields per call (warehouse codes, carrier internals, audit metadata...), of which about 6 matter for refund decisions — and dates arrive in three different formats across backends. Long conversations degrade as these results accumulate, and the agent occasionally miscompares dates. Where is the right place to fix both problems at once?`,
        opts:[
@@ -476,40 +713,73 @@ window.CCAF_CONTENT.p1 = {
   /* ================= CH 7 · 1.7 ================= */
   { id:"p1c7", ch:"CH 7", title:"세션 상태·재개·포크 (1.7)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"세션을 다루는 수단",
-       html:`<p class="lead">세 가지 세션 관리 수단 중 무엇을 고를지 묻는 문제가 반복 출제되는 챕터임.</p>
-        <h4>용어 정리</h4>
-        <ul>
-          <li><strong>CLI(command line interface)</strong>: 명령어를 입력해 프로그램을 조작하는 방식(Claude Code가 이 방식임)</li>
-          <li><strong>플래그(flag)</strong>: 명령어 뒤에 붙이는 옵션 (예: <code>--resume</code>)</li>
-          <li><strong>stale</strong>: 그 사이 대상이 바뀌어 기록된 내용이 더 이상 사실이 아닌 상태</li>
-        </ul>
-        <h4>세션 관리 수단 두 가지</h4>
-        <ul>
-          <li><code>--resume &lt;세션이름&gt;</code>: 이름을 지정해 둔 과거 대화를 <strong>그대로 이어서</strong> 계속함</li>
-          <li><code>fork_session</code>: 공통 분석 지점에서 <strong>독립 분기</strong>를 만들어 서로 다른 접근을 나란히 탐색함</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"이어가기, 새로 시작하기, 분기하기의 판단 기준",
-       html:`__MAP:session__<p class="lead">시험이 묻는 것은 기능 자체가 아니라 <strong>세 수단 중 무엇을 고를지의 기준</strong>이다.</p>
-        <h4>① 이어가기(--resume)</h4>
-        <ul>
-          <li>조건: 이전 컨텍스트가 <strong>대체로 유효한 상태일 때</strong></li>
-          <li>파일이 일부 바뀌었다면 재개하되 <strong>바뀐 파일을 알려서</strong> 그 부분만 재분석하게 함(전체 재탐색은 하지 않음)</li>
-        </ul>
-        <h4>② 새 세션에 구조화 요약 주입</h4>
-        <ul>
-          <li>조건: 이전 세션의 <strong>도구 결과가 stale한 상태일 때</strong>(그 사이 코드나 데이터가 광범위하게 바뀜)</li>
-          <li>이유: stale한 도구 결과를 이어받으면 <strong>낡은 사실 위에서 추론</strong>하게 됨</li>
-          <li>방법: 핵심 결론만 구조화 요약으로 정리해 <strong>새 세션 서두에 주입함</strong></li>
-          <li>💡 출제 유형: 동료가 같은 프로젝트에서 별도의 대화를 진행한 뒤 작업을 재개하는 상황이 제시되면 이 방식이 정답임</li>
-        </ul>
-        <h4>③ 분기하기(fork_session)</h4>
-        <ul>
-          <li>조건: <strong>같은 분석 결과</strong>를 기반으로 <strong>서로 다른 접근 두 가지</strong>를 비교할 때</li>
-          <li>예: 코드베이스 분석을 마친 뒤 테스트 전략 A안과 B안을 각 분기에서 탐색함</li>
-          <li>이점: 분석을 두 번 반복하지 않아도 되고, 두 탐색이 서로의 컨텍스트에 영향을 주지 않음</li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: 재개와 새 세션의 판별 기준은 <b>도구 결과가 여전히 유효한지 여부</b>임. 지문에서 그 사이 무엇이 얼마나 바뀌었는지를 확인할 것.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"세션 관리 수단 세 가지",
+   html:`<h4>① 세션(session)</h4>
+<ul>
+<li>에이전트가 일하는 동안 쌓이는 대화 기록 한 묶음. 요청, 도구 호출, 도구 결과, 답이 모두 포함</li>
+<li>자동으로 저장되어 나중에 다시 열기 가능</li>
+<li>저장 대상은 대화. 파일의 변경 내용은 세션에 저장되지 않음</li>
+</ul>
+<h4>② 세션 관리 수단</h4>
+<table>
+<tr><th>수단</th><th>동작</th><th>설정 이름</th></tr>
+<tr><td>이어가기</td><td>현재 폴더의 가장 최근 세션을 이어서 진행</td><td><code>continue</code></td></tr>
+<tr><td>재개</td><td>지정한 세션을 이어서 진행</td><td><code>resume</code></td></tr>
+<tr><td>분기</td><td>기존 세션의 기록을 복사한 새 세션 시작. 원래 세션은 그대로 유지</td><td><code>fork_session</code></td></tr>
+</table>
+<ul>
+<li>Claude Code에서 쓰는 명령: <code>claude --continue</code>, <code>claude --resume</code></li>
+<li>사용법 전체: <a href="https://code.claude.com/docs/ko/agent-sdk/sessions" target="_blank" rel="noopener">Claude Code 공식 문서 '세션으로 작업하기' 페이지</a> (한국어)</li>
+</ul>
+<div class="fig"><b>세 수단의 차이</b><br>
+이어가기: 가장 최근 세션 ──→ 계속&nbsp;&nbsp;<span class="an">← 세션을 고를 필요 없음</span><br>
+재개: 세션 목록에서 하나 선택 ──→ 계속&nbsp;&nbsp;<span class="an">← 세션 ID 필요</span><br>
+분기: 기존 세션 ──┬→ 원래 세션 그대로<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└→ 복사본에서 다른 방법 시도
+</div>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>CLI</b>: 명령어를 입력해 프로그램을 쓰는 방식. Claude Code가 이 방식</li>
+<li><b>플래그(flag)</b>: 명령어 뒤에 붙이는 옵션. 예: --resume</li>
+<li><b>세션 ID</b>: 세션마다 붙는 고유 번호</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"이어가기, 새 세션, 분기의 판단 기준",
+   html:`__MAP:session__<h4>① 이어가기</h4>
+<ul>
+<li>조건: 이전 세션의 내용이 대부분 지금도 사실인 경우</li>
+<li>파일이 일부 바뀐 경우: 이어가되 바뀐 파일을 알려 주고 그 부분만 다시 분석</li>
+<li>알려 주지 않으면 Claude는 바뀐 사실을 알 수 없음</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 이어가면서 바뀐 내용을 알리는 요청</div>
+&gt; 어제 분석한 뒤로 auth 폴더의 파일 2개가 바뀌었어.<br>
+&nbsp;&nbsp;그 두 파일만 다시 읽고 분석을 이어가 줘.
+</div>
+<h4>② 새 세션에 요약 전달</h4>
+<ul>
+<li>조건: 이전 세션의 도구 결과가 지금 상태와 다른 경우. 예: 그 사이 코드나 자료가 크게 변경</li>
+<li>이유: 오래된 도구 결과를 이어받으면 사실이 아닌 내용을 근거로 판단</li>
+<li>방법: 핵심 결론만 정리한 요약을 새 세션 첫머리에 전달</li>
+</ul>
+<h4>③ 분기</h4>
+<ul>
+<li>조건: 같은 분석 결과에서 출발해 서로 다른 방법 두 가지를 비교하는 경우</li>
+<li>예: 코드 분석을 마친 뒤 테스트 방법 A안과 B안을 각각 다른 분기에서 진행</li>
+<li>장점: 분석을 두 번 하지 않음. 두 분기의 대화 기록이 서로 섞이지 않음</li>
+<li>주의: 분기가 나누는 대상은 대화 기록. 파일은 나뉘지 않아 한 분기에서 고친 파일이 다른 분기에도 그대로 반영</li>
+</ul>
+<div class="fig"><b>판단 순서</b><br>
+이전 세션의 내용이 지금도 사실인가?<br>
+&nbsp;├─ 대부분 사실&nbsp;&nbsp;<span class="an">→ 이어가기. 바뀐 파일 알려 주기</span><br>
+&nbsp;├─ 크게 달라짐&nbsp;&nbsp;<span class="an">→ 새 세션. 요약 전달</span><br>
+&nbsp;└─ 같은 출발점에서 두 방법 비교&nbsp;&nbsp;<span class="an">→ 분기</span>
+</div>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>오래된 도구 결과</b>: 실행한 뒤 대상이 바뀌어 지금 상태와 달라진 결과. 영어 표현은 stale</li>
+<li><b>구조화 요약</b>: 정해진 항목에 맞춰 핵심만 정리한 요약</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Three situations, three tools",
        q:`Three situations came up this week: (a) overnight, an automated dependency upgrade rewrote imports across the entire repo you analyzed yesterday; (b) since your last session you renamed one class across 5 files; (c) on top of a completed analysis, you want to evaluate two competing caching strategies side by side. Which mechanism matches each situation?`,
        opts:[

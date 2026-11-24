@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CCA-F ACADEMY · V2 학습 코스</title>
+<title>Claude 설계자 과정</title>
 <script>document.documentElement.dataset.theme = localStorage.getItem("ccaf_theme") || "dark";</script>
 <script>/* 오프라인 캐시 등록. 링크(https)로 열었을 때만 동작하고 파일로 열면 건너뜀 */
 try{ if("serviceWorker" in navigator && location.protocol.startsWith("http")) window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{})); }catch(e){}</script>
@@ -45,6 +45,11 @@ try{ if("serviceWorker" in navigator && location.protocol.startsWith("http")) wi
   nav button:hover{color:var(--text)}
   nav button.on{color:var(--text);background:var(--surface2)}
   .hright{display:flex;align-items:center;gap:10px}
+  .hback{border-top:1px solid var(--line)}
+  .hback .hbwrap{max-width:1080px;margin:0 auto;padding:0 24px;height:36px;display:flex;align-items:center}
+  .hback button{background:none;border:0;color:var(--muted);font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:6px 0}
+  .hback button:hover{color:var(--text)}
+  body.sub .brief.sticky{top:113px}
   .theme-btn{background:var(--surface2);border:1px solid var(--line);border-radius:99px;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.15s}
   .theme-btn:hover{border-color:var(--dim)}
   .dday{font-size:12.5px;font-weight:700;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-line);padding:5px 12px;border-radius:99px;white-space:nowrap}
@@ -53,7 +58,16 @@ try{ if("serviceWorker" in navigator && location.protocol.startsWith("http")) wi
   .hero{padding:56px 0 40px}
   .hero h1{font-size:clamp(26px,4.2vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.28;margin:14px 0 16px}
   .hero h1 .ac{color:var(--accent)}
-  .hero p{max-width:620px;color:var(--muted);font-size:15px}
+  .hero p{max-width:620px;color:var(--muted);font-size:15px;word-break:keep-all;text-wrap:balance}
+  body{word-break:keep-all;overflow-wrap:break-word}
+  p,li,td{text-wrap:pretty}
+  .hero .hwhy{max-width:620px;margin:0 0 18px}
+  .hero .hwhy p{color:var(--text);font-size:16px}
+  .hero .hwhy ul{list-style:none;margin:10px 0 12px}
+  .hero .hwhy li{position:relative;padding-left:20px;margin-bottom:5px;font-size:15.5px;color:var(--text)}
+  .hero .hwhy li::before{content:"•";position:absolute;left:4px;color:var(--accent);font-weight:800}
+  .hero .hwhy .lab{margin-bottom:2px}
+  .hero .hwhy .src{color:var(--muted);font-size:13.5px}
   .hero .cta{margin-top:26px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
   .btn{border:0;font:inherit;font-weight:700;cursor:pointer;border-radius:10px;transition:.15s}
   .btn-primary{background:var(--accent);color:var(--on-accent);padding:13px 26px;font-size:15px}
@@ -137,6 +151,18 @@ try{ if("serviceWorker" in navigator && location.protocol.startsWith("http")) wi
   .prose th,.prose td{border:1px solid var(--line);padding:8px 12px;text-align:left}
   .prose th{background:var(--surface2);font-size:12px;color:var(--muted)}
   .callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:13px 17px;font-size:14px;margin:18px 0;color:var(--text)}
+  .callout ul{margin:8px 0 6px;padding-left:20px}
+  .callout a{color:var(--accent)}
+  .prose a{color:var(--accent)}
+  .prose p,.prose li,.prose td,.prose th,.callout,.step-h,.prose h4{word-break:keep-all;overflow-wrap:break-word;text-wrap:balance}
+  .callout ul{list-style:none}
+  .fig{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto;white-space:nowrap}
+  .fig .an{color:var(--accent)}
+  .screen{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:0 18px 14px;margin:14px 0 6px;overflow-x:auto;white-space:nowrap}
+  .screen .sbar{margin:0 -18px 10px;padding:6px 18px;border-bottom:1px solid var(--line);font-family:inherit;font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+  .screen .sel{background:var(--accent);color:#fff;border-radius:4px;padding:2px 0}
+  .prose .cap{font-size:13px;color:var(--muted);margin:0 0 16px}
+  .prose td:first-child code{white-space:nowrap}
   /* 아키텍처 지도 */
   .amap{border:1px dashed var(--line);border-radius:12px;padding:16px;margin:4px 0 22px;background:var(--surface)}
   .amap .amt{font-size:10.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;font-weight:800;margin-bottom:12px}
@@ -246,7 +272,7 @@ try{ if("serviceWorker" in navigator && location.protocol.startsWith("http")) wi
   .scb .scdom{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
   .scb .scdom span{font-size:10.5px;font-weight:700;border:1px solid var(--line);border-radius:99px;padding:2px 8px;color:var(--muted)}
 
-  /* ===== 스프린트 ===== */
+  /* ===== 응시일 카드와 학습 코스 ===== */
   .sprint{background:var(--surface);border:1px solid var(--accent-line);border-radius:var(--radius);padding:24px;margin-bottom:14px}
   .sprint .sh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
   .sprint .sday{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:800}
@@ -260,6 +286,8 @@ try{ if("serviceWorker" in navigator && location.protocol.startsWith("http")) wi
   .sitem .stx{flex:1;min-width:0;font-size:14px;font-weight:600}
   .sitem .sk{font-size:11px;color:var(--muted);white-space:nowrap;border:1px solid var(--line);border-radius:99px;padding:2px 8px}
   .sfoot{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+  .sunit{font-size:13px;font-weight:700;color:var(--muted);margin:12px 0 8px}
+  .sbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
   .setup{background:var(--surface);border:1px dashed var(--accent-line);border-radius:var(--radius);padding:26px;margin-bottom:14px;text-align:center}
   .setup h3{font-size:18px;font-weight:800;margin-bottom:8px}
   .setup p{color:var(--muted);font-size:14px;max-width:520px;margin:0 auto 18px}
@@ -331,7 +359,7 @@ try{ if("serviceWorker" in navigator && location.protocol.startsWith("http")) wi
 
 <header>
   <div class="hwrap">
-    <div class="logo" onclick="go('home')">CCA-F <em>ACADEMY</em></div>
+    <div class="logo" onclick="go('home')">Claude <em>설계자 과정</em></div>
     <nav>
       <button class="on" data-tab="home" onclick="go('home')">홈</button>
       <button data-tab="course" onclick="go('home','#parts')">강의</button>
@@ -346,13 +374,14 @@ try{ if("serviceWorker" in navigator && location.protocol.startsWith("http")) wi
       <div class="dday" id="dday">D-?</div>
     </div>
   </div>
+  <div class="hback" id="hback" hidden><div class="hbwrap"><button onclick="goHome()">← 처음으로 돌아가기</button></div></div>
 </header>
 
 <main id="view"></main>
 
 <footer>
   <div class="wrap">
-    <span>CCA-F ACADEMY · 공식 시험 가이드 기반 · 비공식 학습 자료</span>
+    <span>Claude 설계자 과정 · 공식 시험 가이드 기반 · 비공식 학습 자료</span>
     <span>WMBB · CLAUDE PARTNER NETWORK</span>
   </div>
 </footer>
@@ -381,20 +410,22 @@ try{ if("serviceWorker" in navigator && location.protocol.startsWith("http")) wi
 <script src="content/open-p4.js"></script>
 <script src="content/open-p3.js"></script>
 <script src="content/open-p6.js"></script>
+<script src="content/basics.js"></script>
 <script src="content/sprint.js"></script>
 <script src="content/ko-gloss.js"></script>
 <script>
 /* ================= parts meta ================= */
 const PARTS = [
-  {key:"p0", no:"00", en:"Orientation", ko:"시험 구조 분석", time:"30분", weight:"—", flag:null, planned:3},
-  {key:"pe", no:"E", en:"Exam English", ko:"시험 영어: 영어 지문을 빠르게 읽는 법", time:"1.5시간", weight:"—", flag:null, planned:6},
-  {key:"p1", dom:"D1", no:"01", en:"Agentic Architecture", ko:"에이전트 아키텍처 & 오케스트레이션", time:"2시간", weight:"27%", flag:{v:"자주 틀리는 영역 · 동적 분해",cls:"weak"}, planned:9},
-  {key:"p2", dom:"D2", no:"02", en:"Tool Design & MCP", ko:"도구 설계 & MCP 통합", time:"1.5시간", weight:"18%", flag:null, planned:7},
-  {key:"p3", dom:"D3", no:"03", en:"Claude Code Workflows", ko:"Claude Code 설정 & 워크플로", time:"1.7시간", weight:"20%", flag:{v:"자주 틀리는 영역 · 설정 수단 구분",cls:"weak"}, planned:9},
-  {key:"p4", dom:"D4", no:"04", en:"Prompt & Structured Output", ko:"프롬프트 엔지니어링 & 구조화 출력", time:"1.5시간", weight:"20%", flag:{v:"자주 틀리는 영역 · 출력 방법 선택",cls:"weak"}, planned:9},
-  {key:"p5", dom:"D5", no:"05", en:"Context & Reliability", ko:"컨텍스트 관리 & 신뢰성", time:"2시간", weight:"15%", flag:{v:"자주 틀리는 영역 · 컨텍스트 최적화",cls:"weak"}, planned:9},
-  {key:"p6", no:"06", en:"Scenario Deep-dive", ko:"시나리오 실전: 출제되는 상황 6가지", time:"2시간", weight:"—", flag:null, planned:6},
-  {key:"p7", no:"07", en:"Final Simulation", ko:"파이널: 모의고사 시뮬레이션", time:"회당 120분", weight:"—", flag:null, planned:1},
+  {key:"pf", no:"기초", en:"AI Foundations", ko:"AI 이해 기초: 생성형 AI와 함께 일하는 법", weight:"—", flag:null, planned:4},
+  {key:"p0", no:"00", en:"Orientation", ko:"시험 구조 분석", weight:"—", flag:null, planned:3},
+  {key:"pe", no:"E", en:"Exam English", ko:"시험 영어: 영어 지문을 빠르게 읽는 법", weight:"—", flag:null, planned:6},
+  {key:"p1", dom:"D1", no:"01", en:"Agentic Architecture", ko:"에이전트 아키텍처 & 오케스트레이션", weight:"27%", flag:{v:"자주 틀리는 영역 · 동적 분해",cls:"weak"}, planned:10},
+  {key:"p2", dom:"D2", no:"02", en:"Tool Design & MCP", ko:"도구 설계 & MCP 통합", weight:"18%", flag:null, planned:8},
+  {key:"p3", dom:"D3", no:"03", en:"Claude Code Workflows", ko:"Claude Code 설정 & 워크플로", weight:"20%", flag:{v:"자주 틀리는 영역 · 설정 수단 구분",cls:"weak"}, planned:9},
+  {key:"p4", dom:"D4", no:"04", en:"Prompt & Structured Output", ko:"프롬프트 엔지니어링 & 구조화된 출력", weight:"20%", flag:{v:"자주 틀리는 영역 · 출력 방법 선택",cls:"weak"}, planned:10},
+  {key:"p5", dom:"D5", no:"05", en:"Context & Reliability", ko:"컨텍스트 관리 & 신뢰성", weight:"15%", flag:{v:"자주 틀리는 영역 · 컨텍스트 최적화",cls:"weak"}, planned:9},
+  {key:"p6", no:"06", en:"Scenario Deep-dive", ko:"시나리오 실전: 출제되는 상황 6가지", weight:"—", flag:null, planned:6},
+  {key:"p7", no:"07", en:"Final Simulation", ko:"파이널: 모의고사 시뮬레이션", weight:"—", flag:null, planned:1},
 ];
 const C = window.CCAF_CONTENT;
 const totalUnits = () => PARTS.reduce((a,p)=>a+p.planned,0);
@@ -485,20 +516,19 @@ function nextUp(){
   return null;
 }
 
-/* ================= 3주 스프린트 ================= */
+/* ================= 응시일(D-day)과 학습 코스 ================= */
+/* 응시일은 남은 날짜(D-day) 표시에만 사용. 학습 분량과 시간은 계산하지 않음 */
 function examDate(){ const v = store.get().examDate; return v || null; }
-function setExamDate(v){ const s = store.get(); s.examDate = v; store.set(s); renderHome(); toast("응시일이 " + v + "로 설정됨"); }
+function setExamDate(v){ if(!v){ toast("날짜를 먼저 입력할 것"); return; } const s = store.get(); s.examDate = v; store.set(s); renderHome(); toast("응시일이 " + v + "로 설정됨"); }
+function clearExamDate(){ const s = store.get(); s.examDate = null; store.set(s); go("home"); }
 function daysBetween(a,b){ return Math.round((b - a)/86400000); }
 function today0(){ const t=new Date(); return new Date(t.getFullYear(),t.getMonth(),t.getDate()); }
+function fmtDate(d){ return (d.getMonth()+1) + "월 " + d.getDate() + "일"; }
 function sprintPos(){
   const ed = examDate(); if(!ed) return null;
   const parts = ed.split("-").map(Number);
   const exam = new Date(parts[0], parts[1]-1, parts[2]);
-  const total = (window.CCAF_SPRINT && window.CCAF_SPRINT.days) || 21;
-  const start = new Date(exam); start.setDate(start.getDate() - total);
-  const dday = daysBetween(today0(), exam);
-  const day = daysBetween(start, today0());   /* 1 = 첫날 */
-  return {exam, start, dday, day, total};
+  return {exam, dday: daysBetween(today0(), exam)};
 }
 function itemDone(it){
   if(it.t === "do") return false;
@@ -518,55 +548,42 @@ function openItem(it){
   if(i < 0){ toast("레슨을 찾을 수 없음"); return; }
   openUnit(it.pk, i);
 }
-function dayPlan(n){ return (window.CCAF_SPRINT.plan||[]).find(d=>d.d===n) || null; }
+/* 단계 하나의 완료 판정: 사이트 안에서 하는 항목을 모두 끝낸 경우 */
+function unitDone(u){ const ck = u.items.filter(it=>it.t!=="do"); return ck.length>0 && ck.every(itemDone); }
+function unitHTML(u){
+  return `<div class="sunit">${u.title}</div>` + u.items.map((it,i)=>`<div class="sitem ${it.t==="do"?"plain":""}" onclick="openItem(window.CCAF_SPRINT.plan.find(x=>x.d===${u.d}).items[${i}])">
+        <div class="sck ${itemDone(it)?"done":""}">${itemDone(it)?"✓":i+1}</div>
+        <div class="stx">${itemLabel(it)}</div><div class="sk">${itemKind(it)}</div></div>`).join("");
+}
+const SBTN = 'class="btn btn-ghost" style="padding:9px 16px;font-size:13px"';
+/* 홈의 응시일 카드: 날짜 입력, 그리고 D-day 표시 */
 function sprintCardHTML(){
-  const S = window.CCAF_SPRINT; if(!S) return "";
   const pos = sprintPos();
   if(!pos) return `<div class="setup">
       <h3>응시일 설정</h3>
-      <p>응시일을 입력하면 그 날짜를 기준으로 21일 코스가 역순으로 구성됨. 하루 60~90분 기준이며, 그날 수행할 항목만 표시됨. Pearson VUE 예약 전이라도 목표일을 임의로 입력해 시작할 수 있음.</p>
+      <p>응시일을 입력하면 응시일까지 남은 날짜가 표시됨. 예약 전이면 목표일을 입력해도 됨.</p>
       <div><input type="date" id="edInput" value="${new Date(Date.now()+22*86400000).toISOString().slice(0,10)}">
-      <button class="btn btn-primary" style="padding:11px 20px;font-size:14px" onclick="setExamDate(document.getElementById('edInput').value)">코스 시작</button></div>
+      <button class="btn btn-primary" style="padding:11px 20px;font-size:14px" onclick="setExamDate(document.getElementById('edInput').value)">날짜 설정</button></div>
     </div>`;
-  if(pos.day < 1) return `<div class="setup"><h3>코스 시작일: ${pos.start.getMonth()+1}월 ${pos.start.getDate()}일</h3>
-      <p>응시일까지 D-${pos.dday}. 21일 코스 기준으로 아직 시작 전임. 미리 진행하려면 아래 전체 코스에서 Day 1을 선택할 것.</p>
-      <button class="btn btn-ghost" onclick="renderSprint()">전체 코스 보기</button></div>`;
-  const n = Math.min(pos.day, pos.total);
-  const d = dayPlan(n); if(!d) return "";
-  const done = d.items.filter(itemDone).length;
-  return `<div class="sprint">
-    <div class="sh"><span class="sday">DAY ${d.d} / ${pos.total} · WEEK ${d.w} · 오늘 ${d.min}분</span>
-      <span class="badge ${done===d.items.length? "strong":""}">${done} / ${d.items.length} 완료</span></div>
-    <h3>${d.title}</h3>
-    ${d.why? `<div class="swhy">${d.why}</div>` : ""}
-    ${d.items.map((it,i)=>`<div class="sitem ${it.t==="do"?"plain":""}" onclick="openItem(window.CCAF_SPRINT.plan.find(x=>x.d===${d.d}).items[${i}])">
-        <div class="sck ${itemDone(it)?"done":""}">${itemDone(it)?"✓":i+1}</div>
-        <div class="stx">${itemLabel(it)}</div><div class="sk">${itemKind(it)}</div></div>`).join("")}
-    <div class="sfoot"><button class="btn btn-ghost" style="padding:9px 16px;font-size:13px" onclick="renderSprint()">전체 21일 코스</button>
-      <span class="muted" style="font-size:12.5px">응시일 ${pos.exam.getMonth()+1}/${pos.exam.getDate()} · D-${pos.dday}</span>
-      <button class="btn btn-ghost" style="padding:9px 16px;font-size:13px" onclick="store.set(Object.assign(store.get(),{examDate:null}));renderHome()">응시일 다시 설정</button></div>
-  </div>`;
+  const h = pos.dday > 0 ? "응시일까지 D-" + pos.dday : pos.dday === 0 ? "오늘이 응시일" : "응시일이 지남";
+  return `<div class="setup"><h3>${h}</h3><p>응시일 ${fmtDate(pos.exam)}</p>
+      <div class="sbtns"><button ${SBTN} onclick="clearExamDate()">응시일 다시 설정</button></div></div>`;
 }
+/* 학습 코스: 레슨을 순서대로 묶은 단계 목록. 날짜와 시간은 표시하지 않음 */
 function renderSprint(){
-  const S = window.CCAF_SPRINT; const pos = sprintPos();
+  const all = (window.CCAF_SPRINT && window.CCAF_SPRINT.plan) || [];
+  const doneN = all.filter(unitDone).length; const next = all.findIndex(u=>!unitDone(u));
   view.innerHTML = `
   <div class="ppage" style="max-width:860px">
-    <button class="crumb" onclick="go('home')">← 홈</button>
-    <div class="phead"><div class="eyebrow">SPRINT</div>
-      <h1>3주 합격 코스 · 21일</h1>
-      <div class="pdesc">하루 60~90분, 총 30시간. 순서에는 이유가 있음: 영어와 시험 형태를 먼저 익히고, 출제 비중이 큰 영역을 끝낸 뒤, 정답률이 낮은 영역을 집중 학습함.</div>
+    <div class="phead"><div class="eyebrow">COURSE</div>
+      <h1>학습 코스</h1>
+      <div class="pdesc">레슨을 순서대로 묶은 ${all.length}단계. 끝낸 단계 ${doneN}개.</div>
     </div>
-    <div class="wkrow">${S.weeks.map(w=>`<div class="wk"><div class="wn">WEEK ${w.no}</div><b>${w.title}</b><span>${w.desc}</span></div>`).join("")}</div>
-    ${S.plan.map(d=>{
-      const done = d.items.filter(itemDone).length;
-      const cls = pos? (d.d===Math.min(pos.day,pos.total)? "now" : d.d < pos.day? "past" : "") : "";
-      return `<div class="dayrow ${cls}">
-        <div class="dh"><span class="dn">DAY ${d.d} · ${d.min}분</span><span class="badge ${done===d.items.length?"strong":""}">${done}/${d.items.length}</span></div>
-        <div class="dt">${d.title}</div>
-        ${d.why? `<div class="dl" style="margin-bottom:10px">${d.why}</div>`:""}
-        ${d.items.map((it,i)=>`<div class="sitem ${it.t==="do"?"plain":""}" onclick="openItem(window.CCAF_SPRINT.plan.find(x=>x.d===${d.d}).items[${i}])">
-          <div class="sck ${itemDone(it)?"done":""}">${itemDone(it)?"✓":i+1}</div>
-          <div class="stx">${itemLabel(it)}</div><div class="sk">${itemKind(it)}</div></div>`).join("")}
+    ${all.map((u,i)=>{
+      const done = u.items.filter(itemDone).length;
+      return `<div class="dayrow ${unitDone(u)? "past" : i===next? "now" : ""}">
+        <div class="dh"><span class="dn">${i+1}단계</span><span class="badge ${done===u.items.length?"strong":""}">${done}/${u.items.length}</span></div>
+        ${unitHTML(u)}
       </div>`;
     }).join("")}
   </div>`;
@@ -620,8 +637,9 @@ function koToggleStep(btn){
   const on = step.classList.toggle("koshow");
   btn.textContent = on ? "🇰🇷 한국어 번역 끄기" : "🇰🇷 한국어 번역 켜기";
 }
-function koBar(){
+function koBar(q){
   if(!window.CCAF_KO) return "";
+  if(q && /[가-힣]/.test(q.q||"")) return ""; /* 한국어 문항에는 번역 버튼을 두지 않음 */
   return '<div class="kobar"><button onclick="koToggleStep(this)">🇰🇷 한국어 번역 켜기</button></div>';
 }
 
@@ -635,8 +653,8 @@ function applyDday(){
   const el = document.getElementById("dday"); if(!el) return;
   const pos = sprintPos();
   if(!pos){ el.textContent = "응시일 미설정"; el.style.cursor="pointer"; el.onclick = ()=>go("home"); return; }
-  el.textContent = pos.dday>0? "시험까지 D-" + pos.dday : pos.dday===0? "시험 당일 🔥" : "시험 종료";
-  el.style.cursor="pointer"; el.onclick = ()=>renderSprint();
+  el.textContent = pos.dday>0? "시험까지 D-" + pos.dday : pos.dday===0? "시험 당일" : "시험 종료";
+  el.style.cursor="pointer"; el.onclick = ()=>go("home");
 }
 
 /* ================= router ================= */
@@ -645,6 +663,20 @@ function go(where, anchor){
   document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on", b.dataset.tab===where));
   if(where==="home"){ renderHome(); if(anchor) setTimeout(()=>document.querySelector(anchor)?.scrollIntoView({behavior:"smooth"}),50); else window.scrollTo(0,0); }
 }
+/* 처음으로 돌아가기: 어느 화면에서든 홈으로 이동. 레슨은 진도 저장, 시험은 확인 후 중단 */
+function goHome(){
+  const b = view.querySelector(".back[data-run]"); const run = b ? b.dataset.run : null;
+  if(run === "lesson"){ try{ persist(); }catch(e){} }
+  else if(run === "test"){ if(!confirm("시험을 중단하고 처음 화면으로 돌아갈 것인가? 기록은 저장되지 않음.")) return; }
+  else if(run === "exam"){ if(!confirm("시험을 중단하고 처음 화면으로 돌아갈 것인가? 이번 응시는 기록되지 않음.")) return; clearInterval(EX.timerId); lockKo(false); }
+  go("home");
+}
+/* 홈이 아닌 화면에서만 처음으로 돌아가기 줄 표시 */
+new MutationObserver(()=>{
+  const home = !!view.querySelector(".hero");
+  const hb = document.getElementById("hback"); if(hb) hb.hidden = home;
+  document.body.classList.toggle("sub", !home);
+}).observe(view, {childList:true});
 
 /* ================= home ================= */
 function renderHome(){
@@ -654,18 +686,26 @@ function renderHome(){
   <div class="wrap">
     <section class="hero" style="padding-bottom:26px">
       <div class="eyebrow">Claude Certified Architect – Foundations</div>
-      <h1>CCA-F 개념을 빠르고 정확하게 이해하고,<br><span class="ac">영어 장벽 없이</span> 자격증을 취득하는 학습 코스.</h1>
-      <p>세 가지 방식으로 그 목적을 달성함. 첫째, 개념을 실제 출제 형태 그대로 익힘. 상황 설명 하나에 문항 여러 개가 붙는 구조로 연습함. 둘째, 영어 지문에 문장 단위 한국어 번역을 붙여 읽는 부담을 없앰. 셋째, 정답을 맞혀도 그 이유를 고르지 못하면 다음으로 넘어가지 못하게 해 암기로 통과하는 것을 막음.</p>
+      <h1>Claude <span class="ac">설계자</span> 과정</h1>
+      <div class="hwhy">
+        <p class="lab"><strong>설계자(architect)</strong></p>
+        <p>Claude의 작동 과정과 그 구성 요소를 이해한 후, 원하는 결과물을 도출하는 흐름을 설계할 수 있는 사람.</p>
+        <p class="src">기준: Claude 공인 설계자 자격시험 CCAR-F(Claude Certified Architect – Foundations) 범위</p>
+      </div>
+      <p>학습 방식은 세 가지.<br>
+        첫째, 실제 출제 형태 그대로 개념 학습. 상황 설명 하나에 문항 여러 개가 붙는 구조로 연습.<br>
+        둘째, 영어 지문에 문장 단위 한국어 번역 제공.<br>
+        셋째, 정답을 맞혀도 그 이유를 골라야 다음 단계로 진행. 암기로 통과하는 것을 방지.</p>
       <div class="cta">
         <button class="btn btn-primary" ${nu? `onclick="openUnit('${nu.pk}',${nu.idx})"`:""}>${ctaLabel}</button>
-        <button class="btn btn-ghost" onclick="renderSprint()">3주 코스 보기</button>
+        <button class="btn btn-ghost" onclick="renderSprint()">학습 코스 보기</button>
       </div>
     </section>
     ${sprintCardHTML()}
     <div class="stats" style="margin-top:14px">
       <div class="stat"><div class="k">전체 진도</div><div class="v">${du}<small>/ ${totalUnits()} 레슨</small></div></div>
       <div class="stat"><div class="k">연습 문제 기록</div><div class="v">${acc.total? `${acc.right}<small>/ ${acc.total} 정답 (${Math.round(acc.right/acc.total*100)}%)</small>` : `0<small>아직 없음</small>`}</div></div>
-      <div class="stat"><div class="k">문제 수</div><div class="v">${qTotal()}<small>영어 문항 · 대역 포함</small></div></div>
+      <div class="stat"><div class="k">문제 수</div><div class="v">${qTotal()}<small>문항 · 영어 지문은 번역 제공</small></div></div>
       <div class="stat"><div class="k">합격선</div><div class="v">720<small>/ 1000 · 60문항 120분</small></div></div>
     </div>
     <section class="sec" id="parts">
@@ -684,7 +724,7 @@ function renderHome(){
           </div>
           <div class="en">${p.en}</div>
           <h3>${p.ko}</h3>
-          <div class="meta"><span><b>${pr.total}</b> 레슨</span><span>${p.time}</span>${p.weight!=="—"?`<span>출제 <b>${p.weight}</b></span>`:""}${has? "":"<span>제작 중</span>"}</div>
+          <div class="meta"><span><b>${pr.total}</b> 레슨</span>${p.weight!=="—"?`<span>출제 <b>${p.weight}</b></span>`:""}${has? "":"<span>제작 중</span>"}</div>
           <div class="pbar"><i style="width:${pr.total? Math.round(pr.done/pr.total*100):0}%"></i></div>
         </div>`;}).join("")}
       </div>
@@ -698,11 +738,10 @@ function openPart(pk){
   const meta = PARTS.find(p=>p.key===pk); const part = C[pk];
   view.innerHTML = `
   <div class="ppage">
-    <button class="crumb" onclick="go('home')">← 홈</button>
     <div class="phead">
       <div class="eyebrow">PART ${meta.no} · ${meta.en}</div>
       <h1>${meta.ko}</h1>
-      <div class="pdesc">${part.lessons.length}개 레슨 · ${meta.time}${meta.weight!=="—"? ` · 출제 비중 ${meta.weight}`:""}</div>
+      <div class="pdesc">${part.lessons.length}개 레슨${meta.weight!=="—"? ` · 출제 비중 ${meta.weight}`:""}</div>
     </div>
     ${meta.dom? `<div class="gcta"><button onclick="openPartGloss('${pk}')">📖 이 파트 용어 ${partTerms(pk).own.length}개 모아보기</button></div>` : ""}
     ${part.lessons.map((L,i)=>{
@@ -786,7 +825,7 @@ function renderStep(){
   const qs = st?.type==="quiz" ? quizState[cur] : null;
   view.innerHTML = `
     <div class="lesson-top"><div class="lt-wrap">
-      <button class="back" onclick="persist();openPart(ctx.pk)" title="파트로 (진도 저장됨)">←</button>
+      <button class="back" data-run="lesson" onclick="persist();openPart(ctx.pk)" title="파트로 (진도 저장됨)">←</button>
       <div class="info"><div class="t">${L.ch} · ${L.title}</div><div class="s">진도 자동 저장</div></div>
       ${segs()}
     </div></div>
@@ -814,7 +853,7 @@ function archMap(z){
       <div class="ab">도구 · MCP</div>
     </div>
     <div class="arow" style="justify-content:center">
-      <div class="ab ${on("pass")}" style="border-style:dotted">↓ Task 호출: 컨텍스트는 프롬프트로 명시 전달 · 병렬 가능 ↓</div>
+      <div class="ab ${on("pass")}" style="border-style:dotted">↓ Agent 도구 호출: 컨텍스트는 프롬프트로 명시 전달 · 병렬 가능 ↓</div>
     </div>
     <div class="arow">
       <div class="ab ${on("orch")}" style="flex:1">서브에이전트 · 검색</div>
@@ -838,7 +877,7 @@ function archMapD2(z){
       <div class="aarr">→</div><div class="ab">호출</div>
     </div>
     <div class="arow">
-      <div class="ab ${on("builtin")}" style="flex:1">기본 제공 도구(built-in tools) 6종<br><small>Read · Write · Edit · Bash · Grep · Glob</small></div>
+      <div class="ab ${on("builtin")}" style="flex:1">자주 쓰는 기본 제공 도구(built-in tools) 6개<br><small>Read · Write · Edit · Bash · Grep · Glob</small></div>
       <div class="ab ${on("mcp")}" style="flex:1">MCP 서버<br><small>.mcp.json 팀 공유 ┃ ~/.claude.json 개인 ┃ 리소스 카탈로그</small></div>
     </div>
     <div class="arow">
@@ -876,7 +915,7 @@ function archMapD4(z){
       <div class="aarr">→</div><div class="ab">모델</div>
     </div>
     <div class="arow">
-      <div class="ab ${on("schema")}" style="flex:1">구조화 출력(structured output)<br><small>tool_use + JSON 스키마 · nullable · enum</small></div>
+      <div class="ab ${on("schema")}" style="flex:1">구조화된 출력(structured output)<br><small>tool_use + JSON 스키마 · nullable · enum</small></div>
       <div class="aarr">→</div>
       <div class="ab ${on("validate")}" style="flex:1">검증 (Pydantic)<br><small>실패 → 문서+오류 첨부 재시도 ↩</small></div>
     </div>
@@ -964,7 +1003,7 @@ function stepHTML(st){
   return `<div class="step">${briefHTML(st)}<div class="kind"><span class="eyebrow">⚖️ ${st.kind}</span></div>
     <h2>${st.h}</h2>
     <div class="prose"><p>${koQ(st.q)}</p></div>
-    ${koBar()}
+    ${koBar(st)}
     <div class="opts">${displayOpts(st).map((o,i)=>`
       <button class="opt" id="opt${i}" onclick="pick(${i})"><span class="abc">${"ABCDE"[i]}</span><span>${o.t}${koOpt(o.t)}</span></button>`).join("")}
     </div>
@@ -1078,7 +1117,7 @@ function openTest(pk, idx){
           <ul style="text-align:left">
             <li>${L.questions.length}문항 · 전부 영어 (실전과 동일)</li>
             <li>문항은 TS별 문제 풀에서 <strong>응시마다 추첨됨</strong>. 문제 구성과 순서, 선택지 순서가 매번 달라짐</li>
-            <li>☑ <strong>복수응답(Select TWO) 문항</strong>이 섞여 출제됨. 실제 시험 형식(가이드 V1.0)과 동일함</li>
+            <li>☑ <strong>복수응답(Select TWO) 문항</strong>이 섞여 출제됨. 실제 시험 형식과 동일함</li>
             <li>힌트 없음 · 답을 골라야 다음 문항으로 (실제 시험 규칙)</li>
             <li>중간 채점 없음. 종료 후 점수와 전 문항 해설이 표시됨</li>
             ${prev? `<li>지난 기록: 최고 ${prev.best}/${L.questions.length} (${prev.when})</li>`:""}
@@ -1099,7 +1138,7 @@ function testNext(sel){
   const q = T.qs[T.i];
   view.innerHTML = `
     <div class="lesson-top"><div class="lt-wrap">
-      <button class="back" onclick="if(confirm('시험을 중단할 것인가? 기록은 저장되지 않음.'))openPart(T.pk)">←</button>
+      <button class="back" data-run="test" onclick="if(confirm('시험을 중단할 것인가? 기록은 저장되지 않음.'))openPart(T.pk)">←</button>
       <div class="info"><div class="t">${T.L.title}</div><div class="s">Q${T.i+1} / ${T.qs.length} · 답해야 진행</div></div>
       <div class="segs">${T.qs.map((_,i)=>`<i class="${i<T.i?"done":i===T.i?"now":""}"></i>`).join("")}</div>
     </div></div>
@@ -1209,7 +1248,7 @@ function openExam(){
     <div class="stage" style="padding-top:64px">
       <div class="step" style="text-align:center">
         <div class="eyebrow">FULL SIMULATION · 실전 재현</div>
-        <h2 style="margin-top:10px">모의고사 · CCA-F V2</h2>
+        <h2 style="margin-top:10px">모의고사 · CCAR-F</h2>
         <div class="prose" style="max-width:520px;margin:0 auto">
           <ul style="text-align:left">
             <li>시나리오 은행 6개 중 <strong>4개 무작위 선정</strong>. 실제 시험과 동일함</li>
@@ -1290,7 +1329,7 @@ function examNext(){
   const sc = window.CCAF_SCENARIOS[item.sc];
   view.innerHTML = `
     <div class="lesson-top"><div class="lt-wrap">
-      <button class="back" onclick="if(confirm('시험을 중단할 것인가? 이번 응시는 기록되지 않음.')){clearInterval(EX.timerId);lockKo(false);openPart('p7');}">←</button>
+      <button class="back" data-run="exam" onclick="if(confirm('시험을 중단할 것인가? 이번 응시는 기록되지 않음.')){clearInterval(EX.timerId);lockKo(false);openPart('p7');}">←</button>
       <div class="info"><div class="t">시나리오 ${sc.no} ${sc.name}</div><div class="s">Q${EX.i+1} / ${EX.flat.length} · 미응답 시 진행 불가</div></div>
       <div class="dday" style="font-variant-numeric:tabular-nums" id="exTimer">--:--</div>
     </div></div>
@@ -1490,7 +1529,6 @@ function renderAppendix(filter){
   const cats = [...new Set(items.map(g=>g.c))];
   view.innerHTML = `
   <div class="ppage">
-    <button class="crumb" onclick="go('home')">← 홈</button>
     <div class="phead">
       <div class="eyebrow">APPENDIX</div>
       <h1>부록: 치트시트 · 판단 도구 · 용어사전</h1>
@@ -1501,6 +1539,7 @@ function renderAppendix(filter){
       ${A.cheat}
       <h2 style="font-size:19px;margin:34px 0 6px">⚖️ 판단 원칙 5</h2>
       ${A.principles}
+      ${A.courses? `<h2 style="font-size:19px;margin:34px 0 6px">📚 공식 학습 경로</h2>${A.courses}`:""}
       <h2 style="font-size:19px;margin:34px 0 10px">📖 용어사전 (${A.glossary.length})</h2>
       <input id="glosFilter" placeholder="용어 검색... (예: 훅, batch, 글롭)" value="${filter||""}"
         style="width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:14px;margin-bottom:16px"
@@ -1546,6 +1585,24 @@ applyThemeIcon();
 applyKo();
 renderHome();
 applyDday();
+
+/* 줄 끝에 한 글자 수식어가 남지 않도록 다음 단어와 묶음 */
+(function(){
+  const LEAD=/(^|[\s(])(그|이|저|한|두|세|네|각|몇|더|안|못|잘|및)[ ](?=[가-힣A-Za-z0-9`'"‘“<])/g;
+  const TAIL=/([가-힣])[ ](수|것|때|중|등|뿐|줄)(?=[\s.,)]|$|[가이은는을를도에의로])/g;
+  const SKIP=new Set(["CODE","PRE","SCRIPT","STYLE","TEXTAREA","INPUT"]);
+  function fix(root){
+    if(!root||root.nodeType!==1) return;
+    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    const list=[]; let n;
+    while(n=w.nextNode()){ let p=n.parentNode,skip=false; while(p&&p!==root.parentNode){ if(SKIP.has(p.nodeName)||(p.classList&&(p.classList.contains("fig")||p.classList.contains("screen")))){skip=true;break} p=p.parentNode } if(!skip&&/[가-힣]/.test(n.nodeValue)) list.push(n) }
+    list.forEach(t=>{ const v=t.nodeValue.replace(LEAD,"$1$2\u00a0").replace(TAIL,"$1\u00a0$2"); if(v!==t.nodeValue) t.nodeValue=v });
+  }
+  const view=document.getElementById("view");
+  if(!view) return;
+  new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(fix))).observe(view,{childList:true,subtree:true});
+  fix(view);
+})();
 </script>
 </body>
 </html>

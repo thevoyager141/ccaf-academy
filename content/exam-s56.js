@@ -45,7 +45,7 @@
      https://platform.claude.com/docs/en/build-with-claude/structured-outputs
        · strict tool use (strict: true) = "Guarantee schema validation on tool names and inputs" (문법 제약 샘플링)
        · JSON outputs (output_config.format) = 응답 텍스트 자체를 스키마에 맞춘 JSON으로. 필드 타입·필수 필드 보장
-       · 지원 모델 목록이 명시돼 있음
+       · 사용 가능 모델 표기: 모든 모델 (2026-11-23 확인)
        · minimum/maximum/minLength/maxLength 같은 제약은 직접 지원되지 않음 →
          "Update descriptions with constraint info ... The original constraints are still validated in your code"
        · "Structured outputs don't guarantee the capitalization of string enum and const values ...
@@ -391,7 +391,7 @@
      {t:`Neither helps: a schema was already in place, so the remaining failures must be semantic, and the fix is a validation loop rather than stronger enforcement.`},
      {t:`Take the response-as-JSON route only, because a tool's schema is guidance the model may deviate from while response formatting is enforced by the API.`}],
    explain:{
-     good:`두 가지 방법이 있음. 도구 이름과 입력을 스키마로 검증해 보장하는 방식과, 응답 자체를 스키마에 맞춘 JSON으로 받는 구조화 출력(structured output) 방식임. 현재 발생하는 실패인 필수 필드 누락과 타입 불일치는 두 방식 모두 없애 주므로, 선택은 이 호출이 도구 호출인가라는 설계 질문이 됨. 다만 형식은 맞지만 값이 틀린 경우는 어느 쪽도 잡지 못함. 그것은 검증 계층의 역할임.`,
+     good:`두 가지 방법이 있음. 도구 이름과 입력을 스키마로 검증해 보장하는 방식과, 응답 자체를 스키마에 맞춘 JSON으로 받는 구조화된 출력(structured output) 방식임. 현재 발생하는 실패인 필수 필드 누락과 타입 불일치는 두 방식 모두 없애 주므로, 선택은 이 호출이 도구 호출인가라는 설계 질문이 됨. 다만 형식은 맞지만 값이 틀린 경우는 어느 쪽도 잡지 못함. 그것은 검증 계층의 역할임.`,
      wrongs:[
        `<b>B(응답 제약은 타입을 보장하지 못함):</b> 사실이 아님. 응답을 스키마에 맞춰 받는 기능이 보장하는 것이 정확히 필드 타입과 필수 필드임.`,
        `<b>C(남은 것은 전부 의미 오류):</b> 구문과 의미를 구분하는 접근은 타당하지만 지문의 두 증상은 구문 쪽임. 필수 필드 누락과 문자열로 온 정수는 강제로 사라지는 항목임.`,

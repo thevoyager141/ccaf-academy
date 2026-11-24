@@ -66,11 +66,11 @@ window.CCAF_CONTENT.p1.lessons.push(
     /* ---- 1.3 context passing ---- */
     {ts:"1.3", lvl:"기초", q:`A coordinator must run three independent document analyses. Which invocation pattern minimizes latency?`,
      opts:[
-       {t:`Emit three Task tool calls in a single coordinator response so the subagents run in parallel.`, ok:true},
-       {t:`Invoke one Task per conversational turn, waiting for each result before the next.`},
+       {t:`Emit three Agent tool calls in a single coordinator response so the subagents run in parallel.`, ok:true},
+       {t:`Invoke one Agent tool call per conversational turn, waiting for each result before the next.`},
        {t:`Ask one subagent to analyze all three documents in sequence.`},
        {t:`Spawn a subagent that itself spawns three more subagents.`}],
-     explain:{good:`병렬 실행의 공식 패턴은 한 응답 안에 Task 호출 여러 개를 함께 내보내는 것임.`,
+     explain:{good:`병렬 실행의 공식 패턴은 한 응답 안에 Agent 도구 호출 여러 개를 함께 내보내는 것임.`,
        wrongs:[`<b>B:</b> 턴을 나누면 순차 실행이 됨.`,`<b>C:</b> 한 에이전트가 직렬로 처리하므로 지연이 줄지 않음.`,`<b>D:</b> 불필요한 중첩임. 코디네이터가 직접 병렬로 호출하면 됨.`]},
      principle:"원칙 ③ 있는 기능부터"},
     {ts:"1.3", lvl:"실전", q:`Your coordinator passes findings to the synthesis agent by concatenating each subagent's full transcript — including intermediate reasoning and tool chatter — into one markdown blob. Final reports mix up publication dates and misattribute quotes to the wrong papers. Which change best fixes attribution?`,

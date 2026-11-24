@@ -8,7 +8,7 @@
 
    CLI 사실 근거: 2026-08-27 WebFetch로 직접 확인한 공식 문서
      https://code.claude.com/docs/en/cli-reference      (docs.claude.com/en/docs/claude-code/cli-reference 가 302로 리다이렉트)
-     https://code.claude.com/docs/en/headless           (비대화형 실행·구조화 출력·세션 이어가기 예시)
+     https://code.claude.com/docs/en/headless           (비대화형 실행·구조화된 출력·세션 이어가기 예시)
      https://code.claude.com/docs/en/permission-modes   (권한 모드 7종과 -p의 시작 모드)
      https://code.claude.com/docs/en/permissions        (allow/ask/deny 규칙, PreToolUse 훅, 규칙 문법)
      https://code.claude.com/docs/en/tools-reference    (Glob·Grep·Read·Bash 동작)
@@ -23,126 +23,205 @@
      ============================================================ */
   var p3c7 = { id:"p3c7", ch:"CH 7", title:"CLI 호출과 실행 제어", steps:[
 
-    {type:"concept", kind:"CONCEPT · 개념 설명 ①", h:"터미널에서 Claude Code를 실행한다는 것",
-     html:`<p class="lead">앞의 여섯 챕터는 "지시를 어디에 둘 것인가"를 다뤘음. 이 챕터의 주제는 <strong>Claude Code를 어떻게 실행하는가</strong>임. CLI 실행 방식은 D3 영역 문항에 섞여 출제되며, 설정 수단을 고르는 문제와 형태가 같음.</p>
-      <h4>0부터 시작: 터미널(terminal)이란 무엇인가</h4>
-      <ul>
-        <li><strong>터미널</strong>: 컴퓨터에 글자로 명령을 입력하는 창임. 버튼을 누르는 대신 명령어 한 줄을 입력하고 엔터를 누르는 방식임</li>
-        <li>여기에 <code>claude</code>를 입력하면 대화형 세션이 열림. 평소에 사용하는 그 화면임</li>
-        <li><strong>플래그(flag)</strong>: 명령 뒤에 붙이는 <code>--이름</code> 형태의 옵션임. "이번 실행은 이렇게 처리할 것"이라는 지정을 명령에 덧붙이는 것임</li>
-      </ul>
-      <h4>대화형 실행이 전제하는 조건</h4>
-      <ul>
-        <li>화면 앞에 <strong>사람이 앉아 있다</strong>는 전제임. 그래야 "이 명령을 실행할까요?"라는 물음에 답할 사람이 있음</li>
-        <li>그러나 CI 러너, 야간 스케줄러, <code>npm run</code> 스크립트 안에는 답할 사람이 없음</li>
-        <li>이 챕터의 플래그는 전부 <strong>그 자리에 없는 사람을 대신하는 장치</strong>임. 플래그를 개별로 외우기 전에 "무엇이 없어서 이 플래그가 필요한가"를 먼저 파악할 것</li>
-      </ul>
-      <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto">
-<b>사람이 없을 때 대신 지정해야 하는 다섯 가지</b><br>
-① 세션이 종료되지 않음 &nbsp;→&nbsp; 대화형은 다음 입력을 기다리며 계속 실행 상태로 남음<br>
-② 승인할 사람이 없음 &nbsp;→&nbsp; "실행할까요?"에서 무한정 대기함<br>
-③ 결과를 읽을 사람이 없음 &nbsp;→&nbsp; 산문 형태의 출력을 다음 단계 프로그램이 사용하지 못함<br>
-④ 중단시킬 사람이 없음 &nbsp;→&nbsp; 같은 작업을 반복하는 루프가 밤새 실행되어 비용이 누적됨<br>
-⑤ 이전 대화를 기억하는 사람이 없음 &nbsp;→&nbsp; 후속 질문을 어느 세션에 붙일지 알 수 없음
-      </div>
-      <div class="callout">📖 용어 카드. <b>파이프(pipe, <code>|</code>)</b>: 앞 명령의 출력을 뒤 명령의 입력으로 전달하는 기호임. <code>cat 로그 | claude -p "원인 설명해줘"</code> 형태로 사용함. <b>종료 코드(exit code)</b>: 명령이 끝날 때 남기는 숫자 신호임. 성공이면 0, 실패면 0이 아닌 값임. 스크립트는 이 숫자를 보고 다음 단계의 실행 여부를 결정함.</div>`},
+    {type:"concept", kind:"CONCEPT · 개념 설명 ①", h:"터미널 실행: 명령어로 Claude Code를 시작하는 방식",
+   html:`<h4>① 터미널</h4>
+<ul>
+<li>터미널(terminal): 글자로 명령을 입력하는 창</li>
+<li><code>claude</code>를 입력하면 대화형 세션 시작</li>
+<li>플래그(flag): 명령 뒤에 붙이는 <code>--이름</code> 형태의 옵션</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 터미널</div>
+$ claude<br>
+&nbsp;&nbsp;(대화형 세션 시작. 다음 입력 대기)<br>
+<br>
+$ claude -p "README 요약해 줘"<br>
+&nbsp;&nbsp;(요약을 출력한 뒤 종료)
+</div>
+<h4>② 대화형 실행의 전제</h4>
+<ul>
+<li>전제: 화면 앞에 승인 요청에 답할 사람이 있음</li>
+<li>사람이 없는 환경: CI 러너, 예약 실행, 자동화 스크립트</li>
+</ul>
+<h4>③ 사람이 없을 때 생기는 문제</h4>
+<table>
+<tr><th>문제</th><th>내용</th></tr>
+<tr><td>① 종료되지 않는 세션</td><td>답을 출력한 뒤에도 다음 입력 대기</td></tr>
+<tr><td>② 승인할 사람 없음</td><td>승인 요청에서 계속 대기</td></tr>
+<tr><td>③ 결과를 읽을 사람 없음</td><td>글로 된 결과를 다음 프로그램이 사용하지 못함</td></tr>
+<tr><td>④ 멈출 사람 없음</td><td>같은 작업을 반복해 비용 누적</td></tr>
+<tr><td>⑤ 이전 대화를 아는 사람 없음</td><td>다음 질문을 어느 세션에 이을지 알 수 없음</td></tr>
+</table>
+<ul>
+<li>이 챕터의 플래그는 모두 이 다섯 문제 중 하나의 해결 수단</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>파이프(|)</b>: 앞 명령의 출력을 뒤 명령의 입력으로 넘기는 기호</li>
+<li><b>종료 코드(exit code)</b>: 명령이 끝날 때 남기는 숫자. 성공은 0, 실패는 0이 아닌 값</li>
+<li><b>스크립트(script)</b>: 명령을 순서대로 적어 둔 파일. 한 번에 자동 실행</li>
+</ul>
+</div>`},
 
-    {type:"concept", kind:"CONCEPT · 개념 설명 ②", h:"요건 ①③: 실행을 종료시키기, 프로그램이 읽을 수 있는 결과 남기기",
-     html:`<p class="lead">두 요건을 함께 살펴봄. 둘 다 "출력"에 관한 것으로 보이지만 <strong>서로를 대체하지 못함</strong>. 두 수단의 역할을 구분하는 문제가 자주 출제됨.</p>
-      <h4>① 세션이 종료되지 않는 문제: <code>-p</code></h4>
-      <ul>
-        <li>상황: 스크립트가 <code>claude "리뷰해줘"</code>를 호출하면 답을 출력한 뒤에도 <strong>다음 입력을 기다리며 실행 상태로 남음</strong>. 파이프라인이 그 지점에서 정지함</li>
-        <li>필요한 동작은 "프롬프트 하나를 처리하고 <strong>출력한 뒤 종료</strong>"임. 이를 지정하는 플래그가 <code>-p</code>(긴 이름은 <code>--print</code>)임</li>
-        <li>표준 입력을 읽으므로 <code>cat build-error.txt | claude -p "이 빌드 에러의 근본 원인만 짧게"</code>처럼 파이프로 자료를 전달할 수 있음 (파이프 입력 상한 10MB)</li>
-        <li>성공하면 종료 코드 0, 실패하면 0이 아닌 값으로 종료함. 스크립트가 이 값을 보고 분기할 수 있음</li>
-      </ul>
-      <h4>③ 결과를 프로그램이 읽어야 하는 문제: <code>--output-format</code> · <code>--json-schema</code></h4>
-      <ul>
-        <li><code>--output-format</code>이 받는 값은 <strong>세 개</strong>임: <code>text</code>(기본) · <code>json</code> · <code>stream-json</code></li>
-        <li><code>json</code>으로 받으면 본문이 <code>result</code> 필드에 들어가고 <code>session_id</code>, <code>total_cost_usd</code> 같은 메타데이터가 함께 옴. 호출 한 번의 비용을 스크립트가 바로 집계할 수 있음</li>
-        <li><strong>출력 구조까지 고정하려면</strong> <code>--json-schema</code>를 사용함. 스키마 검증을 통과한 결과가 <code>structured_output</code> 필드로 전달됨. 스키마 자체가 잘못된 경우 에러로 종료하므로 어긋난 결과가 그대로 통과하지 않음</li>
-        <li><code>stream-json</code>은 줄 단위 JSON을 순차로 내보내는 형태임. 진행 상황을 실시간으로 표시해야 할 때 사용함</li>
-      </ul>
-      <div class="callout">🎯 자주 틀리는 지점. <code>-p</code>와 <code>--output-format json</code>은 <strong>담당하는 일이 다름</strong>. 앞은 실행을 종료시키는 것, 뒤는 출력 형식임. <code>--output-format json</code>만 붙이고 <code>-p</code>를 빼면 세션이 여전히 종료되지 않고, <code>-p</code>만 쓰면 출력이 여전히 산문임. 두 플래그를 서로 대체 가능한 것처럼 서술한 선택지가 대표적인 오답 유도임.</div>
-      <div class="callout">📖 용어 카드. <b>JSON</b>: 프로그램 사이에 자료를 주고받는 표기법임. <code>{"이름": "값"}</code> 형태임. <b>JSON 스키마(JSON Schema)</b>: 그 JSON이 어떤 필드를 어떤 타입으로 가져야 하는지 미리 정의한 명세임.</div>`},
+    {type:"concept", kind:"CONCEPT · 개념 설명 ②", h:"실행 종료와 결과 형식",
+   html:`<h4>① 실행 종료: -p</h4>
+<ul>
+<li>문제: <code>claude "리뷰해 줘"</code>는 답을 출력한 뒤에도 다음 입력 대기. 자동화 흐름이 그 자리에서 정지</li>
+<li>해결: <code>-p</code>. 요청 하나를 처리하고 출력한 뒤 종료. 긴 이름은 <code>--print</code></li>
+<li>다른 명령의 출력을 입력으로 전달 가능. 예: <code>cat build-error.txt | claude -p "이 오류의 원인만 짧게"</code></li>
+<li>종료 코드: 성공은 0, 실패는 0이 아닌 값</li>
+</ul>
+<h4>② 결과 형식: --output-format</h4>
+<table>
+<tr><th>값</th><th>형식</th></tr>
+<tr><td><code>text</code></td><td>글. 기본값</td></tr>
+<tr><td><code>json</code></td><td>JSON. 답은 <code>result</code> 항목. 세션 ID(<code>session_id</code>)와 비용(<code>total_cost_usd</code>) 포함</td></tr>
+<tr><td><code>stream-json</code></td><td>한 줄에 하나씩 나오는 JSON. 진행 상황을 실시간으로 보여 줄 때 사용</td></tr>
+</table>
+<div class="screen"><div class="sbar">화면 예시 · --output-format json 결과</div>
+{ "result": "변경 사항 3건을 검토했습니다...",<br>
+&nbsp;&nbsp;"session_id": "5b3f2c1a-...",<br>
+&nbsp;&nbsp;"total_cost_usd": 0.0042 }
+</div>
+<p class="cap">이해를 돕기 위해 항목을 줄인 예시. 실제 결과에는 항목이 더 많음.</p>
+<h4>③ 결과 양식 고정: --json-schema</h4>
+<ul>
+<li>스키마에 맞는지 확인한 결과를 <code>structured_output</code> 항목으로 전달</li>
+<li>스키마 자체가 잘못된 경우 오류로 종료</li>
+</ul>
+<h4>④ 두 플래그의 역할</h4>
+<table>
+<tr><th>플래그</th><th>역할</th></tr>
+<tr><td><code>-p</code></td><td>실행 종료</td></tr>
+<tr><td><code>--output-format json</code></td><td>결과 형식</td></tr>
+</table>
+<ul>
+<li>두 플래그는 서로 대신할 수 없음. <code>-p</code>만 쓰면 결과가 글, <code>--output-format json</code>만 쓰면 세션이 종료되지 않음</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>JSON</b>: 항목 이름과 값을 짝지어 적는 글 형식</li>
+<li><b>JSON 스키마</b>: JSON에 들어갈 항목과 값의 종류를 정해 둔 양식</li>
+</ul>
+</div>`},
 
-    {type:"concept", kind:"CONCEPT · 개념 설명 ③", h:"요건 ②: 승인할 사람을 무엇으로 대신하는가",
-     html:`<p class="lead">"실행할까요?"라는 승인 요청에 답할 사람이 없으면 작업이 그 지점에서 멈춤. 해결 수단은 두 가지임. <strong>기본 처리 방침을 정하는 것(권한 모드(permission mode))</strong>과 <strong>개별 항목을 지정하는 것(도구 규칙)</strong>임. 두 가지를 함께 지정하는 것이 정석임.</p>
-      <h4>기본 처리 방침: <code>--permission-mode</code></h4>
-      <ul>
-        <li>받는 값: <code>default</code> · <code>acceptEdits</code> · <code>plan</code> · <code>auto</code> · <code>dontAsk</code> · <code>bypassPermissions</code> (그리고 <code>default</code>의 별칭 <code>manual</code>)</li>
-        <li><code>default</code>(화면에는 Manual로 표시됨): 읽기 작업만 승인 없이 진행되고 나머지는 승인을 요청함. <strong><code>-p</code>로 시작한 세션의 기본값이 이 모드임</strong>. 즉 아무것도 지정하지 않으면 CI에서 승인 대기 상태로 멈출 수 있음</li>
-        <li><code>acceptEdits</code>: 파일 편집과 <code>mkdir</code>·<code>touch</code>·<code>mv</code>·<code>cp</code> 같은 기본 파일 명령을 승인 요청 없이 진행함</li>
-        <li><code>plan</code>: 읽기 중심임. 계획을 승인받기 전에는 편집을 차단함</li>
-        <li><code>dontAsk</code>: <strong>CI 환경의 표준 선택지</strong>임. 미리 허용해 둔 규칙, 읽기 전용 명령, PreToolUse 훅(hook)이 승인한 호출만 실행하고 <strong>나머지는 자동 거부함</strong>. 세션이 입력을 기다리는 상태가 발생하지 않음</li>
-        <li><code>bypassPermissions</code>: 모든 호출을 승인 없이 통과시킴. 공식 문서가 <strong>컨테이너·VM 같은 격리 환경 안에서만</strong> 사용할 것으로 명시한 모드임</li>
-      </ul>
-      <h4>개별 항목 지정: 도구 관련 세 플래그의 역할 구분</h4>
-      <table>
-        <tr><th>플래그</th><th>하는 일</th><th>예</th></tr>
-        <tr><td><code>--allowedTools</code></td><td><strong>승인 요청 없이 실행</strong>해도 되는 항목의 허용 목록</td><td><code>"Bash(npm test)" "Read"</code></td></tr>
-        <tr><td><code>--disallowedTools</code></td><td>거부 규칙. 이름만 쓰면 그 도구를 제외하고, <code>Bash(rm *)</code>처럼 범위를 쓰면 도구는 유지한 채 <strong>매칭되는 호출만</strong> 차단함</td><td><code>"Bash(rm *)"</code></td></tr>
-        <tr><td><code>--tools</code></td><td><strong>사용 가능한 기본 제공 도구(built-in tools) 목록 자체</strong>를 좁힘. <code>""</code>를 주면 전부 비활성화됨</td><td><code>"Bash,Edit,Read"</code></td></tr>
-      </table>
-      <h4>규칙 문법: 공백 하나가 의미를 바꿈</h4>
-      <ul>
-        <li><code>Bash(git diff *)</code>: <code>git diff</code>로 시작하는 명령을 허용함. <strong><code>*</code> 앞의 공백이 의미를 결정함</strong></li>
-        <li>공백을 빼고 <code>Bash(git diff*)</code>로 쓰면 <code>git diff-index</code> 같은 다른 명령까지 허용됨</li>
-        <li><code>*</code>는 <strong>서브커맨드 뒤에 붙일 것</strong>. <code>Bash(git *)</code>는 모든 git 명령을 허용하므로 <code>git push</code>까지 포함됨</li>
-      </ul>
-      <div class="callout">🎯 CI 표준 조합(공식 문서 예시): <code>claude -p "run the test suite" --permission-mode dontAsk --allowedTools "Bash(npm test)" "Read"</code>. 모드는 "미리 정한 것만 실행"을, 목록은 "허용할 개별 항목"을 담당함. 두 계층을 함께 지정해야 완성됨.</div>
-      <div class="callout">⚠️ 거부 규칙이 모드보다 우선함. 설정 파일의 <strong>deny 규칙은 모든 모드에서 호출을 차단함</strong>. <code>bypassPermissions</code>에서도 적용됨. 반대로 allow 규칙은 <code>bypassPermissions</code>에서 의미를 갖지 않음. "무엇을 허용할 것인가"보다 "무엇을 절대 허용하지 않을 것인가"를 먼저 정의하는 이유임.</div>`},
+    {type:"concept", kind:"CONCEPT · 개념 설명 ③", h:"승인 처리: 권한 모드와 도구 규칙",
+   html:`<h4>① 권한 모드: --permission-mode</h4>
+<table>
+<tr><th>값</th><th>동작</th></tr>
+<tr><td><code>default</code></td><td>읽기만 승인 없이 진행. 나머지는 승인 요청. <code>-p</code> 실행의 기본값</td></tr>
+<tr><td><code>acceptEdits</code></td><td>파일 수정과 기본 파일 명령을 승인 없이 진행</td></tr>
+<tr><td><code>plan</code></td><td>읽기 중심. 계획을 승인받기 전에는 수정 차단</td></tr>
+<tr><td><code>auto</code></td><td>분류 모델이 작업을 검토하고 진행 여부 판단</td></tr>
+<tr><td><code>dontAsk</code></td><td>미리 허용한 항목만 실행. 나머지는 자동 거부. 입력 대기 없음</td></tr>
+<tr><td><code>bypassPermissions</code></td><td>모든 호출을 승인 없이 진행. 컨테이너 같은 격리 환경 전용</td></tr>
+</table>
+<ul>
+<li>아무것도 지정하지 않으면 CI에서 승인 대기로 멈출 수 있음</li>
+</ul>
+<h4>② 도구 규칙 플래그</h4>
+<table>
+<tr><th>플래그</th><th>기능</th><th>예</th></tr>
+<tr><td><code>--allowedTools</code></td><td>승인 요청 없이 실행할 항목의 목록</td><td><code>"Bash(npm test)" "Read"</code></td></tr>
+<tr><td><code>--disallowedTools</code></td><td>거부 규칙. 도구 이름만 쓰면 그 도구 제외. 범위를 쓰면 해당 호출만 차단</td><td><code>"Bash(rm *)"</code></td></tr>
+<tr><td><code>--tools</code></td><td>쓸 수 있는 기본 제공 도구 목록 자체를 축소</td><td><code>"Bash,Edit,Read"</code></td></tr>
+</table>
+<h4>③ 규칙 표기</h4>
+<table>
+<tr><th>표기</th><th>허용 범위</th></tr>
+<tr><td><code>Bash(git diff *)</code></td><td>git diff로 시작하는 명령. * 앞의 빈칸이 범위를 결정</td></tr>
+<tr><td><code>Bash(git diff*)</code></td><td>git diff-index 같은 다른 명령까지 포함</td></tr>
+<tr><td><code>Bash(git *)</code></td><td>모든 git 명령. git push 포함</td></tr>
+</table>
+<h4>④ 함께 쓰는 조합</h4>
+<div class="screen"><div class="sbar">화면 예시 · CI에서 테스트를 실행하는 명령</div>
+$ claude -p "run the test suite" --permission-mode dontAsk --allowedTools "Bash(npm test)" "Read"
+</div>
+<ul>
+<li>권한 모드의 역할: 미리 정한 항목만 실행</li>
+<li>허용 목록의 역할: 허용할 항목 지정</li>
+</ul>
+<h4>⑤ 거부 규칙 우선</h4>
+<ul>
+<li>설정 파일의 거부(deny) 규칙은 모든 권한 모드에서 적용. <code>bypassPermissions</code>에서도 적용</li>
+<li>허용(allow) 규칙은 <code>bypassPermissions</code>에서 의미 없음</li>
+<li>설계 순서: 절대 허용하지 않을 항목을 먼저 지정</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>권한 모드(permission mode)</b>: 승인 요청 없이 진행할 범위를 정하는 설정. CH 4에서 다룬 내용</li>
+<li><b>컨테이너(container)</b>: 다른 프로그램과 분리된 실행 공간</li>
+<li><b>npm test, git diff, git push</b>: 예시에 쓴 명령. 테스트 실행, 변경 내용 비교, 서버로 전송</li>
+</ul>
+</div>`},
 
-    {type:"concept", kind:"CONCEPT · 개념 설명 ④", h:"요건 ④⑤: 실행량 제한, 이전 세션 이어가기",
-     html:`<h4>④ 중단시킬 사람이 없는 문제</h4>
-      <ul>
-        <li>상황: 같은 파일을 반복해서 다시 읽는 루프에 빠져도 실행을 중단시킬 사람이 없음. 비용이 발생한 뒤에야 확인하게 됨</li>
-        <li><code>--max-turns 3</code>: <strong>에이전트 턴 수</strong> 상한임. 한도에 도달하면 에러로 종료함. 기본값은 무제한임</li>
-        <li><code>--max-budget-usd 5.00</code>: <strong>금액</strong> 상한임. 서브에이전트(subagent)가 사용한 비용도 합산되며, 한도에 도달하면 새 서브에이전트 생성이 <code>Budget limit reached</code>로 실패함</li>
-        <li>둘 다 <strong>print 모드 전용</strong>임. 대화형 세션에는 사용할 수 없음</li>
-        <li>중요: <strong>CI의 작업 타임아웃(job timeout)은 이 두 플래그의 대체 수단이 아님.</strong> 외부에서 프로세스를 종료시키면(SIGTERM) 종료 코드 143으로 끝나고, 진행 중이던 턴은 <strong>미완 상태로 남아 결과가 기록되지 않음</strong></li>
-      </ul>
-      <h4>⑤ 이전 세션의 대화를 이어가는 문제</h4>
-      <ul>
-        <li><code>-c</code>(<code>--continue</code>): 이 디렉토리의 <strong>가장 최근</strong> 대화를 이어감. 어느 세션인지 지정할 수는 없음</li>
-        <li><code>-r</code>(<code>--resume</code>): <strong>세션 ID나 이름을 지정</strong>해서 이어감. 여러 작업을 병렬로 실행한 경우에는 이 플래그를 사용함</li>
-        <li>세션 ID는 <code>--output-format json</code> 결과의 <code>session_id</code> 필드에서 얻음</li>
-        <li><code>--fork-session</code>: 세션을 이어갈 때 <strong>새 세션 ID를 생성함</strong>. 원본 대화를 보존한 채 두 방향으로 실험할 때 사용함</li>
-      </ul>
-      <h4>CI에서 함께 출제되는 항목 두 가지</h4>
-      <ul>
-        <li><code>--bare</code>: 훅·스킬·커스텀 커맨드·서브에이전트·플러그인·MCP 서버·자동 메모리·<strong>CLAUDE.md까지</strong> 자동 탐색을 건너뛰고 시작함. 러너마다 동일한 시작 상태를 만들 때 사용함. 다만 <strong>저장소의 팀 표준도 함께 읽지 않는다</strong>는 대가가 따름</li>
-        <li><code>claude setup-token</code>: CI·스크립트용 장기 토큰을 발급하는 명령임</li>
-      </ul>
-      <div class="callout">🎯 <code>--bare</code>는 오답 유도 선택지로 자주 사용됨. 재현성 요구에는 정확히 맞는 설명이지만, 지문에 "리뷰가 팀 표준을 반영해야 한다"는 조건이 있으면 오답이 됨.</div>`},
+    {type:"concept", kind:"CONCEPT · 개념 설명 ④", h:"실행량 제한과 세션 이어가기",
+   html:`<h4>① 실행량 제한</h4>
+<table>
+<tr><th>플래그</th><th>제한 대상</th><th>한도 도달 시</th></tr>
+<tr><td><code>--max-turns 3</code></td><td>에이전트가 일한 차례 수. 기본값은 제한 없음</td><td>오류로 종료</td></tr>
+<tr><td><code>--max-budget-usd 5.00</code></td><td>금액. 서브에이전트가 쓴 비용 포함</td><td>실행 중지</td></tr>
+</table>
+<ul>
+<li>두 플래그 모두 <code>-p</code> 실행 전용</li>
+<li>CI의 작업 제한 시간은 대체 수단이 아님. 밖에서 강제 종료하면 종료 코드 143. 진행 중이던 작업의 결과는 기록되지 않음</li>
+</ul>
+<h4>② 세션 이어가기</h4>
+<table>
+<tr><th>플래그</th><th>동작</th></tr>
+<tr><td><code>-c</code>, <code>--continue</code></td><td>현재 폴더의 가장 최근 대화 이어가기</td></tr>
+<tr><td><code>-r</code>, <code>--resume</code></td><td>세션 ID나 이름을 지정해서 이어가기</td></tr>
+<tr><td><code>--fork-session</code></td><td>이어갈 때 새 세션 ID 생성. 원래 대화는 그대로 유지</td></tr>
+</table>
+<ul>
+<li>세션 ID 확인 방법: <code>--output-format json</code> 결과의 <code>session_id</code> 항목</li>
+<li>여러 작업을 동시에 실행한 경우: 세션을 지정할 수 있는 <code>--resume</code> 사용</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 세션을 지정해서 이어가기</div>
+$ claude -p "어제 리뷰에서 2번 지적을 자세히 설명해 줘" --resume 5b3f2c1a-...
+</div>
+<h4>③ 함께 알아 둘 두 가지</h4>
+<ul>
+<li><code>--bare</code>: 훅, 스킬, 서브에이전트, 플러그인, MCP 서버, 자동 메모리, CLAUDE.md를 불러오지 않고 시작. 실행 환경마다 시작 상태가 같아지는 효과. 팀 규칙도 읽지 않음</li>
+<li><code>claude setup-token</code>: CI와 스크립트에서 쓸 인증 토큰을 발급하는 명령</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>차례(turn)</b>: 에이전트가 요청을 한 번 보내고 답을 받는 단위</li>
+<li><b>인증 토큰</b>: 사람 대신 프로그램이 로그인할 때 쓰는 긴 문자열</li>
+</ul>
+</div>`},
 
-    {type:"concept", kind:"TOPIC · 주제 설명", h:"상황별 수단 정리와 구분이 필요한 다섯 쌍",
-     html:`<h4>상황별 수단 대조표</h4>
-      <table>
-        <tr><th>이 상황이면</th><th>이 수단을 사용함</th></tr>
-        <tr><td>사람 없이 한 번 실행하고 종료해야 함</td><td><code>-p</code> / <code>--print</code></td></tr>
-        <tr><td>결과를 다음 단계 프로그램이 읽어야 함</td><td><code>--output-format json</code></td></tr>
-        <tr><td>출력 구조를 고정해야 함</td><td><code>--json-schema</code> (결과는 <code>structured_output</code>에)</td></tr>
-        <tr><td>진행 상황을 실시간으로 내보내야 함</td><td><code>--output-format stream-json</code></td></tr>
-        <tr><td>승인 프롬프트에서 멈추면 안 됨</td><td><code>--permission-mode dontAsk</code></td></tr>
-        <tr><td>지정한 명령만 승인 요청 없이 실행</td><td><code>--allowedTools</code></td></tr>
-        <tr><td>특정 호출만 차단</td><td><code>--disallowedTools</code></td></tr>
-        <tr><td>도구 목록 자체를 좁히기</td><td><code>--tools</code></td></tr>
-        <tr><td>반복 루프와 비용 초과 방지</td><td><code>--max-turns</code> · <code>--max-budget-usd</code></td></tr>
-        <tr><td>직전 대화 이어가기</td><td><code>-c</code> / <code>--continue</code></td></tr>
-        <tr><td>특정 세션을 지정해 이어가기</td><td><code>-r</code> / <code>--resume</code></td></tr>
-        <tr><td>원본을 보존한 채 갈래를 나누기</td><td><code>--fork-session</code></td></tr>
-        <tr><td>러너마다 동일한 시작 상태</td><td><code>--bare</code> (팀 표준도 함께 읽지 않음)</td></tr>
-      </table>
-      <h4>구분이 필요한 다섯 쌍</h4>
-      <ul>
-        <li><code>-p</code> vs <code>--output-format json</code>: <strong>실행 종료</strong> vs <strong>출력 형식</strong>. 서로 대체하지 못함</li>
-        <li><code>--allowedTools</code> vs <code>--tools</code>: <strong>승인 요청 없이 실행할 항목</strong> vs <strong>사용 가능한 도구 목록 자체</strong></li>
-        <li><code>dontAsk</code> vs <code>bypassPermissions</code>: <strong>미리 정한 것만 실행</strong> vs <strong>전부 통과</strong>. 후자는 격리 환경 전용임</li>
-        <li><code>-c</code> vs <code>-r</code>: <strong>가장 최근 세션 하나</strong> vs <strong>세션을 지정</strong></li>
-        <li><code>--max-turns</code> vs <code>--max-budget-usd</code>: <strong>횟수</strong> vs <strong>금액</strong>. 무한 루프는 횟수로, 비용이 큰 모델 호출은 금액으로 제한함</li>
-      </ul>
-      <div class="callout">⚠️ print 모드 전용 플래그를 기억해 둘 것. <code>--max-turns</code>, <code>--max-budget-usd</code>, <code>--json-schema</code>, <code>--verbose</code>가 여기에 해당함. 이 플래그를 대화형 세션에 붙이는 선택지는 오답임.</div>`},
+    {type:"concept", kind:"TOPIC · 주제 설명", h:"상황별 수단과 헷갈리기 쉬운 다섯 쌍",
+   html:`<h4>① 상황별 수단</h4>
+<table>
+<tr><th>상황</th><th>수단</th></tr>
+<tr><td>사람 없이 한 번 실행하고 종료</td><td><code>-p</code></td></tr>
+<tr><td>결과를 다음 프로그램이 읽음</td><td><code>--output-format json</code></td></tr>
+<tr><td>결과 양식 고정</td><td><code>--json-schema</code>. 결과는 <code>structured_output</code> 항목</td></tr>
+<tr><td>진행 상황을 실시간으로 출력</td><td><code>--output-format stream-json</code></td></tr>
+<tr><td>승인 요청에서 멈추면 안 됨</td><td><code>--permission-mode dontAsk</code></td></tr>
+<tr><td>지정한 명령만 승인 없이 실행</td><td><code>--allowedTools</code></td></tr>
+<tr><td>특정 호출만 차단</td><td><code>--disallowedTools</code></td></tr>
+<tr><td>도구 목록 자체를 축소</td><td><code>--tools</code></td></tr>
+<tr><td>반복과 비용 초과 방지</td><td><code>--max-turns</code>, <code>--max-budget-usd</code></td></tr>
+<tr><td>직전 대화 이어가기</td><td><code>--continue</code></td></tr>
+<tr><td>세션을 지정해서 이어가기</td><td><code>--resume</code></td></tr>
+<tr><td>원래 대화를 두고 갈라서 진행</td><td><code>--fork-session</code></td></tr>
+<tr><td>실행 환경마다 같은 시작 상태</td><td><code>--bare</code>. 팀 규칙도 읽지 않음</td></tr>
+</table>
+<h4>② 헷갈리기 쉬운 다섯 쌍</h4>
+<table>
+<tr><th>쌍</th><th>차이</th></tr>
+<tr><td><code>-p</code>와 <code>--output-format json</code></td><td>실행 종료와 결과 형식. 서로 대신할 수 없음</td></tr>
+<tr><td><code>--allowedTools</code>와 <code>--tools</code></td><td>승인 없이 실행할 항목과 쓸 수 있는 도구 목록</td></tr>
+<tr><td><code>dontAsk</code>와 <code>bypassPermissions</code></td><td>미리 정한 항목만 실행과 전부 통과. 뒤쪽은 격리 환경 전용</td></tr>
+<tr><td><code>--continue</code>와 <code>--resume</code></td><td>가장 최근 세션과 지정한 세션</td></tr>
+<tr><td><code>--max-turns</code>와 <code>--max-budget-usd</code></td><td>횟수 제한과 금액 제한</td></tr>
+</table>
+<ul>
+<li><code>-p</code> 실행 전용 플래그: <code>--max-turns</code>, <code>--max-budget-usd</code>, <code>--json-schema</code></li>
+<li>플래그 전체 목록: <a href="https://code.claude.com/docs/ko/cli-reference" target="_blank" rel="noopener">Claude Code 공식 문서 'CLI 참조' 페이지</a> (한국어)</li>
+</ul>`},
 
     {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: The nightly job that never reports",
      q:`A nightly dependency-audit job invokes Claude Code on a shared runner. Two failure shapes alternate: on some nights the job is still alive at 9am having produced nothing, and the runner log's last line is a request to approve a shell command; on other nights it finishes but bills $38, and the transcript shows the same three files re-read eleven times. The results are supposed to land in a dashboard that currently regex-scrapes the prose. Which revision addresses all three symptoms?`,
@@ -172,7 +251,7 @@
      ],
      hint:`세 실행이 동시에 진행됨. "가장 최근"이라는 지정으로는 어느 세션인지 선택할 수 없음. 원본을 보존해야 한다는 조건이 하나 더 있음.`,
      explain:{
-       good:`병렬 실행에서는 세션을 지정해 재개하는 방법만 성립함. 구조화 출력(structured output)에 담겨 오는 세션 식별자를 저장해 두었다가 그 값으로 세션을 지정함. 갈래를 나눌 때 새 식별자를 생성하는 옵션을 사용하면 원본 대화가 그대로 남아 감사 자료로 사용할 수 있음.`,
+       good:`병렬 실행에서는 세션을 지정해 재개하는 방법만 성립함. 구조화된 출력(structured output)에 담겨 오는 세션 식별자를 저장해 두었다가 그 값으로 세션을 지정함. 갈래를 나눌 때 새 식별자를 생성하는 옵션을 사용하면 원본 대화가 그대로 남아 감사 자료로 사용할 수 있음.`,
        wrongs:[
          `<b>B(가장 최근 대화 이어가기):</b> 일반적으로는 맞지만 이 문제의 조건에서는 틀린 선택지임. 실행이 하나뿐이면 맞는 방법임. 세 실행이 동시에 끝난 상황에서는 어느 것이 최근인지 통제할 수 없고, 이어가기를 반복해도 갈래가 나뉘지 않고 하나의 줄기에 계속 누적됨.`,
          `<b>C(요약 붙여넣기):</b> 리뷰가 실제로 무엇을 확인했는지는 요약에 담기지 않음. 이어가기 기능을 두고 맥락을 수작업으로 재구성하는 방식임.`,

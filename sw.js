@@ -1,7 +1,7 @@
-/* CCA-F ACADEMY 오프라인 캐시
+/* Claude 설계자 과정 오프라인 캐시
    한 번 접속하면 사이트 전체를 브라우저에 저장해, 이후 인터넷이 없어도 같은 주소로 열림.
    내용을 갱신해 배포할 때는 아래 CACHE 뒤 숫자를 1 올릴 것. */
-const CACHE = "ccaf-v2";
+const CACHE = "ccaf-v3";
 const ASSETS = [
   "./", "./index.html",
   "./content/part0.js", "./content/part1.js", "./content/part1-test.js",
@@ -12,6 +12,7 @@ const ASSETS = [
   "./content/p3-plus.js", "./content/gap-fix.js", "./content/exam-s56.js",
   "./content/open-p1.js", "./content/open-p2.js", "./content/open-p3.js",
   "./content/open-p4.js", "./content/open-p5.js", "./content/open-p6.js",
+  "./content/basics.js",
   "./content/sprint.js", "./content/ko-gloss.js"
 ];
 

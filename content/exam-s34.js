@@ -108,13 +108,13 @@
 
   {scenario:"s3", ts:"3.2", q:`Your analysts run a "deep source scan" by hand: it reads a topic brief, queries four archives, and dumps roughly 30,000 tokens of raw hits before anyone reads a line. Run inside the main session it leaves no room for the discussion that follows. It must never write files. And it takes one required argument — the topic — which analysts forget about half the time. What packaging fits?`,
    opts:[
-     {t:`A project skill whose frontmatter runs it in an isolated forked context, restricts which tools it may use, and declares the argument it expects so a missing topic is requested rather than guessed.`, ok:true},
-     {t:`A project slash command holding the same prompt text, since the procedure is invoked on demand.`},
+     {t:`A project skill whose frontmatter runs it in an isolated forked context, removes the file-writing tools from what it may use, and shows the expected argument as a hint so analysts see that a topic is required.`, ok:true},
+     {t:`A project skill holding only the prompt text with no frontmatter, since the procedure is invoked on demand.`},
      {t:`A section of the project's CLAUDE.md describing the procedure so it is always available.`},
      {t:`A user-scoped skill each analyst copies, so everyone can tune their own archive list.`}],
-   explain:{good:`요구 사항이 셋이고 각각이 스킬(skill) 프론트매터(frontmatter) 항목 하나에 대응함. 출력이 긴 문제는 격리 실행으로, 파일 쓰기 금지는 허용 도구 제한으로, 자주 누락되는 인자는 인자 선언으로 해결함. 이 세 항목을 갖춘 것이 스킬임.`,
-     wrongs:[`<b>B(슬래시 커맨드):</b> 커맨드는 프롬프트를 호출하는 기능만 하므로 출력이 본 대화에 그대로 들어감. 3만 토큰 문제가 해결되지 않음.`,`<b>C(CLAUDE.md):</b> CLAUDE.md는 항상 로드되는 위치임. 필요할 때만 실행하는 절차를 상시 로드하는 것은 요구와 반대이며 격리 실행도 불가능함.`,`<b>D(사용자 스코프 스킬):</b> 분석가마다 사본을 두면 아카이브 목록이 달라져 같은 주제에 다른 결과가 나옴. 개인별 변형은 팀 공통 절차가 없을 때 쓰는 방식임.`]},
-   principle:"격리 실행, 도구 제한, 인자 선언: 스킬 프론트매터의 세 항목"},
+   explain:{good:`요구 사항 셋이 스킬(skill) 프론트매터(frontmatter) 항목 하나씩에 대응. 긴 출력은 격리 실행(context: fork), 파일 쓰기 금지는 도구 차단(disallowed-tools), 자주 빠지는 인자는 안내 문구(argument-hint)로 해결.`,
+     wrongs:[`<b>B(프론트매터 없는 스킬):</b> 설정이 없으면 출력이 본 대화에 그대로 들어감. 3만 토큰 문제 미해결.`,`<b>C(CLAUDE.md):</b> CLAUDE.md는 항상 로드되는 위치임. 필요할 때만 실행하는 절차를 상시 로드하는 것은 요구와 반대이며 격리 실행도 불가능함.`,`<b>D(사용자 스코프 스킬):</b> 분석가마다 사본을 두면 아카이브 목록이 달라져 같은 주제에 다른 결과가 나옴. 개인별 변형은 팀 공통 절차가 없을 때 쓰는 방식임.`]},
+   principle:"격리 실행, 도구 차단, 인자 안내: 스킬 프론트매터의 세 항목"},
 
   {scenario:"s3", ts:"3.5", q:`A client asked for "an executive-ready landscape of the battery-recycling market." Three drafts came back shaped completely differently — a five-page narrative, a vendor table, a risk memo. The brief is one paragraph of prose. Four fixes are on the table. Which is LEAST likely to converge the output?`,
    opts:[

@@ -6,23 +6,39 @@ window.CCAF_CONTENT.p6 = {
   /* ===== 시나리오 ① 고객지원 해결 에이전트 ===== */
   { id:"p6s1", ch:"①", title:"고객지원 해결 에이전트", scenario:"s1",
     steps:[
-      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ①: Customer Support Resolution Agent",
-       html:`<p class="lead">실제 시험 지문의 설정임. Agent SDK로 만든 고객지원 에이전트가 반품, 결제 분쟁, 계정 문제처럼 <strong>요구가 명확하지 않은 요청</strong>을 처리함.</p>
-        <h4>시스템 구성 (지문에 명시되는 것)</h4>
-        <ul>
-          <li>MCP 도구 4종: <code>get_customer</code> · <code>lookup_order</code> · <code>process_refund</code> · <code>escalate_to_human</code></li>
-          <li>목표: <strong>첫 접촉 해결률(first contact resolution, FCR) 80% 이상</strong>. 사람에게 넘겨야 할 시점을 판단하는 것도 목표에 포함됨</li>
-          <li>주 도메인: <strong>D1 + D2 + D5</strong></li>
-        </ul>
-        <h4>이 시나리오에서 반복 출제되는 판단 지점</h4>
-        <ul>
-          <li>신원 확인 순서 강제: <strong>코드로 만든 게이트</strong>로 처리함. 프롬프트 지시로는 처리하지 않음</li>
-          <li>금액 상한과 정책 규칙: <strong>차단 훅(hook)과 대체 경로</strong></li>
-          <li>에스컬레이션(escalation, 사람에게 넘김)의 3대 트리거와, 감정·신뢰도라는 잘못된 기준의 구분</li>
-          <li>긴 대화에서 금액·날짜 보존: <strong>case facts 블록</strong></li>
-          <li>실패 응답: <strong>errorCategory·isRetryable</strong>로 구조화함</li>
-        </ul>
-        <div class="callout">🎯 시나리오 ①의 정답 판별 신호. 금전이 걸린 규칙이 나오면 코드로 강제함. 고객이 사람을 찾으면 그 요청을 존중함. 요약 과정에서 숫자가 사라지는 상황이면 요약 대상에서 제외한 별도 블록에 보관함.</div>`},
+      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ① 고객지원 해결 에이전트",
+   html:`<h4>① 상황</h4>
+<ul>
+<li>Agent SDK로 만든 고객지원 에이전트</li>
+<li>반품, 결제 분쟁, 계정 문제처럼 요구가 분명하지 않은 요청 처리</li>
+</ul>
+<h4>② 시스템 구성</h4>
+<ul>
+<li>MCP 도구 4개: get_customer, lookup_order, process_refund, escalate_to_human</li>
+<li>목표: 첫 문의에서 해결하는 비율 80% 이상. 사람에게 넘길 시점의 판단도 목표에 포함</li>
+<li>관련 영역: D1, D2, D5</li>
+</ul>
+<h4>③ 자주 묻는 내용</h4>
+<table>
+<tr><th>내용</th><th>판단 기준</th></tr>
+<tr><td>본인 확인 순서 강제</td><td>프로그램으로 만든 사전 조건 검사. 지시문으로는 보장 불가</td></tr>
+<tr><td>금액 상한과 규정</td><td>훅으로 차단하고 다른 처리 경로 안내</td></tr>
+<tr><td>사람에게 넘기는 기준</td><td>정당한 경우 세 가지. 감정 표현과 신뢰도는 기준이 아님</td></tr>
+<tr><td>긴 대화의 금액과 날짜</td><td>요약 대상에서 뺀 별도 자리에 보관</td></tr>
+<tr><td>도구 실패 응답</td><td>오류 종류와 재시도 가능 여부를 항목으로 구분</td></tr>
+</table>
+<h4>④ 자주 나오는 오답</h4>
+<ul>
+<li>금액이 걸린 규칙을 지시문 강화로 해결하는 선택지</li>
+<li>사람을 요청한 고객에게 자동 응대를 계속하는 선택지</li>
+<li>숫자가 사라지는 문제를 요약 횟수 조정으로 해결하는 선택지</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>첫 문의 해결 비율(FCR)</b>: 고객이 다시 문의하지 않아도 되게 첫 문의에서 해결한 비율</li>
+<li><b>에스컬레이션</b>: 에이전트가 직접 처리하지 않고 사람에게 넘기는 일</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S1-1: Two issues, one gap",
        q:`A customer message contains two requests: (a) a refund for order #B-2210, fully covered by your return policy, and (b) compensation for "emotional distress," which your policy does not address at all. What is the correct handling?`,
        opts:[
@@ -83,21 +99,36 @@ window.CCAF_CONTENT.p6 = {
   /* ===== 시나리오 ② Claude Code 코드 생성 ===== */
   { id:"p6s2", ch:"②", title:"Claude Code 코드 생성", scenario:"s2",
     steps:[
-      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ②: Code Generation with Claude Code",
-       html:`<p class="lead">실제 시험 지문의 설정임. 팀이 Claude Code로 코드 생성, 리팩토링, 디버깅, 문서화 속도를 높임. 커스텀 커맨드와 CLAUDE.md로 개발 워크플로에 통합함.</p>
-        <h4>시스템 구성</h4>
-        <ul>
-          <li>커스텀 슬래시 커맨드, CLAUDE.md 설정, plan mode와 직접 실행의 판단</li>
-          <li>주 도메인: <strong>D3 + D5</strong> (설정 계층, 스킬, 세션, 컨텍스트)</li>
-        </ul>
-        <h4>이 시나리오에서 반복 출제되는 판단 지점</h4>
-        <ul>
-          <li>지시를 어디에 둘 것인가: 커맨드, 스킬, 규칙, CLAUDE.md의 <strong>적용 범위(scope)와 로딩 시점</strong></li>
-          <li>plan mode를 쓰는 3조건(대규모 변경, 접근 방식이 여럿, 아키텍처 결정)과 명확한 단일 수정의 구분</li>
-          <li>세션 재개 판단: <strong>그 사이 일어난 변경의 범위</strong>가 기존 분석의 유효 여부를 결정함</li>
-          <li>긴 세션의 컨텍스트 열화 대응: 스크래치패드, Explore, 단계별 요약</li>
-        </ul>
-        <div class="callout">🎯 시나리오 ②의 정답 판별 신호. 팀 전체, 자동으로, 새 팀원 같은 표현이 나오면 적용 범위를 묻는 문제임. 그 사이 코드가 바뀌었다는 서술이 나오면 세션에 남은 분석이 아직 유효한지를 묻는 문제임.</div>`},
+      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ② Claude Code 코드 생성",
+   html:`<h4>① 상황</h4>
+<ul>
+<li>팀이 Claude Code로 코드 작성, 구조 정리, 오류 수정, 문서 작성 속도를 높이는 상황</li>
+<li>스킬과 CLAUDE.md로 팀의 개발 과정에 연결</li>
+</ul>
+<h4>② 시스템 구성</h4>
+<ul>
+<li>슬래시 명령으로 실행하는 스킬, CLAUDE.md 설정, 플랜 모드와 바로 실행 사이의 선택</li>
+<li>관련 영역: D3, D5</li>
+</ul>
+<h4>③ 자주 묻는 내용</h4>
+<table>
+<tr><th>내용</th><th>판단 기준</th></tr>
+<tr><td>지시를 둘 위치</td><td>스킬, 규칙 파일, CLAUDE.md의 적용 대상과 읽히는 시점</td></tr>
+<tr><td>플랜 모드 사용 조건</td><td>큰 변경, 가능한 방법이 여러 개인 경우, 구조에 대한 결정. 분명한 수정 하나는 바로 실행</td></tr>
+<tr><td>세션 이어 가기</td><td>그 사이 바뀐 코드의 범위가 이전 분석의 유효 여부를 결정</td></tr>
+<tr><td>긴 세션의 품질 저하</td><td>스크래치패드, Explore 서브에이전트, 단계별 요약</td></tr>
+</table>
+<h4>④ 자주 나오는 오답</h4>
+<ul>
+<li>팀 전체에 적용할 설정을 개인용 위치에 두는 선택지</li>
+<li>코드가 크게 바뀐 뒤에도 이전 세션의 분석을 그대로 쓰는 선택지</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>플랜 모드(plan mode)</b>: 파일을 고치지 않고 계획만 세우는 실행 방식</li>
+<li><b>스크래치패드</b>: 에이전트가 발견한 내용을 적어 두는 파일</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S2-1: The conflicting conventions",
        q:`A senior dev's Claude Code generates code with tabs and semicolons; everyone else's uses the team standard (spaces, no semicolons). Investigation shows the team standard lives in the project CLAUDE.md, and the senior dev has personal formatting rules in ~/.claude/CLAUDE.md. What is happening, and what should change?`,
        opts:[
@@ -112,14 +143,14 @@ window.CCAF_CONTENT.p6 = {
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S2-2: The scaffold skill",
        q:`You're building a team skill that scaffolds new API endpoints: it must create files from templates (write operations required), must never execute shell commands, and requires an endpoint name that developers keep omitting. Which SKILL.md frontmatter configuration is right?`,
        opts:[
-         {t:`allowed-tools limited to file write/read operations (excluding Bash), plus argument-hint for the endpoint name; context: fork is optional since scaffold output is compact.`, ok:true},
+         {t:`disallowed-tools removing Bash so that no shell command can run, plus argument-hint showing that an endpoint name is expected; context: fork is optional since scaffold output is compact.`, ok:true},
          {t:`context: fork alone — isolation prevents both shell execution and missing arguments.`},
          {t:`argument-hint alone — once the name is provided, the skill body can enforce the tool rules.`},
          {t:`No frontmatter needed; state all three requirements clearly in the skill's prompt body.`}],
        hint:`요구 조건을 각 옵션에 하나씩 대응시킬 것. 셸 실행 금지를 확실하게 보장하는 옵션이 무엇인지 확인할 것.`,
-       explain:{good:`3.2의 frontmatter 옵션별 역할임. 도구 차단은 allowed-tools가 강제하고, 필수 인자는 argument-hint가 안내함. fork는 출력이 길 때 컨텍스트를 격리하는 용도이므로 이 스킬에는 필수가 아님. 각 옵션의 목적을 정확히 아는지 묻는 문제임.`,
+       explain:{good:`스킬 설정 항목별 기능을 묻는 문제. 도구 차단은 disallowed-tools, 넘길 값 안내는 argument-hint. fork는 출력이 길 때 컨텍스트를 격리하는 용도이므로 이 스킬에는 필수 아님.`,
          wrongs:[`<b>B:</b> fork는 컨텍스트를 격리할 뿐이며 도구와 인자를 통제하지 않음.`,`<b>C:</b> 프롬프트 본문에 셸 금지를 적는 방식은 확률적임. Bash가 도구 목록에 남아 있으면 호출될 수 있음.`,`<b>D:</b> 세 요구를 모두 확률에 맡기는 구성이며, 네 선택지 중 강제력이 가장 약함.`]},
-       principle:"원칙 ① 강제는 frontmatter 옵션으로 함", ts:"3.2"},
+       principle:"원칙 ① 강제는 스킬 설정 항목으로", ts:"3.2"},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S2-3: Three tasks, three modes?",
        q:`Monday's queue: (a) fix a null-pointer crash with a stack trace pointing to one line in payment.ts; (b) migrate the ORM library used across 60+ files; (c) add a feature that could reasonably be built three different ways with different infra costs. Which mode assignment is correct?`,
        opts:[
@@ -158,22 +189,38 @@ window.CCAF_CONTENT.p6 = {
   /* ===== 시나리오 ③ 멀티에이전트 리서치 ===== */
   { id:"p6s3", ch:"③", title:"멀티에이전트 리서치 시스템", scenario:"s3",
     steps:[
-      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ③: Multi-Agent Research System",
-       html:`<p class="lead">실제 시험 지문의 설정임. 코디네이터가 전문 서브에이전트(subagent)에 작업을 위임함. 웹 검색, 문서 분석, 종합(synthesis), 리포트 생성의 네 갈래이며, 출처가 달린 종합 리포트를 만드는 것이 목표임.</p>
-        <h4>시스템 구성</h4>
-        <ul>
-          <li>허브 앤 스포크 구조: 모든 통신이 코디네이터를 거침</li>
-          <li>주 도메인: <strong>D1 + D2 + D5</strong></li>
-        </ul>
-        <h4>이 시나리오에서 반복 출제되는 판단 지점</h4>
-        <ul>
-          <li>결과가 이상하면 <strong>작업 분해 로그부터</strong> 확인함. 원인은 대개 코디네이터에 있음</li>
-          <li>컨텍스트는 <strong>프롬프트에 명시해서 전달</strong>하고, 내용과 메타데이터를 분리함</li>
-          <li>병렬 실행은 한 응답에 Task 호출을 여러 개 넣는 방식임</li>
-          <li>실패 전파의 4요소, 부분 결과와 커버리지 주석</li>
-          <li>출처 처리: 주장과 출처의 매핑, 발행일 필수 표기, 값이 충돌하면 둘 다 기재</li>
-        </ul>
-        <div class="callout">🎯 시나리오 ③의 정답 판별 신호. 서브에이전트끼리 직접 통신하게 하자는 선택지는 관측성(observability, 시스템 안에서 무슨 일이 일어나는지 밖에서 확인할 수 있는 성질)을 깨뜨리므로 거의 항상 오답임. 충돌하는 값 중 하나를 임의로 고른다는 선택지도 마찬가지임.</div>`},
+      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ③ 멀티에이전트 리서치 시스템",
+   html:`<h4>① 상황</h4>
+<ul>
+<li>코디네이터가 서브에이전트에 작업을 나눠 주는 구조</li>
+<li>서브에이전트 역할 넷: 웹 검색, 문서 분석, 종합, 보고서 작성</li>
+<li>목표: 출처가 붙은 종합 보고서</li>
+</ul>
+<h4>② 시스템 구성</h4>
+<ul>
+<li>모든 전달이 코디네이터를 거치는 구조</li>
+<li>관련 영역: D1, D2, D5</li>
+</ul>
+<h4>③ 자주 묻는 내용</h4>
+<table>
+<tr><th>내용</th><th>판단 기준</th></tr>
+<tr><td>결과가 이상할 때 먼저 볼 곳</td><td>코디네이터가 작업을 나눈 기록. 원인은 대개 코디네이터</td></tr>
+<tr><td>서브에이전트에 정보 전달</td><td>필요한 내용을 지시문에 직접 포함. 본문과 출처 정보를 구분</td></tr>
+<tr><td>병렬 실행</td><td>응답 한 번에 Agent 도구 호출 여러 개</td></tr>
+<tr><td>실패 보고</td><td>실패 종류, 시도한 내용, 부분 결과, 대안. 빠진 범위 표시</td></tr>
+<tr><td>출처 처리</td><td>주장마다 출처와 발행일 표시. 값이 서로 다르면 둘 다 기재</td></tr>
+</table>
+<h4>④ 자주 나오는 오답</h4>
+<ul>
+<li>서브에이전트끼리 직접 주고받게 하는 선택지</li>
+<li>서로 다른 값 중 하나를 임의로 고르는 선택지</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>코디네이터(coordinator)</b>: 서브에이전트에게 일을 나눠 주고 결과를 모으는 에이전트</li>
+<li><b>종합(synthesis)</b>: 여러 자료의 내용을 하나의 결론으로 모으는 일</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S3-1: Writing the coordinator's orders",
        q:`Your coordinator's prompts to the search subagent currently read like scripts: "First query X, then query Y, then if results < 5, query Z..." On novel topics the agent follows the script even when it clearly doesn't fit. How should coordinator prompts be designed instead?`,
        opts:[
@@ -234,22 +281,39 @@ window.CCAF_CONTENT.p6 = {
   /* ===== 시나리오 ④ 개발자 생산성 도구 ===== */
   { id:"p6s4", ch:"④", title:"개발자 생산성 도구", scenario:"s4",
     steps:[
-      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ④: Developer Productivity with Claude",
-       html:`<p class="lead">실제 시험 지문의 설정임. 엔지니어가 낯선 코드베이스를 탐색하고, 레거시(legacy, 오래전에 작성돼 지금도 쓰이는 코드)를 이해하고, 보일러플레이트(boilerplate, 매번 반복해서 작성하는 기본 틀 코드)를 생성하고, 반복 작업을 자동화하는 Agent SDK 도구임.</p>
-        <h4>시스템 구성</h4>
-        <ul>
-          <li>기본 제공 도구(built-in tools) 사용: <strong>Read · Write · Bash · Grep · Glob</strong>과 MCP 서버 연동</li>
-          <li>주 도메인: <strong>D2 + D3 + D1</strong></li>
-        </ul>
-        <h4>이 시나리오에서 반복 출제되는 판단 지점</h4>
-        <ul>
-          <li>상황별 도구 선택: 파일 이름 검색은 Glob, 파일 내용 검색은 Grep, Edit이 실패하면 Read와 Write</li>
-          <li>점진적 탐색: 진입점부터 따라가며, 전체를 먼저 읽지 않음</li>
-          <li>MCP: 커뮤니티 서버와 자체 제작의 구분, 도구 설명의 품질, 리소스(resource) 카탈로그</li>
-          <li>범용 도구를 범위가 제한된 대안으로 교체함(fetch_url을 load_document로)</li>
-          <li>범위가 열린 과제에는 동적 분해와 Explore 격리를 씀</li>
-        </ul>
-        <div class="callout">🎯 시나리오 ④의 정답 판별 신호. 전부 읽고 시작한다, 알파벳 순서로 처리한다, 표준 연동인데 직접 제작한다는 서술이 들어간 선택지는 오답 유도 선택지임.</div>`},
+      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ④ 개발자 생산성 도구",
+   html:`<h4>① 상황</h4>
+<ul>
+<li>Agent SDK로 만든 개발 지원 도구</li>
+<li>처음 보는 코드 탐색, 오래된 코드 이해, 반복되는 기본 코드 작성, 반복 작업 자동화</li>
+</ul>
+<h4>② 시스템 구성</h4>
+<ul>
+<li>내장 도구: Read, Write, Bash, Grep, Glob</li>
+<li>MCP 서버 연결</li>
+<li>관련 영역: D2, D3, D1</li>
+</ul>
+<h4>③ 자주 묻는 내용</h4>
+<table>
+<tr><th>내용</th><th>판단 기준</th></tr>
+<tr><td>도구 선택</td><td>파일 이름 검색은 Glob. 파일 내용 검색은 Grep. Edit이 실패하면 Read와 Write</td></tr>
+<tr><td>탐색 순서</td><td>시작 지점부터 따라가기. 전체를 먼저 읽지 않음</td></tr>
+<tr><td>MCP 서버</td><td>이미 공개된 서버와 직접 만드는 서버의 구분. 도구 설명의 품질</td></tr>
+<tr><td>범위가 넓은 도구</td><td>범위가 좁은 도구로 교체. 예: fetch_url 대신 load_document</td></tr>
+<tr><td>범위가 정해지지 않은 작업</td><td>진행하며 나누는 방식과 Explore 서브에이전트</td></tr>
+</table>
+<h4>④ 자주 나오는 오답</h4>
+<ul>
+<li>전부 읽고 시작하는 선택지</li>
+<li>알파벳 순서로 처리하는 선택지</li>
+<li>공개된 서버가 있는 연결을 직접 만드는 선택지</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>코드베이스(codebase)</b>: 한 프로젝트의 코드 전체</li>
+<li><b>MCP 서버</b>: Claude에 외부 도구와 자료를 제공하는 프로그램</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S4-1: Tracing through the wrappers",
        q:`You must find every place the deprecated formatCurrency function is effectively used. The catch: three wrapper modules re-export it under different names (formatMoney, toCurrencyString, fmtC). What is the correct tracing strategy?`,
        opts:[
@@ -310,22 +374,41 @@ window.CCAF_CONTENT.p6 = {
   /* ===== 시나리오 ⑤ CI/CD 통합 ===== */
   { id:"p6s5", ch:"⑤", title:"Claude Code CI/CD 통합", scenario:"s5",
     steps:[
-      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ⑤: Claude Code for Continuous Integration",
-       html:`<p class="lead">실제 시험 지문의 설정임. CI/CD 파이프라인에 Claude Code를 통합해 자동 코드 리뷰, 테스트 생성, PR 피드백을 처리함. 바로 실행에 옮길 수 있는 피드백과 낮은 오탐률이 목표임.</p>
-        <h4>시스템 구성</h4>
-        <ul>
-          <li>비대화형 실행(-p), 구조화 출력(structured output, --output-format json과 --json-schema), CLAUDE.md 컨텍스트</li>
-          <li>주 도메인: <strong>D3 + D4</strong></li>
-        </ul>
-        <h4>이 시나리오에서 반복 출제되는 판단 지점</h4>
-        <ul>
-          <li>실제로 존재하는 플래그 3종과 존재하지 않는 플래그(CLAUDE_HEADLESS, --batch)의 구분</li>
-          <li>오탐 대응: 범주별 명시 기준을 세우고, 문제가 있는 범주를 일시 비활성화함</li>
-          <li>생성 세션과 리뷰 세션을 분리함. 리뷰는 독립 인스턴스가 수행함</li>
-          <li>대형 PR: 파일별 패스와 통합 패스를 나눠 실행함</li>
-          <li>머지 전에 결과를 기다려야 하는 작업은 실시간 API, 야간에 돌리는 작업은 배치 API</li>
-        </ul>
-        <div class="callout">🎯 시나리오 ⑤의 정답 판별 신호. 개발자가 신뢰를 잃었다는 서술이 나오면 기준과 범주를 묻는 문제임. 결과에 일관성이 없다는 서술이 나오면 패스 분리나 구체적 예시를 묻는 문제임.</div>`},
+      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ⑤ Claude Code CI/CD 통합",
+   html:`<h4>① 상황</h4>
+<ul>
+<li>CI/CD 파이프라인에 Claude Code를 연결한 상황</li>
+<li>자동 코드 리뷰, 테스트 작성, PR 의견 작성</li>
+<li>목표: 바로 반영할 수 있는 의견과 낮은 오탐 비율</li>
+</ul>
+<h4>② 시스템 구성</h4>
+<ul>
+<li>사람 없이 실행하는 옵션 -p</li>
+<li>출력 형식 옵션: --output-format json, --json-schema</li>
+<li>CLAUDE.md로 프로젝트 정보 제공</li>
+<li>관련 영역: D3, D4</li>
+</ul>
+<h4>③ 자주 묻는 내용</h4>
+<table>
+<tr><th>내용</th><th>판단 기준</th></tr>
+<tr><td>실행 옵션</td><td>실제로 있는 옵션과 없는 옵션의 구분. CLAUDE_HEADLESS와 --batch는 없는 옵션</td></tr>
+<tr><td>오탐 대응</td><td>종류별 기준 명시. 오탐이 많은 종류는 잠시 끄고 기준 수정</td></tr>
+<tr><td>리뷰 구조</td><td>코드를 만든 세션과 리뷰하는 세션 분리</td></tr>
+<tr><td>큰 PR</td><td>파일별 검토와 전체 검토를 나눠 실행</td></tr>
+<tr><td>처리 방식</td><td>병합 전에 결과가 필요한 작업은 일반 요청. 밤에 실행하는 작업은 배치</td></tr>
+</table>
+<h4>④ 자주 나오는 오답</h4>
+<ul>
+<li>같은 세션에 자기 코드를 리뷰시키는 선택지</li>
+<li>오탐이 많을 때 지시문에 신중하라고만 추가하는 선택지</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>CI/CD 파이프라인</b>: 코드가 올라올 때마다 검사, 테스트, 배포를 자동으로 실행하는 장치</li>
+<li><b>PR(pull request)</b>: 코드 변경을 합쳐 달라고 올리는 요청</li>
+<li><b>오탐</b>: 문제가 아닌 것을 문제라고 잘못 알리는 일</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S5-1: Generator, meet reviewer",
        q:`Your pipeline stage generates a code patch with Claude, then — in the same session — appends "now review your patch carefully for bugs before we merge." Post-merge defect rates are no better than having no review at all. What is the structural explanation and fix?`,
        opts:[
@@ -367,7 +450,7 @@ window.CCAF_CONTENT.p6 = {
          {t:`Add a prompt instruction: "respond with valid JSON only, no commentary."`},
          {t:`Retry failed runs until they happen to produce parseable output.`}],
        hint:`-p는 비대화형 실행만 지정함. 출력 형태를 강제하는 플래그 조합이 따로 있음.`,
-       explain:{good:`3.6의 구조화 출력 플래그임. --output-format json과 --json-schema가 출력 형태를 강제함. 프롬프트로 요청하는 것이 아니라 규격으로 고정하는 방식이며, 15%에서 발생하던 형식 오류가 사라짐.`,
+       explain:{good:`3.6의 구조화된 출력 플래그임. --output-format json과 --json-schema가 출력 형태를 강제함. 프롬프트로 요청하는 것이 아니라 규격으로 고정하는 방식이며, 15%에서 발생하던 형식 오류가 사라짐.`,
          wrongs:[`<b>B:</b> 정규식 후처리는 필드 이름이 바뀔 때마다 다시 깨지며, 같은 문제가 계속 다른 형태로 나타남.`,`<b>C:</b> 지시는 확률적임. 85%는 지시 없이도 성공했고 문제는 나머지 15%임.`,`<b>D:</b> 될 때까지 재시도하는 방식은 비용만 쓰면서 결과가 매번 달라지는 상태를 그대로 두는 것임.`]},
        principle:"출력 형태는 플래그로 고정함", ts:"3.6"},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S5-5: Rebuilding trust",
@@ -386,22 +469,38 @@ window.CCAF_CONTENT.p6 = {
   /* ===== 시나리오 ⑥ 구조화 데이터 추출 ===== */
   { id:"p6s6", ch:"⑥", title:"구조화 데이터 추출", scenario:"s6",
     steps:[
-      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ⑥: Structured Data Extraction",
-       html:`<p class="lead">실제 시험 지문의 설정임. 비정형 문서에서 정보를 추출해 JSON 스키마로 검증하고, 높은 정확도를 유지하며 다운스트림 시스템(추출 결과를 받아 쓰는 다음 단계 프로그램이며 회계 시스템이나 데이터베이스가 여기 해당함)과 연동함.</p>
-        <h4>시스템 구성</h4>
-        <ul>
-          <li>tool_use와 JSON 스키마, Pydantic 검증, 배치 처리, 사람 리뷰로 보내는 라우팅</li>
-          <li>주 도메인: <strong>D4 + D5</strong></li>
-        </ul>
-        <h4>이 시나리오에서 반복 출제되는 판단 지점</h4>
-        <ul>
-          <li>필수 필드인데 문서에 정보가 없으면 값을 지어냄. 해결은 <strong>nullable 허용</strong></li>
-          <li>enum에는 <strong>"other"와 상세 설명, "unclear"</strong> 같은 선택지를 함께 둠</li>
-          <li>재시도로 해결되는 형식 오류와, 재시도로 해결되지 않는 정보 부재의 구분</li>
-          <li>전체 평균 정확도만 보면 놓치는 구간이 생김. 세그먼트별 분해와 층화 표집으로 확인함</li>
-          <li>신뢰도 점수는 <strong>보정(calibration)을 거친 뒤에만</strong> 라우팅 기준이 됨</li>
-        </ul>
-        <div class="callout">🎯 시나리오 ⑥의 정답 판별 신호. strict 스키마 하나로 전부 해결된다는 선택지는 형식이 맞는 것과 값이 맞는 것을 혼동한 오답임. 조건 없이 재시도한다는 선택지는 정보 부재를 구분하지 못한 오답임.</div>`},
+      {type:"concept", kind:"SCENARIO BRIEFING", h:"시나리오 ⑥ 구조화 데이터 추출",
+   html:`<h4>① 상황</h4>
+<ul>
+<li>형식이 정해지지 않은 문서에서 정보를 뽑아 JSON 스키마로 검증</li>
+<li>추출 결과를 회계 시스템이나 데이터베이스 같은 다음 시스템에 전달</li>
+</ul>
+<h4>② 시스템 구성</h4>
+<ul>
+<li>구조화된 출력과 JSON 스키마</li>
+<li>프로그램 검증, 배치 처리, 사람 검토로 보내는 기준</li>
+<li>관련 영역: D4, D5</li>
+</ul>
+<h4>③ 자주 묻는 내용</h4>
+<table>
+<tr><th>내용</th><th>판단 기준</th></tr>
+<tr><td>필수 항목인데 문서에 정보가 없는 경우</td><td>Claude가 값을 지어냄. 빈 값 허용으로 해결</td></tr>
+<tr><td>정해진 값 중 하나를 고르는 항목</td><td>other와 상세 설명, unclear를 함께 제공</td></tr>
+<tr><td>재시도</td><td>형식 오류에는 효과 있음. 문서에 정보가 없으면 효과 없음</td></tr>
+<tr><td>정확도 확인</td><td>전체 평균만 보면 놓치는 문서 종류가 생김. 종류별로 나눠 확인</td></tr>
+<tr><td>신뢰도 점수</td><td>보정한 뒤에만 사람 검토 기준으로 사용</td></tr>
+</table>
+<h4>④ 자주 나오는 오답</h4>
+<ul>
+<li>엄격한 스키마 하나로 모두 해결된다는 선택지. 형식이 맞는 것과 값이 맞는 것은 다른 문제</li>
+<li>조건 없이 재시도하는 선택지</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>JSON 스키마</b>: 출력에 들어갈 항목과 값의 종류를 정해 둔 양식</li>
+<li><b>보정(calibration)</b>: 정답이 붙은 자료로 신뢰도 수치와 실제 정답률을 맞추는 작업</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 시나리오 실전", h:"S6-1: The invented signatory",
        q:`Your contract extractor's schema requires counterparty_signatory (the person who signed for the other party). For unsigned draft contracts — which have no signatory at all — the model outputs plausible executive names pulled from the letterhead. What is the correct fix?`,
        opts:[

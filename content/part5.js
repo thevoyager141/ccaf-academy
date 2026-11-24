@@ -7,91 +7,115 @@ window.CCAF_CONTENT.p5 = {
   { id:"p5c1", ch:"CH 1", title:"긴 대화에서 핵심 정보 보존 (5.1)",
     steps:[
       {type:"concept", kind:"PART BRIEFING · 파트 설명", h:"PART 05 · 컨텍스트를 지키고 실패를 정직하게 다루는 방법",
-       html:`<p class="lead">이 파트의 주제는 <strong>Context Management & Reliability</strong>임.</p>
-        <h4>파트 프로필</h4>
-        <ul>
-          <li>출제 비중 <strong>15% ≈ 9문항</strong> · 정보가 손실되는 지점과 그것을 막는 수단을 짝짓는 형태로 출제됨</li>
-          <li>지시문으로 주의를 당부하는 선택지와 구조로 해결하는 선택지가 함께 제시되며, 둘을 구분하지 못하면 정답률이 크게 떨어짐</li>
-          <li>챕터 6개 + 미니테스트 · 약 2시간 (세션 S12~S13)</li>
-        </ul>
-        <h4>다루는 범위</h4>
-        <ul>
-          <li><strong>정보 보존</strong>: 긴 대화에서 숫자와 날짜를 지키는 방법 (Ch1)</li>
-          <li><strong>에스컬레이션</strong>: 사람에게 넘기는 시점의 기준 (Ch2)</li>
-          <li><strong>에러 전파</strong>: 멀티에이전트에서 실패를 보고하는 형식 (Ch3)</li>
-          <li><strong>대형 코드베이스 탐색</strong>: 장시간 작업의 컨텍스트 관리 (Ch4)</li>
-          <li><strong>인간 리뷰와 신뢰도 보정</strong> (Ch5)</li>
-          <li><strong>출처 보존과 불확실성 처리</strong> (Ch6)</li>
-        </ul>
-        <div class="callout">🎯 이 파트의 공통 질문은 <b>"정보가 손실되는 지점이 어디이고 무엇으로 지키는가"</b>임. 지시문 한 줄로 주의를 당부하는 보기가 아니라 구조(별도 블록, 출처 매핑, 층화 표집)로 지키는 보기가 정답임.</div>`},
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"정보가 손실되는 세 가지 경로",
-       html:`<p class="lead">긴 대화나 큰 자료에서 정보가 사라지는 경로는 세 가지임. 각각을 <strong>[무엇이 손실되는가 → 왜 손실되는가 → 실물 예시]</strong> 순서로 정리함.</p>
-        <div class="callout">📖 용어 카드. <b>컨텍스트 창(context window)</b>: 모델이 한 번에 읽을 수 있는 분량의 한도임. 한도가 차면 일부 내용은 제외되며, 그때 무엇을 남길지 정하는 것이 이 챕터의 주제임. <b>토큰(token)</b>: 그 분량을 세는 단위임. 모델이 글을 잘라 처리하는 조각 하나가 1토큰이고, 한국어는 대략 한 글자가 1토큰 안팎임.</div>
-        <h4>경로 ① 요약 과정의 손실</h4>
-        <ul>
-          <li><strong>무엇이 손실되는가</strong>: 숫자, 날짜, 금액, 고객이 말한 조건처럼 정밀한 값</li>
-          <li><strong>왜 손실되는가</strong>: 대화가 길어지면 오래된 부분을 요약해 압축함. 요약은 대략의 내용만 남기고 나머지를 버리는 <strong>손실 압축(lossy compression)</strong>이므로 정밀한 값부터 사라짐</li>
-          <li><strong>실물 예시</strong>: "$847.50 환불, 3/15까지" → 요약 두어 번 뒤 → "환불 문의 처리 중"</li>
-        </ul>
-        <h4>경로 ② lost in the middle: 긴 입력의 중간 부분 누락</h4>
-        <ul>
-          <li><strong>무엇이 손실되는가</strong>: 긴 입력의 <strong>한가운데</strong> 놓인 정보</li>
-          <li><strong>왜 손실되는가</strong>: 모델은 입력의 <strong>처음</strong>(주로 지시문이 놓이는 자리)과 <strong>끝</strong>(가장 최근에 읽은 내용)을 더 정확히 반영하고 가운데를 놓치는 경향이 있음. 이 현상의 이름이 lost in the middle임</li>
-          <li><strong>실물 예시</strong>: 90K 토큰 분량의 보고서 묶음 한가운데 있는 수치를 물으면 찾지 못하거나 없는 값을 지어냄</li>
-        </ul>
-        <h4>경로 ③ 도구 결과가 차지하는 분량</h4>
-        <ul>
-          <li><strong>무엇이 손실되는가</strong>: 컨텍스트 창의 <strong>남은 분량</strong>임. 정보가 지워지는 것이 아니라 사용 가능한 분량이 소모되는 경우임</li>
-          <li><strong>왜 손실되는가</strong>: 도구는 결과를 <strong>전부</strong> 반환함. 주문 조회 도구를 한 번 호출하면 금액과 상태뿐 아니라 창고 코드, 세금 코드, 내부 ID까지 <strong>40개 필드</strong>가 돌아옴. 환불 판단에 실제로 쓰는 필드는 5개이고 나머지 35개도 대화에 그대로 쌓임</li>
-          <li><strong>실물 예시</strong>: 조회를 10번 하면 쓰지 않는 필드 350개가 컨텍스트를 차지함. 그만큼 초반 대화가 컨텍스트에서 밀려남</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"손실 유형별 대응책: 블록·트리밍·배치",
-       html:`__MAP5:ctx__<p class="lead">손실 경로마다 대응책이 있음. 각각을 <strong>[대응책 → 사람이 설계하는 것 → 시스템이 실행하는 것]</strong> 순서로 정리함.</p>
-        <h4>대응책 ① case facts 블록: 경로 ①(요약 손실)에 대응</h4>
-        <ul>
-          <li><strong>대응책</strong>: 거래 사실(금액, 날짜, 주문번호, 상태)을 <strong>요약 대상에서 제외되는 별도 블록</strong>에 분리해 보관함</li>
-          <li><strong>사람이 설계하는 것</strong>: 에이전트 지시문에 규칙 한 줄을 넣음. "금액, 날짜, 주문번호가 나오면 CASE FACTS 블록으로 추출해 유지하고 이 블록은 요약하지 말 것."</li>
-          <li><strong>시스템이 실행하는 것</strong>: 매 턴 프롬프트를 조립하는 코드가 이 블록을 원문 그대로 삽입하고, 요약 처리 대상에서 제외함</li>
-        </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>case facts 블록의 실물 예시: 매 턴 프롬프트에 이렇게 들어감</b><br>
-[요약된 대화] 고객이 파손 상품 환불 요청, 사진 확인됨, 처리 협의 중…&nbsp;&nbsp;<span style="color:var(--accent)">← 요약은 계속 압축되어도 무방함</span><br>
-[CASE FACTS · 요약 금지, 그대로 유지]<br>
-주문: #A-1042 | 환불액: $847.50 | 기한: 2026-03-15 | 상태: 승인 대기 | 요구: 원 결제수단으로<br>
-<span style="color:var(--accent)">→ 20턴 뒤에도 "$847.50, 3/15"가 글자 그대로 남아 있음</span>
-        </div>
-        <h4>대응책 ② 트리밍(trimming): 경로 ③(분량 소모)에 대응</h4>
-        <ul>
-          <li><strong>대응책</strong>: 도구 결과가 컨텍스트에 들어가기 <strong>전에</strong> 판단에 쓰이는 필드만 남기고 제거함</li>
-          <li><strong>사람이 설계하는 것</strong>: 필드를 걸러내는 코드를 배치함. <strong>1.5의 PostToolUse 훅(hook)</strong>이 바로 이 자리에 해당함. 훅은 도구가 실행된 뒤 모델이 결과를 보기 전에 실행되는 코드임. 또는 도구 자체가 필요한 필드만 반환하도록 수정함</li>
-          <li><strong>시스템이 실행하는 것</strong>: 도구가 결과를 반환할 때마다 훅이 자동으로 실행되어 지정한 필드만 남김</li>
-        </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>트리밍의 실물 예시: 40개 필드를 5개로</b><br>
-도구 원본: { id, status, amount, created_at, warehouse_id, tax_code, …40개 필드 }<br>
-컨텍스트 투입분: { id: "A-1042", status: "shipped", amount: 847.50, eligible_return: true, deadline: "03-15" }<br>
-<span style="color:var(--accent)">→ 환불 판단에 쓰이는 5개만 남김. 나머지 35개는 처음부터 컨텍스트에 넣지 않음</span>
-        </div>
-        <h4>대응책 ③ 위치 배치: 경로 ②(중간 누락)에 대응</h4>
-        <ul>
-          <li><strong>대응책</strong>: 핵심 요약을 <strong>맨 앞</strong>에 두고, 중요한 내용을 끝에서 다시 명시하며, 상세 내용은 섹션 헤더로 구분함</li>
-          <li><strong>사람이 설계하는 것</strong>: 합성용 입력을 조립할 때 <strong>배치 순서를 직접 정함</strong>. 프롬프트 구성은 "① 핵심 발견 요약(맨 앞) ② 소스별 상세(헤더로 구분) ③ 끝에 질문 재명시"임</li>
-          <li><strong>시스템이 실행하는 것</strong>: 정해진 순서대로 입력을 조립해 모델에 전달함</li>
-        </ul>
-        <h4>대응책 ④ 앞 단계에서 구조화: 뒤 단계의 컨텍스트 분량이 부족할 때</h4>
-        <ul>
-          <li><strong>용어</strong>: 데이터가 이동하는 방향을 기준으로 <strong>앞 단계를 업스트림(upstream)</strong>, 그 결과를 받아 쓰는 <strong>뒤 단계를 다운스트림(downstream)</strong>이라고 함</li>
-        </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>업스트림에서 다운스트림으로: 데이터가 이동하는 순서 (화살표는 병렬이 아니라 순서를 뜻함)</b><br>
-[앞 단계 = 업스트림]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[뒤 단계 = 다운스트림]<br>
-검색 에이전트 ──▶ 분석 에이전트 ──▶ 합성 에이전트<br>
-(데이터를 만들어 넘기는 쪽)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(넘겨받아 사용하는 쪽)<br>
-<br>
-문제: 뒤 단계(합성)의 컨텍스트 분량이 작은데 앞 단계가 산문 155K 토큰을 그대로 넘김<br>
-<span style="color:var(--accent)">대응책: 뒤 단계에서 줄이지 않고 앞 단계의 출력 형식을 바꿈. 앞 단계 에이전트의 지시문을 "산문 대신 핵심 사실, 인용, 관련도만 구조화해 반환할 것"으로 수정함</span>
-        </div>
-        <ul>
-          <li><strong>사람이 설계하는 것</strong>: 앞 단계 에이전트의 <strong>지시문을 수정함</strong>. 뒤 단계에 요약 장치를 추가하는 것이 아니라 앞 단계의 출력 형식을 바꾸는 것임</li>
-          <li><strong>시스템이 실행하는 것</strong>: 앞 단계 에이전트가 그 형식대로 결과를 반환하고, 뒤 단계는 줄어든 입력을 그대로 받음</li>
-        </ul>`},
+   html:`<h4>① 다루는 영역</h4>
+<ul>
+<li>컨텍스트(context): Claude가 지금 읽고 있는 내용 전체. 대화 기록, 전달받은 자료, 도구 결과가 모두 포함</li>
+<li>이 파트의 주제: 긴 작업에서 중요한 정보를 지키는 방법, 그리고 실패와 불확실한 내용을 숨기지 않고 전달하는 방법</li>
+<li>영어 이름: Context Management &amp; Reliability</li>
+</ul>
+<h4>② 챕터 구성</h4>
+<table>
+<tr><th>챕터</th><th>주제</th></tr>
+<tr><td>CH 1</td><td>정보 보존. 긴 대화에서 숫자와 날짜를 지키는 방법</td></tr>
+<tr><td>CH 2</td><td>에스컬레이션. 사람에게 넘기는 기준</td></tr>
+<tr><td>CH 3</td><td>오류 전달. 서브에이전트가 실패를 보고하는 형식</td></tr>
+<tr><td>CH 4</td><td>대형 코드 탐색. 오래 걸리는 작업의 컨텍스트 관리</td></tr>
+<tr><td>CH 5</td><td>사람 검토와 신뢰도 보정</td></tr>
+<tr><td>CH 6</td><td>출처 보존과 불확실한 내용의 표시</td></tr>
+<tr><td>CH 7</td><td>컨텍스트 창 관리 방법의 선택</td></tr>
+</table>
+<h4>③ 파트 전체에 쓰는 판단 기준</h4>
+<ul>
+<li>확인할 것: 정보가 사라지는 지점</li>
+<li>해결 방향: 주의하라는 지시가 아니라 구조로 보호. 예: 따로 보관하는 자리, 출처를 함께 적는 양식</li>
+<li>자격시험 출제 비중: 15%</li>
+</ul>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"정보가 사라지는 세 가지 경로",
+   html:`<h4>① 요약 과정의 손실</h4>
+<ul>
+<li>사라지는 정보: 숫자, 날짜, 금액, 고객이 말한 조건 같은 정확한 값</li>
+<li>이유: 대화가 길어지면 오래된 부분을 요약해서 줄임. 요약은 대략의 내용만 남기는 방식이라 정확한 값부터 사라짐</li>
+</ul>
+<div class="fig"><b>요약을 거친 문장의 변화</b><br>
+처음: "847.50달러 환불. 3월 15일까지 처리"<br>
+요약 두 번 뒤: "환불 문의 처리 중"&nbsp;&nbsp;<span class="an">← 금액과 기한이 사라짐</span>
+</div>
+<h4>② 긴 입력의 가운데 부분 누락</h4>
+<ul>
+<li>사라지는 정보: 긴 입력의 한가운데 놓인 내용</li>
+<li>이유: Claude는 입력의 처음과 끝을 더 정확히 반영하고 가운데를 놓치는 경향이 있음. 영어 이름은 lost in the middle</li>
+<li>예: 보고서 여러 개를 이어 붙인 긴 입력의 한가운데 있는 수치를 물으면 찾지 못하거나 없는 값을 지어냄</li>
+</ul>
+<h4>③ 도구 결과가 차지하는 분량</h4>
+<ul>
+<li>사라지는 것: 컨텍스트 창의 남은 분량</li>
+<li>이유: 도구는 결과 전체를 반환. 주문 조회 한 번에 항목 40개가 돌아오고 그중 판단에 쓰는 항목은 5개</li>
+<li>결과: 조회 10번이면 쓰지 않는 항목 350개가 쌓임. 그만큼 앞부분 대화가 밀려남</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 주문 조회 도구의 결과</div>
+{ "id": "A-1042", "status": "shipped", "amount": 847.50,<br>
+&nbsp;&nbsp;"warehouse_id": "W-07", "tax_code": "T2", "carrier_ref": "…",<br>
+<span class="sel">&nbsp;&nbsp;… 판단에 쓰지 않는 항목 35개 …</span> }
+</div>
+<h4>④ 분량이 늘 때의 정확도</h4>
+<ul>
+<li>현재 모델의 컨텍스트 창: 100만 토큰</li>
+<li>창이 커도 담긴 분량이 늘수록 정확도 하락. 영어 이름은 context rot</li>
+<li>무엇을 담을지 고르는 일이 창의 크기만큼 중요</li>
+<li>설명 전체: <a href="https://platform.claude.com/docs/ko/build-with-claude/context-windows" target="_blank" rel="noopener">Claude 공식 문서 '컨텍스트 윈도우' 페이지</a> (한국어)</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>컨텍스트 창(context window)</b>: Claude가 한 번에 읽을 수 있는 글의 한도</li>
+<li><b>토큰(token)</b>: Claude가 글을 세는 단위. 한국어는 대략 한 글자가 1토큰 안팎</li>
+<li><b>요약(summarization)</b>: 긴 내용을 짧게 줄여 요지만 남기는 일</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"경로별 해결 방법",
+   html:`__MAP5:ctx__<h4>① 핵심 사실 블록: 요약 손실의 해결</h4>
+<ul>
+<li>방법: 금액, 날짜, 주문 번호, 상태 같은 사실을 요약하지 않는 별도 자리에 보관. 영어 이름은 case facts 블록</li>
+<li>사람이 정하는 것: "금액, 날짜, 주문 번호가 나오면 핵심 사실 블록에 옮겨 적고 이 블록은 요약하지 않기"라는 규칙</li>
+<li>프로그램이 하는 것: 요청을 만들 때마다 이 블록을 원문 그대로 넣기</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 요청에 들어가는 두 부분</div>
+[요약한 대화] 고객이 파손 상품 환불 요청. 사진 확인. 처리 협의 중<br>
+<span class="sel">[핵심 사실 · 요약 금지]</span><br>
+주문: A-1042 | 환불액: 847.50달러 | 기한: 2026-03-15 | 상태: 승인 대기
+</div>
+<p class="cap">대화 부분은 계속 줄어도 핵심 사실은 20번을 주고받은 뒤에도 그대로 유지.</p>
+<h4>② 결과 줄이기: 분량 소모의 해결</h4>
+<ul>
+<li>방법: 도구 결과가 컨텍스트에 들어가기 전에 판단에 쓰는 항목만 남기기. 영어 이름은 trimming</li>
+<li>수단: PostToolUse 훅. 또는 필요한 항목만 반환하도록 도구 수정</li>
+</ul>
+<div class="fig"><b>항목 40개에서 5개로</b><br>
+도구 결과: id, status, amount, created_at, warehouse_id, tax_code … 40개<br>
+컨텍스트에 넣는 내용: id, status, amount, eligible_return, deadline&nbsp;&nbsp;<span class="an">← 환불 판단에 쓰는 5개</span>
+</div>
+<h4>③ 배치 순서: 가운데 누락의 해결</h4>
+<ul>
+<li>맨 앞: 핵심 요약</li>
+<li>가운데: 자료별 상세 내용. 제목으로 구분</li>
+<li>맨 끝: 질문을 한 번 더 작성</li>
+</ul>
+<h4>④ 앞 단계의 출력 형식 변경: 뒤 단계의 분량 부족 해결</h4>
+<ul>
+<li>상황: 검색, 분석, 작성 순서로 이어지는 작업. 앞 단계가 긴 글을 그대로 넘겨 뒤 단계의 분량 부족</li>
+<li>해결: 앞 단계의 지시문 수정. "긴 글 대신 핵심 사실, 인용, 관련도만 정리해서 반환"</li>
+<li>뒤 단계에 요약 장치를 추가하는 방법보다 앞 단계의 출력을 바꾸는 방법이 원인을 직접 해결</li>
+</ul>
+<div class="fig"><b>자료가 이동하는 순서</b><br>
+검색 에이전트 → 분석 에이전트 → 작성 에이전트<br>
+<span class="an">앞 단계(upstream)의 출력이 뒤 단계(downstream)의 입력</span>
+</div>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>핵심 사실 블록(case facts)</b>: 요약하지 않고 원문 그대로 유지하는 사실 모음</li>
+<li><b>PostToolUse 훅</b>: 도구 실행 후 Claude가 결과를 보기 전에 실행되는 코드. Part 1 CH 6에서 다룬 내용</li>
+<li><b>업스트림, 다운스트림</b>: 이어지는 작업에서 앞 단계와 뒤 단계를 가리키는 말</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Crossed wires",
        q:`A customer has three open issues in one session: a refund on order #A-1042 ($89), a replacement for #A-1077, and a billing dispute over #A-1103 ($312). Twenty turns in, the agent offers "the $312 refund for your order #A-1042" — splicing issue 3's amount onto issue 1's order. A case-facts block exists, but it's one flat list of every number mentioned. What is the right fix?`,
        opts:[
@@ -130,56 +154,84 @@ window.CCAF_CONTENT.p5 = {
   /* ===== CH 2 · 5.2 에스컬레이션 ===== */
   { id:"p5c2", ch:"CH 2", title:"에스컬레이션과 모호성 해결 (5.2)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"사람에게 넘길 때와 직접 처리할 때",
-       html:`<div class="callout">📖 용어 카드. <b>에스컬레이션(escalation)</b>: 에이전트가 처리하던 건을 <b>사람 상담원에게 넘기는 것</b>임. 실체는 escalate_to_human 같은 <b>도구 호출 한 번</b>임. 반대 선택지는 에이전트가 계속 처리해 해결하는 것임. 이 챕터는 넘기는 시점과 직접 처리하는 시점의 기준을 다룸.</div>
-        <h4>정당한 에스컬레이션 트리거 3종 (암기)</h4>
-        <ul>
-          <li>① 고객이 <strong>사람을 직접 요구함</strong> ("상담원 연결해 주세요")</li>
-          <li>② <strong>정책 공백</strong>: 정책 문서에 이 요청에 해당하는 <strong>조항이 없음</strong>. 케이스가 복잡하다는 것과는 다른 조건임</li>
-          <li>③ <strong>진전 불가</strong>: 여러 번 시도해도 해결에 진전이 없음</li>
-        </ul>
-        <h4>신뢰할 수 없는 대리 지표 2종 (오답 선택지에 자주 등장함)</h4>
-        <ul>
-          <li><strong>감정 기반</strong>: 화난 고객이 곧 복잡한 케이스인 것은 아님. 감성 분석 점수를 기준으로 넘기는 설계는 오답임</li>
-          <li><strong>자기 보고 신뢰도(self-reported confidence)</strong>: 모델은 어려운 케이스에서 실제보다 높은 확신을 보고하는 경향이 있으므로 그 점수를 기준으로 쓸 수 없음</li>
-        </ul>
-        <h4>판단이 갈리는 지점 (자주 출제됨)</h4>
-        <ul>
-          <li>고객이 사람을 명시적으로 요구하면 <strong>조사나 해결 시도 없이 즉시</strong> 넘김. 쉬운 작업이어도 동일함</li>
-          <li>다만 감정 표현만 있고 요구 자체는 단순하면 불만을 인정하고 해결을 <strong>한 번</strong> 제안함. 고객이 다시 사람을 요구하면 즉시 넘김</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"판단 케이스 4종 세트",
-       html:`__MAP5:esc__<p class="lead">케이스마다 <strong>[증상 → 판단 → 지시문에 넣는 문장]</strong> 순서로 정리함. 네 가지 모두 사람이 시스템 프롬프트에 적어 넣는 규칙 문장이고, 그 규칙에 따라 실행하는 쪽은 에이전트임.</p>
-        <h4>케이스 ① 55% 해결률, 거꾸로 된 에스컬레이션 (공식 가이드 샘플 3번)</h4>
-        <ul>
-          <li><strong>증상</strong>: 단순한 케이스(사진이 첨부된 파손 교환)는 사람에게 넘기고, 정책에 조항이 없는 케이스는 직접 처리하며 내용을 추측함</li>
-          <li><strong>판단</strong>: 기준이 없어서 모델이 임의로 결정하는 상태임. 명시적 기준과 양쪽 예시(few-shot)를 함께 제공함</li>
-          <li><strong>지시문에 넣는 것</strong>: 아래 예시와 같이 넘길 조건 목록, 직접 해결할 목록, 예시 한 쌍을 적음</li>
-        </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>시스템 프롬프트에 적히는 에스컬레이션 기준의 실물 예시</b><br>
-즉시 escalate_to_human 호출: ① 고객이 사람을 요구할 때 (해결 시도 없이) ② 정책 문서에 없는 요청일 때 ③ 2회 시도에도 진전 없을 때<br>
-직접 해결: 사진 있는 파손 교환, 주소 변경, 배송 조회<br>
-예시) 고객: "경쟁사가 더 싼데 가격을 맞춰 주세요" → 정책에 가격 매칭 조항 없음 → escalate. <span style="color:var(--accent)">이유: 정책을 임의로 만들지 않음.</span><br>
-예시) 고객: "화가 나서 못 참겠습니다. 주소나 바꿔 주세요" → 불만 인정 + 주소 변경 처리. <span style="color:var(--accent)">이유: 감정은 트리거가 아니고 요청은 처리 범위 안에 있음.</span>
-        </div>
-        <h4>케이스 ② 정책에 조항이 없는 요청</h4>
-        <ul>
-          <li><strong>증상</strong>: 자사 정책에는 자사 사이트 가격 인하 조항만 있는데 고객이 경쟁사 가격 매칭을 요구함</li>
-          <li><strong>판단</strong>: 문서에 없는 요청은 에이전트가 결정하면 안 됨. 거절과 승인 모두 정책을 새로 만드는 행위이므로 사람에게 넘김</li>
-          <li><strong>지시문에 넣는 것</strong>: "정책 문서에 근거 조항이 없는 요청은 직접 판단하지 말고 escalate_to_human을 호출할 것."</li>
-        </ul>
-        <h4>케이스 ③ 고객 매칭이 여러 명</h4>
-        <ul>
-          <li><strong>증상</strong>: 같은 이름의 고객 3명이 조회됨. 에이전트가 가장 최근 가입자를 임의로 선택함</li>
-          <li><strong>판단</strong>: 추측에 의한 선택(휴리스틱, heuristic)은 금지임. 다른 사람의 계정을 변경하는 사고로 이어짐</li>
-          <li><strong>지시문에 넣는 것</strong>: "조회 결과가 여러 명이면 임의로 고르지 말고 이메일이나 주문번호 같은 추가 식별자를 고객에게 요청할 것."</li>
-        </ul>
-        <h4>케이스 ④ 화났지만 단순한 요청</h4>
-        <ul>
-          <li><strong>증상</strong>: 표현은 격하지만 요구 내용은 주소 변경임</li>
-          <li><strong>판단</strong>: 감정은 트리거가 아님. 불만을 인정하고 해결을 제안하되, 고객이 다시 사람을 요구하면 즉시 넘김</li>
-          <li><strong>지시문에 넣는 것</strong>: "감정 표현 자체는 에스컬레이션 사유가 아니다. 불만을 인정하고 해결을 한 번 제안하되, 고객이 거듭 사람을 요구하면 즉시 넘길 것."</li>
-        </ul>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"에스컬레이션: 에이전트가 사람에게 일을 넘기는 기준",
+   html:`<h4>① 에스컬레이션</h4>
+<ul>
+<li>에이전트가 처리하던 일을 사람 상담사에게 넘기는 일. 영어 이름은 escalation</li>
+<li>실제 동작: <code>escalate_to_human</code> 같은 도구 호출 한 번</li>
+</ul>
+<h4>② 넘겨야 하는 세 가지 경우</h4>
+<table>
+<tr><th>경우</th><th>예</th></tr>
+<tr><td>고객이 사람을 직접 요구</td><td>"상담사 연결해 주세요"</td></tr>
+<tr><td>정책에 해당 조항 없음</td><td>정책 문서에 없는 가격 조정 요구</td></tr>
+<tr><td>진전 없음</td><td>여러 번 시도해도 해결되지 않음</td></tr>
+</table>
+<h4>③ 기준으로 쓸 수 없는 두 가지</h4>
+<table>
+<tr><th>기준</th><th>쓸 수 없는 이유</th></tr>
+<tr><td>고객의 감정</td><td>화난 고객의 요청이 복잡한 요청인 것은 아님</td></tr>
+<tr><td>Claude가 스스로 매긴 확신 점수</td><td>어려운 경우일수록 실제보다 높게 보고하는 경향</td></tr>
+</table>
+<h4>④ 판단이 갈리는 경우</h4>
+<ul>
+<li>고객이 사람을 분명히 요구: 조사나 해결 시도 없이 바로 넘기기. 쉬운 일이어도 동일</li>
+<li>감정 표현만 있고 요청은 단순: 불만을 인정하고 해결을 한 번 제안. 고객이 다시 사람을 요구하면 바로 넘기기</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 같은 감정, 다른 처리</div>
+고객 A: "너무 화가 나네요. 주소만 바꿔 주세요."<br>
+&nbsp;&nbsp;처리: 불만 인정 후 주소 변경<br>
+<span class="sel">고객 B: "됐고 사람 바꿔 주세요."</span><br>
+&nbsp;&nbsp;처리: 바로 상담사에게 넘기기
+</div>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>에스컬레이션(escalation)</b>: 에이전트가 직접 처리하지 않고 사람에게 넘기는 일</li>
+<li><b>정책(policy)</b>: 회사가 정해 둔 처리 규정</li>
+<li><b>escalate_to_human</b>: 예시에 쓴 도구 이름. 상담사에게 넘기는 도구</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"네 가지 상황별 판단",
+   html:`__MAP5:esc__<h4>① 넘기는 기준이 거꾸로인 경우</h4>
+<ul>
+<li>증상: 사진이 첨부된 파손 교환처럼 단순한 일은 사람에게 넘김. 정책에 조항이 없는 일은 직접 처리하며 내용을 추측</li>
+<li>원인: 기준이 없어 Claude가 임의로 결정</li>
+<li>해결: 시스템 프롬프트에 넘길 조건, 직접 처리할 일, 예시 작성</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 시스템 프롬프트의 에스컬레이션 기준</div>
+바로 상담사에게 넘기는 경우<br>
+&nbsp;&nbsp;① 고객이 사람을 요구. 해결 시도 없이 넘기기<br>
+&nbsp;&nbsp;② 정책 문서에 없는 요청<br>
+&nbsp;&nbsp;③ 2회 시도에도 진전 없음<br>
+직접 처리하는 일: 사진이 있는 파손 교환, 주소 변경, 배송 조회<br>
+<br>
+예시: "경쟁사가 더 싼데 가격을 맞춰 주세요"<br>
+&nbsp;&nbsp;처리: 넘기기. 이유: 정책에 가격 맞춤 조항이 없고 정책을 임의로 만들 수 없음
+</div>
+<h4>② 정책에 조항이 없는 요청</h4>
+<ul>
+<li>상황: 정책에는 자사 가격 인하 조항만 있음. 고객은 경쟁사 가격에 맞춰 달라고 요구</li>
+<li>판단: 넘기기. 거절과 승인 모두 정책을 새로 만드는 행위</li>
+<li>지시문: "정책 문서에 근거 조항이 없는 요청은 직접 판단하지 말고 상담사에게 넘기기"</li>
+</ul>
+<h4>③ 조회 결과가 여러 명인 경우</h4>
+<ul>
+<li>상황: 같은 이름의 고객 3명 조회. 에이전트가 가장 최근 가입자를 임의로 선택</li>
+<li>판단: 추측으로 선택 금지. 다른 사람의 계정을 바꾸는 사고로 연결</li>
+<li>지시문: "조회 결과가 여러 명이면 이메일이나 주문 번호를 고객에게 요청"</li>
+</ul>
+<h4>④ 화났지만 요청은 단순한 경우</h4>
+<ul>
+<li>상황: 표현은 격하지만 요청은 주소 변경</li>
+<li>판단: 감정은 넘기는 사유가 아님. 불만을 인정하고 해결 제안</li>
+<li>지시문: "감정 표현만으로는 넘기지 않기. 고객이 거듭 사람을 요구하면 바로 넘기기"</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>휴리스틱(heuristic)</b>: 근거를 확인하지 않고 그럴듯한 쪽을 고르는 어림 판단</li>
+<li><b>식별 정보</b>: 이메일이나 주문 번호처럼 한 사람을 특정할 수 있는 정보</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Auditing the trigger config",
        q:`Your escalation config uses three automated triggers: sentiment_score < -0.5, self_confidence < 0.6, and turn_count > 8. Production data: furious customers with one-click issues get escalated (annoying the human team); calm customers requesting things the policy never mentions get confidently auto-"resolved" with invented terms; and thorough customers who simply ask many questions hit the turn limit. What is the correct redesign?`,
        opts:[
@@ -218,57 +270,77 @@ window.CCAF_CONTENT.p5 = {
   /* ===== CH 3 · 5.3 에러 전파 ===== */
   { id:"p5c3", ch:"CH 3", title:"멀티에이전트 에러 전파 (5.3)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"실패를 보고하는 형식",
-       html:`<h4>구조화 에러 컨텍스트 4요소 (암기)</h4>
-        <ul>
-          <li>① <strong>실패 유형</strong>: 타임아웃인지, 권한 문제인지, 결과가 없는 것인지</li>
-          <li>② <strong>시도한 내용</strong>: 어떤 쿼리를 실행했는지</li>
-          <li>③ <strong>부분 결과</strong>: 일부라도 확보한 결과가 있으면 함께 반환함</li>
-          <li>④ <strong>대안</strong>: 다른 접근 방법을 제시함</li>
-        </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>구조화 에러 응답의 실물 예시: 서브에이전트(subagent)가 코디네이터에게 반환하는 값</b><br>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"실패 보고에 넣는 네 가지",
+   html:`<h4>① 실패 보고의 네 요소</h4>
+<table>
+<tr><th>요소</th><th>내용</th></tr>
+<tr><td>실패 종류</td><td>응답 시간 초과, 권한 문제, 결과 없음 중 무엇인지</td></tr>
+<tr><td>시도한 내용</td><td>어떤 검색이나 호출을 했는지</td></tr>
+<tr><td>부분 결과</td><td>일부라도 얻은 결과</td></tr>
+<tr><td>대안</td><td>다른 방법</td></tr>
+</table>
+<div class="screen"><div class="sbar">화면 예시 · 서브에이전트가 코디네이터에게 보낸 실패 보고</div>
 { "status": "error",<br>
-&nbsp;&nbsp;"failure_type": "timeout",&nbsp;&nbsp;<span style="color:var(--accent)">← ① 실패 유형</span><br>
-&nbsp;&nbsp;"attempted": "search('EV 배터리 M&amp;A 2025')",&nbsp;&nbsp;<span style="color:var(--accent)">← ② 시도한 것</span><br>
-&nbsp;&nbsp;"partial_results": [ …2건… ],&nbsp;&nbsp;<span style="color:var(--accent)">← ③ 부분 결과</span><br>
-&nbsp;&nbsp;"alternatives": "산업 리포트 DB로 재시도 가능" }&nbsp;&nbsp;<span style="color:var(--accent)">← ④ 대안</span><br>
-<br>
-비교. 안티패턴의 실물 예시: { "results": [] }&nbsp;&nbsp;← 타임아웃을 빈 결과로 반환한 경우이며, 코디네이터는 자료가 없다고 잘못 판단함
-        </div>
-        <h4>안티패턴 3종 (오답 선택지에 자주 등장함)</h4>
-        <ul>
-          <li><strong>뭉뚱그린 상태 반환</strong>: 재시도를 모두 소진한 뒤라도 "search unavailable"만 반환하는 것</li>
-          <li><strong>실패를 성공으로 반환</strong>: 타임아웃을 빈 결과로 반환하는 것</li>
-          <li><strong>전체 중단</strong>: 실패 하나로 워크플로 전체를 종료하는 것</li>
-        </ul>
-        <h4>2.2(도구 에러 처리)와의 관계</h4>
-        <ul>
-          <li>2.2는 <strong>도구에서 에이전트로</strong> 전달되는 에러의 형식이고, 5.3은 <strong>서브에이전트에서 코디네이터로</strong> 올리는 전파 방식임. 두 경우 모두 실패를 구조화해 전달한다는 원리는 같음</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"코디네이터가 올바른 복구를 선택할 수 있는 조건",
-       html:`__MAP5:err__<h4>① 왜 4요소인가</h4>
-        <ul>
-          <li>코디네이터의 선택지: 수정 쿼리로 재시도 / 대안 접근 / 부분 결과로 진행</li>
-          <li>4요소가 없으면 이 선택 자체가 불가능함. "search unavailable"만으로는 어떤 판단도 할 수 없음</li>
-        </ul>
-        <h4>② 로컬 복구 먼저: 자체 복구의 실체</h4>
-        <ul>
-          <li>실체는 <strong>사람이 서브에이전트 지시문에 적어 둔 재시도 규칙</strong>임. 또는 도구를 감싼 코드의 자동 재시도임</li>
-          <li><strong>사람이 설계하는 것</strong>: 지시문에 규칙을 적음. "검색이 타임아웃이면 최대 2회 재시도할 것. 그래도 실패하면 위 구조화 에러 형식으로 보고하고 나머지 작업은 계속 진행할 것."</li>
-          <li><strong>시스템이 실행하는 것</strong>: 서브에이전트가 그 규칙대로 재시도하고, 실패가 남으면 정해진 형식으로 코디네이터에게 보고함</li>
-          <li>효과: 일시적 실패는 대부분 하위 단계에서 해소되고, <strong>해결되지 않은 실패만</strong> 부분 결과 및 시도 내역과 함께 코디네이터로 전달됨</li>
-        </ul>
-        <h4>③ 커버리지 주석: 사람이 규칙을 정하고 에이전트가 작성함</h4>
-        <ul>
-          <li>커버리지 주석(coverage note)은 최종 <strong>산출물</strong>(리서치 시나리오에서는 리포트, 다른 시나리오에서는 요약이나 분석 결과)에 어느 부분이 충분한 근거를 갖췄고 어느 부분이 비어 있는지 표시하는 문장임</li>
-          <li><strong>사람이 설계하는 것</strong>: 합성 에이전트의 지시문에 규칙 한 줄을 넣음. "실패한 소스가 있으면 산출물 끝에 어느 발견이 충분히 뒷받침되고 어느 주제에 공백이 있는지 명시할 것."</li>
-          <li><strong>시스템이 실행하는 것</strong>: 합성 에이전트가 산출물 끝에 그 주석을 붙임</li>
-        </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>커버리지 주석의 실물 예시: 산출물 끝에 이렇게 붙음</b><br>
-⚠ 커버리지: 학술 DB 접근 실패(타임아웃 3회). 3장의 학술 근거는 웹 소스만 반영됨.<br>
-&nbsp;&nbsp;&nbsp;시장 규모(1장)·경쟁 구도(2장)는 소스 12건으로 탄탄함.<br>
-<span style="color:var(--accent)">→ 읽는 사람이 공백의 위치를 알 수 있는 산출물이 정직한 산출물임</span>
-        </div>`},
+&nbsp;&nbsp;"failure_type": "timeout",<br>
+&nbsp;&nbsp;"attempted": "전기차 배터리 인수합병 2025 검색",<br>
+&nbsp;&nbsp;"partial_results": [ 2건 ],<br>
+&nbsp;&nbsp;"alternatives": "산업 보고서 자료에서 다시 검색 가능" }
+</div>
+<p class="cap">위에서부터 실패 종류, 시도한 내용, 부분 결과, 대안.</p>
+<h4>② 피해야 할 세 가지 보고</h4>
+<table>
+<tr><th>보고 방식</th><th>문제</th></tr>
+<tr><td>"검색 불가" 한 줄</td><td>코디네이터가 다음 행동을 정할 근거 없음</td></tr>
+<tr><td>실패를 빈 결과로 보고</td><td>코디네이터가 자료가 없다고 잘못 판단</td></tr>
+<tr><td>실패 하나로 전체 작업 중단</td><td>이미 얻은 결과까지 버림</td></tr>
+</table>
+<h4>③ 도구 오류 응답과의 관계</h4>
+<ul>
+<li>Part 2 CH 2: 도구가 에이전트에 돌려주는 오류 형식</li>
+<li>이 챕터: 서브에이전트가 코디네이터에게 올리는 실패 보고</li>
+<li>공통 원리: 실패의 종류와 다음 행동의 근거를 함께 전달</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>코디네이터와 서브에이전트</b>: 작업을 나누고 모으는 에이전트와 맡은 작업 하나를 수행하는 에이전트. Part 1 CH 3에서 다룬 내용</li>
+<li><b>타임아웃(timeout)</b>: 정해진 시간 안에 응답이 오지 않아 중단된 상태</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"실패 뒤의 복구와 결과 표시",
+   html:`__MAP5:err__<h4>① 네 요소가 필요한 이유</h4>
+<ul>
+<li>코디네이터가 고를 수 있는 행동: 검색어를 바꿔 재시도, 다른 방법 사용, 부분 결과로 진행</li>
+<li>네 요소가 없으면 이 중 어느 것도 고를 수 없음</li>
+</ul>
+<h4>② 서브에이전트의 자체 복구</h4>
+<ul>
+<li>사람이 정하는 것: 서브에이전트 지시문에 재시도 규칙 작성</li>
+<li>규칙 예: "검색이 시간 초과되면 최대 2회 재시도. 그래도 실패하면 정해진 형식으로 보고하고 나머지 작업은 계속 진행"</li>
+<li>효과: 일시적인 실패는 서브에이전트 단계에서 해결. 해결되지 않은 실패만 코디네이터에 전달</li>
+</ul>
+<div class="fig"><b>실패가 전달되는 순서</b><br>
+서브에이전트: 실패 → 재시도 2회&nbsp;&nbsp;<span class="an">← 일시적인 실패는 여기서 해결</span><br>
+&nbsp;&nbsp;↓ 그래도 실패<br>
+코디네이터: 실패 보고 확인 → 재시도, 다른 방법, 부분 결과 중 선택
+</div>
+<h4>③ 빠진 부분 표시</h4>
+<ul>
+<li>최종 결과물 끝에 근거가 충분한 부분과 빠진 부분을 적는 문장. 영어 이름은 coverage note</li>
+<li>사람이 정하는 것: 작성 담당 에이전트의 지시문에 규칙 작성</li>
+<li>규칙 예: "실패한 자료가 있으면 결과물 끝에 어느 내용의 근거가 충분하고 어느 주제가 비어 있는지 적기"</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 보고서 끝에 붙은 표시</div>
+<span class="sel">확인 범위: 학술 자료 검색 실패 (시간 초과 3회)</span><br>
+3장의 학술 근거는 웹 자료만 반영.<br>
+1장 시장 규모와 2장 경쟁 구도는 자료 12건으로 확인.
+</div>
+<p class="cap">읽는 사람이 빠진 부분의 위치를 알 수 있는 결과물.</p>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>복구(recovery)</b>: 실패한 뒤 작업을 이어 가기 위한 조치</li>
+<li><b>빠진 부분 표시(coverage note)</b>: 결과물에서 근거가 충분한 부분과 비어 있는 부분을 알리는 문장</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: The green pipeline that lied",
        q:`Overnight research stayed "green," but this morning's competitive-analysis report simply lacks its pricing section. Logs: the pricing subagent hit paywalls on both target sources and returned {"results": [], "status": "ok"} — its author added that behavior "so one flaky source doesn't fail the whole pipeline." The coordinator, seeing success, proceeded to synthesis. What is the correct fix?`,
        opts:[
@@ -307,54 +379,82 @@ window.CCAF_CONTENT.p5 = {
   /* ===== CH 4 · 5.4 대형 코드베이스 탐색 ===== */
   { id:"p5c4", ch:"CH 4", title:"대형 코드베이스 탐색의 컨텍스트 관리 (5.4)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"장시간 작업에서 발생하는 컨텍스트 열화",
-       html:`<h4>열화의 증상 (확인 방법)</h4>
-        <ul>
-          <li>앞서 확인한 <strong>구체적 클래스와 함수</strong> 대신 <strong>일반적인 패턴</strong>을 말하기 시작함</li>
-          <li>같은 질문에 세션 초반과 다른 답을 내놓음</li>
-        </ul>
-        <h4>대응 도구 4종</h4>
-        <ul>
-          <li><strong>스크래치패드(scratchpad) 파일</strong>: 핵심 발견을 파일로 기록하고 이후 질문에서 참조함</li>
-          <li><strong>서브에이전트 위임</strong>: 분량이 큰 조사는 위임하고 본 에이전트는 상위 수준의 조율만 담당함</li>
-          <li><strong>단계 간 요약 주입</strong>: 한 단계의 핵심을 요약해 다음 단계의 초기 컨텍스트로 넣음</li>
-          <li><code>/compact</code>: 탐색 결과가 쌓여 컨텍스트가 차면 압축함</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"장시간 탐색 작업의 설계",
-       html:`__MAP5:explore__<h4>① 질문 단위 위임: 사람이 입력하는 프롬프트의 실물 예시</h4>
-        <ul>
-          <li>Claude Code 대화창에 다음과 같이 입력함. <strong>"서브에이전트에게 tests/ 아래 모든 테스트 파일 목록을 정리하도록 지시하고, 결과는 요약만 보여줄 것."</strong> 실행 실체는 Task 도구 호출임</li>
-          <li>또는 지시문에 상시 규칙으로 넣음. "분량이 큰 탐색 작업은 서브에이전트에 위임하고 요약만 받을 것."</li>
-          <li>효과: 분량이 큰 탐색 출력은 서브에이전트의 컨텍스트에서 소모되고, 본 대화에는 요약만 들어오므로 상위 수준의 이해가 유지됨</li>
-        </ul>
-        <h4>② 스크래치패드: 설계는 사람, 기록은 에이전트</h4>
-        <ul>
-          <li><strong>사람이 설계하는 것</strong>: 지시문에 규칙 한 줄을 넣음. "핵심 발견은 scratchpad.md 파일에 기록하며 진행하고, 이전 발견이 불분명해지면 그 파일을 다시 읽을 것."</li>
-          <li><strong>시스템이 실행하는 것</strong>: 에이전트가 <strong>Write 도구와 Read 도구로</strong> 직접 기록하고 참조함. 사람이 손으로 받아 적는 방식이 아님</li>
-        </ul>
-        <h4>③ 크래시 복구: 매니페스트의 위치와 동작 순서</h4>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>구조도: 대화(컨텍스트)에 있는 것과 파일로 저장된 것 (화살표는 병렬이 아니라 순서를 뜻함)</b><br>
-[대화에 있는 것: 크래시하면 사라짐]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[파일로 저장된 것: 크래시해도 남음]<br>
-코디네이터 ──Task──▶ 서브에이전트 A&nbsp;&nbsp;──Write──▶&nbsp;&nbsp;agent-state/A.json (매니페스트)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└──Write──▶&nbsp;&nbsp;findings/A.md + scratchpad.md<br>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"긴 작업에서 답의 품질이 떨어지는 현상",
+   html:`<h4>① 증상</h4>
+<ul>
+<li>앞에서 확인한 구체적인 이름 대신 일반적인 설명으로 답함</li>
+<li>같은 질문에 작업 초반과 다른 답을 함</li>
+<li>원인: 탐색 결과가 쌓여 컨텍스트 창이 가득 참</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 같은 질문의 답 변화</div>
+작업 초반: "환불은 RefundService.process()가 처리. payment.ts 88번째 줄"<br>
+<span class="sel">3시간 뒤: "보통 이런 프로젝트는 서비스 계층에서 환불을 처리합니다"</span>
+</div>
+<p class="cap">구체적인 위치가 사라지고 일반적인 설명으로 바뀐 답.</p>
+<h4>② 해결 수단</h4>
+<table>
+<tr><th>수단</th><th>내용</th></tr>
+<tr><td>기록 파일</td><td>핵심 발견을 파일에 적고 필요할 때 다시 읽기. 영어 이름은 scratchpad</td></tr>
+<tr><td>서브에이전트 위임</td><td>분량이 큰 조사를 맡기고 요약만 받기</td></tr>
+<tr><td>단계 사이 요약 전달</td><td>한 단계의 핵심을 요약해 다음 단계의 시작 자료로 사용</td></tr>
+<tr><td><code>/compact</code></td><td>쌓인 대화를 요약해서 줄이는 Claude Code 명령</td></tr>
+</table>
+<h4>③ Claude Code의 기본 기능</h4>
+<ul>
+<li>Explore: 탐색 전용 기본 서브에이전트. 파일을 고치지 않고 코드를 찾아 읽은 뒤 요약만 본 대화에 전달</li>
+<li>자동 메모리: Claude가 작업 중에 배운 내용을 스스로 적어 두는 메모. 다음 세션 시작 시 로드</li>
+<li>서브에이전트 설명: <a href="https://code.claude.com/docs/ko/sub-agents#built-in-subagents" target="_blank" rel="noopener">Claude Code 공식 문서 '사용자 정의 subagent 만들기' 페이지의 '내장 subagent' 항목</a> (한국어)</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>코드베이스(codebase)</b>: 한 프로젝트의 코드 전체</li>
+<li><b>기록 파일(scratchpad)</b>: 발견한 내용을 적어 두는 별도 파일. 대화 밖에 있어 컨텍스트가 가득 차도 남음</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"긴 탐색 작업의 설계",
+   html:`__MAP5:explore__<h4>① 서브에이전트 위임</h4>
+<ul>
+<li>효과: 분량이 큰 탐색 결과는 서브에이전트의 컨텍스트에서 소모. 본 대화에는 요약만 들어옴</li>
+<li>항상 적용할 경우 지시문에 작성: "분량이 큰 탐색은 서브에이전트에 맡기고 요약만 받기"</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · Claude Code 입력창</div>
+&gt; 서브에이전트에게 tests 폴더의 테스트 파일 목록을 정리하게 하고<br>
+&nbsp;&nbsp;결과는 요약만 보여 줘.
+</div>
+<h4>② 기록 파일</h4>
+<ul>
+<li>사람이 정하는 것: "핵심 발견은 scratchpad.md에 적으며 진행. 이전 발견이 불분명해지면 그 파일을 다시 읽기"라는 규칙</li>
+<li>에이전트가 하는 것: Write 도구와 Read 도구로 직접 기록하고 다시 읽기</li>
+</ul>
+<h4>③ 중단 뒤 이어서 진행</h4>
+<ul>
+<li>문제: 작업이 중간에 멈추면 대화에 있던 내용은 사라짐</li>
+<li>해결: 진행 상태를 파일에 계속 기록. 이 파일의 영어 이름은 manifest</li>
+<li>다시 시작한 코디네이터가 하는 일: 상태 파일을 먼저 읽고 남은 작업을 새 서브에이전트의 지시문에 포함</li>
+</ul>
+<div class="fig"><b>대화에 있는 것과 파일에 있는 것</b><br>
+대화: 코디네이터와 서브에이전트가 주고받은 내용&nbsp;&nbsp;<span class="an">← 중단되면 사라짐</span><br>
+파일: agent-state/A.json, findings/A.md, scratchpad.md&nbsp;&nbsp;<span class="an">← 중단돼도 남음</span><br>
 <br>
-💥 크래시 → 왼쪽은 사라지고, 오른쪽 파일은 그대로<br>
-재시작한 코디네이터 ──Read──▶ 매니페스트 확인 → <span style="color:var(--accent)">"학술 DB부터 이어서"를 새 서브에이전트 프롬프트에 주입</span>
-        </div>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>파일 내용의 실물 예시</b><br>
-# scratchpad.md&nbsp;&nbsp;<span style="color:var(--accent)">← 발견 내용을 적어두는 파일</span><br>
-- 환불 흐름: RefundService.process() → PaymentGateway.reverse() (payment.ts 88행)<br>
-- 테스트 위치: tests/refund/ 아래 12개<br>
+다시 시작: 코디네이터가 agent-state/A.json 읽기 → "학술 자료 검색부터 이어서"를 새 지시문에 포함
+</div>
+<div class="screen"><div class="sbar">화면 예시 · 두 파일의 내용</div>
+scratchpad.md<br>
+&nbsp;&nbsp;환불 처리 순서: RefundService.process() 다음 PaymentGateway.reverse(). payment.ts 88번째 줄<br>
+&nbsp;&nbsp;테스트 위치: tests/refund 폴더의 12개<br>
 <br>
-# agent-state/A.json&nbsp;&nbsp;<span style="color:var(--accent)">← 매니페스트 (진행 상태의 색인)</span><br>
-{ "done": ["웹 소스 40건 수집"], "pending": ["학술 DB 검색"], "findings_file": "findings/A.md" }
-        </div>
-        <ul>
-          <li><strong>사람이 설계하는 것</strong>: 각 에이전트 지시문에 "진행 상태를 agent-state/이름.json에 계속 갱신할 것"이라는 규칙을 넣고, 재개 시 코디네이터가 그 파일들을 먼저 읽도록 절차를 정함</li>
-          <li><strong>시스템이 실행하는 것</strong>: 각 에이전트가 상태 파일을 갱신하고, 재시작한 코디네이터가 그 파일을 읽어 남은 작업을 새 프롬프트에 넣음</li>
-          <li>1.7(세션 복구)과 같은 원리임. <strong>대화에 남은 기억 대신 파일에 남은 기록을 사용함</strong></li>
-        </ul>
-        <div class="callout">📖 용어 카드. <b>스크래치패드</b>: 발견한 내용을 적어 두는 별도 파일임. 대화 밖에 있으므로 컨텍스트가 차도 사라지지 않음. <b>매니페스트(manifest)</b>: 진행 상태를 기록하는 파일임. 어떤 작업이 끝났고 무엇이 남았는지, 결과 파일이 어디 있는지를 담음.</div>`},
+agent-state/A.json<br>
+&nbsp;&nbsp;{ "done": ["웹 자료 40건 수집"], "pending": ["학술 자료 검색"], "findings_file": "findings/A.md" }
+</div>
+<ul>
+<li>Part 1 CH 7의 세션 관리와 같은 원리. 대화에 남은 내용 대신 파일에 남은 기록 사용</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>상태 파일(manifest)</b>: 끝난 작업, 남은 작업, 결과 파일 위치를 적어 두는 파일</li>
+<li><b>Write, Read</b>: 파일을 새로 만드는 도구와 파일을 읽는 도구</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: Three symptoms, three tools",
        q:`One week with your codebase-analysis agent produced three incidents: (a) by hour three it answers "repositories typically handle caching like..." instead of citing the CacheManager class it analyzed at hour one; (b) every new question triggers Grep/Read floods that bury the conversation in raw output; (c) last night's six-hour run crashed at 2 AM and today restarted from zero. Which countermeasure mapping is correct?`,
        opts:[
@@ -393,49 +493,86 @@ window.CCAF_CONTENT.p5 = {
   /* ===== CH 5 · 5.5 인간 리뷰·신뢰도 보정 ===== */
   { id:"p5c5", ch:"CH 5", title:"인간 리뷰 워크플로와 신뢰도 보정 (5.5)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"전체 정확도 97%를 그대로 신뢰할 수 없는 이유",
-       html:`<p class="lead">이 챕터의 출제 상황은 대량 추출 파이프라인임. <strong>사람 리뷰를 어디에 배치하고 언제 줄여도 되는가</strong>를 다룸.</p>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>이 챕터의 전체 구조: 검토 대상 분기 설계 (화살표는 병렬이 아니라 처리 순서를 뜻함)</b><br>
-문서 1만 건/일 ──▶ 모델이 추출 ──▶ 분기 (라우팅)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ 신뢰도가 높음 → <span style="color:var(--accent)">자동 통과 (사람이 보지 않음)</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ 신뢰도가 낮음 → <span style="color:var(--accent)">사람 검토로</span><br>
-질문 두 가지임. ① 이 분기 기준을 무엇으로 정하는가 ② 자동 통과 구간을 언제 넓혀도 되는가. 5.5는 이 두 가지를 다룸
-        </div>
-        <div class="callout">📖 용어 카드. <b>층화 무작위 표집(stratified random sampling)</b>: 전체에서 무작위로 뽑는 대신 그룹(층, strata. 예를 들어 문서 유형)별로 나눠 <b>각 그룹에서 일정 수씩 뽑는 방법</b>임. 손글씨 문서가 전체의 10%뿐이면 단순 무작위 표본에는 몇 장만 포함되어 그 유형의 문제가 드러나지 않음. <b>보정(calibration)</b>: 모델이 보고한 "확신 90%"가 실제로 90%인지 <b>정답이 붙은 검증 세트와 대조</b>하는 작업임. 이 작업으로 <b>과신</b>(90%라고 보고하지만 실제 정답률은 74%인 상태)을 찾아냄. <b>자동화 확대</b>: 사람 리뷰 없이 통과시키는 구간을 넓히는 것임.</div>
-        <h4>집계 지표에서 자주 틀리는 지점</h4>
-        <ul>
-          <li>전체 정확도가 97%여도 그 안에 정확도 71%인 문서 유형이 포함되어 있을 수 있음</li>
-          <li>자동화를 확대하기 전에 <strong>문서 유형별, 필드별</strong>로 정확도를 나눠 확인해야 함</li>
-        </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>숫자로 보는 실물 예시: 97%에 가려지는 값, 층화 표집으로 드러나는 값, 보정으로 걸러지는 값</b><br>
-[집계 지표] 전체 97% = 인쇄 인보이스(전체의 90%) 정확도 99% + 손글씨(10%) 정확도 71%의 평균<br>
-[층화 표집] 문서 유형별로 50건씩 뽑아 채점 → 손글씨 71%가 비로소 드러남<br>
-[보정] 모델이 "확신 90%"라고 보고한 추출 200건을 정답과 대조 → 실제 정답률이 74%라면 그 자기 보고 점수를 라우팅 기준으로 쓰면 안 됨
-        </div>
-        <h4>문서 단위 신뢰도와 필드 단위 신뢰도의 차이</h4>
-        <ul>
-          <li><strong>문서 단위</strong>: 문서 하나에 점수 하나임. 항목 하나만 신뢰도가 낮아도 문서 전체가 사람 검토로 넘어가므로 리뷰 시간이 낭비됨</li>
-          <li><strong>필드 단위</strong>: 항목마다 점수가 있음. invoice_id는 99%인데 po_number만 60%라면 <strong>그 항목만</strong> 사람이 확인하므로 같은 인력으로 더 많은 문서를 처리함</li>
-          <li>다만 어느 쪽이든 점수는 <strong>보정을 거친 뒤에만</strong> 분기 기준으로 사용함</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"리뷰 인력이 부족할 때의 설계",
-       html:`__MAP5:conf__<h4>리뷰 라우팅: 사람이 정하는 부분과 시스템이 실행하는 부분</h4>
-        <ul>
-          <li>라우팅(routing)은 어떤 추출 결과를 사람 검토로 보낼지 정하는 <strong>분기 규칙</strong>임</li>
-          <li><strong>사람이 설계하는 것</strong>: 임계값과 조건을 정해 코드에 넣음. <strong>시스템이 실행하는 것</strong>: 파이프라인이 그 기준대로 자동 분기함. 에이전트가 재량으로 정하는 방식이 아님</li>
-          <li>우선 보낼 대상은 두 가지임. ① 모델 신뢰도가 낮은 추출 결과 ② 원본 자체가 모호하거나 모순인 문서. 한정된 리뷰어 시간을 이 두 가지에 집중함</li>
-        </ul>
-        <h4>자동화 확대 절차: 사람이 수행하는 순서</h4>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>확대 3단계 (전부 사람의 설계 작업)</b><br>
-1) <b>분해 검증</b>: 문서 유형별, 필드별로 정확도를 나눠 확인함 → 어느 구간이 정확하고 어느 구간이 부정확한지 파악함<br>
-2) <b>부분 전환</b>: 정확한 구간만 자동 통과로 전환함 (부정확한 구간은 계속 사람 리뷰)<br>
-3) <b>상시 감시</b>: 자동 구간도 층화 표집으로 계속 표본을 채점함 → <span style="color:var(--accent)">새 문서 유형이 유입되어도 조기에 발견함</span><br>
-감시 없는 자동화는 새 유형이 들어올 때 정확도가 크게 떨어지고 그 사실이 드러나지 않음
-        </div>
-        <ul>
-          <li><strong>사람이 하는 작업 요약</strong>: 정답 데이터(라벨) 작성 → 보정 확인 → 임계값 설정 → 표집 주기 설정. 이 네 가지는 모두 사람이 수행하고, 모델은 점수를 산출하는 역할만 함</li>
-        </ul>
-        <div class="callout">🎯 출제 포인트. "정확도가 높으니 리뷰를 줄인다" 유형의 정답에는 <strong>세그먼트 분해</strong>나 <strong>층화 표집</strong>이 반드시 포함됨. 전체 지표가 좋으니 그대로 줄인다는 선택지는 항상 오답임.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"전체 정확도와 종류별 정확도",
+   html:`<h4>① 예시 상황</h4>
+<ul>
+<li>문서에서 값을 뽑아내는 작업을 하루 1만 건 처리</li>
+<li>모든 결과를 사람이 확인할 수 없어 일부만 사람 검토로 전달</li>
+</ul>
+<div class="fig"><b>검토 대상을 나누는 구조</b><br>
+문서 1만 건 → Claude가 추출 → 분류<br>
+&nbsp;&nbsp;├─ 신뢰도 높음&nbsp;&nbsp;<span class="an">→ 자동 통과. 사람이 보지 않음</span><br>
+&nbsp;&nbsp;└─ 신뢰도 낮음&nbsp;&nbsp;<span class="an">→ 사람 검토</span>
+</div>
+<ul>
+<li>이 챕터의 질문 두 가지: 분류 기준을 무엇으로 정할지, 자동 통과 범위를 언제 넓혀도 되는지</li>
+</ul>
+<h4>② 전체 정확도에 가려지는 값</h4>
+<ul>
+<li>전체 정확도 97% 안에 정확도 71%인 문서 종류가 들어 있을 수 있음</li>
+<li>자동 통과 범위를 넓히기 전에 문서 종류별, 항목별 정확도 확인</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 문서 종류별 정확도</div>
+전체: 97%<br>
+인쇄된 청구서 (전체의 90%): 99%<br>
+<span class="sel">손으로 쓴 청구서 (전체의 10%): 71%</span>
+</div>
+<p class="cap">이해를 돕기 위한 예시 수치. 종류별로 나눠야 71%가 보임.</p>
+<h4>③ 확인 방법 두 가지</h4>
+<table>
+<tr><th>방법</th><th>내용</th></tr>
+<tr><td>층화 표집<br>stratified sampling</td><td>문서 종류별로 일정 수씩 뽑아 채점. 수가 적은 종류의 문제도 드러남</td></tr>
+<tr><td>보정<br>calibration</td><td>Claude가 "확신 90%"라고 보고한 결과를 정답과 대조. 실제 정답률이 74%면 그 점수를 분류 기준으로 사용 불가</td></tr>
+</table>
+<h4>④ 문서 단위 점수와 항목 단위 점수</h4>
+<ul>
+<li>문서 단위: 문서 하나에 점수 하나. 항목 하나만 불확실해도 문서 전체가 사람 검토로 전달</li>
+<li>항목 단위: 항목마다 점수. 불확실한 항목만 사람이 확인. 같은 인력으로 더 많은 문서 처리</li>
+<li>어느 쪽이든 보정을 거친 점수만 분류 기준으로 사용</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>층화 표집(stratified sampling)</b>: 전체를 종류별로 나눈 뒤 종류마다 일정 수씩 뽑는 방법</li>
+<li><b>보정(calibration)</b>: 스스로 매긴 확신 점수가 실제 정확도와 맞는지 정답과 대조하는 작업</li>
+<li><b>자동 통과</b>: 사람 검토 없이 결과를 그대로 사용하는 처리</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"검토 인력이 부족할 때의 설계",
+   html:`__MAP5:conf__<h4>① 사람 검토로 보낼 대상</h4>
+<ul>
+<li>신뢰도가 낮은 추출 결과</li>
+<li>원본 문서 자체가 모호하거나 모순인 경우</li>
+<li>분류 기준은 사람이 정해 프로그램에 넣음. 에이전트가 그때그때 정하는 방식이 아님</li>
+</ul>
+<h4>② 자동 통과 범위를 넓히는 순서</h4>
+<ul>
+<li>1단계: 문서 종류별, 항목별 정확도 확인</li>
+<li>2단계: 정확한 범위만 자동 통과로 전환. 부정확한 범위는 계속 사람 검토</li>
+<li>3단계: 자동 통과 범위도 층화 표집으로 계속 표본 채점</li>
+</ul>
+<div class="fig"><b>3단계가 필요한 이유</b><br>
+새 거래처의 새 양식 유입 → 자동 통과 범위에서 정확도 하락<br>
+표본 채점이 없는 경우&nbsp;&nbsp;<span class="an">← 하락 사실이 드러나지 않음</span><br>
+표본 채점이 있는 경우&nbsp;&nbsp;<span class="an">← 초기에 발견</span>
+</div>
+<h4>③ 사람이 하는 일</h4>
+<table>
+<tr><th>순서</th><th>작업</th></tr>
+<tr><td>1</td><td>정답 자료 작성</td></tr>
+<tr><td>2</td><td>보정 확인</td></tr>
+<tr><td>3</td><td>분류 기준값 설정</td></tr>
+<tr><td>4</td><td>표본 채점 주기 설정</td></tr>
+</table>
+<ul>
+<li>Claude의 역할: 점수 산출</li>
+<li>효과 없는 판단: 전체 정확도가 높다는 이유만으로 사람 검토 축소</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>기준값(threshold)</b>: 이 값 이상이면 자동 통과, 미만이면 사람 검토처럼 분류를 가르는 숫자</li>
+<li><b>표본 채점</b>: 일부를 뽑아 정답과 대조하는 일</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: The averaged-away tax ID",
        q:`Your extractor outputs one confidence score per document; documents averaging 0.93+ auto-approve. Finance just found tax_registration_number wrong on 18% of auto-approved invoices — the other nine fields were nearly perfect, so the document average stayed high while the weakest field sailed through unreviewed. What is the correct redesign?`,
        opts:[
@@ -474,47 +611,70 @@ window.CCAF_CONTENT.p5 = {
   /* ===== CH 6 · 5.6 출처 보존·불확실성 ===== */
   { id:"p5c6", ch:"CH 6", title:"출처 보존과 불확실성 처리 (5.6)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"주장과 출처의 연결이 끊기는 지점",
-       html:`<p class="lead">출처 보존(provenance)은 어떤 주장이 어느 자료에서 나왔는지를 최종 산출물까지 유지하는 것임. 이 연결은 아래 지점에서 끊김.</p>
-        <h4>어디에서 끊기는가</h4>
-        <ul>
-          <li><strong>요약 단계</strong>: 발견 내용을 압축할 때 주장과 출처의 연결(claim-source mapping)이 사라짐</li>
-          <li>합성이 끝난 리포트에서는 어느 출처의 내용인지 다시 확인할 수 없게 됨</li>
-        </ul>
-        <h4>대응책: 구조화된 주장-출처 매핑</h4>
-        <ul>
-          <li>서브에이전트 출력 형식: <strong>주장, 증거 발췌, 출처 URL 또는 문서명, 발행일</strong></li>
-          <li>합성 에이전트는 이 매핑을 <strong>보존하고 병합</strong>해야 함. 매핑을 버리면 안 됨</li>
-        </ul>
-        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:2;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;overflow-x:auto"><b>주장-출처 매핑의 실물 예시: 서브에이전트 출력 한 건</b><br>
-{ "claim": "EV 배터리 시장 연 40% 성장",<br>
-&nbsp;&nbsp;"source": "BloombergNEF 2025 리포트",<br>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"출처 보존: 주장과 출처의 연결을 끝까지 유지하는 일",
+   html:`<h4>① 연결이 끊기는 지점</h4>
+<ul>
+<li>출처 보존(provenance): 어떤 주장이 어느 자료에서 나왔는지를 최종 결과물까지 유지하는 일</li>
+<li>끊기는 지점: 요약 단계. 내용을 줄일 때 주장과 출처의 연결이 사라짐</li>
+<li>결과: 완성된 보고서에서 어느 자료의 내용인지 다시 확인 불가</li>
+</ul>
+<h4>② 주장과 출처를 함께 적는 양식</h4>
+<ul>
+<li>서브에이전트의 출력 항목: 주장, 근거 문장, 출처 이름이나 주소, 발행일</li>
+<li>작성 담당 에이전트의 규칙: 이 묶음을 버리지 않고 보고서의 해당 문장에 출처 표시로 연결</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 서브에이전트의 출력 한 건</div>
+{ "claim": "전기차 배터리 시장 연 40% 성장",<br>
+&nbsp;&nbsp;"source": "BloombergNEF 2025 보고서",<br>
 &nbsp;&nbsp;"excerpt": "…the market grew 40% year-over-year…",<br>
-&nbsp;&nbsp;"published": "2025-11" }<br>
-<span style="color:var(--accent)">→ 합성 에이전트의 규칙: 이 매핑을 버리지 말고 리포트의 해당 문장에 [출처] 각주로 병합함. 산문 안에 문장으로만 적으면 다음 요약에서 사라짐</span>
-        </div>
-        <h4>시점이 다른 데이터에서 자주 틀리는 지점</h4>
-        <ul>
-          <li>2019년 통계와 2024년 통계가 다르면 모순이 아니라 <strong>시간에 따른 변화</strong>일 수 있음</li>
-          <li>대응책: 구조화 출력에 <strong>발행일과 수집일을 반드시 포함함</strong>. 시점 차이를 모순으로 잘못 해석하는 것을 방지함</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"충돌, 논쟁, 형식: 정직한 리포트의 규칙",
-       html:`__MAP5:prov__<h4>① 신뢰할 만한 소스끼리 충돌하면</h4>
-        <ul>
-          <li>임의로 하나를 <strong>고르지 말 것</strong>. 두 값을 모두 출처와 함께 남기고 <strong>충돌 주석</strong>을 붙임</li>
-          <li>분석 단계는 충돌하는 값을 포함한 채로 마치고, <strong>조정은 코디네이터가 담당함</strong></li>
-        </ul>
-        <h4>② 확립 vs 논쟁 구분</h4>
-        <ul>
-          <li>리포트를 <strong>확립된 발견</strong>과 <strong>논쟁 중인 발견</strong> 두 섹션으로 명시적으로 나눠 구성함</li>
-          <li>원 소스의 표현 강도와 방법론 맥락을 그대로 보존함</li>
-        </ul>
-        <h4>③ 콘텐츠 유형별 렌더링</h4>
-        <ul>
-          <li>재무 데이터는 <strong>표</strong>, 뉴스는 <strong>산문</strong>, 기술 발견은 <strong>구조화 목록</strong>으로 표현함</li>
-          <li>모두 한 형식으로 바꾸는 획일 변환은 정보 손실을 일으킴</li>
-        </ul>
-        <div class="callout">🎯 출제 포인트. 어느 쪽이 맞는지 모델이 정하게 한다는 선택지는 오답임. 정답은 두 값을 모두 남기고 출처와 시점을 함께 표시하는 것임.</div>`},
+<span class="sel">&nbsp;&nbsp;"published": "2025-11"</span> }
+</div>
+<p class="cap">이해를 돕기 위한 예시. 글 안에 문장으로만 적은 출처는 다음 요약에서 사라짐.</p>
+<h4>③ 시점이 다른 자료</h4>
+<ul>
+<li>2019년 통계와 2024년 통계가 다른 경우: 모순이 아니라 시간에 따른 변화일 수 있음</li>
+<li>해결: 출력 양식에 발행일과 수집일 포함</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>출처 보존(provenance)</b>: 주장마다 어느 자료에서 나왔는지 추적할 수 있게 유지하는 일</li>
+<li><b>근거 문장(excerpt)</b>: 주장을 뒷받침하는 원문의 한 부분</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"자료가 어긋날 때의 보고서 작성 기준",
+   html:`__MAP5:prov__<h4>① 믿을 만한 자료끼리 값이 다른 경우</h4>
+<ul>
+<li>하나를 임의로 고르지 않기</li>
+<li>두 값을 모두 출처, 시점과 함께 남기고 서로 다르다는 표시 추가</li>
+<li>분석 단계는 두 값을 그대로 포함해 마무리. 조정은 코디네이터가 담당</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 보고서의 한 문단</div>
+시장 규모<br>
+&nbsp;&nbsp;42억 달러 (2023년 업계 협회 전수 조사)<br>
+&nbsp;&nbsp;51억 달러 (2024년 분석가 전망치)<br>
+<span class="sel">두 값은 조사 시점과 방법이 다름</span>
+</div>
+<h4>② 확립된 내용과 논쟁 중인 내용</h4>
+<ul>
+<li>보고서를 두 부분으로 구분해 작성</li>
+<li>원문의 표현 강도와 조사 방법 설명을 그대로 유지</li>
+</ul>
+<h4>③ 내용 종류별 표현 형식</h4>
+<table>
+<tr><th>내용</th><th>형식</th></tr>
+<tr><td>재무 자료</td><td>표</td></tr>
+<tr><td>뉴스</td><td>글</td></tr>
+<tr><td>기술 조사 결과</td><td>항목 목록</td></tr>
+</table>
+<ul>
+<li>모든 내용을 한 가지 형식으로 바꾸면 정보 손실</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>전수 조사</b>: 대상 전체를 빠짐없이 조사하는 방식</li>
+<li><b>전망치</b>: 앞으로의 값을 예측한 수치</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"Practice 1: 'Just take the newer number'",
        q:`Two credible figures for the same market size: $4.2B from a 2023 industry-association census, $5.1B from a 2024 analyst projection. Your PM pushes: "Obviously use the 2024 number — it's more current, and shipping two numbers makes us look indecisive." What should the analysis stage actually do?`,
        opts:[
@@ -541,7 +701,7 @@ window.CCAF_CONTENT.p5 = {
          {t:`Treat all conflicting statistics as unreliable and exclude them from reports.`}],
        hint:`합성 단계가 잘못 판단한 원인은 능력 부족이 아니라 입력에 빠진 항목임. 무엇이 빠졌는지 확인할 것.`,
        explain:{
-         good:`가이드 5.6의 내용임. 구조화 출력에 발행일과 수집일을 반드시 포함해 시점 차이가 모순으로 해석되는 것을 방지함. 앞 단계의 출력 형식을 고치는 것이 근본 대응임.`,
+         good:`가이드 5.6의 내용임. 구조화된 출력에 발행일과 수집일을 반드시 포함해 시점 차이가 모순으로 해석되는 것을 방지함. 앞 단계의 출력 형식을 고치는 것이 근본 대응임.`,
          wrongs:[
            `<b>B:</b> 나중에 웹을 검색하면 비용이 추가되고 날짜를 찾지 못할 수도 있음. 원인은 앞 단계가 이미 가지고 있던 정보를 버린 것임.`,
            `<b>C:</b> 날짜를 모르면 어느 값이 더 오래된 것인지 판별할 수 없고, 시간에 따른 변화 자체가 중요한 발견일 수 있음.`,

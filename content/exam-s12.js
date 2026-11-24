@@ -196,7 +196,7 @@
      {t:`Have the agent prefer whichever policy document was updated most recently when two sources disagree.`},
      {t:`Remove the help-centre article from the agent's source set so only the policy page can be quoted.`},
      {t:`Add a system-prompt line telling the agent to state a policy number only when it is certain of it.`}],
-   explain:{good:`5.6의 두 규칙이 함께 적용되는 상황임. 주장과 출처를 연결한 형태, 즉 주장, 발췌, 문서명, 발행일과 개정일을 구조화 출력(structured output)의 필수 항목으로 두면 요약 단계에서 연결이 끊기지 않음. 신뢰할 수 있는 문서끼리 충돌하면 하나를 임의로 고르지 않고 둘 다 출처와 함께 표시한 뒤 조정은 사람에게 넘김.`,
+   explain:{good:`5.6의 두 규칙이 함께 적용되는 상황임. 주장과 출처를 연결한 형태, 즉 주장, 발췌, 문서명, 발행일과 개정일을 구조화된 출력(structured output)의 필수 항목으로 두면 요약 단계에서 연결이 끊기지 않음. 신뢰할 수 있는 문서끼리 충돌하면 하나를 임의로 고르지 않고 둘 다 출처와 함께 표시한 뒤 조정은 사람에게 넘김.`,
      wrongs:[`<b>B:</b> 일반적으로는 맞지만 이 문제의 조건에서는 틀린 선택지임. 최신 문서를 우선하는 규칙은 대개 맞지만, 지문의 낡은 문서는 지난주에 서식 때문에 수정됐음. 수정 시각과 내용의 최신성은 서로 다른 기준임.`,`<b>C:</b> 이번 문서 하나를 제외해도 같은 내용이 중복 서술된 다음 문서에서 같은 오류가 반복됨.`,`<b>D:</b> 에이전트는 이미 그 값을 확신하고 있었음. 원인은 확신의 표현이 아니라 출처와 개정일이 빠진 것임.`]},
    principle:"문서가 충돌하면 둘 다 출처와 개정일을 붙여 표시함"},
 

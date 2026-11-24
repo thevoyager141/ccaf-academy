@@ -7,65 +7,109 @@ window.CCAF_CONTENT.p2 = {
   { id:"p2c1", ch:"CH 1", title:"도구 인터페이스와 설명 설계 (2.1)",
     steps:[
       {type:"concept", kind:"PART BRIEFING · 파트 설명", h:"PART 02 · 도구 설계와 MCP 통합",
-       html:`<p class="lead">이 파트가 다루는 시험 영역은 <strong>Tool Design & MCP Integration</strong>임.</p>
-        <h4>파트 프로필</h4>
-        <ul>
-          <li>출제 비중: <strong>18%</strong>, 약 11문항</li>
-          <li>구성: 챕터 5개와 미니테스트, 약 1.5시간 (세션 S6~S7)</li>
-          <li>출제 형태: 문제 상황을 제시하고 <strong>무엇을 먼저 고칠 것인가</strong>를 묻는 문항이 대부분임. 도구 설명 수정, 설정 변경, 인프라 추가 중 무엇이 원인을 고치는 조치인지 구분하지 못하면 정답률이 크게 떨어짐</li>
-        </ul>
-        <h4>다루는 범위</h4>
-        <ul>
-          <li><strong>도구 설명(description) 설계</strong>: 에이전트가 도구(tool)를 고르는 원리 (Ch1)</li>
-          <li><strong>구조화 에러 응답</strong>: 실패의 종류를 에이전트가 알아볼 수 있게 반환하는 방법 (Ch2)</li>
-          <li><strong>도구 배분과 tool_choice</strong>: 어떤 역할에 어떤 도구를 주는가 (Ch3)</li>
-          <li><strong>MCP 서버(MCP server) 통합</strong>: 설정을 어느 위치에 두는가 (Ch4)</li>
-          <li><strong>기본 제공 도구(built-in tools) 6종</strong>: Grep/Glob/Read/Write/Edit/Bash (Ch5)</li>
-        </ul>
-        <div class="callout">🎯 이 파트의 공통 질문: <b>"에이전트가 도구를 잘못 고르거나 실패에서 회복하지 못할 때 무엇을 먼저 고쳐야 하는가."</b> 정답은 대부분 인프라를 새로 붙이는 쪽이 아니라 도구 설명과 응답 구조를 고치는 쪽임.</div>`},
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"에이전트는 description을 읽고 도구를 고른다",
-       html:`<h4>도구 선택의 원리</h4>
-        <ul>
-          <li>LLM이 여러 도구(tool) 중 하나를 고를 때 쓰는 주된 근거는 <strong>도구 설명(description)</strong>임</li>
-          <li>설명이 한 줄뿐이면("Retrieves customer information") 기능이 비슷한 도구끼리 <strong>잘못 선택</strong>되는 일이 생김</li>
-          <li>모델은 도구의 구현 코드를 볼 수 없음. 모델이 판단에 쓰는 정보는 설명 문장이 전부임</li>
-        </ul>
-        <h4>좋은 설명에 들어가는 네 가지</h4>
-        <ul>
-          <li><strong>입력 형식</strong>: 이 도구가 받는 값이 이메일인지, 주문번호인지, 고객 ID인지를 밝힘</li>
-          <li><strong>예시 질의</strong>: 어떤 요청이 들어왔을 때 이 도구를 쓰는지를 보여 줌</li>
-          <li><strong>예외 상황(edge case)</strong>: 입력이 애매할 때 도구가 어떻게 동작하는지를 적음</li>
-          <li><strong>경계 설명</strong>: 기능이 비슷한 다른 도구 대신 이 도구를 쓰는 조건이 무엇인지를 밝힘</li>
-        </ul>
-        <h4>공식 문서의 구체 기준</h4>
-        <ul>
-          <li>도구 설명은 최소 <strong>3~4문장</strong>으로 쓰고, 복잡한 도구는 그보다 길게 씀. 공식 문서는 도구 설명을 도구 성능을 좌우하는 가장 중요한 요소로 명시함</li>
-          <li>도구 이름 규칙: 영숫자와 하이픈, 언더스코어로 1~64자 (<code>^[a-zA-Z0-9_-]{1,64}$</code>)</li>
-          <li>도구 정의 3요소: <code>name</code>, <code>description</code>, <code>input_schema</code>(입력 스키마(schema), JSON 형식으로 씀)</li>
-        </ul>
-        <div class="callout">📖 용어 카드. <b>description</b>: 도구 정의에 함께 넣는 설명문임. 사람이 읽는 문서가 아니라 <b>모델이 도구를 고를 때 읽는 판단 근거</b>임.</div>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"도구가 잘못 선택될 때 고치는 순서",
-       html:`__MAP2:desc__<h4>① 첫 조치는 언제나 설명 보강</h4>
-        <ul>
-          <li>증상: "check my order #12345"라는 요청에 get_customer가 호출됨. 두 도구의 설명이 모두 한 줄짜리인 상태임</li>
-          <li>조치: 입력 형식, 예시 질의, 경계 조건을 넣어 <strong>설명을 늘림</strong>. 비용이 가장 적게 들면서 효과가 큰 첫 조치임</li>
-          <li>few-shot 예시를 추가하거나 라우팅 레이어를 새로 만드는 방법은 원인인 빈약한 설명을 그대로 둔 채 비용만 늘림</li>
-        </ul>
-        <h4>② 기능이 겹치면 이름부터 구분함</h4>
-        <ul>
-          <li>analyze_content와 analyze_document의 설명이 거의 같으면 모델이 둘을 구분하지 못함</li>
-          <li>조치: <strong>이름을 바꾸고 설명을 구체화함</strong> (analyze_content를 extract_web_results로 변경)</li>
-        </ul>
-        <h4>③ 범용 도구는 목적별로 나눔</h4>
-        <ul>
-          <li>범용 도구 analyze_document 하나를 <strong>extract_data_points / summarize_content / verify_claim_against_source</strong>로 나눔</li>
-          <li>무엇을 받아 무엇을 돌려주는지가 명확한 도구일수록 선택도 사용도 정확해짐</li>
-        </ul>
-        <h4>④ 시스템 프롬프트의 키워드 간섭 점검</h4>
-        <ul>
-          <li>"문서와 관련된 요청은 꼼꼼히 분석할 것" 같은 지시문이 특정 도구와 <strong>의도하지 않은 연결</strong>을 만들 수 있음</li>
-          <li>잘 쓴 도구 설명을 시스템 프롬프트가 덮어쓰지 않는지 확인이 필요함</li>
-        </ul>`},
+   html:`<h4>① 다루는 영역</h4>
+<ul>
+<li>도구(tool): Claude가 호출할 수 있게 연결해 둔 기능. 예: 주문 조회, 파일 읽기, 웹 검색</li>
+<li>이 파트의 주제: Claude가 도구를 정확히 고르고 실패했을 때 회복하게 만드는 설계</li>
+<li>영어 이름: Tool Design &amp; MCP Integration</li>
+</ul>
+<h4>② 챕터 구성</h4>
+<table>
+<tr><th>챕터</th><th>주제</th></tr>
+<tr><td>CH 1</td><td>도구 설명(description) 작성. Claude가 도구를 고르는 근거</td></tr>
+<tr><td>CH 2</td><td>오류 응답 형식. 실패의 종류를 Claude가 알아볼 수 있게 돌려주는 방법</td></tr>
+<tr><td>CH 3</td><td>도구 배분과 호출 설정. 어떤 역할에 어떤 도구를 줄지 결정</td></tr>
+<tr><td>CH 4</td><td>MCP 서버 연결. 외부 서비스의 도구를 가져오는 방법</td></tr>
+<tr><td>CH 5</td><td>Claude Code의 기본 제공 도구 선택 기준</td></tr>
+<tr><td>CH 6</td><td>서버에서 실행되는 도구와 Agent Skills</td></tr>
+</table>
+<h4>③ 파트 전체에 쓰는 판단 기준</h4>
+<ul>
+<li>도구를 잘못 고르는 문제의 첫 해결책: 도구 설명과 응답 형식 수정</li>
+<li>새 장치를 추가하는 방법은 그다음 순서</li>
+<li>자격시험 출제 비중: 18%</li>
+</ul>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"도구 설명: Claude가 도구를 고를 때 읽는 글",
+   html:`<h4>① 도구 선택의 근거</h4>
+<ul>
+<li>Claude가 여러 도구 중 하나를 고를 때 읽는 글은 도구 설명(description)</li>
+<li>Claude는 도구가 내부에서 어떻게 동작하는지 볼 수 없음</li>
+<li>설명이 한 줄이면 기능이 비슷한 도구끼리 잘못 고르는 문제 발생</li>
+</ul>
+<h4>② 도구 정의의 세 항목</h4>
+<table>
+<tr><th>항목</th><th>내용</th></tr>
+<tr><td><code>name</code></td><td>도구 이름. 영문자, 숫자, 하이픈, 밑줄로 1~64자</td></tr>
+<tr><td><code>description</code></td><td>도구 설명. 하는 일, 쓰는 때, 쓰지 않는 때</td></tr>
+<tr><td><code>input_schema</code></td><td>도구가 받는 입력값의 양식. JSON 스키마로 작성</td></tr>
+</table>
+<h4>③ 좋은 설명에 들어가는 네 가지</h4>
+<ul>
+<li>입력 형식: 받는 값이 이메일인지 주문 번호인지 고객 번호인지</li>
+<li>사용 예시: 어떤 요청에 이 도구를 쓰는지</li>
+<li>예외 상황: 입력이 애매할 때의 동작</li>
+<li>다른 도구와의 경계: 기능이 비슷한 도구 대신 이 도구를 쓰는 조건</li>
+</ul>
+<div class="fig"><b>도구 설명 비교</b><br>
+부족한 설명: "고객 정보를 조회"&nbsp;&nbsp;<span class="an">← 주문 조회 도구와 구분 불가</span><br>
+<br>
+충분한 설명: "고객 번호나 이메일로 고객의 이름, 연락처, 등급을 조회.<br>
+&nbsp;&nbsp;본인 확인이 필요한 요청에서 가장 먼저 사용.<br>
+&nbsp;&nbsp;주문 내역은 반환하지 않음. 주문 내역은 lookup_order 사용."<br>
+<span class="an">← 입력 형식, 쓰는 때, 다른 도구와의 경계 포함</span>
+</div>
+<ul>
+<li>분량 기준: 최소 서너 문장. 복잡한 도구는 더 길게</li>
+<li>작성 기준 전체: <a href="https://platform.claude.com/docs/ko/agents-and-tools/tool-use/define-tools" target="_blank" rel="noopener">Claude 공식 문서 '도구 정의하기' 페이지</a> (한국어)</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>도구 설명(description)</b>: 도구 정의에 함께 넣는 글. 사람이 아니라 Claude가 도구를 고를 때 읽는 근거</li>
+<li><b>JSON 스키마</b>: 항목과 값의 종류를 정해 둔 양식. Part 4 CH 3에서 다루는 내용</li>
+<li><b>lookup_order</b>: 예시에 쓴 도구 이름. 주문 조회 도구</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"잘못 고른 도구를 바로잡는 순서",
+   html:`__MAP2:desc__<h4>① 설명 보강</h4>
+<ul>
+<li>증상: "주문 12345번 확인해 줘"라는 요청에 고객 조회 도구 호출. 두 도구의 설명이 모두 한 줄</li>
+<li>해결: 입력 형식, 사용 예시, 다른 도구와의 경계를 설명에 추가</li>
+<li>가장 먼저 하는 이유: 비용이 가장 적고 원인을 직접 수정</li>
+<li>효과가 부족한 방법: 예시 추가, 요청을 미리 분류하는 장치 신설. 부족한 설명은 그대로 남음</li>
+</ul>
+<h4>② 기능이 겹치는 도구의 이름 구분</h4>
+<ul>
+<li>증상: <code>analyze_content</code>와 <code>analyze_document</code>의 설명이 거의 같아 Claude가 구분하지 못함</li>
+<li>해결: 이름과 설명을 하는 일에 맞게 변경. 예: <code>analyze_content</code>를 <code>extract_web_results</code>로 변경</li>
+</ul>
+<h4>③ 여러 일을 하는 도구의 분리</h4>
+<ul>
+<li>증상: 도구 하나가 추출, 요약, 사실 확인을 모두 담당</li>
+<li>해결: 목적별 도구로 분리</li>
+</ul>
+<div class="fig"><b>도구 분리 전후</b><br>
+분리 전: analyze_document&nbsp;&nbsp;<span class="an">← 무엇을 돌려줄지 불분명</span><br>
+분리 후: extract_data_points&nbsp;&nbsp;<span class="an">← 수치와 사실 추출</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;summarize_content&nbsp;&nbsp;<span class="an">← 요약</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verify_claim_against_source&nbsp;&nbsp;<span class="an">← 원문과 대조</span>
+</div>
+<h4>④ 시스템 프롬프트 점검</h4>
+<ul>
+<li>증상: "문서와 관련된 요청은 꼼꼼히 분석할 것" 같은 문장 때문에 특정 도구만 계속 호출</li>
+<li>해결: 시스템 프롬프트의 단어가 도구 이름이나 설명과 의도하지 않게 연결되는지 확인</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 도구 호출 기록</div>
+요청: "주문 12345번 확인해 줘"<br>
+<span class="sel">호출한 도구: get_customer</span><br>
+기대한 도구: lookup_order
+</div>
+<p class="cap">이해를 돕기 위한 예시. 이런 기록이 반복되면 두 도구의 설명부터 확인.</p>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>시스템 프롬프트(system prompt)</b>: 대화 전체에 적용되는 기본 지시문</li>
+<li><b>get_customer</b>: 예시에 쓴 도구 이름. 고객 조회 도구</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"실전 진단 1 · 새 도구를 추가한 뒤 기존 도구가 잘못 선택됨",
        q:`lookup_order routed reliably for months. Last week the team added track_shipment ("Provides shipment and delivery information for orders"), and since then lookup_order — described as "Retrieves order details including delivery status" — receives half of the shipment questions, while track_shipment sometimes grabs refund-related order queries. Neither tool changed its code. What is the most effective first step?`,
        opts:[
@@ -105,44 +149,72 @@ window.CCAF_CONTENT.p2 = {
   /* ===== CH 2 · 2.2 구조화 에러 응답 ===== */
   { id:"p2c2", ch:"CH 2", title:"MCP 도구의 구조화 에러 응답 (2.2)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"실패에도 형식이 필요하다",
-       html:`<h4>isError 플래그</h4>
-        <ul>
-          <li>MCP 서버(MCP server)의 도구가 실패를 에이전트에 알리는 공식 신호임</li>
-          <li>이 플래그만으로는 부족함. <strong>어떤 종류의 실패인지</strong>가 함께 전달돼야 함</li>
-        </ul>
-        <h4>에러 네 가지 분류 (암기 필수)</h4>
-        <ul>
-          <li><strong>일시적(transient)</strong>: 타임아웃, 서비스 중단. 다시 시도할 가치가 있음</li>
-          <li><strong>검증(validation)</strong>: 잘못된 입력. 입력을 고쳐야 함</li>
-          <li><strong>비즈니스(business)</strong>: 정책 위반(환불 기간 만료 등). 다시 시도해도 결과가 같음</li>
-          <li><strong>권한(permission)</strong>: 접근 권한 없음. 다시 시도해도 결과가 같음</li>
-        </ul>
-        <h4>함께 반환하는 구조화 메타데이터 세 가지</h4>
-        <ul>
-          <li><code>errorCategory</code>: 위 네 분류 중 어디에 해당하는지를 나타냄</li>
-          <li><code>isRetryable</code>: 참과 거짓 두 값을 갖는 항목임. 의미 없는 재시도를 막음</li>
-          <li>사람이 읽는 설명문. 비즈니스 에러에는 <strong>고객에게 그대로 전달할 수 있는 설명</strong>을 넣음</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"에러를 뭉뚱그리면 복구 판단이 불가능해진다",
-       html:`__MAP2:err__<h4>① "Operation failed" 한 줄이 문제인 이유</h4>
-        <ul>
-          <li>에이전트는 에러 내용을 읽고 <strong>복구 방법을 결정함</strong>. 다시 시도할지, 입력을 고칠지, 사용자에게 상황을 설명할지를 여기서 정함</li>
-          <li>모든 실패가 같은 문장으로 돌아오면 <strong>이 결정을 내릴 근거가 없음</strong></li>
-          <li>자주 나타나는 증상: 정책 위반(비즈니스 에러)인데도 재시도를 반복함. 토큰이 낭비되고 고객은 계속 기다림</li>
-        </ul>
-        <h4>② 재시도 가능 여부는 도구가 알려줌</h4>
-        <ul>
-          <li>비즈니스 정책 위반에는 <code>retriable: false</code>와 고객에게 전달할 설명을 함께 반환함</li>
-          <li>에이전트는 이 값을 받아 재시도를 멈추고 "환불 기간이 지나 처리가 어렵다"는 안내로 바로 넘어감</li>
-        </ul>
-        <h4>③ 접근 실패와 빈 결과는 다른 사건임</h4>
-        <ul>
-          <li><strong>접근 실패</strong>: 검색 자체를 수행하지 못한 상태임. 재시도 여부를 판단해야 함</li>
-          <li><strong>빈 결과</strong>: 검색은 정상 수행됐고 조건에 맞는 항목이 없는 상태임. 정상 응답임</li>
-          <li>이 둘을 같은 형태로 반환하면 에이전트는 "항목이 없음"과 "확인하지 못함"을 구분할 수 없음</li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: 선택지에 "빈 결과를 성공으로 반환" 또는 "실패 전체를 일괄 재시도"가 들어 있으면 대부분 오답 유도 선택지임. 정답은 에러 분류, 재시도 가능 여부, 설명문 세 가지를 함께 반환하는 쪽임.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"오류 응답: 실패의 종류와 다음 행동을 알려 주는 형식",
+   html:`<h4>① 실패 표시</h4>
+<ul>
+<li>MCP 도구가 실패를 알리는 표시: <code>isError</code></li>
+<li>이 표시만으로는 부족. 어떤 종류의 실패인지가 함께 전달돼야 Claude가 다음 행동을 결정</li>
+</ul>
+<h4>② 오류 네 종류</h4>
+<table>
+<tr><th>종류</th><th>예</th><th>다시 시도</th></tr>
+<tr><td>일시적 오류<br>transient</td><td>응답 시간 초과. 서비스 일시 중단</td><td>의미 있음</td></tr>
+<tr><td>입력 오류<br>validation</td><td>형식이 틀린 주문 번호</td><td>입력을 고친 뒤에 의미 있음</td></tr>
+<tr><td>정책 오류<br>business</td><td>환불 기간 만료</td><td>의미 없음</td></tr>
+<tr><td>권한 오류<br>permission</td><td>접근 권한 없음</td><td>의미 없음</td></tr>
+</table>
+<h4>③ 오류와 함께 돌려주는 세 가지</h4>
+<ul>
+<li><code>errorCategory</code>: 위 네 종류 중 어느 것인지</li>
+<li><code>isRetryable</code>: 다시 시도할 가치가 있는지. 참 또는 거짓</li>
+<li>설명 문장: 사람이 읽을 수 있는 안내. 정책 오류에는 고객에게 그대로 전할 수 있는 문장</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · 환불 도구가 돌려준 오류 응답</div>
+isError: true<br>
+errorCategory: "business"<br>
+<span class="sel">isRetryable: false</span><br>
+message: "환불 가능 기간 30일이 지나 환불할 수 없습니다."
+</div>
+<p class="cap">이해를 돕기 위한 예시. Claude는 다시 시도하지 않고 고객에게 안내 문장을 전달.</p>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>MCP 서버</b>: 외부 서비스의 도구를 Claude에 연결해 주는 프로그램. CH 4에서 다루는 내용</li>
+<li><b>isError</b>: 도구 실행이 실패했다는 표시</li>
+<li><b>재시도(retry)</b>: 같은 요청을 다시 보내는 일</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"오류 응답 설계의 세 가지 기준",
+   html:`__MAP2:err__<h4>① 실패마다 다른 응답</h4>
+<ul>
+<li>Claude는 오류 내용을 읽고 다음 행동을 결정. 다시 시도, 입력 수정, 사용자 안내 중 선택</li>
+<li>모든 실패가 "Operation failed" 한 줄이면 결정할 근거 없음</li>
+<li>자주 생기는 문제: 정책 오류에 재시도 반복. 비용이 늘고 고객 대기 시간 증가</li>
+</ul>
+<div class="fig"><b>같은 실패, 다른 응답</b><br>
+"Operation failed"&nbsp;&nbsp;<span class="an">← 다시 시도할지 판단 불가. 재시도 반복</span><br>
+종류: 정책 오류, 재시도: 불가, 안내 문장 포함&nbsp;&nbsp;<span class="an">← 재시도 없이 고객 안내</span>
+</div>
+<h4>② 재시도 여부는 도구가 전달</h4>
+<ul>
+<li>정책 오류: 재시도 불가 표시와 고객 안내 문장을 함께 반환</li>
+<li>Claude의 다음 행동: 재시도를 멈추고 "환불 기간이 지나 처리가 어렵다"는 안내 전달</li>
+</ul>
+<h4>③ 접근 실패와 빈 결과의 구분</h4>
+<table>
+<tr><th>경우</th><th>뜻</th><th>응답</th></tr>
+<tr><td>접근 실패</td><td>검색 자체를 하지 못함</td><td>오류로 반환. 재시도 여부 표시</td></tr>
+<tr><td>빈 결과</td><td>검색은 정상. 조건에 맞는 항목 없음</td><td>정상 응답으로 반환</td></tr>
+</table>
+<ul>
+<li>두 경우를 같은 형태로 돌려주면 Claude는 "없음"과 "확인하지 못함"을 구분할 수 없음</li>
+<li>피해야 할 설계: 실패를 빈 결과로 반환. 모든 실패를 한꺼번에 재시도</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>타임아웃(timeout)</b>: 정해진 시간 안에 응답이 오지 않아 중단된 상태</li>
+<li><b>정책 오류</b>: 요청 형식은 맞지만 회사 규정 때문에 처리할 수 없는 경우</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"실전 진단 1 · 재시도할 실패와 다시 물어야 할 실패",
        q:`Your coupon tool's errors default to isRetryable: true "to be safe." Logs from yesterday: a customer typo'd a coupon code, and the agent silently retried the identical apply_coupon call four times before apologizing — never asking the customer to re-check the code. Meanwhile, a genuine 30-second service outage was handled well by the same retry logic. What should change?`,
        opts:[
@@ -182,44 +254,83 @@ window.CCAF_CONTENT.p2 = {
   /* ===== CH 3 · 2.3 도구 배분과 tool_choice ===== */
   { id:"p2c3", ch:"CH 3", title:"도구 배분과 tool_choice (2.3)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"도구가 많다고 선택이 정확해지지 않는다",
-       html:`<h4>도구가 많아지면 생기는 일</h4>
-        <ul>
-          <li>도구를 4~5개 주는 대신 <strong>18개</strong>를 주면 고를 대상이 늘어나고, 그만큼 <strong>정확히 고를 확률이 떨어짐</strong></li>
-          <li>담당 업무 밖의 도구를 주면 그 도구를 <strong>잘못 사용함</strong>. 합성 담당 에이전트가 웹 검색을 시도하는 경우가 그 예임</li>
-        </ul>
-        <h4>스코프드 액세스(scoped access)</h4>
-        <ul>
-          <li>기본 원칙: 역할 수행에 필요한 도구만 지급함</li>
-          <li>예외: <strong>다른 역할의 기능이 자주 필요한 경우</strong>에는 범위가 좁은 전용 도구를 하나만 추가함. 합성 담당 에이전트에게 verify_fact를 주는 경우가 그 예임</li>
-          <li>범용 도구는 범위가 제한된 도구로 교체함. fetch_url을 문서 URL만 검증해 받는 load_document로 바꾸는 방식임</li>
-        </ul>
-        <h4>tool_choice (API 설정값)</h4>
-        <ul>
-          <li><code>"auto"</code>: 도구를 쓸지 말지를 모델이 결정함. 텍스트로만 답해도 됨. 도구를 제공했을 때의 기본값임</li>
-          <li><code>"any"</code>: <strong>제공된 도구 중 하나를 반드시 호출함</strong>. 텍스트만 반환할 수 없음</li>
-          <li><code>{"type":"tool","name":"..."}</code>: <strong>지정한 도구를 반드시 호출하게 함</strong></li>
-          <li>공식 문서에는 네 번째 값도 있음. <code>"none"</code>은 도구 사용을 금지하며, 도구를 제공하지 않았을 때의 기본값임. 시험 가이드는 앞의 세 가지만 다루지만 선택지에 none이 나와도 존재하지 않는 설정은 아님</li>
-          <li>표기 차이: 실제 API에서는 모두 객체 형태(<code>{"type":"auto"}</code> 등)로 씀. 가이드와 시험은 줄인 표기를 씀</li>
-          <li>any 또는 특정 도구 강제를 설정하면 모델은 <strong>자연어 설명 없이 바로 도구를 호출함</strong>. API가 그렇게 동작함</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"어떤 역할에 어떤 도구를 주고, 언제 호출을 강제하는가",
-       html:`__MAP2:choice__<h4>① 85 대 15 배분 (공식 가이드 샘플 9번 유형, 다른 역할의 도구가 가끔 필요한 상황을 묻는 문제)</h4>
-        <ul>
-          <li>상황: 합성 담당 에이전트가 내는 검증 요청 중 85%는 단순 사실 확인이고 15%는 심층 조사임</li>
-          <li>정답: 85%에 해당하는 작업에는 <strong>범위가 좁은 verify_fact 도구</strong>를 직접 지급하고, 15%는 기존대로 코디네이터를 거치게 함</li>
-          <li>오답: 웹 검색 도구를 전부 지급하는 방법(필요 이상의 권한), 요청을 모아 한 번에 처리하는 방법(작업 사이의 선후 관계 무시), 미리 캐싱해 두는 방법(무엇이 필요할지 예측 불가)</li>
-        </ul>
-        <h4>② 특정 도구 강제를 쓰는 상황</h4>
-        <ul>
-          <li>"extract_metadata가 <strong>반드시 먼저</strong> 실행돼야 한다"는 요구가 있을 때 첫 턴에 그 도구를 강제하고, 이후 단계는 다음 턴에서 진행함</li>
-        </ul>
-        <h4>③ "any"를 쓰는 상황</h4>
-        <ul>
-          <li>구조화 출력(structured output)이 반드시 필요할 때 씀. 모델이 대화체 텍스트로 답하는 경로를 차단함</li>
-          <li>추출 스키마(schema)가 여러 개이고 문서 유형을 미리 알 수 없을 때 씀. 어느 추출 도구를 고를지는 모델에 맡기되 도구 호출 자체는 보장됨</li>
-        </ul>
-        <div class="callout">🎯 시험 포인트: auto와 any와 특정 도구 강제 중 하나를 고르는 문제는 요구 수준을 확인할 것. "반드시 이 도구"는 특정 도구 강제, "반드시 도구를 쓰되 어느 것이든 됨"은 any, "필요하면 도구를 씀"은 auto임.</div>`},
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"도구 배분: 역할에 필요한 도구만 주는 원칙",
+   html:`<h4>① 도구가 많을 때 생기는 문제</h4>
+<ul>
+<li>도구 4~5개 대신 18개를 주면 고를 대상이 늘어 잘못 고를 확률 증가</li>
+<li>맡은 일과 무관한 도구를 주면 그 도구를 잘못 사용. 예: 보고서 작성 담당 에이전트가 웹 검색 시도</li>
+</ul>
+<h4>② 범위를 좁힌 도구 배분</h4>
+<ul>
+<li>원칙: 역할에 필요한 도구만 지급. 영어 이름은 scoped access</li>
+<li>다른 역할의 기능이 자주 필요한 경우: 범위가 좁은 전용 도구 하나만 추가. 예: 작성 담당 에이전트에 사실 확인 도구 <code>verify_fact</code></li>
+<li>범위가 넓은 도구: 범위를 제한한 도구로 교체. 예: 모든 주소를 여는 <code>fetch_url</code> 대신 문서 주소만 받는 <code>load_document</code></li>
+</ul>
+<div class="fig"><b>보고서 작성 담당 에이전트의 도구</b><br>
+전부 지급: 웹 검색, 파일 수정, 메일 발송 등 18개&nbsp;&nbsp;<span class="an">← 맡은 일 밖의 도구 사용</span><br>
+필요한 도구만: 자료 읽기, 요약, verify_fact&nbsp;&nbsp;<span class="an">← 맡은 일에 집중</span>
+</div>
+<h4>③ 도구 호출 설정</h4>
+<table>
+<tr><th><code>tool_choice</code> 값</th><th>동작</th></tr>
+<tr><td><code>auto</code></td><td>도구 호출 여부를 Claude가 결정. 글로만 답하는 경우도 있음. 도구를 준 경우의 기본값</td></tr>
+<tr><td><code>any</code></td><td>연결된 도구 중 하나를 반드시 호출</td></tr>
+<tr><td>도구 이름 지정</td><td>지정한 도구를 반드시 호출</td></tr>
+<tr><td><code>none</code></td><td>도구 호출 금지. 도구를 주지 않은 경우의 기본값</td></tr>
+</table>
+<ul>
+<li>실제 요청에 적는 형태: <code>{"type": "auto"}</code>, <code>{"type": "tool", "name": "도구 이름"}</code></li>
+<li><code>any</code>와 도구 이름 지정에서는 Claude가 설명 문장 없이 바로 도구 호출</li>
+<li>모델 조건: <code>any</code>와 도구 이름 지정은 일부 모델에서만 동작. Claude Fable 5.2, Opus 5.5, Sonnet 5.5는 400 오류로 거절</li>
+<li>모델별 지원 여부: <a href="https://platform.claude.com/docs/ko/agents-and-tools/tool-use/define-tools#forcing-tool-use" target="_blank" rel="noopener">Claude 공식 문서 '도구 정의하기' 페이지의 '도구 사용 강제하기' 항목</a> (한국어)</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>tool_choice</b>: 도구를 호출할지와 어떤 도구를 호출할지 정하는 설정</li>
+<li><b>verify_fact, fetch_url, load_document</b>: 예시에 쓴 도구 이름. 사실 확인, 웹 주소 열기, 문서 불러오기 도구</li>
+<li><b>400 오류</b>: 요청 내용에 문제가 있어 처리하지 않았다는 응답</li>
+</ul>
+</div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"도구 배분과 호출 설정의 판단 기준",
+   html:`__MAP2:choice__<h4>① 다른 역할의 도구가 가끔 필요한 경우</h4>
+<ul>
+<li>상황: 작성 담당 에이전트의 확인 요청 중 85%는 단순 사실 확인, 15%는 깊은 조사</li>
+<li>해결: 85%에 해당하는 일은 범위가 좁은 <code>verify_fact</code>를 직접 지급. 15%는 지금처럼 코디네이터를 거쳐 처리</li>
+</ul>
+<table>
+<tr><th>다른 방법</th><th>문제</th></tr>
+<tr><td>웹 검색 도구 전체 지급</td><td>필요 이상의 권한</td></tr>
+<tr><td>확인 요청을 모아 한 번에 처리</td><td>앞의 확인 결과가 필요한 뒤 작업이 멈춤</td></tr>
+<tr><td>필요할 자료를 미리 저장</td><td>무엇이 필요할지 미리 알 수 없음</td></tr>
+</table>
+<h4>② 요구 수준별 설정</h4>
+<table>
+<tr><th>요구</th><th>설정</th></tr>
+<tr><td>필요할 때만 도구 사용</td><td><code>auto</code></td></tr>
+<tr><td>반드시 도구를 쓰되 어느 도구든 가능</td><td><code>any</code></td></tr>
+<tr><td>반드시 특정 도구 사용</td><td>도구 이름 지정</td></tr>
+</table>
+<ul>
+<li><code>any</code>를 쓰는 상황: 글이 아닌 정해진 양식의 결과가 반드시 필요한 작업. 문서 종류를 미리 알 수 없고 추출 도구가 여러 개인 작업</li>
+<li>도구 이름 지정을 쓰는 상황: 특정 도구가 가장 먼저 실행돼야 하는 작업. 첫 요청에서 그 도구를 지정하고 다음 단계는 그다음 요청에서 진행</li>
+</ul>
+<div class="screen"><div class="sbar">화면 예시 · auto 설정에서 생긴 문제</div>
+요청: 계약서에서 계약일과 금액 추출<br>
+<span class="sel">답: "이 계약서의 계약일은 3월 4일이며 금액은..."</span><br>
+기대한 답: 추출 도구 호출
+</div>
+<p class="cap">이해를 돕기 위한 예시. auto 설정에서는 글로 답하는 경우가 남음. 뒤 단계의 프로그램은 글로 된 답을 읽지 못함.</p>
+<h4>③ 강제 호출을 거절하는 모델에서 쓰는 방법</h4>
+<ul>
+<li><code>auto</code>와 엄격한 도구 사용(<code>strict: true</code>)을 함께 사용. 도구 입력값이 양식과 일치하도록 보장</li>
+<li>답의 양식만 고정하면 되는 작업: JSON 출력. Part 4 CH 3에서 다루는 내용</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>코디네이터(coordinator)</b>: 작업을 나누고 맡기고 결과를 모으는 에이전트. Part 1 CH 3에서 다룬 내용</li>
+<li><b>엄격한 도구 사용(strict tool use)</b>: 도구 정의에 strict: true를 넣어 입력값이 양식과 일치하도록 보장하는 기능</li>
+</ul>
+</div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"실전 진단 1 · 모델이 산문으로 답해 파서가 중단됨",
        q:`Your extraction step runs with tool_choice: "auto" and a firm prompt instruction to "always respond by calling an extraction tool." On clear documents it complies; on ambiguous ones it sometimes replies in prose — "This document appears to be a receipt, though I'm not fully certain..." — and the downstream JSON parser crashes. This happens in about 4% of runs. What is the correct fix?`,
        opts:[
@@ -259,40 +370,97 @@ window.CCAF_CONTENT.p2 = {
   /* ===== CH 4 · 2.4 MCP 서버 통합 ===== */
   { id:"p2c4", ch:"CH 4", title:"MCP 서버 통합 (2.4)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"MCP 서버 설정의 두 스코프와 비밀키 처리",
-       html:`<h4>MCP 서버(MCP server) 설정을 두는 두 위치</h4>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"MCP 서버 설정 범위와 비밀 값 관리",
+       html:`<h4>① 설정 범위</h4>
+        <table>
+          <tr><th>범위</th><th>저장 위치</th><th>사용 범위</th></tr>
+          <tr><td>local (기본값)</td><td><code>~/.claude.json</code></td><td>본인만 사용. 현재 프로젝트에서만 사용 가능</td></tr>
+          <tr><td>project</td><td>프로젝트 폴더의 <code>.mcp.json</code></td><td>프로젝트를 함께 쓰는 팀 전원</td></tr>
+          <tr><td>user</td><td><code>~/.claude.json</code></td><td>본인만 사용. 모든 프로젝트에서 사용 가능</td></tr>
+        </table>
         <ul>
-          <li><strong>프로젝트 스코프</strong>인 <code>.mcp.json</code>: 저장소에 커밋되므로 <strong>팀 전체가 같은 설정을 씀</strong></li>
-          <li><strong>사용자 스코프</strong>인 <code>~/.claude.json</code>: <strong>개인용, 실험용</strong>이며 그 사람 기계에만 적용됨</li>
+          <li>범위를 지정하지 않으면 local</li>
+          <li>팀이 함께 쓸 서버는 project 범위에 설정</li>
+          <li>이름이 같은 서버가 여러 범위에 있으면 local, project, user 순서로 우선</li>
         </ul>
-        <h4>환경변수 확장</h4>
+        <h4>② 비밀 값 관리</h4>
         <ul>
-          <li><code>.mcp.json</code> 안에 <code>\${GITHUB_TOKEN}</code>처럼 쓰면 실행 시점에 각 사용자 기계의 값으로 치환됨</li>
-          <li>효과: <strong>비밀키를 저장소에 올리지 않고</strong> 팀 공유 설정에 인증 정보를 넣을 수 있음</li>
+          <li><code>.mcp.json</code>은 팀 전원이 보는 파일. 비밀 값을 직접 적으면 안 됨</li>
+          <li>값 대신 <code>\${GITHUB_TOKEN}</code>처럼 환경변수 이름만 기재</li>
+          <li>실행할 때 각자 컴퓨터에 저장된 값으로 자동 교체</li>
+          <li>기본값 지정: <code>\${이름:-기본값}</code> 형태</li>
         </ul>
-        <h4>연결 시점의 도구 발견</h4>
+        <div class="fig"><b>.mcp.json 내용</b><br>
+{<br>
+&nbsp;&nbsp;"mcpServers": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"github": {&nbsp;&nbsp;<span class="an">← 서버 이름</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": "http",&nbsp;&nbsp;<span class="an">← 연결 방식</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"url": "https://mcp.example.com/mcp",&nbsp;&nbsp;<span class="an">← 서버 주소</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"headers": { "Authorization": "Bearer \${GITHUB_TOKEN}" }&nbsp;&nbsp;<span class="an">← 환경변수 이름</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+}
+        </div>
+        <h4>③ 연결 방식</h4>
         <ul>
-          <li>연결된 <strong>모든 MCP 서버의 도구가 연결 시점에 발견되어</strong> 함께 사용 가능한 상태가 됨</li>
+          <li>인터넷에 있는 서버: HTTP 방식 권장</li>
+          <li>내 컴퓨터에서 실행하는 서버: stdio 방식</li>
         </ul>
-        <div class="callout">📖 용어 카드. <b>환경변수</b>: 컴퓨터에 이름과 값을 짝지어 저장해 둔 설정임. 이름은 공유해도 값은 각자 기계에만 있음. <b>커밋</b>: 팀 저장소에 파일을 올리는 동작임. 여기 올린 내용은 팀 전체가 볼 수 있음.</div>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"연결한 다음의 세 가지 판단",
-       html:`__MAP2:mcp__<h4>① 연결한 MCP 도구를 에이전트가 쓰지 않을 때</h4>
+        <h4>④ 연결 후 도구 사용</h4>
         <ul>
-          <li>증상: 성능이 좋은 MCP 검색 도구를 연결했는데도 에이전트가 <strong>기본 제공 도구(built-in tools)인 Grep만 씀</strong></li>
-          <li>원인: MCP 도구의 설명이 빈약해서 그 도구가 무엇을 할 수 있는지 드러나지 않음</li>
-          <li>조치: <strong>설명에 기능과 출력 형태를 자세히 씀</strong>. Ch1과 같은 원리임</li>
+          <li>연결된 모든 서버의 도구를 한 대화에서 함께 사용 가능</li>
+          <li>도구가 많을 때는 필요한 도구만 찾아 불러오는 도구 검색(tool search) 기능 작동</li>
         </ul>
-        <h4>② 직접 만들 것인가, 있는 것을 쓸 것인가</h4>
+        <div class="screen"><div class="sbar">화면 예시 · 연결된 서버 확인</div>
+&gt; /mcp<br>
+&nbsp;github&nbsp;&nbsp;&nbsp;&nbsp;연결됨&nbsp;&nbsp;&nbsp;도구 12개<br>
+&nbsp;notion&nbsp;&nbsp;&nbsp;&nbsp;연결됨&nbsp;&nbsp;&nbsp;도구 8개
+        </div>
+        <p class="cap">입력창에 <code>/mcp</code>를 입력하면 나타나는 서버 연결 상태. 실제 화면과 글자 배치 차이 있음.</p>
+        <div class="callout">📖 <b>용어 카드</b>
+          <ul>
+            <li><b>MCP(Model Context Protocol)</b>: Claude를 외부 서비스와 연결하는 공통 규격</li>
+            <li><b>MCP 서버</b>: 외부 서비스의 기능을 Claude에게 도구로 제공하는 프로그램</li>
+            <li><b>범위(scope)</b>: 설정이 적용되는 대상</li>
+            <li><b>환경변수</b>: 컴퓨터에 이름과 값을 짝지어 저장해 둔 설정. 이름은 공유하고 값은 각자 컴퓨터에만 보관</li>
+            <li><b>토큰(token)</b>: 서비스 이용 권한을 증명하는 비밀 값</li>
+            <li><b>홈 폴더(~)</b>: 컴퓨터 사용자마다 하나씩 있는 개인 폴더</li>
+          </ul>
+        </div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"연결 후 판단 기준 세 가지",
+       html:`__MAP2:mcp__<h4>① 연결한 도구가 쓰이지 않는 경우</h4>
         <ul>
-          <li>Jira, GitHub처럼 표준적인 연동은 <strong>공개된 MCP 서버</strong>를 가져다 씀</li>
-          <li>직접 제작은 <strong>그 팀에만 있는 업무 흐름</strong>에만 적용함</li>
+          <li>증상: 성능 좋은 검색 도구를 연결했는데 Claude가 기본 제공 검색 도구만 사용</li>
+          <li>원인: 연결한 도구의 설명이 짧아 기능이 드러나지 않음</li>
+          <li>해결: 도구 설명에 기능, 결과 형태, 사용 예 기재</li>
         </ul>
-        <h4>③ 도구(tool)와 리소스(resource)의 차이</h4>
+        <div class="fig"><b>도구 설명 비교</b><br>
+✗ 코드를 검색함&nbsp;&nbsp;<span class="an">← 기본 검색과 차이가 보이지 않음</span><br>
+✓ 함수 이름으로 정의 위치와 호출 위치를 찾음. 결과는 파일 이름과 줄 번호 목록.<br>
+&nbsp;&nbsp;&nbsp;글자만 같은 다른 단어는 결과에서 제외&nbsp;&nbsp;<span class="an">← 기능, 결과 형태, 기본 검색과의 차이</span>
+        </div>
+        <h4>② 직접 제작과 공개 서버 사용</h4>
         <ul>
-          <li><strong>도구</strong>는 행동을 수행함. 검색하기, 생성하기 같은 작업임</li>
-          <li><strong>리소스</strong>는 보유한 콘텐츠 목록을 보여 줌. 이슈 요약, 문서 계층, 데이터베이스 스키마(schema)가 여기 해당함</li>
-          <li>리소스로 어떤 데이터가 있는지 미리 보여 주면 <strong>무엇이 있는지 알아보려고 도구를 호출하는 횟수가 줄어듦</strong></li>
-        </ul>`},
+          <li>널리 쓰는 서비스(Jira, GitHub) 연결: 공개된 MCP 서버 사용</li>
+          <li>직접 제작: 우리 팀에만 있는 업무 흐름</li>
+        </ul>
+        <h4>③ 도구와 리소스</h4>
+        <table>
+          <tr><th>구분</th><th>기능</th><th>예</th></tr>
+          <tr><td>도구(tool)</td><td>행동 수행</td><td>검색, 이슈 생성</td></tr>
+          <tr><td>리소스(resource)</td><td>보유 자료 목록 제공</td><td>이슈 요약, 문서 목록, 데이터 구조</td></tr>
+        </table>
+        <ul>
+          <li>리소스로 자료 목록을 먼저 보여 주면 자료를 찾기 위한 도구 호출 감소</li>
+        </ul>
+        <div class="callout">📖 <b>용어 카드</b>
+          <ul>
+            <li><b>기본 제공 도구(built-in tools)</b>: 따로 연결하지 않아도 Claude Code에 들어 있는 도구</li>
+            <li><b>도구 설명</b>: 도구가 하는 일을 적은 글. Claude는 이 글을 읽고 쓸 도구를 선택</li>
+            <li><b>Jira</b>: 업무 요청과 진행 상황을 관리하는 서비스</li>
+            <li><b>GitHub</b>: 프로젝트 파일을 올려 팀이 함께 관리하는 서비스</li>
+          </ul>
+        </div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"실전 진단 1 · 새로 합류한 개발자에게만 MCP 도구가 없음",
        q:`A new developer clones the repo, runs Claude Code, and has none of the team's GitHub MCP tools — while everyone else has them. The team lead checks: the server works fine on his machine, the repo's .mcp.json doesn't mention it, and his ~/.claude.json contains the full server definition with a hardcoded token. What happened, and what is the right fix?`,
        opts:[
@@ -329,42 +497,91 @@ window.CCAF_CONTENT.p2 = {
        principle:"원칙 ② 근본 원인 해결: 설명이 선택을 결정함"},
     ]},
 
-  /* ===== CH 5 · 2.5 기본 제공 도구 6종 ===== */
-  { id:"p2c5", ch:"CH 5", title:"기본 제공 도구 6종 선택 기준 (2.5)",
+  /* ===== CH 5 · 2.5 자주 쓰는 기본 제공 도구 6개 ===== */
+  { id:"p2c5", ch:"CH 5", title:"기본 제공 도구 선택 기준 (2.5)",
     steps:[
-      {type:"concept", kind:"CONCEPT · 개념 설명", h:"기본 제공 도구 여섯 개의 용도 구분",
-       html:`<h4>검색 도구 두 가지 (가장 자주 혼동되는 쌍)</h4>
+      {type:"concept", kind:"CONCEPT · 개념 설명", h:"자주 쓰는 기본 제공 도구 여섯 개",
+       html:`<h4>① 도구별 기능</h4>
+        <table>
+          <tr><th>도구</th><th>기능</th><th>사용 예</th></tr>
+          <tr><td><code>Read</code></td><td>파일 읽기</td><td>보고서 파일 내용 확인</td></tr>
+          <tr><td><code>Write</code></td><td>파일 새로 만들기. 기존 파일 전체 바꿔 쓰기</td><td>새 문서 작성</td></tr>
+          <tr><td><code>Edit</code></td><td>파일에서 지정한 부분만 고치기</td><td>문장 하나 수정</td></tr>
+          <tr><td><code>Grep</code></td><td>파일 내용 검색</td><td>"환불"이라는 단어가 들어 있는 파일 찾기</td></tr>
+          <tr><td><code>Glob</code></td><td>파일 이름으로 찾기</td><td>이름이 "회의록"으로 시작하는 파일 찾기</td></tr>
+          <tr><td><code>Bash</code></td><td>컴퓨터 명령 실행</td><td>프로그램 실행, 폴더 만들기</td></tr>
+        </table>
         <ul>
-          <li><strong>Grep</strong>: 파일 <strong>내용</strong>을 검색함. 함수 이름, 에러 메시지, import 구문을 찾을 때 씀</li>
-          <li><strong>Glob</strong>: 파일 <strong>이름과 경로</strong>를 패턴으로 찾음 (<code>**/*.test.tsx</code>)</li>
-          <li>구분 기준: "파일 안에 무엇이 쓰여 있는가"를 물으면 Grep, "어떤 이름의 파일이 있는가"를 물으면 Glob임</li>
+          <li>Claude Code의 기본 제공 도구는 40개 이상. 전체 목록: <a href="https://code.claude.com/docs/ko/tools-reference" target="_blank" rel="noopener">Claude Code 공식 문서 '도구 참조' 페이지</a> (한국어)</li>
         </ul>
-        <h4>파일 조작 도구 세 가지</h4>
+        <h4>② 검색 도구 구분</h4>
         <ul>
-          <li><strong>Read</strong>는 파일 전체를 읽고, <strong>Write</strong>는 파일 전체를 씀</li>
-          <li><strong>Edit</strong>은 파일 안에서 <strong>한 곳에만 있는 텍스트를 찾아</strong> 그 부분만 수정함</li>
-          <li>수정하려는 텍스트가 여러 곳에 있어 Edit이 실패하면 <strong>Read와 Write</strong>로 대체함</li>
+          <li>찾는 대상이 파일 안의 내용이면 Grep</li>
+          <li>찾는 대상이 파일 이름이나 위치면 Glob</li>
+          <li>macOS와 Linux에서는 Grep과 Glob 대신 Bash 도구의 검색 명령으로 같은 작업 수행</li>
         </ul>
-        <h4>Bash</h4>
+        <div class="fig"><b>검색 대상에 따른 구분</b><br>
+"환불 규정이 적힌 파일 찾기"&nbsp;&nbsp;<span class="an">← 파일 안의 내용: Grep</span><br>
+"이름이 2026으로 시작하는 파일 찾기"&nbsp;&nbsp;<span class="an">← 파일 이름: Glob</span>
+        </div>
+        <h4>③ Edit 작동 조건</h4>
         <ul>
-          <li>셸 명령을 실행함. 테스트 실행, 빌드, git 명령 등에 씀</li>
-        </ul>`},
-      {type:"concept", kind:"TOPIC · 주제 설명", h:"도구를 이어 쓰는 코드베이스 탐색 전략",
-       html:`__MAP2:builtin__<h4>① 필요한 만큼만 읽어 나감</h4>
-        <ul>
-          <li>권장 순서: <strong>Grep으로 진입점을 찾음</strong>. 그다음 <strong>Read로 import를 따라가며</strong> 흐름을 추적함</li>
-          <li>자주 나오는 오답: "모든 파일을 먼저 Read해서 전체를 파악한다". 컨텍스트 창(context window)을 낭비하고 모델의 주의가 분산됨</li>
+          <li>고칠 문장을 글자 그대로 지정</li>
+          <li>지정한 문장이 파일 안에 한 번만 있어야 수정 가능</li>
+          <li>같은 문장이 여러 번 있으면 수정 실패</li>
         </ul>
-        <h4>② 래퍼 모듈을 거치는 함수 추적</h4>
+        <div class="screen"><div class="sbar">화면 예시 · Edit 실패</div>
+수정 실패: 지정한 문장이 파일 안에 4곳<br>
+&nbsp;&nbsp;"담당자에게 문의 바랍니다."<br>
+어느 곳을 고칠지 정할 수 없음
+        </div>
+        <p class="cap">같은 문장이 여러 번 있을 때 나타나는 실패 안내. 실제 화면의 문구는 영어.</p>
+        <div class="callout">📖 <b>용어 카드</b>
+          <ul>
+            <li><b>기본 제공 도구(built-in tools)</b>: 따로 연결하지 않아도 Claude Code에 들어 있는 도구</li>
+            <li><b>컴퓨터 명령</b>: 글자로 입력해서 컴퓨터에 일을 시키는 지시</li>
+            <li><b>macOS, Linux, Windows</b>: 컴퓨터를 움직이는 기본 프로그램의 종류</li>
+          </ul>
+        </div>`},
+      {type:"concept", kind:"TOPIC · 주제 설명", h:"도구 조합과 Edit 실패 대응",
+       html:`__MAP2:builtin__<h4>① 필요한 파일만 읽는 순서</h4>
         <ul>
-          <li>함수가 여러 래퍼를 거쳐 사용될 때는 <strong>export된 이름을 먼저 전부 확인</strong>한 다음, 각 이름을 코드베이스 전체에서 검색함</li>
+          <li>1단계: 검색으로 관련 파일 찾기</li>
+          <li>2단계: 찾은 파일만 Read로 읽기</li>
+          <li>3단계: 읽은 파일이 가리키는 다른 파일을 이어서 읽기</li>
+          <li>피할 방식: 모든 파일을 먼저 읽기. 컨텍스트 창이 불필요한 내용으로 채워짐</li>
         </ul>
-        <h4>③ Edit이 실패했을 때</h4>
+        <div class="fig"><b>파일 900개 중 필요한 내용 찾기</b><br>
+✗ 900개 전부 읽기&nbsp;&nbsp;<span class="an">← 컨텍스트 창 부족</span><br>
+✓ 검색 → 관련 파일 6개 → 6개만 읽기&nbsp;&nbsp;<span class="an">← 필요한 내용만 컨텍스트 창에 포함</span>
+        </div>
+        <h4>② 이름이 여러 개인 대상 찾기</h4>
         <ul>
-          <li>같은 코드 조각이 여러 곳에 있으면 Edit이 수정 위치를 하나로 특정하지 못해 실패함</li>
-          <li>권장 대체 경로: Read로 파일 전체를 읽고 수정본을 Write로 씀. 결과가 확실하고 같은 절차를 반복할 수 있음</li>
+          <li>같은 기능이 파일마다 다른 이름으로 쓰이는 경우 있음</li>
+          <li>순서: 쓰이는 이름을 먼저 모두 확인한 뒤 이름마다 검색</li>
         </ul>
-        <div class="callout">🎯 시험 포인트: 상황을 읽고 도구를 바로 고르는 연습이 핵심임. "파일 이름 패턴"이라는 표현이 보이면 Glob, "내용", "호출자", "에러 문자열"이 보이면 Grep임.</div>`},
+        <h4>③ Edit 실패 대응</h4>
+        <table>
+          <tr><th>상황</th><th>대응</th></tr>
+          <tr><td>여러 곳 중 한 곳만 수정</td><td>앞뒤 문장까지 포함해 한 곳만 가리키도록 다시 지정</td></tr>
+          <tr><td>여러 곳 전부 수정</td><td>모두 바꾸기(<code>replace_all</code>) 사용</td></tr>
+          <tr><td>위 방법으로 해결 안 됨</td><td>Read로 파일 전체를 읽고 Write로 새로 쓰기</td></tr>
+        </table>
+        <h4>④ 상황별 도구 선택</h4>
+        <table>
+          <tr><th>상황</th><th>도구</th></tr>
+          <tr><td>특정 단어가 쓰인 곳 전부 찾기</td><td>Grep</td></tr>
+          <tr><td>특정 이름이나 종류의 파일 찾기</td><td>Glob</td></tr>
+          <tr><td>파일 내용 확인</td><td>Read</td></tr>
+          <tr><td>파일 일부 수정</td><td>Edit</td></tr>
+          <tr><td>프로그램 실행</td><td>Bash</td></tr>
+        </table>
+        <div class="callout">📖 <b>용어 카드</b>
+          <ul>
+            <li><b>컨텍스트 창(context window)</b>: Claude가 한 번에 읽을 수 있는 글의 분량 한도</li>
+            <li><b>코드베이스(codebase)</b>: 프로젝트를 이루는 파일 전체</li>
+          </ul>
+        </div>`},
       {type:"quiz", kind:"PRACTICE · 실전 진단", h:"실전 진단 1 · 네 가지 일괄 변경 계획",
        q:`The config key LEGACY_TIMEOUT must be renamed to REQUEST_TIMEOUT_MS across a 900-file repo. It appears in code, in *.yaml configs, and — the team suspects — in a few string literals used for logging. Four proposed plans. Which is right?`,
        opts:[

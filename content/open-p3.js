@@ -29,57 +29,75 @@
     body: "Northwind Retail keeps one repository that 22 engineers share. Checkout code lives under services/checkout/, settlement jobs under pipelines/settlement/, and a React storefront under web/. The team adopted Claude Code six weeks ago and three complaints reached the platform lead this sprint. First, a 40-page payments compliance handbook was pasted into the repository's always-loaded instruction file so that nobody could miss it. Every session now carries it, storefront sessions included, and the team measured roughly 11,000 tokens of it on work that never touches payments. Second, an engineer asked for a small currency-rounding fix and the assistant changed nineteen files across two services, because rounding can either live in one shared money helper or be pushed out to each service boundary, and nobody had agreed on which. Third, the nightly pull-request review job runs unattended on a shared CI runner. Last week it was still alive at 9am, its final log line a request to approve a shell command, and the dashboard that ingests its findings breaks about once a week because it scrapes sentences out of prose. Compliance adds one hard requirement: the review step must never write to the repository. The quarter's budget is fixed, and the platform lead wants each complaint handled by the mechanism that actually addresses it."
   };
 
-  var p3c0 = { id:"p3c0", ch:"OPEN", title:"D3는 시험에서 이렇게 나온다", steps:[
+  var p3c0 = { id:"p3c0", ch:"OPEN", title:"Part 3 문항의 출제 형태", steps:[
 
     /* ---------- ① 실전 형태 예고 ---------- */
-    {type:"concept", kind:"PART BRIEFING · 파트 설명", h:"이 파트의 출제 비중과 문항 형태",
-     html:`<p class="lead">이 파트는 <strong>Claude Code Configuration &amp; Workflows (D3)</strong>임. 출제 비중은 <strong>20% ≈ 12문항</strong>이고, 이 도메인이 얹히는 출제 상황은 거의 정해져 있음. <strong>시나리오 ② Claude Code 코드 생성</strong>과 <strong>시나리오 ⑤ CI/CD 통합</strong>임.</p>
-
-      <h4>이 파트에서 정답률이 크게 떨어지는 이유</h4>
-      <ul>
-        <li>이 영역은 <strong>여러 설정 수단 중 하나를 고르는 형태</strong>로 출제됨. CLAUDE.md · 규칙 파일 · 스킬(skill) · 훅(hook) · 권한 설정이 한 문항의 보기에 함께 등장함</li>
-        <li>수단 사이의 차이를 모르면 보기를 소거할 수 없으므로 정답률이 크게 떨어짐. 개념을 각각 아는 것과, 나란히 놓고 하나를 고르는 것은 서로 다른 능력임</li>
-        <li>그래서 "이미 아는 내용"이라고 판단해 빠르게 넘기면 실전에서 같은 자리에서 막힘</li>
-      </ul>
-
-      <h4>단일 개념 확인형과 실전 선택 비교형의 차이</h4>
-      <table>
-        <tr><th></th><th>단일 개념 확인형</th><th>실제 시험</th></tr>
-        <tr><td>묻는 방식</td><td>개념 하나를 확인함. "CLAUDE.md는 무엇인가"</td><td><strong>선택 비교</strong>. "CLAUDE.md인가 규칙 파일인가 스킬인가 훅인가 권한 설정인가"</td></tr>
-        <tr><td>지문 구조</td><td>문항 하나에 상황 한 줄</td><td><strong>상황 브리핑 하나 + 그 아래 문항 여러 개</strong></td></tr>
-        <tr><td>푸는 방식</td><td>외운 정답 패턴을 그대로 대응시킴</td><td>외운 패턴이 <strong>보기에 전부 들어 있음</strong>. 조건을 읽어야 갈림</td></tr>
-      </table>
-
-      <h4>비개발자가 막히는 지점</h4>
-      <ul>
-        <li>터미널 · 설정 파일 · 글롭 패턴(glob pattern) · 훅 · CI 같은 말이 지문에 설명 없이 등장함. 뜻을 모르면 조건을 읽을 수 없고, 조건을 읽지 못하면 비교형은 풀 수 없음</li>
-        <li>그래서 이 오프닝의 뒷부분(스텝 8)에서 그 용어들을 <strong>0부터</strong> 정리함. 비유를 쓰지 않고 실제로 무슨 일이 일어나는지로만 서술함</li>
-      </ul>
-
-      <div class="callout">🎯 이 오프닝의 목적은 세 가지임. ① 실전 문항 묶음이 어떤 모양인지 <b>실물로</b> 한 번 확인하기 ② D3 전체 구조를 그림 한 장으로 파악하기 ③ 그림에 나오는 용어를 0부터 채우기. 다음 스텝부터 실물임.</div>`},
+    {type:"concept", kind:"PART BRIEFING · 파트 설명", h:"문항이 출제되는 형태",
+   html:`<h4>① 출제 규모</h4>
+<ul>
+<li>영역 이름: D3 Claude Code 설정과 워크플로</li>
+<li>출제 비중 20%. 60문항 기준 약 12문항</li>
+<li>주로 나오는 시나리오: Claude Code 코드 생성, CI/CD 통합</li>
+</ul>
+<h4>② 이 영역의 문항 형태</h4>
+<table>
+<tr><th>구분</th><th>개념 하나를 확인하는 문항</th><th>실제 문항</th></tr>
+<tr><td>묻는 방식</td><td>"CLAUDE.md는 무엇인가"</td><td>"CLAUDE.md, 규칙 파일, 스킬, 훅, 권한 설정 중 무엇을 쓸 것인가"</td></tr>
+<tr><td>구조</td><td>문항 하나에 상황 한 줄</td><td>브리핑 하나와 그 아래 문항 여러 개</td></tr>
+<tr><td>푸는 방식</td><td>외운 내용 떠올리기</td><td>조건을 읽고 수단 비교</td></tr>
+</table>
+<ul>
+<li>여러 설정 수단이 선택지에 함께 등장. 수단 사이의 차이를 알아야 선택지를 제외할 수 있음</li>
+<li>수단을 하나씩 아는 것과 나란히 놓고 고르는 것은 다른 능력</li>
+</ul>
+<h4>③ 용어</h4>
+<ul>
+<li>터미널, 설정 파일, 글롭 패턴, 훅, CI 같은 말이 설명 없이 등장</li>
+<li>이 레슨의 뒷부분에서 이 용어를 처음부터 정리</li>
+</ul>
+<h4>④ 이 레슨의 순서</h4>
+<ul>
+<li>브리핑 하나와 문항 세 개로 실제 형태 확인</li>
+<li>파트 전체 지도 확인</li>
+<li>지도에 나온 용어 정리</li>
+</ul>`},
 
     /* ---------- ② 시나리오 블록 · 브리핑 읽는 법 ---------- */
-    {type:"concept", brief:BRIEF, kind:"CONCEPT · 개념 설명", h:"실전 블록 실물: 브리핑 읽는 법 네 칸",
-     html:`<p class="lead">위 회색 박스가 <strong>브리핑</strong>임. 실전에서는 이 박스 하나 아래에 문항이 여러 개 붙음. 지금부터 나오는 문항 세 개는 <strong>전부 같은 브리핑</strong> 위에서 출제됨. 스크롤을 올려 다시 읽을 수 있도록 박스가 계속 따라붙음.</p>
-
-      <h4>브리핑은 네 칸으로 나눠 읽을 것</h4>
-      <table>
-        <tr><th>칸</th><th>찾을 것</th><th>이 브리핑에서는</th></tr>
-        <tr><td><strong>시나리오 구성</strong></td><td>누가 어디서 무엇을 쓰는가</td><td>22명이 공유하는 저장소(repository) 하나 · 폴더 셋(checkout / settlement / web) · 도입 6주차</td></tr>
-        <tr><td><strong>증상</strong></td><td>지금 무엇이 잘못됐는가. 수치가 붙어 있으면 그것이 채점 기준임</td><td>① 무관한 세션마다 11,000토큰 ② 작은 요청이 19파일로 번짐 ③ 밤새 승인 대기 + 대시보드 주 1회 파손</td></tr>
-        <tr><td><strong>제약</strong></td><td>어길 수 없는 조건. 여기서 오답이 갈림</td><td>리뷰 단계는 저장소에 <strong>쓰기 금지</strong> · 분기 예산 고정 · 러너에 <strong>사람 없음</strong></td></tr>
-        <tr><td><strong>질문</strong></td><td>증상 중 <strong>몇 개</strong>를 해결하라는 것인가</td><td>"각 불만을 실제로 해결하는 수단으로". 일부만 고치는 보기가 오답 유도 선택지임</td></tr>
-      </table>
-
-      <h4>읽는 순서: 증상보다 제약을 먼저</h4>
-      <ul>
-        <li>비교형에서 보기 넷은 대개 <strong>전부 그럴듯함</strong>. 갈라 주는 것은 제약 문장임</li>
-        <li>"절대 / 반드시 / 보장 / 규정" 같은 말이 붙으면 <strong>지시문으로 요청하는 보기는 그 자리에서 탈락</strong>임. 실행 계층이 거부하는 수단만 남음</li>
-        <li>"사람이 없음 / 자동으로 / 새 팀원" 같은 말이 붙으면 <strong>사람의 기억에 기대는 보기가 탈락</strong>임</li>
-        <li>수치(11,000토큰, 19파일, 주 1회)는 장식이 아니라 <strong>정답이 반드시 해결해야 할 항목의 목록</strong>임</li>
-      </ul>
-
-      <div class="callout">📋 지금부터 문항 세 개임. 하나는 <b>지침을 어디에 둘 것인가</b>, 하나는 <b>어떤 실행 방식으로 갈 것인가</b>, 하나는 <b>CI에서 어떻게 부를 것인가</b>를 물음. 셋 다 "여러 수단 중 무엇을 쓸 것인가" 형태이고, 실전이 정확히 이 모양으로 출제됨.</div>`},
+    {type:"concept", brief:BRIEF, kind:"CONCEPT · 개념 설명", h:"브리핑에서 확인할 네 가지",
+   html:`<h4>① 확인할 네 가지</h4>
+<table>
+<tr><th>항목</th><th>확인할 내용</th><th>이 브리핑의 경우</th></tr>
+<tr><td>구성</td><td>누가 어디서 무엇을 쓰는지</td><td>22명이 함께 쓰는 저장소 하나. 폴더 셋. 도입 6주째</td></tr>
+<tr><td>증상</td><td>지금 무엇이 잘못됐는지</td><td>관계없는 세션마다 11,000토큰 소모. 작은 요청이 파일 19개 수정으로 확대. 밤새 승인 대기와 주 1회 화면 오류</td></tr>
+<tr><td>제약</td><td>어길 수 없는 조건</td><td>리뷰 단계는 저장소 수정 금지. 분기 예산 고정. 러너에 사람 없음</td></tr>
+<tr><td>질문</td><td>증상 중 몇 개를 해결하라는 것인지</td><td>불만 각각을 실제로 해결하는 수단</td></tr>
+</table>
+<ul>
+<li>위쪽 회색 상자가 브리핑. 문항 세 개가 모두 같은 브리핑에서 출제</li>
+<li>증상에 붙은 숫자는 답이 해결해야 할 항목의 목록</li>
+</ul>
+<h4>② 제약을 먼저 읽는 이유</h4>
+<ul>
+<li>수단을 비교하는 문항의 선택지는 대개 모두 그럴듯함. 선택지를 가르는 근거는 제약 문장</li>
+</ul>
+<table>
+<tr><th>제약 표현</th><th>제외되는 선택지</th></tr>
+<tr><td>"절대", "반드시", "보장", "규정"</td><td>지시문으로 요청하는 수단</td></tr>
+<tr><td>"사람이 없음", "자동으로", "새 팀원"</td><td>사람의 기억에 기대는 수단</td></tr>
+</table>
+<h4>③ 이어지는 문항 세 개</h4>
+<ul>
+<li>첫째: 지침을 둘 위치</li>
+<li>둘째: 실행 방식</li>
+<li>셋째: CI에서 실행하는 방법</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>저장소(repository)</b>: 팀이 함께 쓰는 프로젝트 폴더 전체</li>
+<li><b>러너(runner)</b>: 자동 실행 작업을 처리하는 임시 컴퓨터</li>
+<li><b>토큰(token)</b>: Claude가 글을 세는 단위</li>
+</ul>
+</div>`},
 
     /* ---------- ② 문항 1 · 지침을 어디에 두는가 ---------- */
     {type:"quiz", brief:BRIEF, kind:"PRACTICE · 선택 비교형", h:"Q1 — Where the handbook belongs",
@@ -146,7 +164,7 @@
      ],
      hint:`요구가 셋임. 사람 없이 종료되기 / 저장소에 쓰지 못하게 하기 / 대시보드가 읽을 출력. 그리고 "지시로 요청하는 것"과 "실행 계층이 거부하는 것"의 차이를 구분할 것.`,
      explain:{
-       good:`설정 수단이 셋이고 서로를 대신하지 못함. 비대화형 호출이 <strong>답하고 종료하기</strong>를, 미리 정한 것만 실행하는 권한 모드(permission mode)와 읽기·차이 확인으로 좁힌 허용 목록이 <strong>승인 대기 없음과 쓰기 불가</strong>를, 스키마로 검증된 구조화 출력(structured output)이 <strong>문장 대신 필드</strong>를 담당함. 하나라도 빼면 세 불만 중 하나가 그대로 남음.`,
+       good:`설정 수단이 셋이고 서로를 대신하지 못함. 비대화형 호출이 <strong>답하고 종료하기</strong>를, 미리 정한 것만 실행하는 권한 모드(permission mode)와 읽기·차이 확인으로 좁힌 허용 목록이 <strong>승인 대기 없음과 쓰기 불가</strong>를, 스키마로 검증된 구조화된 출력(structured output)이 <strong>문장 대신 필드</strong>를 담당함. 하나라도 빼면 세 불만 중 하나가 그대로 남음.`,
        wrongs:[
          `<b>B(권한 검사를 전부 끄기):</b> 정지는 사라지지만 공유 러너에서 무엇이든 실행 가능한 상태가 됨. 쓰기 금지 요구와 정면으로 충돌하고 파싱 문제도 그대로임. 공식 문서가 이 모드를 격리된 컨테이너·VM 안으로 한정한 이유이기도 함.`,
          `<b>C(타임아웃을 늘리고 프롬프트로 금지):</b> 일반적으로는 맞지만 이 문제의 조건에서는 틀린 선택지임. 끝나지 않는 작업을 중단시키기는 함. 그러나 그것은 <strong>결과 없이 종료되는 것</strong>이지 리뷰가 완료되는 것이 아님. 또한 "쓰지 말 것 / JSON으로만 답할 것"은 실행 계층의 거부가 아니라 요청이므로 규정의 근거가 되지 못함.`,
@@ -163,154 +181,147 @@
        explain:`조건에 "절대 / 보장 / 규정" 같은 말이 붙으면 <b>지시문 보기는 그 자리에서 탈락</b>임. 설정과 권한 계층에서만 정답이 나옴. D2·D5의 도구 제한 문항에도 그대로 쓰이는 판단 기준임.` }},
 
     /* ---------- ③ 블록 복기 ---------- */
-    {type:"concept", kind:"TOPIC · 주제 설명", h:"방금 세 문항은 사실 같은 질문이었음",
-     html:`<p class="lead">Q1은 "지침을 어디에 두는가", Q2는 "어떻게 실행하는가", Q3은 "CI에서 어떻게 부르는가"임. 표면은 서로 달라 보이지만 셋 다 <strong>여러 수단을 늘어놓고 이 조건에는 무엇을 쓸 것인가</strong>를 물었음. 실전 D3의 대부분이 이 형태임.</p>
-
-      <h4>수단이 많아 보여도 갈리는 판단 기준은 세 가지임</h4>
-      <ul>
-        <li><strong>① 언제 로드되는가</strong>: 항상 / 조건이 맞을 때 / 부를 때 / 도구를 호출하는 순간</li>
-        <li><strong>② 강제력이 있는가</strong>: 권고(모델이 따라 주기를 기대함) vs 집행(클라이언트가 실제로 거부함)</li>
-        <li><strong>③ 범위가 어디까지인가</strong>: 본인만 / 팀 전원 / 이 폴더 / 이 실행 한 번</li>
-      </ul>
-
-      <h4>세 가지 판단 기준으로 정리한 비교표. D3의 핵심 도구임</h4>
-      <table>
-        <tr><th>수단</th><th>① 언제 로드되는가</th><th>② 강제력</th><th>③ 범위</th></tr>
-        <tr><td>프로젝트 CLAUDE.md</td><td>세션 시작마다 항상</td><td>권고</td><td>저장소 전체 · 팀 전원 (커밋되므로)</td></tr>
-        <tr><td>사용자 ~/.claude/CLAUDE.md</td><td>세션 시작마다 항상</td><td>권고</td><td>본인의 모든 프로젝트 · <strong>본인만</strong> (저장소 밖)</td></tr>
-        <tr><td>.claude/rules/ + paths</td><td><strong>매칭되는 파일을 편집할 때만</strong></td><td>권고</td><td>글롭 패턴이 걸리는 파일 작업 · 팀 전원</td></tr>
-        <tr><td>커스텀 커맨드 · 스킬</td><td><strong>부를 때만</strong> (그 전에는 이름과 설명만)</td><td>스킬의 도구 제한은 그 실행 중에만 집행됨</td><td>호출한 그 실행 한 번</td></tr>
-        <tr><td>permissions allow / ask / deny</td><td>도구 호출 시점마다</td><td><strong>집행</strong>. 클라이언트가 거부함</td><td>세션 전체 · deny는 <strong>모든 모드에서</strong></td></tr>
-        <tr><td>PreToolUse 훅</td><td>도구 호출 직전마다</td><td><strong>집행</strong></td><td>훅이 거는 조건에 걸리는 호출</td></tr>
-        <tr><td>CLI 플래그 (--permission-mode · --allowedTools · --tools)</td><td>그 호출 한 번</td><td><strong>집행</strong></td><td>그 프로세스 하나</td></tr>
-      </table>
-
-      <h4>이 표를 문제에 쓰는 법: 조건 문장을 판단 기준으로 번역할 것</h4>
-      <ul>
-        <li>"항상 / 모든 세션에 / 새 팀원에게도" → 기준 ①이 <strong>항상</strong>, 기준 ③이 <strong>팀 전원</strong> → 프로젝트 CLAUDE.md</li>
-        <li>"이 폴더를 편집할 때만 / 무관한 세션의 비용이 아까움" → 기준 ①이 <strong>조건부</strong> → 규칙 파일 + paths</li>
-        <li>"한 달에 두 번 / 부를 때만 / 출력이 장황함" → 기준 ①이 <strong>호출 시</strong> → 커스텀 커맨드와 스킬</li>
-        <li>"절대 / 반드시 / 이미 문서로 경고했는데 또 발생함" → 기준 ②가 <strong>집행</strong> → deny 규칙 · 훅 · 도구 제한</li>
-        <li>"사람이 없는 CI에서" → 기준 ③이 <strong>이 실행 한 번</strong> → CLI 플래그</li>
-      </ul>
-
-      <div class="callout">🎯 시험에서 틀리는 자리는 거의 항상 기준 ②임. <b>권고 수단으로 집행을 요구하거나</b>(문서에 적어 뒀는데 또 발생함), <b>집행 수단으로 로딩 문제를 해결하려는</b>(규칙 파일이 쓰기를 막아 줄 것이라고 판단함) 두 방향으로 실수가 나옴. 보기를 볼 때마다 "이것은 요청인가, 거부인가"를 먼저 확인할 것.</div>`},
+    {type:"concept", kind:"TOPIC · 주제 설명", h:"정리: 수단을 가르는 세 가지 기준",
+   html:`<h4>① 세 문항의 공통점</h4>
+<ul>
+<li>세 문항 모두 여러 수단 중 이 조건에 맞는 수단을 고르는 문항</li>
+<li>이 영역 문항의 대부분이 같은 형태</li>
+</ul>
+<h4>② 판단 기준 세 가지</h4>
+<table>
+<tr><th>기준</th><th>질문</th></tr>
+<tr><td>로드 시점</td><td>항상인지, 조건에 맞을 때인지, 직접 실행할 때인지, 도구를 호출하는 순간인지</td></tr>
+<tr><td>강제력</td><td>Claude가 따라 주기를 기대하는 권고인지, 프로그램이 실제로 막는 강제인지</td></tr>
+<tr><td>적용 범위</td><td>나만인지, 팀 전원인지, 이 폴더인지, 이 실행 한 번인지</td></tr>
+</table>
+<h4>③ 수단 비교표</h4>
+<table>
+<tr><th>수단</th><th>로드 시점</th><th>강제력</th><th>적용 범위</th></tr>
+<tr><td>프로젝트 CLAUDE.md</td><td>세션 시작 시 항상</td><td>권고</td><td>저장소 전체. 팀 전원</td></tr>
+<tr><td>사용자 CLAUDE.md</td><td>세션 시작 시 항상</td><td>권고</td><td>나의 모든 프로젝트. 나만</td></tr>
+<tr><td>규칙 파일과 paths</td><td>패턴에 해당하는 파일을 다룰 때</td><td>권고</td><td>패턴에 해당하는 파일 작업. 팀 전원</td></tr>
+<tr><td>스킬</td><td>직접 실행하거나 요청이 설명에 해당할 때. 평소에는 이름과 설명만</td><td>disallowed-tools는 그 실행 중에 강제</td><td>그 실행 한 번</td></tr>
+<tr><td>권한 규칙 allow, ask, deny</td><td>도구를 호출할 때마다</td><td>강제</td><td>세션 전체. deny는 모든 권한 모드에서 적용</td></tr>
+<tr><td>PreToolUse 훅</td><td>도구 호출 직전마다</td><td>강제</td><td>훅의 조건에 해당하는 호출</td></tr>
+<tr><td>실행 플래그</td><td>그 실행 한 번</td><td>강제</td><td>그 실행 하나</td></tr>
+</table>
+<h4>④ 조건 문장과 수단</h4>
+<table>
+<tr><th>조건 문장</th><th>수단</th></tr>
+<tr><td>"항상", "모든 세션에", "새 팀원에게도"</td><td>프로젝트 CLAUDE.md</td></tr>
+<tr><td>"이 폴더를 고칠 때만", "관계없는 세션의 비용"</td><td>규칙 파일과 paths</td></tr>
+<tr><td>"한 달에 두 번", "실행할 때만", "출력이 길다"</td><td>스킬</td></tr>
+<tr><td>"절대", "반드시", "문서로 경고했는데 또 발생"</td><td>deny 규칙, 훅, 도구 차단</td></tr>
+<tr><td>"사람이 없는 CI에서"</td><td>실행 플래그</td></tr>
+</table>
+<ul>
+<li>가장 자주 틀리는 기준: 강제력. 선택지를 볼 때 먼저 확인할 점은 요청인지 차단인지</li>
+<li>잘못된 방향 두 가지: 권고 수단으로 강제를 기대. 강제 수단으로 로드 문제 해결을 기대</li>
+</ul>`},
 
     /* ---------- ④ 개념 지도 ---------- */
-    {type:"concept", kind:"CONCEPT · 개념 설명", h:"D3 전체 지도 한 장",
-     html:`<p class="lead">앞으로 배울 것들이 서로 어디에 놓이는지 먼저 확인함. 챕터를 하나씩 볼 때마다 이 지도의 한 칸이 강조되어 다시 나옴.</p>
-
-      __MAP3:__
-
-      <h4>읽는 법: 윗줄과 아랫줄은 성격이 완전히 다름</h4>
-      <ul>
-        <li><strong>윗줄 세 칸은 순서가 아님.</strong> 왼쪽부터 하나씩 거쳐 가는 단계가 아니라 <strong>동시에 공존하는 세 경로</strong>임. 한 세션 안에서 CLAUDE.md도 로드되고, 조건이 맞으면 규칙 파일도 붙고, 스킬을 부르면 그것도 들어옴</li>
-        <li>세 칸의 차이는 하나임. <strong>언제 로드되는가</strong>. 항상(CLAUDE.md) / 매칭 파일을 편집할 때(규칙 파일) / 부를 때(커맨드와 스킬). 앞 표의 기준 ①이 그대로 이 줄임</li>
-        <li><strong>아랫줄 세 칸은 순서가 맞음.</strong> 로드된 지침 위에서 실제 작업이 진행되는 순서임. 실행 방식을 고르고(①), 결과를 반복해서 개선하고(②), 그 흐름을 자동화로 옮김(③)</li>
-        <li>가운데 화살표가 두 줄을 잇는 지점임. <strong>윗줄은 "무엇을 아는 상태로 시작하는가", 아랫줄은 "그 상태에서 무엇을 하는가"</strong>임</li>
-      </ul>
-
-      <h4>지도에 그려지지 않았지만 시험에 나오는 두 가지</h4>
-      <ul>
-        <li><strong>권한 계층</strong> (allow / ask / deny · 권한 모드 · PreToolUse 훅): 윗줄이 "무엇을 읽는가"라면 이것은 "무엇을 <strong>할 수 있는가</strong>"임. 위 비교표의 기준 ②가 있는 자리이고, 지도로는 아랫줄 ①과 ③에 걸쳐 있음</li>
-        <li><strong>CLI 호출</strong> (Ch7): 아랫줄 ③칸을 확대한 것이 통째로 한 챕터임. 사람이 없는 자리에서 Claude를 부르는 방법을 다룸</li>
-      </ul>
-
-      <div class="callout">⚠️ 윗줄을 "순서"로 잘못 읽으면 오답으로 이어짐. "CLAUDE.md에 적었는데 왜 스킬이 읽지 않는가" 같은 질문이 그 오해에서 나옴. 셋은 <b>서로를 거쳐 가지 않음</b>. 각자 자기 시점에 자기 내용을 같은 컨텍스트에 추가할 뿐임.</div>`},
+    {type:"concept", kind:"CONCEPT · 개념 설명", h:"이 파트 전체 지도",
+   html:`__MAP3:__
+<h4>① 윗줄: 함께 쓰는 세 경로</h4>
+<ul>
+<li>윗줄 세 칸은 순서가 아님. 한 세션 안에서 함께 쓰는 세 경로</li>
+<li>차이는 로드 시점. CLAUDE.md는 항상, 규칙 파일은 해당 파일을 다룰 때, 스킬은 실행할 때</li>
+<li>세 경로는 서로를 거치지 않음. 각자의 시점에 각자의 내용을 같은 컨텍스트에 추가</li>
+</ul>
+<h4>② 아랫줄: 작업 순서</h4>
+<ul>
+<li>아랫줄 세 칸은 순서. 실행 방식 선택, 결과 반복 개선, 자동 실행으로 이동</li>
+<li>윗줄의 뜻: 무엇을 아는 상태로 시작하는지</li>
+<li>아랫줄의 뜻: 그 상태에서 무엇을 하는지</li>
+</ul>
+<h4>③ 지도에 없는 두 가지</h4>
+<table>
+<tr><th>내용</th><th>뜻</th><th>챕터</th></tr>
+<tr><td>권한 규칙, 권한 모드, PreToolUse 훅</td><td>무엇을 할 수 있는지 정하는 설정. 위 비교표의 강제력에 해당</td><td>CH 4, CH 7</td></tr>
+<tr><td>명령어 실행 옵션</td><td>사람이 없는 환경에서 Claude Code를 실행하는 방법</td><td>CH 7</td></tr>
+</table>`},
 
     /* ---------- ⑤ 지도 위의 용어 · 0부터 ---------- */
-    {type:"concept", kind:"CONCEPT · 개념 설명", h:"지도에 나오는 용어를 0부터 채우기",
-     html:`<p class="lead">여기부터는 <strong>아무것도 모른다는 전제</strong>로 설명함. 비유를 쓰지 않고 실제로 무슨 일이 벌어지는지로만 서술함. 이 일곱 가지를 알면 D3 지문에서 막히는 자리가 거의 사라짐.</p>
-
-      <h4>① 터미널(terminal)</h4>
-      <ul>
-        <li>컴퓨터에 <strong>글자로 명령을 입력하는 창</strong>임. 아이콘을 클릭하는 대신 <code>claude</code> 같은 단어를 입력하고 엔터를 누름</li>
-        <li>쓰는 이유는 다음과 같음. 클릭은 사람 손이 있어야 하지만, 글자 명령은 <strong>파일에 적어 두면 컴퓨터가 대신 실행</strong>할 수 있음. 자동화가 여기에서 출발함</li>
-        <li><strong>플래그(flag)</strong>는 명령 뒤에 붙이는 <code>--이름</code> 형태의 옵션임. <code>claude -p "리뷰해 줘"</code>에서 <code>-p</code>가 플래그임. "이번 실행은 이렇게 동작할 것"이라는 추가 지정임</li>
-      </ul>
-
-      <h4>② 저장소(repository)와 커밋(commit)</h4>
-      <ul>
-        <li><strong>저장소</strong>는 팀이 공유하는 프로젝트 폴더 전체임. 인터넷 어딘가에 원본이 있고, 각자 자기 컴퓨터로 사본을 내려받아서(<strong>클론, clone</strong>) 작업함</li>
-        <li><strong>커밋</strong>은 내 사본의 변경을 저장소 이력에 등록하는 행위임. 커밋해서 올리면 <strong>팀 전원이 다음에 받아갈 때 그 변경을 함께 받음</strong></li>
-        <li>D3에서 중요한 이유는 다음과 같음. "팀 전원에게 적용"이라는 말은 사실 <strong>"그 파일이 저장소에 커밋돼 있음"</strong>이라는 뜻임. 커밋되지 않은 파일은 본인에게만 있는 파일임</li>
-      </ul>
-
-      <h4>③ 설정 파일이 폴더 위치에 따라 효력이 갈리는 이유</h4>
-      <ul>
-        <li>Claude Code는 시작할 때 <strong>정해진 위치들을 순서대로 확인함</strong>. 홈 폴더 안의 <code>~/.claude/</code>, 지금 작업 중인 프로젝트 폴더, 그리고 지금 편집하는 파일이 들어 있는 하위 폴더임</li>
-        <li>그러므로 같은 내용을 적어도 <strong>어느 폴더에 뒀는가가 곧 누구에게 언제 적용되는가</strong>가 됨</li>
-        <li><code>~</code>(물결)는 홈 폴더를 가리키는 줄임 표기임. <strong>홈 폴더는 저장소 밖</strong>이므로 커밋될 수 없음. 그래서 여기 둔 규칙은 본인만 갖게 됨</li>
-        <li>이름 앞에 점이 붙은 폴더(<code>.claude</code>)는 평소에 보이지 않도록 숨겨진 폴더임. 사람이 자주 열 파일이 아니라 프로그램이 읽을 파일을 모아 두는 자리임</li>
-      </ul>
-
-      <h4>④ 글롭 패턴(glob pattern)</h4>
-      <ul>
-        <li>"어떤 파일들"을 한 줄로 지정하는 표기법임. 파일을 일일이 나열하는 대신 경로의 모양으로 지정함</li>
-        <li><code>*</code>: 이름 <strong>한 칸</strong>을 임의의 문자로 대신함. <code>src/api/*.ts</code>는 <code>src/api/</code> <strong>바로 안</strong>의 .ts 파일만 매칭함. 하위 폴더 안쪽은 매칭하지 못함</li>
-        <li><code>**</code>: <strong>몇 겹이든 하위 폴더 전부</strong>를 대신함. <code>src/api/**/*.ts</code>는 <code>src/api/v2/handlers/payment.ts</code>까지 매칭함</li>
-        <li>규칙이 켜지지 않는다는 지문이 나오면 <strong>대부분 <code>**</code>가 빠진 경우</strong>임. 적용되는 파일과 적용되지 않는 파일의 경로를 나란히 놓고 깊이만 비교할 것</li>
-      </ul>
-
-      <h4>⑤ 훅(hook)</h4>
-      <ul>
-        <li>정해진 순간이 오면 <strong>자동으로 실행되는 사용자 코드</strong>임. Claude가 도구를 호출하려는 직전에 실행되는 것이 <strong>PreToolUse</strong> 훅임</li>
-        <li>실행되어 "이 호출 통과" 또는 "이 호출 거부"를 <strong>대신 판정함</strong>. 사람에게 묻는 대신 코드가 답하는 방식임</li>
-        <li>필요한 이유는 다음과 같음. "금액 관련 파일은 수정하지 말 것" 같은 조건은 목록으로 전부 적기 어려운데, 훅이면 <strong>조건을 계산해서</strong> 판정할 수 있음</li>
-      </ul>
-
-      <h4>⑥ CI / CD</h4>
-      <ul>
-        <li><strong>CI</strong>는 누가 코드를 올릴 때마다 <strong>서버가 자동으로 검사를 실행하는 장치</strong>임. 테스트 실행, 문법 검사, 리뷰 같은 작업을 함</li>
-        <li><strong>CD</strong>는 그 검사를 통과한 코드를 <strong>자동으로 실제 서비스에 배포</strong>하는 단계임</li>
-        <li>검사를 실행하는 서버를 <strong>러너(runner)</strong>라고 부름. 여기가 핵심임. <strong>러너 앞에는 사람이 없음</strong>. 새벽 3시에 실행되는 작업이 "이 명령을 실행할까요?"를 띄우면 아침까지 아무도 답하지 않음</li>
-        <li>D3의 CI 문항은 전부 이 한 가지 사실에서 파생됨. <strong>답할 사람이 없는 자리를 무엇으로 대신하는가</strong></li>
-      </ul>
-
-      <h4>⑦ 권한 모드(permission mode)가 필요한 이유</h4>
-      <ul>
-        <li>Claude Code는 파일을 수정하고 명령을 실행할 수 있음. 그래서 기본 동작이 "위험할 수 있는 것은 <strong>사람에게 확인하기</strong>"임</li>
-        <li>확인하는 것이 맞는 상황이 있고(본인 노트북에서 작업 중), 확인하면 실패하는 상황이 있음(사람 없는 러너)</li>
-        <li><strong>권한 모드</strong>는 그 <strong>기본 동작을 통째로 정하는 설정</strong>임. 매번 확인할지, 편집은 확인 없이 진행할지, 미리 허용한 것만 실행하고 나머지는 자동 거부할지를 정함</li>
-        <li>모드와 별개로 <strong>개별 항목 목록</strong>도 있음. "이 명령들은 확인 없이 실행해도 됨"(허용) / "이것은 무조건 차단"(거부)임. 실전에서는 <strong>모드와 목록을 함께 쓰는 것이 정답 조합</strong>임</li>
-        <li>기억할 한 줄은 다음과 같음. <strong>거부가 모드보다 우선함.</strong> 설정에 적어 둔 거부 규칙은 어떤 모드에서도 통과되지 않음</li>
-      </ul>
-
-      <div class="callout">📖 자주 함께 나오는 용어 두 가지. <b>파이프(<code>|</code>)</b>: 앞 명령의 출력을 뒤 명령의 입력으로 전달하는 기호임. <code>cat 로그파일 | claude -p "원인만 짧게"</code> 형태로 씀. <b>종료 코드(exit code)</b>: 명령이 끝나면서 남기는 숫자임. 성공이면 0, 실패면 0이 아닌 값임. 스크립트가 이 숫자를 보고 다음 단계를 실행할지 정함.</div>`},
+    {type:"concept", kind:"CONCEPT · 개념 설명", h:"지도에 나온 용어 정리",
+   html:`<h4>① 터미널</h4>
+<ul>
+<li>글자로 명령을 입력하는 창</li>
+<li>쓰는 이유: 글자 명령은 파일에 적어 두면 컴퓨터가 대신 실행 가능. 자동 실행의 출발점</li>
+<li>플래그: 명령 뒤에 붙이는 <code>--이름</code> 형태의 옵션. 예: <code>claude -p "리뷰해 줘"</code>의 <code>-p</code></li>
+</ul>
+<h4>② 저장소와 커밋</h4>
+<ul>
+<li>저장소: 팀이 함께 쓰는 프로젝트 폴더 전체. 각자 자기 컴퓨터로 내려받아 작업</li>
+<li>커밋: 내 변경을 저장소 이력에 기록하는 일. 팀원이 다음에 내려받을 때 함께 전달</li>
+<li>"팀 전원에게 적용"의 뜻: 그 파일이 저장소에 기록된 상태</li>
+</ul>
+<h4>③ 설정 파일의 위치</h4>
+<ul>
+<li>Claude Code가 시작할 때 확인하는 위치: 홈 폴더의 <code>~/.claude/</code>, 작업 중인 프로젝트 폴더, 지금 다루는 파일이 들어 있는 아래쪽 폴더</li>
+<li>같은 내용도 둔 위치에 따라 적용 대상과 시점이 달라짐</li>
+<li>홈 폴더는 저장소 밖. 홈 폴더에 둔 규칙은 나만 사용</li>
+<li>이름 앞에 점이 붙은 폴더(<code>.claude</code>): 평소에 보이지 않게 숨겨진 폴더. 프로그램이 읽는 파일을 모아 두는 자리</li>
+</ul>
+<h4>④ 글롭 패턴</h4>
+<ul>
+<li>여러 파일을 조건 한 줄로 지정하는 표기법</li>
+<li><code>*</code>: 이름 한 단계. <code>src/api/*.ts</code>는 src/api 바로 안의 .ts 파일</li>
+<li><code>**</code>: 폴더 여러 단계. <code>src/api/**/*.ts</code>는 아래쪽 폴더의 .ts 파일까지 포함</li>
+<li>규칙이 적용되지 않는 문제의 흔한 원인: <code>**</code> 누락</li>
+</ul>
+<h4>⑤ 훅</h4>
+<ul>
+<li>정해진 시점에 자동으로 실행되는 코드. 도구 호출 직전에 실행되는 훅이 PreToolUse</li>
+<li>사람에게 묻는 대신 코드가 통과와 차단을 판정</li>
+<li>쓰는 경우: 목록으로 다 적기 어려운 조건. 예: "금액과 관련된 파일은 수정 금지"</li>
+</ul>
+<h4>⑥ CI/CD</h4>
+<ul>
+<li>CI: 코드를 올릴 때마다 서버가 검사를 자동 실행하는 체계</li>
+<li>CD: 검사를 통과한 코드를 실제 서비스에 자동 반영하는 단계</li>
+<li>러너: 검사를 실행하는 임시 컴퓨터. 러너 앞에는 사람이 없음</li>
+<li>CI 문항의 공통 질문: 답할 사람이 없는 자리를 무엇으로 대신하는지</li>
+</ul>
+<h4>⑦ 권한 모드</h4>
+<ul>
+<li>승인 요청 없이 진행할 범위를 정하는 설정</li>
+<li>필요한 이유: 내 컴퓨터에서는 확인이 맞고 사람이 없는 러너에서는 확인하면 작업이 멈춤</li>
+<li>권한 모드와 별개로 항목별 규칙 존재. 허용 규칙과 거부 규칙</li>
+<li>거부 규칙은 모든 권한 모드에서 적용</li>
+</ul>
+<div class="callout">📖 <b>용어 카드</b>
+<ul>
+<li><b>파이프(|)</b>: 앞 명령의 출력을 뒤 명령의 입력으로 넘기는 기호</li>
+<li><b>종료 코드(exit code)</b>: 명령이 끝날 때 남기는 숫자. 성공은 0, 실패는 0이 아닌 값</li>
+</ul>
+</div>`},
 
     /* ---------- ⑥ 학습 순서 ---------- */
-    {type:"concept", kind:"TOPIC · 주제 설명", h:"이 파트를 도는 순서: 시간을 어디에 더 쓸 것인가",
-     html:`<p class="lead">챕터가 일곱 개인데 <strong>시간을 균등하게 배분하면 안 됨</strong>. 정답률이 낮은 영역과 그렇지 않은 영역의 차이가 크기 때문임.</p>
-
-      <h4>어디에 시간을 몰아야 하는가: 출제 구조로 판단함</h4>
-      <ul>
-        <li>이 영역은 <strong>여러 설정 수단 중 하나를 고르는 형태</strong>로 출제되며, 수단 사이의 차이를 모르면 정답률이 크게 떨어짐</li>
-        <li>정답률이 떨어지는 문항의 공통점은 두 가지임. ⓐ 여러 수단을 나란히 놓고 비교시키는 형태 ⓑ 학습 자료에서 다루지 않은 선택지가 보기에 들어 있는 형태</li>
-        <li>이 둘이 겹치는 자리가 아래 세 영역이며, 여기에 시간을 몰아야 함</li>
-      </ul>
-
-      <h4>🔴 집중 학습 영역: 시간의 절반 이상을 여기에 배분할 것</h4>
-      <table>
-        <tr><th>영역</th><th>정답률이 낮은 이유</th><th>확인 신호</th></tr>
-        <tr><td><strong>Ch1 · Ch2 · Ch3이 헷갈리는 지점</strong><br><small>CLAUDE.md · 커맨드와 스킬 · 규칙 파일 + paths</small></td><td>각각은 이해했더라도 <strong>셋을 나란히 놓고 고르는 문항</strong>에서 정답률이 크게 떨어짐. 실전 D3 비교형의 최대 지분임</td><td>세 챕터를 따로 이해했다고 넘어가면 안 됨. 스텝 6의 비교표를 보지 않고 판단 기준 세 가지를 말할 수 있어야 통과임</td></tr>
-        <tr><td><strong>Ch7 CLI 호출과 실행 제어</strong><br><small>-p · 출력 형식 · 권한 모드 · 도구 제한</small></td><td>플래그 이름과 값이 보기에 그대로 등장하는데, 학습 자료에서 다루지 않으면 소거조차 할 수 없음. 그래서 정답률이 가장 낮게 나오는 영역임</td><td>플래그 이름을 외우는 것이 아니라 "사람이 없어서 비는 자리 다섯 가지"를 먼저 말할 수 있어야 함</td></tr>
-        <tr><td><strong>Ch6 CI/CD 통합</strong><br><small>비대화형 실행 · 구조화 출력 · 리뷰 격리</small></td><td>Ch7과 묶여 한 문항으로 출제됨. 또한 비개발자에게 <strong>용어 장벽이 가장 높은</strong> 영역임</td><td>스텝 8의 ⑥⑦(CI · 권한 모드)을 다시 읽고 시작할 것</td></tr>
-      </table>
-
-      <h4>🟡 표준 속도로 볼 영역</h4>
-      <ul>
-        <li><strong>Ch4 plan mode vs 직접 실행</strong>: 판단 기준 자체는 단순함. 대신 실전은 여기에 <strong>승인 게이트</strong>를 얹어 3단계로 물어봄. Q2가 그 형태였음</li>
-        <li><strong>Ch5 반복 개선</strong>: 원칙은 상식에 가까움. 대신 <strong>한 문항에 처방 세 가지를 겹쳐 쓰는</strong> 형태로 출제되므로 "하나만 고치는 보기"를 걸러내는 연습으로 볼 것</li>
-      </ul>
-
-      <h4>도는 방법: 세 번 통과</h4>
-      <ul>
-        <li><strong>1회차</strong>: Ch1부터 Ch7까지 순서대로 볼 것. 연습 문제는 <strong>틀려도 그대로 진행</strong>할 것. 전체 구조를 익히는 단계임</li>
-        <li><strong>2회차</strong>: 집중 학습 영역 세 가지만 볼 것. 이번에는 문제를 풀기 전에 <strong>판단 기준 세 가지를 먼저 적용</strong>해 보고 보기를 볼 것</li>
-        <li><strong>3회차</strong>: 미니테스트와 모의고사를 볼 것. 여기서 틀린 문항은 <strong>어느 판단 기준을 놓쳤는지</strong>로 기록할 것. "CLAUDE.md를 몰라서"가 아니라 "기준 ② 강제력을 확인하지 않아서"로 적을 것</li>
-      </ul>
-
-      <div class="callout">🎯 이 파트를 마친 뒤 스스로 확인할 한 문장. <b>"이 요구는 언제 로드돼야 하고, 요청이면 되는가 거부여야 하는가, 어디까지 적용돼야 하는가."</b> 이 셋을 지문에서 뽑아낼 수 있으면 D3 비교형은 대부분 소거로 풀림. 이제 Ch1부터 시작할 것.</div>`},
+    {type:"concept", kind:"TOPIC · 주제 설명", h:"이 파트 학습 순서",
+   html:`<h4>① 시간을 더 쓸 세 묶음</h4>
+<table>
+<tr><th>묶음</th><th>어려운 이유</th><th>확인 방법</th></tr>
+<tr><td>CH 1, CH 2, CH 3<br>CLAUDE.md, 스킬, 규칙 파일</td><td>하나씩은 이해해도 셋을 나란히 놓고 고르는 문항에서 자주 틀림</td><td>비교표를 보지 않고 판단 기준 세 가지 말하기</td></tr>
+<tr><td>CH 7<br>명령어 실행 옵션</td><td>플래그 이름과 값이 선택지에 그대로 등장</td><td>사람이 없을 때 생기는 문제 다섯 가지 말하기</td></tr>
+<tr><td>CH 6<br>CI/CD 통합</td><td>CH 7과 한 문항으로 묶여 출제. 낯선 용어가 가장 많음</td><td>이 레슨의 CI/CD와 권한 모드 설명을 다시 읽고 시작</td></tr>
+</table>
+<h4>② 보통 속도로 볼 챕터</h4>
+<ul>
+<li>CH 4 권한 모드와 plan mode: 판단 기준이 단순</li>
+<li>CH 5 반복 개선 기법: 한 문항에 기법 여러 개가 함께 필요한 형태로 출제</li>
+</ul>
+<h4>③ 세 번에 나눠 보기</h4>
+<ul>
+<li>1회차: CH 1부터 CH 7까지 순서대로. 연습 문제는 틀려도 그대로 진행</li>
+<li>2회차: 시간을 더 쓸 세 묶음만. 선택지를 보기 전에 판단 기준 세 가지 먼저 적용</li>
+<li>3회차: 미니테스트와 모의고사. 틀린 문항은 놓친 판단 기준으로 기록</li>
+</ul>
+<h4>④ 파트를 마친 뒤 확인할 질문</h4>
+<ul>
+<li>이 요구는 언제 로드돼야 하나</li>
+<li>요청으로 충분한가, 차단이 필요한가</li>
+<li>어디까지 적용돼야 하나</li>
+</ul>`},
   ]};
 
   C.p3.lessons.unshift(p3c0);

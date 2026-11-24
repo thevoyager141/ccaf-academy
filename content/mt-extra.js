@@ -603,10 +603,10 @@ window.CCAF_MT_EXTRA = {
     }
    ],
    "explain": {
-    "good": "tool_choice의 네 가지 값은 용도가 다름. auto는 모델 재량, any는 도구 호출 강제(산문 응답 금지), 특정 도구 지정은 그 도구만 호출, none은 도구 호출 금지(산문 응답 강제)임. \"반드시\"라는 요건이 붙은 지점에는 재량(auto)이 아니라 강제를 씀. 구조화 출력(structured output)을 보장해야 하는 단계가 여기에 해당함.",
+    "good": "tool_choice의 네 가지 값은 용도가 다름. auto는 모델 재량, any는 도구 호출 강제(산문 응답 금지), 특정 도구 지정은 그 도구만 호출, none은 도구 호출 금지(산문 응답 강제)임. \"반드시\"라는 요건이 붙은 지점에는 재량(auto)이 아니라 강제를 씀. 구조화된 출력(structured output)을 보장해야 하는 단계가 여기에 해당함.",
     "wrongs": [
      "<b>B(배정 반대):</b> 배정이 뒤집혔음. any를 요약 단계에 걸면 요약이 도구 호출로 나옴.",
-     "<b>C(전부 auto와 프롬프트):</b> 프롬프트 지시는 확률적임. 항상 구조화 출력이어야 한다는 요구는 tool_choice로 보장해야 함. 일반적으로는 맞지만 이 문제의 조건에서는 틀린 선택지임.",
+     "<b>C(전부 auto와 프롬프트):</b> 프롬프트 지시는 확률적임. 항상 구조화된 출력이어야 한다는 요구는 tool_choice로 보장해야 함. 일반적으로는 맞지만 이 문제의 조건에서는 틀린 선택지임.",
      "<b>D(완전 반대 배정):</b> (1)에 none을 걸면 추출 도구 호출 자체가 금지됨."
     ]
    },
@@ -874,31 +874,31 @@ window.CCAF_MT_EXTRA = {
    "ts": "3.2",
    "lvl": "기초",
    "scenario": "s2",
-   "q": "You want a personal variant of the team's shared /commit command with your own message style, without affecting anyone else. Where does it go, and what is it named?",
+   "q": "You want the team's shared /commit skill to use your own message style when you run it, without affecting anyone else. Where does your version go, and what happens when the names match?",
    "opts": [
     {
-     "t": "In your user scope (~/.claude/commands/) under a different name like /my-commit — a same-named personal command would shadow the team's for you and make behavior confusing to debug.",
+     "t": "In your personal skills folder (~/.claude/skills/) — a personal skill with the same name runs in place of the project skill, and only on your machine.",
      "ok": true
     },
     {
-     "t": "In your user scope with the same name /commit, so it cleanly overrides the team version just for you."
+     "t": "In your personal skills folder with the same name, although it will not take effect because the project skill always wins a name conflict."
     },
     {
      "t": "Edit the team's project-level /commit directly — your improvements will help everyone."
     },
     {
-     "t": "In the project's .claude/commands/ as /my-commit so it's backed up with the repo."
+     "t": "In the project's .claude/skills/ under a new name so it's backed up with the repo."
     }
    ],
    "explain": {
-    "good": "개인용 변형은 사용자 스코프에 두고 이름을 다르게 지정함. 위치(본인에게만 적용)와 이름(충돌 회피) 두 가지를 모두 지켜야 함.",
+    "good": "개인 스킬 위치에 두면 본인에게만 적용. 이름이 같으면 개인 스킬이 프로젝트 스킬보다 우선 실행. 팀원의 /commit은 그대로.",
     "wrongs": [
-     "<b>B(같은 이름):</b> 같은 이름을 쓰면 개인 커맨드가 팀 커맨드를 대신 실행함(shadowing). 팀 커맨드가 왜 다르게 동작하는지 아무도 추적하지 못하는 상태가 됨.",
-     "<b>C(팀 커맨드 직접 수정):</b> 팀 전체의 워크플로를 개인 취향에 맞춰 바꾸는 것임. 개인용 변형이라는 요구와 정반대임.",
-     "<b>D(프로젝트 폴더에 배치):</b> 프로젝트 폴더에 넣으면 커밋되어 팀 전원에게 적용됨. 위치 기준이 틀렸음."
+     "<b>B(프로젝트 스킬 우선이라는 설명):</b> 우선순위가 반대. 이름이 같으면 개인 스킬이 실행됨.",
+     "<b>C(팀 스킬 직접 수정):</b> 팀 전원의 실행 결과가 바뀜. 본인만 바꾼다는 조건 위반.",
+     "<b>D(프로젝트 폴더에 배치):</b> 저장소에 올라가 팀 전원에게 새 스킬이 생김. 본인의 /commit은 그대로."
     ]
    },
-   "principle": "개인용 변형: 사용자 스코프에 다른 이름으로"
+   "principle": "개인용 변형: 개인 스킬 위치. 이름이 같으면 개인 스킬 우선"
   },
   {
    "ts": "3.2",
@@ -1525,7 +1525,7 @@ window.CCAF_MT_EXTRA = {
      "t": "Processing can take up to 24 hours with no latency SLA."
     },
     {
-     "t": "A single batch request cannot execute tools mid-request and continue."
+     "t": "Within a single batch request, results from tools that your own application executes cannot be sent back so that the request continues."
     }
    ],
    "explain": {
@@ -1533,7 +1533,7 @@ window.CCAF_MT_EXTRA = {
     "wrongs": [
      "<b>B(50% 절감):</b> 50% 절감은 사실임.",
      "<b>C(최대 24시간):</b> 최대 24시간이고 지연 SLA가 없다는 것도 사실임. 블로킹 워크플로에 쓸 수 없는 이유임.",
-     "<b>D(요청 중간 실행 불가):</b> 요청 중간의 도구 실행이 불가능하다는 것은 사실임. A와 헷갈리는 지점이며 A는 정의에 대한 서술이라 거짓, D는 실행에 대한 서술이라 참임."
+     "<b>D(내 애플리케이션의 도구 결과 전달 불가):</b> 내 애플리케이션이 실행하는 도구의 결과를 요청 중간에 돌려줄 수 없다는 것은 사실임. Anthropic 서버에서 실행하는 도구는 배치에서도 동작함. A는 정의에 대한 서술이라 거짓, D는 결과 전달에 대한 서술이라 참임."
     ]
    },
    "principle": "정의는 가능하고 실행 루프는 불가능함"
